@@ -1,0 +1,14 @@
+{
+  "name": "desafio_8-ferrucci-guillermo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "G. Ferrucci",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

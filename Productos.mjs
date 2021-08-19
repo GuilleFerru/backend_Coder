@@ -1,21 +1,27 @@
 export class Productos {
     constructor() {
-        this.array = [];
+        this.productos = [];
         this.count = 0;
     }
 
-    getArray() {
-        return this.array;
+    getProductos() {
+        return this.productos;
     }
 
-    getObjectById(id) {
-        return this.array.filter(arr => arr.id === Number(id))
+    getProductoById(id) {
+        return this.productos.find(element => element.id === Number(id))
+        // return this.productos.filter(arr => arr.id === Number(id))
     }
 
-    addObject(object) {
-        this.array.push({ ...object, id: this.count + 1 });
+    addProducto(object) {
+        this.productos.push({ ...object, id: this.count + 1 });
         this.count++;
         return object
+    }
+
+    updateProducto(newProducto, id, req) {
+        console.log(req)
+        return this.productos[id - 1] = { ...newProducto, id: Number(id) }
     }
 
 }

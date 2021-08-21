@@ -20,8 +20,14 @@ export class Productos {
     }
 
     updateProducto(newProducto, id, req) {
-        console.log(req)
         return this.productos[id - 1] = { ...newProducto, id: Number(id) }
+    }
+
+    deleteProducto(productToBeDelete) {
+        const index = this.productos.indexOf(productToBeDelete)
+        this.productos.splice(index, 1)
+        return productToBeDelete
+
     }
 
 }

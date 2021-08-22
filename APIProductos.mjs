@@ -1,14 +1,91 @@
 import express from 'express';
 import { Productos } from './Productos.mjs';
-import {app} from './server.mjs';
+import { app } from './server.mjs';
+import handlebars from "express-handlebars";
+import path from 'path';
 
-
-const router = express.Router();
-app.use("/api", router);
-
+const __dirname = path.resolve();
 const producto = new Productos();
 
-router.get('/productos/listar', (req, res) => {
+app.engine(
+    'hbs',
+    handlebars({
+        extname: '.hbs',
+        defaultLayout: 'index.hbs',
+        layoutsDir: __dirname + '/views/layouts'
+    })
+);
+
+app.set('view engine', 'hbs');
+app.set('views', './views');
+
+app.get('/', (_, res) => {
+    res.render('addProductForm.hbs', {
+        inputInfo: [
+            {
+                tag: 'title',
+                name: 'Nombre',
+                placeholder: 'Ingrese Nombre',
+                type: 'text'
+            },
+            {
+                tag: 'price',
+                name: 'Precio',
+                placeholder: 'Ingrese precio',
+                type: 'number'
+            },
+            {
+                tag: 'thumbnail',
+                name: 'URL foto',
+                placeholder: 'Ingrese URL',
+                type: 'text'
+            }
+        ]
+    })
+})
+
+
+const getTablaRows = (req, _, next) => {
+    req.productos = producto.getProductos()
+    if (req.productos.length > 0) {
+        req.errorData = true
+    } else {
+        req.errorData = false
+    }
+    next();
+};
+
+const getTablaHeaders = (req, _, next) => {
+    req.productosKeys = ['Nombre', 'Precio', 'Foto'];
+    next();
+};
+
+app.get('/productos/vista', getTablaRows, getTablaHeaders, (req, res) => {
+    const { productos, productosKeys, errorData } = req;
+    if (productos.length > 0) {
+        res.render('listOfProducts.hbs', {
+            productos: productos,
+            productosKeys: productosKeys,
+            dataOk: true,
+            buttonHref: '/',
+            buttonDescription: 'Volver'
+        })
+    } else {
+        res.render('listOfProducts.hbs', {
+            dataOk: errorData,
+            wrongTitle: 'No existen productos cargados',
+            wrongDescription: 'Para visualizar los productos primero los debe registrar.',
+            buttonHref: '/',
+            buttonDescription: 'Cargar Producto'
+        })
+    }
+})
+
+
+const routerAPI = express.Router();
+app.use("/api", routerAPI);
+
+routerAPI.get('/productos/listar', (_, res) => {
     const newProducto = producto.getProductos();
 
     if (newProducto.length > 0) {
@@ -18,9 +95,10 @@ router.get('/productos/listar', (req, res) => {
     }
 })
 
-router.get('/productos/listar/:id', (req, res) => {
+routerAPI.get('/productos/listar/:id', (req, res) => {
     const { id } = req.params;
     const newProducto = producto.getProductoById(id);
+    console.log(Object.keys(newProducto))
     if (newProducto) {
         res.status(200).json(newProducto)
     } else {
@@ -28,18 +106,19 @@ router.get('/productos/listar/:id', (req, res) => {
     }
 })
 
-router.post('/productos/guardar', (req, res) => {
+routerAPI.post('/productos/guardar', (req, res) => {
     const newProducto = req.body;
 
     if (newProducto.price && newProducto.title && newProducto.thumbnail) {
         producto.addProducto(newProducto)
-        res.status(200).json(newProducto)
+        
+        res.redirect(302,'/')
     } else {
         res.status(400).json({ error: 'Producto mal cargado' })
     }
 })
 
-router.put('/productos/actualizar/:id', (req, res) => {
+routerAPI.put('/productos/actualizar/:id', (req, res) => {
     const { id } = req.params;
     const newProducto = {
         title: req.body.title,
@@ -53,7 +132,7 @@ router.put('/productos/actualizar/:id', (req, res) => {
     }
 })
 
-router.delete('/productos/borrar/:id', (req, res) => {
+routerAPI.delete('/productos/borrar/:id', (req, res) => {
     const { id } = req.params;
     const productToBeDelete = producto.getProductoById(id);
     if (productToBeDelete) {

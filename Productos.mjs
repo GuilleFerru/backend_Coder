@@ -10,7 +10,6 @@ export class Productos {
 
     getProductoById(id) {
         return this.productos.find(element => element.id === Number(id))
-        // return this.productos.filter(arr => arr.id === Number(id))
     }
 
     addProducto(object) {
@@ -19,7 +18,7 @@ export class Productos {
         return object
     }
 
-    updateProducto(newProducto, id, req) {
+    updateProducto(newProducto, id,_) {
         return this.productos[id - 1] = { ...newProducto, id: Number(id) }
     }
 

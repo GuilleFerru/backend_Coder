@@ -1,0 +1,38 @@
+<h2 class="pt-1 pb-2">Agregar nuevo Producto</h2>
+
+<form action="/api/productos/guardar" method="POST" enctype="application/x-www-form-urlencoded" class="needs-validation"
+    novalidate>
+
+    {{#each inputInfo}}
+    <div class="form-group">
+        <label for={{this.tag}}>{{this.name}}</label>
+        <input type={{this.type}} class="form-control" id={{this.tag}} placeholder="Ingresar titulo" name={{this.tag}}
+            required>
+        <div class="valid-feedback">
+            Genial!
+        </div>
+    </div>
+    {{/each}}
+
+    <button type="submit" class="btn btn-success">Enviar</button>
+    <a href="/productos/vista" class="btn btn-success">Ver productos</a>
+</form>
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+</script>

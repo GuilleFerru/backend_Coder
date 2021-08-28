@@ -8,8 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-    {{!--
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <title>Carga de productos</title>
 </head>
 
@@ -17,6 +18,70 @@
     <div class="container">
         {{{body}}}
     </div>
+
+    <script>
+        const { Observable, fromEvent } = rxjs;
+        const socket = io();
+
+        const button = document.getElementById('submit')
+
+        fromEvent(button, "click").subscribe({
+            next: (value) => {
+                console.log(value)
+            },
+        });
+
+        const tableTemplate = Handlebars.compile(`
+           
+                <h2 class="pt-1 pb-2"> Lista de Productos </h2>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-dark table-sm ">
+                            <thead>
+                                <tr>
+                                    {{#each productosKeys}}
+                                    <th scope="col">{{this}}</th>
+                                    {{/each}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each productos}}
+                                <tr>
+                                    <th scope="row">{{this.title}}</th>
+                                    <td>{{this.price}}</td>
+                                    <td><img src={{this.thumbnail}} atl={{this.title}}></td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>                  
+                    </div>
+                </div>
+            
+                <style>
+                    .table tr {
+                        text-align: center;  
+                    }
+                    .table img {
+                        display: block;
+                        margin: auto;
+                        width: 40px;
+                        height: auto;
+                    }
+                </style>
+           
+            `)
+
+        socket.on('cargarProductos', (productos, productosKeys) => {
+            
+            const data = [{
+                productos: productos,
+                productosKeys: productosKeys
+            }]
+            console.log(data.productos)
+            const html = tableTemplate({data});
+            document.getElementById('listOfProducts').innerHTML = html;
+        });
+    </script>
 </body>
 
 

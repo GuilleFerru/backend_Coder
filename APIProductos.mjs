@@ -1,12 +1,20 @@
 import express from 'express';
 import { Productos } from './Productos.mjs';
-import { app } from './server.mjs';
+import { app, io } from './server.mjs';
 import handlebars from "express-handlebars";
 import path from 'path';
 
-const __dirname = path.resolve();
 const producto = new Productos();
 
+io.on('connection', socket =>{  
+    const productosKeys = ['Nombre', 'Precio', 'Foto']
+    socket.emit('cargarProductos', producto.getProductos(), productosKeys)
+    console.log('Se conecto en el back')
+})
+
+
+/////////////////////////////////////////////////////////////////////////////
+const __dirname = path.resolve();
 app.engine(
     'hbs',
     handlebars({

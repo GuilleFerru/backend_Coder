@@ -1,0 +1,55 @@
+<%- include('../pages/head') %>
+    <div class="container">
+        <h2 class="pt-1 pb-2"> Lista de Productos </h2>
+        <div class="card">
+            <div class="card-body">
+                <% if (dataOk) { %>
+                    <table class="table table-hover table-dark table-sm ">
+                        <thead>
+                            <tr>
+                                <% for (const keys of productosKeys) { %>
+                                    <th scope="col">
+                                        <%= keys %>
+                                    </th>
+                                    <% } %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (const producto of productos) { %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= producto.title %>
+                                    </th>
+                                    <td>
+                                        <%= producto.price %>
+                                    </td>
+                                    <td><img src=<%=producto.thumbnail %> atl= <%= producto.title %> ></td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                        <h5 class="card-title">
+                            <%= wrongTitle %>
+                        </h5>
+                        <p class="card-text">
+                            <%= wrongDescription %>
+                        </p>
+                        <% } %>
+                            <a href=<%=buttonHref %> class="btn btn-success"> <%=buttonDescription %> </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .table tr {
+            text-align: center;
+        }
+
+        .table img {
+            display: block;
+            margin: auto;
+            width: 40px;
+            height: auto;
+        }
+    </style>

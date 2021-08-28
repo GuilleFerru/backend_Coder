@@ -16,11 +16,14 @@ const producto = new Productos();
 //     })
 // );
 
-app.set('view engine', 'pug');
-app.set('views', './views');
+app.set('view engine', 'ejs');
+// app.set('views', './views');
 
 app.get('/', (_, res) => {
-    res.render('addProductForm.pug', {
+
+    res.render('pages/index.ejs', {
+        dataOk: false
+        ,
         inputInfo: [
             {
                 tag: 'title',
@@ -63,7 +66,7 @@ const getTablaHeaders = (req, _, next) => {
 app.get('/productos/vista', getTablaRows, getTablaHeaders, (req, res) => {
     const { productos, productosKeys, errorData } = req;
     if (productos.length > 0) {
-        res.render('listOfProducts.pug', {
+        res.render('partials/listOfProducts.ejs', {
             productos: productos,
             productosKeys: productosKeys,
             dataOk: true,
@@ -71,7 +74,7 @@ app.get('/productos/vista', getTablaRows, getTablaHeaders, (req, res) => {
             buttonDescription: 'Volver'
         })
     } else {
-        res.render('listOfProducts.pug', {
+        res.render('partials/listOfProducts.ejs', {
             dataOk: errorData,
             wrongTitle: 'No existen productos cargados',
             wrongDescription: 'Para visualizar los productos primero los debe registrar.',
@@ -81,6 +84,7 @@ app.get('/productos/vista', getTablaRows, getTablaHeaders, (req, res) => {
     }
 })
 
+//////////////////////////////////////////////////////////////////////////////////////////
 
 const routerAPI = express.Router();
 app.use("/api", routerAPI);

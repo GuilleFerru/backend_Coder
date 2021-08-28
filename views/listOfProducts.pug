@@ -1,0 +1,25 @@
+extends index
+block listOfProducts
+    - const trClass= {'text-align': 'center'}
+    - const tdImgClass = {'display': 'block','margin': 'auto','width': '40px;','height': 'auto'}
+    h2.pt-1.pb-2 Lista de Productos
+    div.card
+        div.card-body
+            if dataOk
+                table.table.table-hover.table-dark.table-sm
+                    thead
+                        tr(style=trClass)
+                            each key in productosKeys
+                                th(scope="col")= key
+                    tbody
+                        each producto in productos
+                            tr(style=trClass)
+                                th(scope="row")= producto.title
+                                td= producto.price 
+                                td
+                                    img(src= producto.thumbnail alt= producto.title style=tdImgClass)
+            else
+                h5.card-title= wrongTitle 
+                p.card-text= wrongDescription 
+            a.btn.btn-success(href=buttonHref)= buttonDescription
+

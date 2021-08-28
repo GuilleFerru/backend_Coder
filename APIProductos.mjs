@@ -1,26 +1,26 @@
 import express from 'express';
 import { Productos } from './Productos.mjs';
 import { app } from './server.mjs';
-import handlebars from "express-handlebars";
-import path from 'path';
+// import handlebars from "express-handlebars";
+// import path from 'path';
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 const producto = new Productos();
 
-app.engine(
-    'hbs',
-    handlebars({
-        extname: '.hbs',
-        defaultLayout: 'index.hbs',
-        layoutsDir: __dirname + '/views/layouts'
-    })
-);
+// app.engine(
+//     'pug',
+//     handlebars({
+//         extname: '.pug',
+//         defaultLayout: 'index.pug',
+//         layoutsDir: __dirname + '/views/layouts'
+//     })
+// );
 
-app.set('view engine', 'hbs');
+app.set('view engine', 'pug');
 app.set('views', './views');
 
 app.get('/', (_, res) => {
-    res.render('addProductForm.hbs', {
+    res.render('addProductForm.pug', {
         inputInfo: [
             {
                 tag: 'title',
@@ -63,7 +63,7 @@ const getTablaHeaders = (req, _, next) => {
 app.get('/productos/vista', getTablaRows, getTablaHeaders, (req, res) => {
     const { productos, productosKeys, errorData } = req;
     if (productos.length > 0) {
-        res.render('listOfProducts.hbs', {
+        res.render('listOfProducts.pug', {
             productos: productos,
             productosKeys: productosKeys,
             dataOk: true,
@@ -71,7 +71,7 @@ app.get('/productos/vista', getTablaRows, getTablaHeaders, (req, res) => {
             buttonDescription: 'Volver'
         })
     } else {
-        res.render('listOfProducts.hbs', {
+        res.render('listOfProducts.pug', {
             dataOk: errorData,
             wrongTitle: 'No existen productos cargados',
             wrongDescription: 'Para visualizar los productos primero los debe registrar.',

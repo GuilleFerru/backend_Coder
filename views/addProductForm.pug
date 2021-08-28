@@ -1,0 +1,15 @@
+extends index
+block addProductForm
+
+    h2.pt-1.pb-2 Agregar nuevo Producto
+    form.needs-validation(action="/api/productos/guardar" method="POST" enctype="application/x-www-form-urlencoded" novalidate)
+        each val in inputInfo
+            div.form-group
+                label(for= val.tag)= val.name
+                input#val.tag.form-control(type= val.type placeholder="Ingresar titulo" name=val.tag required)
+                div.valid-feedback Genial! 
+        button.btn.btn-success(type="submit") Enviar
+        a.btn.btn-success.ml-1(href="/productos/vista") Ver productos
+
+    script 
+        include formControl.js

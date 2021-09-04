@@ -1,12 +1,12 @@
-const {fromEvent } = rxjs;
+const { fromEvent } = rxjs;
 const socket = io();
 
 fromEvent(window, 'load').subscribe(() => {
     const newForm = formTemplate({ inputInfo });
     document.getElementById('productsForm').innerHTML = newForm;
-})
+});
 
-socket.on('cargarProductos', (productos) => {
+socket.on('loadProducts', (productos) => {
     const newTable = tableTemplate({
         productos: productos,
         productosKeys: productosKeys
@@ -14,18 +14,27 @@ socket.on('cargarProductos', (productos) => {
     document.getElementById('productsTable').innerHTML = newTable;
 });
 
+socket.on('messages', (messages) => {
+    const newChat = chatTemplate({ messages })
+    document.getElementById('productsChat').innerHTML = newChat;
+});
 
-(() => {
-    window.addEventListener('load', function () {
-        const forms = document.getElementsByClassName('needs-validation');
-        const validation = Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
+const addMessage = () => {
+    const author = document.getElementById("emailChat").value;
+    const text = document.getElementById("chatText").value;
+    const date = new Date().toLocaleString("es-AR", "DD-M-YYYY HH:MM:SS");
+    console.log((/$^|.+@.+..+/).test(author))
+    console.log(author)
+    if((/$^|.+@.+..+/).test(author) && author !== ""){
+        const message = {
+            author: author,
+            date: date,
+            text: text,
+        }
+        socket.emit('newMessage', message)
+    } else{
+        document.getElementById("emailChat").classList.add('isInvalid')
+    }
+    return false;
+}
+

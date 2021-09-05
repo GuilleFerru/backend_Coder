@@ -2,23 +2,32 @@
   "name": "desafiosgithub",
   "version": "1.0.0",
   "description": "Carpeta para proximos desafios",
-  "main": "APIProductos.mjs",
+  "main": "server.es6.js",
+  
   "scripts": {
+    "ServerTStoJS5": "./node_modules/.bin/tsc",
+    "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
+    "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
+    "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
+    "start": "nodemon server.es6.js",
+    "runJS5fromES6": "nodemon ./fromES6/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
-    "socket.io": "^4.2.0",
-    "typescript": "^4.4.2"
+    "socket.io": "^4.2.0"
   },
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.4",
+    "typescript": "^4.4.2"
   }
 }

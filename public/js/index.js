@@ -23,8 +23,6 @@ const addMessage = () => {
     const author = document.getElementById("emailChat").value;
     const text = document.getElementById("chatText").value;
     const date = new Date().toLocaleString("es-AR", "DD-M-YYYY HH:MM:SS");
-    console.log((/$^|.+@.+..+/).test(author))
-    console.log(author)
     if((/$^|.+@.+..+/).test(author) && author !== ""){
         const message = {
             author: author,

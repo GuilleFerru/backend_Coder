@@ -1,7 +1,63 @@
-import express from 'express';
-import { Productos } from './Productos.mjs';
-import { app, io } from './server.mjs';
-import fs from "fs";
+const express = require("express");
+const http = require("http");
+const io = require("socket.io");
+const fs = require("fs");
+
+const app = express();
+const server = http.Server(app);
+const port = 8080;
+const ioServer = io(server)
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+server.listen(port, () => {
+    console.info(`Servidor listo en el puerto ${port}`);
+});
+
+
+
+server.on("error", (error) => {
+    console.error(error);
+});
+
+///////////////////////////////////////////////////////////////////////
+class Productos {
+    constructor() {
+        this.productos = [];
+        this.count = 0;
+    }
+
+    getProductos() {
+        return this.productos;
+    }
+
+    getProductoById(id) {
+        return this.productos.find(element => element.id === Number(id))
+    }
+
+    addProducto(object) {
+        this.productos.push({ ...object, id: this.count + 1 });
+        this.count++;
+        return object
+    }
+
+    updateProducto(newProducto, id,_) {
+        return this.productos[id - 1] = { ...newProducto, id: Number(id) }
+    }
+
+    deleteProducto(productToBeDelete) {
+        const index = this.productos.indexOf(productToBeDelete)
+        this.productos.splice(index, 1)
+        return productToBeDelete
+
+    }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 const producto = new Productos();
 const fileName = "./messages.txt";
@@ -14,12 +70,12 @@ app.get("/", (_, res) => {
 });
 
 
-io.on('connection', socket => {
+ioServer.on('connection', socket => {
     socket.emit('loadProducts', producto.getProductos());
     socket.emit('messages', messages);
     socket.on('newMessage', message => {
         messages.push(message);
-        io.sockets.emit("messages", messages);
+        ioServer.sockets.emit("messages", messages);
         saveMessages(messages);
     })
 });
@@ -105,7 +161,7 @@ routerAPI.get('/productos/listar', (_, res) => {
 routerAPI.get('/productos/listar/:id', (req, res) => {
     const { id } = req.params;
     const newProducto = producto.getProductoById(id);
-    console.log(Object.keys(newProducto))
+    
     if (newProducto) {
         res.status(200).json(newProducto)
     } else {
@@ -117,7 +173,7 @@ routerAPI.post('/productos/guardar', (req, res) => {
     const newProducto = req.body;
     if (newProducto.price && newProducto.title && newProducto.thumbnail) {
         producto.addProducto(newProducto);
-        io.sockets.emit('loadProducts', producto.getProductos())
+        ioServer.sockets.emit('loadProducts', producto.getProductos())
         res.redirect(302, '/')
     } else {
         res.status(400).json({ error: 'Producto mal cargado' })

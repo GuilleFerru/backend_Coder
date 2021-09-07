@@ -38,5 +38,20 @@
 		"author": "guillelf@gmail.com",
 		"date": "5/9/2021 12:56:45",
 		"text": "hola"
+	},
+	{
+		"author": "guillelf@gmail.com",
+		"date": "6/9/2021 21:52:47",
+		"text": "typescript"
+	},
+	{
+		"author": "guillelf@gmail.com",
+		"date": "6/9/2021 21:53:05",
+		"text": "typescript 2"
+	},
+	{
+		"author": "guillelf@gmail.com",
+		"date": "6/9/2021 22:18:55",
+		"text": "typescript 3"
 	}
 ]

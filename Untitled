@@ -1,0 +1,59 @@
+//#region Clases "modelo"
+
+// Acá irían cosas que "modelan" nuestra solución.
+// Ej, si estamos contruyendo una casa capaz irian clases Ladrillo, Pintura, Caño, Vidrio, etc 
+class Producto {
+  public id: number;
+  public nombre: string;
+  public precio: number;
+
+  constructor(id: number, nombre: string, precio: number) {
+    this.id = id;
+    this.nombre = nombre;
+    this.precio = precio;
+  }
+}
+
+//#endregion
+
+//#region Lógica de Backend
+
+// Acá iría todo el procesamiento/cálculos/etc de la información que está las clases "modelo"
+class BackendLogic {
+  private productos: Array<Producto>;
+
+  constructor() {
+    this.productos = new Array<Producto>();
+  }
+
+  public addProducto(producto: Producto) {
+    this.productos.push(producto);
+  }
+
+  public getProducto(nombre: string) {
+    return this.productos.find((element) => element.nombre === nombre);
+  }
+}
+
+//#endregion
+
+//#region API Express
+
+// Acá irian los "endpoints", que idealmente sólo recibien información, se la pasan al Backend,
+// y cuando le responde el Backend responden el request.
+// Sería cómo una "pasamanos". Por eso se le llama "interface" (API --> la "I" de Interfece)
+// Supongamos que los datos del producto le llegaron en un request, solamente se crea un
+// objeto "Producto" y se lo pasa al Backend
+const backendLogic = new BackendLogic();
+
+const producto: Producto = new Producto(
+  Math.random(),
+  "lapicera",
+  Math.random()
+);
+
+backendLogic.addProducto(producto);
+const lapicera = backendLogic.getProducto("lapicera");
+console.log(lapicera?.nombre);
+
+//#endregion

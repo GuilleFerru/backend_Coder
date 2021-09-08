@@ -38,6 +38,8 @@ var SocketIO = __importStar(require("socket.io"));
 var fs = __importStar(require("fs"));
 var app = (0, express_1.default)();
 var port = 8080;
+var fileName = "./messages.txt";
+var messages = [];
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 var server = app.listen(port, function () {
@@ -62,22 +64,21 @@ var ProductLogic = /** @class */ (function () {
         this.products = new Array();
         this.count = 0;
     }
-    ProductLogic.prototype.getProductos = function () {
+    ProductLogic.prototype.getProducts = function () {
         return this.products;
     };
-    ProductLogic.prototype.getProductoById = function (id) {
+    ProductLogic.prototype.getProductsById = function (id) {
         return this.products.find(function (element) { return element.id === id; });
     };
-    ProductLogic.prototype.addProducto = function (product) {
-        console.log(product);
+    ProductLogic.prototype.addProducts = function (product) {
         this.products.push(__assign(__assign({}, product), { id: this.count + 1 }));
         this.count++;
         return product;
     };
-    ProductLogic.prototype.updateProducto = function (newProducto, id) {
-        return (this.products[id - 1] = __assign(__assign({}, newProducto), { id: id }));
+    ProductLogic.prototype.updateProduct = function (newProduct, id) {
+        return (this.products[id - 1] = __assign(__assign({}, newProduct), { id: id }));
     };
-    ProductLogic.prototype.deleteProducto = function (productToBeDelete) {
+    ProductLogic.prototype.deleteProduct = function (productToBeDelete) {
         var index = this.products.indexOf(productToBeDelete);
         this.products.splice(index, 1);
         return productToBeDelete;
@@ -86,15 +87,12 @@ var ProductLogic = /** @class */ (function () {
 }());
 //////////////////////////////////////////////////////////////////////////////
 var productLogic = new ProductLogic();
-// const product = new Productos();
-var fileName = "./messages.txt";
-var messages = [];
 app.use(express_1.default.static("./public"));
-app.get("/", function (req, res) {
+app.get("/", function (_, res) {
     return res.sendFile("index.html", { root: __dirname });
 });
 io.on("connection", function (socket) {
-    socket.emit("loadProducts", productLogic.getProductos());
+    socket.emit("loadProducts", productLogic.getProducts());
     socket.emit("messages", messages);
     socket.on("newMessage", function (message) {
         messages.push(message);
@@ -123,44 +121,10 @@ var saveMessages = function (messages) {
         console.log("Hubo un error");
     }
 };
-// const getTablaRows = (req: Request, _: Response, next) => {
-//   req.productos = producto.getProductos();
-//   if (req.productos.length > 0) {
-//     req.errorData = true;
-//   } else {
-//     req.errorData = false;
-//   }
-//   next();
-// };
-// const getTablaHeaders = (req: Request, _: Response, next) => {
-//   req.productosKeys = ["Nombre", "Precio", "Foto"];
-//   next();
-// };
-// app.get("/productos/vista", getTablaRows, getTablaHeaders, (req, res) => {
-//   const { productos, productosKeys, errorData } = req;
-//   if (productos.length > 0) {
-//     res.render("listOfProducts.hbs", {
-//       productos: productos,
-//       productosKeys: productosKeys,
-//       dataOk: true,
-//       buttonHref: "/",
-//       buttonDescription: "Volver",
-//     });
-//   } else {
-//     res.render("listOfProducts.hbs", {
-//       dataOk: errorData,
-//       wrongTitle: "No existen productos cargados",
-//       wrongDescription:
-//         "Para visualizar los productos primero los debe registrar.",
-//       buttonHref: "/",
-//       buttonDescription: "Cargar Producto",
-//     });
-//   }
-// });
 var routerAPI = express_1.default.Router();
 app.use("/api", routerAPI);
 routerAPI.get("/productos/listar", function (_, res) {
-    var products = productLogic.getProductos();
+    var products = productLogic.getProducts();
     if (products.length > 0) {
         res.status(200).json(products);
     }
@@ -168,49 +132,43 @@ routerAPI.get("/productos/listar", function (_, res) {
         res.status(404).json({ error: "no hay productos cargados" });
     }
 });
-// routerAPI.get("/productos/listar/:id", (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const newProducto = producto.getProductoById(id);
-//   if (newProducto) {
-//     res.status(200).json(newProducto);
-//   } else {
-//     res.status(404).json({ error: "producto no encontrado" });
-//   }
-// });
+routerAPI.get("/productos/listar/:id", function (req, res) {
+    var id = parseInt(req.params.id, 10);
+    var productById = productLogic.getProductsById(id);
+    if (productById) {
+        res.status(200).json(productById);
+    }
+    else {
+        res.status(404).json({ error: "producto no encontrado" });
+    }
+});
 routerAPI.post("/productos/guardar", function (req, res) {
     var newProduct = new Product(req.body.title, req.body.price, req.body.thumbnail);
-    productLogic.addProducto(newProduct);
-    io.sockets.emit("loadProducts", productLogic.getProductos());
+    productLogic.addProducts(newProduct);
+    io.sockets.emit("loadProducts", productLogic.getProducts());
     res.redirect(302, "/");
-    // if (newProducto.price && newProducto.title && newProducto.thumbnail) {
-    //   producto.addProducto(newProducto);
-    //   ioServer.sockets.emit("loadProducts", producto.getProductos());
-    //   res.redirect(302, "/");
-    // } else {
-    //   res.status(400).json({ error: "Producto mal cargado" });
-    // }
 });
-// routerAPI.put("/productos/actualizar/:id", (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const newProducto = {
-//     title: req.body.title,
-//     price: req.body.price,
-//     thumbnail: req.body.thumbnail,
-//   };
-//   if (newProducto) {
-//     res.status(200).json(producto.updateProducto(newProducto, id, req));
-//   } else {
-//     res.status(404).json({ error: "producto no encontrado" });
-//   }
-// });
-// routerAPI.delete("/productos/borrar/:id", (req: Request, res: Response) => {
-//   const { id } = req.params;
-//   const productToBeDelete = producto.getProductoById(id);
-//   if (productToBeDelete) {
-//     res.status(200).json(producto.deleteProducto(productToBeDelete));
-//   } else {
-//     res
-//       .status(404)
-//       .json({ error: "producto no existente, no se puede borrar" });
-//   }
-// });
+routerAPI.put("/productos/actualizar/:id", function (req, res) {
+    var id = parseInt(req.params.id, 10);
+    var newProduct = new Product(req.body.title, req.body.price, req.body.thumbnail);
+    if (newProduct) {
+        res.status(200).json(productLogic.updateProduct(newProduct, id));
+        io.sockets.emit("loadProducts", productLogic.getProducts());
+    }
+    else {
+        res.status(404).json({ error: "producto no encontrado" });
+    }
+});
+routerAPI.delete("/productos/borrar/:id", function (req, res) {
+    var id = parseInt(req.params.id, 10);
+    var productToBeDelete = productLogic.getProductsById(id);
+    if (productToBeDelete) {
+        res.status(200).json(productLogic.deleteProduct(productToBeDelete));
+        io.sockets.emit("loadProducts", productLogic.getProducts());
+    }
+    else {
+        res
+            .status(404)
+            .json({ error: "producto no existente, no se puede borrar" });
+    }
+});

@@ -2,7 +2,7 @@ const formTemplate = Handlebars.compile(`
     <div class="card mt-3">
         <div class="card-body">
             <h2 class="pt-1 pb-2">Agregar nuevo Producto</h2>
-                <form action="/api/productos/guardar" method="POST" enctype="application/x-www-form-urlencoded" class="needs-validation" novalidate>
+                <form action="/productos/guardar" method="POST" enctype="application/x-www-form-urlencoded" class="needs-validation" novalidate>
                     {{#each inputInfo}}
                         <div class="form-group">
                             <label for={{this.tag}}>{{this.name}}</label>

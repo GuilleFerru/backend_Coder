@@ -51,15 +51,21 @@ server.on("error", function (error) {
 var io = new SocketIO.Server(server);
 ////////////////////////////////////////////////////////////////////
 var Product = /** @class */ (function () {
-    function Product(title, price, thumbnail) {
+    function Product(title, description, code, thumbnail, price, stock) {
         this.id = 0;
+        this.timestamp = 0;
         this.title = title;
-        this.price = price;
+        this.description = description;
+        this.code = code;
         this.thumbnail = thumbnail;
+        this.price = price;
+        this.price = price;
+        this.stock = stock;
     }
     return Product;
 }());
 var ProductLogic = /** @class */ (function () {
+    // private timestamp: number;
     function ProductLogic() {
         this.products = new Array();
         this.count = 0;
@@ -71,7 +77,7 @@ var ProductLogic = /** @class */ (function () {
         return this.products.find(function (element) { return element.id === id; });
     };
     ProductLogic.prototype.addProducts = function (product) {
-        this.products.push(__assign(__assign({}, product), { id: this.count + 1 }));
+        this.products.push(__assign(__assign({}, product), { id: this.count + 1, timestamp: Date.now() }));
         this.count++;
         return product;
     };
@@ -86,7 +92,45 @@ var ProductLogic = /** @class */ (function () {
     return ProductLogic;
 }());
 //////////////////////////////////////////////////////////////////////////////
+var Cart = /** @class */ (function () {
+    function Cart(id, timestamp, product) {
+        this.id = 0;
+        this.timestamp = 0;
+        this.id = id;
+        this.timestamp = timestamp;
+        this.product = product;
+    }
+    return Cart;
+}());
+var CartLogic = /** @class */ (function () {
+    function CartLogic() {
+        this.cart = new Array();
+    }
+    CartLogic.prototype.getCart = function () {
+        return this.cart;
+    };
+    CartLogic.prototype.getProductInCartById = function (id) {
+        this.cart[0].product.map(function (product) {
+        });
+        return this.cart.find(function (element) {
+            element.id === id;
+        });
+    };
+    CartLogic.prototype.addProductToCart = function (cart) {
+        this.cart = [];
+        this.cart.push(cart);
+        return this.cart;
+    };
+    CartLogic.prototype.deleteCart = function (cartToBeDelete) {
+        var index = this.cart.indexOf(cartToBeDelete);
+        this.cart.splice(index, 1);
+        return cartToBeDelete;
+    };
+    return CartLogic;
+}());
+/* socket chat */ /////////////////////////////////////////////////////////////////////////////////
 var productLogic = new ProductLogic();
+var cartLogic = new CartLogic();
 app.use(express_1.default.static("./public"));
 app.get("/", function (_, res) {
     return res.sendFile("index.html", { root: __dirname });
@@ -121,9 +165,27 @@ var saveMessages = function (messages) {
         console.log("Hubo un error");
     }
 };
-var routerAPI = express_1.default.Router();
-app.use("/api", routerAPI);
-routerAPI.get("/productos/listar", function (_, res) {
+/* PRODUCTOS API */ /////////////////////////////////////////////////////////////////////////
+var routerProducts = express_1.default.Router();
+app.use("/productos", routerProducts);
+var carritoProducts = express_1.default.Router();
+app.use("/carrito", carritoProducts);
+var checkIdProduct = function (req, res, next) {
+    var id = parseInt(req.params.id, 10);
+    var productById = productLogic.getProductsById(id);
+    if (id) {
+        if ((productById === null || productById === void 0 ? void 0 : productById.id) === id) {
+            res.status(200).json(productById);
+        }
+        else {
+            res.status(404).json({ error: "este producto no esta cargado" });
+        }
+    }
+    else {
+        next();
+    }
+};
+routerProducts.get("/listar/:id?", checkIdProduct, function (_, res) {
     var products = productLogic.getProducts();
     if (products.length > 0) {
         res.status(200).json(products);
@@ -132,25 +194,15 @@ routerAPI.get("/productos/listar", function (_, res) {
         res.status(404).json({ error: "no hay productos cargados" });
     }
 });
-routerAPI.get("/productos/listar/:id", function (req, res) {
-    var id = parseInt(req.params.id, 10);
-    var productById = productLogic.getProductsById(id);
-    if (productById) {
-        res.status(200).json(productById);
-    }
-    else {
-        res.status(404).json({ error: "producto no encontrado" });
-    }
-});
-routerAPI.post("/productos/guardar", function (req, res) {
-    var newProduct = new Product(req.body.title, req.body.price, req.body.thumbnail);
+routerProducts.post("/agregar", function (req, res) {
+    var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
     productLogic.addProducts(newProduct);
     io.sockets.emit("loadProducts", productLogic.getProducts());
-    res.redirect(302, "/");
+    res.status(200).json({ server: "Producto creado" });
 });
-routerAPI.put("/productos/actualizar/:id", function (req, res) {
+routerProducts.put("/actualizar/:id", function (req, res) {
     var id = parseInt(req.params.id, 10);
-    var newProduct = new Product(req.body.title, req.body.price, req.body.thumbnail);
+    var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
     if (newProduct) {
         res.status(200).json(productLogic.updateProduct(newProduct, id));
         io.sockets.emit("loadProducts", productLogic.getProducts());
@@ -159,7 +211,7 @@ routerAPI.put("/productos/actualizar/:id", function (req, res) {
         res.status(404).json({ error: "producto no encontrado" });
     }
 });
-routerAPI.delete("/productos/borrar/:id", function (req, res) {
+routerProducts.delete("/borrar/:id", function (req, res) {
     var id = parseInt(req.params.id, 10);
     var productToBeDelete = productLogic.getProductsById(id);
     if (productToBeDelete) {
@@ -170,5 +222,52 @@ routerAPI.delete("/productos/borrar/:id", function (req, res) {
         res
             .status(404)
             .json({ error: "producto no existente, no se puede borrar" });
+    }
+});
+/* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////
+var productsInCart = Array();
+carritoProducts.post("/agregar/:id_producto", function (req, res) {
+    var id = parseInt(req.params.id_producto, 10);
+    var productById = productLogic.getProductsById(id);
+    if (productById) {
+        productsInCart.push(productById);
+        var id_1 = Math.floor(Math.random() * Math.pow(10, 15));
+        var newCarrito = new Cart(id_1, Date.now(), productsInCart);
+        cartLogic.addProductToCart(newCarrito);
+        res.status(200).json({ server: "Producto agregado al carrito" });
+    }
+    else {
+        res.status(404).json({ error: "producto no encontrado" });
+    }
+});
+var checkIdProductInCarrito = function (req, res, next) {
+    var id = parseInt(req.params.id, 10);
+    var cartProduct = cartLogic.getProductInCartById(id);
+    if (id) {
+        if ((cartProduct === null || cartProduct === void 0 ? void 0 : cartProduct.id) === id) {
+            res.status(200).json(cartProduct);
+        }
+        else {
+            res
+                .status(404)
+                .json({ error: "este producto no esta cargado en el carrito" });
+        }
+    }
+    else {
+        next();
+    }
+};
+carritoProducts.get("/listar/:id?", checkIdProductInCarrito, function (_, res) {
+    var carritos = cartLogic.getCart();
+    res.status(200).json(carritos);
+});
+carritoProducts.delete("/borrar/:id", function (req, res) {
+    var id = parseInt(req.params.id, 10);
+    var cartToBeDelete = cartLogic.getProductInCartById(id);
+    if (cartToBeDelete) {
+        res.status(200).json(cartLogic.deleteCart(cartToBeDelete));
+    }
+    else {
+        res.status(404).json({ error: "carrito no existente, no se puede borrar" });
     }
 });

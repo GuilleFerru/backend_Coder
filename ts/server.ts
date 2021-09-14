@@ -4,8 +4,9 @@ import * as fs from "fs";
 
 const app = express();
 const port: number = 8080;
-const fileName: string = "./messages.txt";
+// const fileName: string = "./messages.txt";
 const messages: Array<string> = [];
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -52,12 +53,9 @@ class Product {
 
 class ProductLogic {
   private products: Array<Product>;
-  private count: number;
-  // private timestamp: number;
 
   constructor() {
     this.products = new Array<Product>();
-    this.count = 0;
   }
 
   getProducts() {
@@ -69,12 +67,13 @@ class ProductLogic {
   }
 
   addProducts(product: Product) {
+    const lastProductId = this.products[this.products.length-1].id;
     this.products.push({
       ...product,
-      id: this.count + 1,
+      id: lastProductId + 1,
       timestamp: Date.now(),
     });
-    this.count++;
+    this.saveProducts(this.products)
     return product;
   }
 
@@ -85,56 +84,66 @@ class ProductLogic {
   deleteProduct(productToBeDelete: Product) {
     const index = this.products.indexOf(productToBeDelete);
     this.products.splice(index, 1);
+    this.saveProducts(this.products);
     return productToBeDelete;
   }
+
+  loadProducts = (products: Array<Product>) => {
+    this.products = products;
+  }
+
+  saveProducts = (products: Array<Product>) => {
+    try {
+      fs.writeFileSync('./productos.txt', JSON.stringify(products, null, "\t"));
+    } catch (error) {
+      console.log("Hubo un error");
+    }
+  };
+  
 }
 
 //////////////////////////////////////////////////////////////////////////////
 
 class Cart {
   public id: number = 0;
-  public product: Array<Product>;
   public timestamp: number = 0;
+  public product: Product | undefined;
 
-  constructor(id: number, timestamp: number, product: Array<Product>) {
-    this.id = id;
-    this.timestamp = timestamp;
-    this.product = product;
+  constructor() {
   }
 }
 
 class CartLogic {
   private cart: Array<Cart>;
+  private count: number;
+  private timestamp: number;
 
 
   constructor() {
+    this.count = 0;
+    this.timestamp = Date.now();
     this.cart = new Array<Cart>();
-
   }
 
   getCart() {
     return this.cart;
   }
 
-  getProductInCartById(id: number) {
-    
-
-    this.cart[0].product.map((product)=>{
-      
-      
-    })
-
-
-    return this.cart.find((element) =>{
-      
-      
-      element.id === id
-    } );
+  getProductsInCart() {
+    return this.cart;
   }
 
-  addProductToCart(cart: Cart) {
-    this.cart = [];
-    this.cart.push(cart);
+  getCartById(id: number) {
+    return this.cart.find((element) =>element.id === id);
+  }
+
+  addProductToCart(product: Product) {
+    this.cart.push({
+      id: this.count + 1,
+      timestamp: this.timestamp,
+      product
+    });
+    this.count++;
     return this.cart;
   }
 
@@ -145,30 +154,35 @@ class CartLogic {
   }
 }
 
-/* socket chat */ /////////////////////////////////////////////////////////////////////////////////
+
 const productLogic = new ProductLogic();
 const cartLogic = new CartLogic();
 
-app.use(express.static("./public"));
 
-app.get("/", (_: Request, res: Response) => {
-  return res.sendFile("index.html", { root: __dirname });
-});
+/* FS  *///////////////////////////////////////////////////////////////////////
 
-io.on("connection", (socket) => {
-  socket.emit("loadProducts", productLogic.getProducts());
-  socket.emit("messages", messages);
-  socket.on("newMessage", (message) => {
-    messages.push(message);
-    io.sockets.emit("messages", messages);
-    saveMessages(messages);
-  });
-});
-
+/* Se autoejecuta y me carga los productos guardados en productos.txt */
 (() => {
-  fs.readFile(fileName, "utf8", (error, content: string) => {
+  fs.readFile('./productos.txt', "utf8", (error, content: string) => {
     if (error) {
-      console.error("Hubo un error con fs.readFile!");
+      console.error("Hubo un error con fs.readFile de producto!");
+    } else {
+      const products: Array<Product> = [];
+      const savedProducts = JSON.parse(content);
+      savedProducts.forEach((product: Product) => {
+        products.push(product);
+      });
+      productLogic.loadProducts(products);
+    }
+  });
+})();
+
+
+/*  read file de chat */
+(() => {
+  fs.readFile('./messages.txt', "utf8", (error, content: string) => {
+    if (error) {
+      console.error("Hubo un error con fs.readFile de msj!");
     } else {
       const savedMessages = JSON.parse(content);
       savedMessages.forEach((message: string) => {
@@ -180,11 +194,35 @@ io.on("connection", (socket) => {
 
 const saveMessages = (messages: Array<string>) => {
   try {
-    fs.writeFileSync(fileName, JSON.stringify(messages, null, "\t"));
+    fs.writeFileSync('./messages.txt', JSON.stringify(messages, null, "\t"));
   } catch (error) {
     console.log("Hubo un error");
   }
 };
+
+
+/* sockets */ /////////////////////////////////////////////////////////////////////////////////
+
+
+app.use(express.static("./public"));
+
+app.get("/", (_: Request, res: Response) => {
+  return res.sendFile("index.html", { root: __dirname });
+});
+
+io.on("connection", (socket) => {
+  // socket.emit("loadProducts", productLogic.getProducts());
+  socket.emit("messages", messages);
+  socket.emit("products", productLogic.getProducts());
+  socket.on("newMessage", (message) => {
+    messages.push(message);
+    io.sockets.emit("messages", messages);
+    saveMessages(messages);
+  });
+
+});
+
+
 
 /* PRODUCTOS API */ /////////////////////////////////////////////////////////////////////////
 
@@ -230,7 +268,7 @@ routerProducts.post("/agregar", (req: Request, res: Response) => {
     req.body.stock
   );
   productLogic.addProducts(newProduct);
-  io.sockets.emit("loadProducts", productLogic.getProducts());
+  io.sockets.emit("products", productLogic.getProducts());
   res.status(200).json({ server: "Producto creado" });
 });
 
@@ -257,7 +295,7 @@ routerProducts.delete("/borrar/:id", (req: Request, res: Response) => {
   const productToBeDelete = productLogic.getProductsById(id);
   if (productToBeDelete) {
     res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-    io.sockets.emit("loadProducts", productLogic.getProducts());
+    io.sockets.emit("products", productLogic.getProducts());
   } else {
     res
       .status(404)
@@ -267,31 +305,25 @@ routerProducts.delete("/borrar/:id", (req: Request, res: Response) => {
 
 /* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////
 
-const productsInCart = Array<Product>();
+
 carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id_producto, 10);
   const productById = productLogic.getProductsById(id);
   if (productById) {
-    productsInCart.push(productById);
-    const id = Math.floor(Math.random() * Math.pow(10,15));
-    const newCarrito: Cart = new Cart(id, Date.now(),productsInCart);
-    cartLogic.addProductToCart(newCarrito);
+    cartLogic.addProductToCart(productById);
     res.status(200).json({ server: "Producto agregado al carrito" });
   } else {
     res.status(404).json({ error: "producto no encontrado" });
   }
 });
 
-const checkIdProductInCarrito = (
-  req: Request,
-  res: Response,
-  next: () => void
-) => {
+const checkIdProductInCarrito = (req: Request,res: Response,next: () => void) => {
   const id: number = parseInt(req.params.id, 10);
-  const cartProduct = cartLogic.getProductInCartById(id);
+  const cart = cartLogic.getCartById(id);
+
   if (id) {
-    if (cartProduct?.id === id) {
-      res.status(200).json(cartProduct);
+    if (cart?.id === id) {
+      res.status(200).json(cart.product);
     } else {
       res
         .status(404)
@@ -302,10 +334,7 @@ const checkIdProductInCarrito = (
   }
 };
 
-carritoProducts.get(
-  "/listar/:id?",
-  checkIdProductInCarrito,
-  (_: Request, res: Response) => {
+carritoProducts.get("/listar/:id?",checkIdProductInCarrito,(_: Request, res: Response) => {
     const carritos = cartLogic.getCart();
     res.status(200).json(carritos);
   }
@@ -313,9 +342,7 @@ carritoProducts.get(
 
 carritoProducts.delete("/borrar/:id", (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id, 10);
-  const cartToBeDelete = cartLogic.getProductInCartById(id);
-
-  
+  const cartToBeDelete = cartLogic.getCartById(id);
   if (cartToBeDelete) {
     res.status(200).json(cartLogic.deleteCart(cartToBeDelete));
   } else {

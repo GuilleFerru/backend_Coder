@@ -2,7 +2,7 @@ const formTemplate = Handlebars.compile(`
     <div class="card mt-3">
         <div class="card-body">
             <h2 class="pt-1 pb-2">Agregar nuevo Producto</h2>
-                <form action="/productos/guardar" method="POST" enctype="application/x-www-form-urlencoded" class="needs-validation" novalidate>
+                <form  class="needs-validation" onsubmit="return false" novalidate>
                     {{#each inputInfo}}
                         <div class="form-group">
                             <label for={{this.tag}}>{{this.name}}</label>
@@ -12,7 +12,7 @@ const formTemplate = Handlebars.compile(`
                             </div>
                         </div>
                     {{/each}}
-                    <button type="submit" class="btn btn-success" id="submit">Enviar</button>
+                    <button class="btn btn-success" id="submit" onclick="addProduct()" > Enviar</button>
                 </form>
         </div>
     </div>    
@@ -56,6 +56,28 @@ const tableTemplate = Handlebars.compile(`
         </style>
     {{/if}}
 `);
+
+const cardsTemplate = Handlebars.compile(`
+{{#if productos}}
+    <div class="row row-cols-1 row-cols-md-3 mt-2">
+        {{#each productos}}
+            <div class="col mb-4">
+                <div class="card text-white bg-dark" id="product{{this.id}}">
+                    <img src={{this.thumbnail}}  class="card-img-top" alt={{this.title}}>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{this.code}}</h6>
+                        <p class="card-text">{{this.description}}</p>
+                        <a href="#" class="card-link">Actualizar</a>
+                        <a href="javascript:void(0)" onclick="deleteProduct({{this.id}})" class="card-link">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+{{/if}}
+`)
 
 
 const chatTemplate = Handlebars.compile(`

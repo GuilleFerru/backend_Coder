@@ -38,7 +38,7 @@ var SocketIO = __importStar(require("socket.io"));
 var fs = __importStar(require("fs"));
 var app = (0, express_1.default)();
 var port = 8080;
-var fileName = "./messages.txt";
+// const fileName: string = "./messages.txt";
 var messages = [];
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -65,10 +65,20 @@ var Product = /** @class */ (function () {
     return Product;
 }());
 var ProductLogic = /** @class */ (function () {
-    // private timestamp: number;
     function ProductLogic() {
+        var _this = this;
+        this.loadProducts = function (products) {
+            _this.products = products;
+        };
+        this.saveProducts = function (products) {
+            try {
+                fs.writeFileSync('./productos.txt', JSON.stringify(products, null, "\t"));
+            }
+            catch (error) {
+                console.log("Hubo un error");
+            }
+        };
         this.products = new Array();
-        this.count = 0;
     }
     ProductLogic.prototype.getProducts = function () {
         return this.products;
@@ -77,8 +87,9 @@ var ProductLogic = /** @class */ (function () {
         return this.products.find(function (element) { return element.id === id; });
     };
     ProductLogic.prototype.addProducts = function (product) {
-        this.products.push(__assign(__assign({}, product), { id: this.count + 1, timestamp: Date.now() }));
-        this.count++;
+        var lastProductId = this.products[this.products.length - 1].id;
+        this.products.push(__assign(__assign({}, product), { id: lastProductId + 1, timestamp: Date.now() }));
+        this.saveProducts(this.products);
         return product;
     };
     ProductLogic.prototype.updateProduct = function (newProduct, id) {
@@ -87,38 +98,41 @@ var ProductLogic = /** @class */ (function () {
     ProductLogic.prototype.deleteProduct = function (productToBeDelete) {
         var index = this.products.indexOf(productToBeDelete);
         this.products.splice(index, 1);
+        this.saveProducts(this.products);
         return productToBeDelete;
     };
     return ProductLogic;
 }());
 //////////////////////////////////////////////////////////////////////////////
 var Cart = /** @class */ (function () {
-    function Cart(id, timestamp, product) {
+    function Cart() {
         this.id = 0;
         this.timestamp = 0;
-        this.id = id;
-        this.timestamp = timestamp;
-        this.product = product;
     }
     return Cart;
 }());
 var CartLogic = /** @class */ (function () {
     function CartLogic() {
+        this.count = 0;
+        this.timestamp = Date.now();
         this.cart = new Array();
     }
     CartLogic.prototype.getCart = function () {
         return this.cart;
     };
-    CartLogic.prototype.getProductInCartById = function (id) {
-        this.cart[0].product.map(function (product) {
-        });
-        return this.cart.find(function (element) {
-            element.id === id;
-        });
+    CartLogic.prototype.getProductsInCart = function () {
+        return this.cart;
     };
-    CartLogic.prototype.addProductToCart = function (cart) {
-        this.cart = [];
-        this.cart.push(cart);
+    CartLogic.prototype.getCartById = function (id) {
+        return this.cart.find(function (element) { return element.id === id; });
+    };
+    CartLogic.prototype.addProductToCart = function (product) {
+        this.cart.push({
+            id: this.count + 1,
+            timestamp: this.timestamp,
+            product: product
+        });
+        this.count++;
         return this.cart;
     };
     CartLogic.prototype.deleteCart = function (cartToBeDelete) {
@@ -128,26 +142,30 @@ var CartLogic = /** @class */ (function () {
     };
     return CartLogic;
 }());
-/* socket chat */ /////////////////////////////////////////////////////////////////////////////////
 var productLogic = new ProductLogic();
 var cartLogic = new CartLogic();
-app.use(express_1.default.static("./public"));
-app.get("/", function (_, res) {
-    return res.sendFile("index.html", { root: __dirname });
-});
-io.on("connection", function (socket) {
-    socket.emit("loadProducts", productLogic.getProducts());
-    socket.emit("messages", messages);
-    socket.on("newMessage", function (message) {
-        messages.push(message);
-        io.sockets.emit("messages", messages);
-        saveMessages(messages);
-    });
-});
+/* FS  */ //////////////////////////////////////////////////////////////////////
+/* Se autoejecuta y me carga los productos guardados en productos.txt */
 (function () {
-    fs.readFile(fileName, "utf8", function (error, content) {
+    fs.readFile('./productos.txt', "utf8", function (error, content) {
         if (error) {
-            console.error("Hubo un error con fs.readFile!");
+            console.error("Hubo un error con fs.readFile de producto!");
+        }
+        else {
+            var products_1 = [];
+            var savedProducts = JSON.parse(content);
+            savedProducts.forEach(function (product) {
+                products_1.push(product);
+            });
+            productLogic.loadProducts(products_1);
+        }
+    });
+})();
+/*  read file de chat */
+(function () {
+    fs.readFile('./messages.txt', "utf8", function (error, content) {
+        if (error) {
+            console.error("Hubo un error con fs.readFile de msj!");
         }
         else {
             var savedMessages = JSON.parse(content);
@@ -159,12 +177,27 @@ io.on("connection", function (socket) {
 })();
 var saveMessages = function (messages) {
     try {
-        fs.writeFileSync(fileName, JSON.stringify(messages, null, "\t"));
+        fs.writeFileSync('./messages.txt', JSON.stringify(messages, null, "\t"));
     }
     catch (error) {
         console.log("Hubo un error");
     }
 };
+/* sockets */ /////////////////////////////////////////////////////////////////////////////////
+app.use(express_1.default.static("./public"));
+app.get("/", function (_, res) {
+    return res.sendFile("index.html", { root: __dirname });
+});
+io.on("connection", function (socket) {
+    // socket.emit("loadProducts", productLogic.getProducts());
+    socket.emit("messages", messages);
+    socket.emit("products", productLogic.getProducts());
+    socket.on("newMessage", function (message) {
+        messages.push(message);
+        io.sockets.emit("messages", messages);
+        saveMessages(messages);
+    });
+});
 /* PRODUCTOS API */ /////////////////////////////////////////////////////////////////////////
 var routerProducts = express_1.default.Router();
 app.use("/productos", routerProducts);
@@ -197,7 +230,7 @@ routerProducts.get("/listar/:id?", checkIdProduct, function (_, res) {
 routerProducts.post("/agregar", function (req, res) {
     var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
     productLogic.addProducts(newProduct);
-    io.sockets.emit("loadProducts", productLogic.getProducts());
+    io.sockets.emit("products", productLogic.getProducts());
     res.status(200).json({ server: "Producto creado" });
 });
 routerProducts.put("/actualizar/:id", function (req, res) {
@@ -216,7 +249,7 @@ routerProducts.delete("/borrar/:id", function (req, res) {
     var productToBeDelete = productLogic.getProductsById(id);
     if (productToBeDelete) {
         res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-        io.sockets.emit("loadProducts", productLogic.getProducts());
+        io.sockets.emit("products", productLogic.getProducts());
     }
     else {
         res
@@ -225,15 +258,11 @@ routerProducts.delete("/borrar/:id", function (req, res) {
     }
 });
 /* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////
-var productsInCart = Array();
 carritoProducts.post("/agregar/:id_producto", function (req, res) {
     var id = parseInt(req.params.id_producto, 10);
     var productById = productLogic.getProductsById(id);
     if (productById) {
-        productsInCart.push(productById);
-        var id_1 = Math.floor(Math.random() * Math.pow(10, 15));
-        var newCarrito = new Cart(id_1, Date.now(), productsInCart);
-        cartLogic.addProductToCart(newCarrito);
+        cartLogic.addProductToCart(productById);
         res.status(200).json({ server: "Producto agregado al carrito" });
     }
     else {
@@ -242,10 +271,10 @@ carritoProducts.post("/agregar/:id_producto", function (req, res) {
 });
 var checkIdProductInCarrito = function (req, res, next) {
     var id = parseInt(req.params.id, 10);
-    var cartProduct = cartLogic.getProductInCartById(id);
+    var cart = cartLogic.getCartById(id);
     if (id) {
-        if ((cartProduct === null || cartProduct === void 0 ? void 0 : cartProduct.id) === id) {
-            res.status(200).json(cartProduct);
+        if ((cart === null || cart === void 0 ? void 0 : cart.id) === id) {
+            res.status(200).json(cart.product);
         }
         else {
             res
@@ -263,7 +292,7 @@ carritoProducts.get("/listar/:id?", checkIdProductInCarrito, function (_, res) {
 });
 carritoProducts.delete("/borrar/:id", function (req, res) {
     var id = parseInt(req.params.id, 10);
-    var cartToBeDelete = cartLogic.getProductInCartById(id);
+    var cartToBeDelete = cartLogic.getCartById(id);
     if (cartToBeDelete) {
         res.status(200).json(cartLogic.deleteCart(cartToBeDelete));
     }

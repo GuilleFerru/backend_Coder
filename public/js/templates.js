@@ -68,15 +68,53 @@ const cardsTemplate = Handlebars.compile(`
                         <h5 class="card-title">{{this.title}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{this.code}}</h6>
                         <p class="card-text">{{this.description}}</p>
-                        <a href="#" class="card-link">Actualizar</a>
-                        <a href="javascript:void(0)" onclick="deleteProduct({{this.id}})" class="card-link">Eliminar</a>
+                        <a href="#updateModal" data-toggle="modal" onclick="passIdProductToModal({{this.id}})" class="card-link">Actualizar</a>
+                        <a href="javascript:void(0)" onclick="deleteProduct({{this.id}})" class="card-link">Eliminar</a>             
                     </div>
                 </div>
             </div>
         {{/each}}
     </div>
 
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalForm">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    </div>
+
 {{/if}}
+`)
+
+const modalTemplate = Handlebars.compile(`
+
+    <form  class="needs-validation" onsubmit="return false" novalidate>
+    {{#each inputInfo}}
+        <div class="form-group">
+            <label for="{{this.tag}}">{{this.name}}</label>
+            <input type="{{this.type}}" class="form-control" id="{{this.tag}}" value="{{this.value}}" name="{{this.tag}} "required>
+            <div class="valid-feedback">
+                Genial!
+            </div>
+        </div>
+    {{/each}}
+</form>
+
+
 `)
 
 

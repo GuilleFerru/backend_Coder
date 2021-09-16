@@ -40,6 +40,7 @@ var app = (0, express_1.default)();
 var port = 8080;
 // const fileName: string = "./messages.txt";
 var messages = [];
+var isAdmin = true;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 var server = app.listen(port, function () {
@@ -72,7 +73,7 @@ var ProductLogic = /** @class */ (function () {
         };
         this.saveProducts = function (products) {
             try {
-                fs.writeFileSync('./productos.txt', JSON.stringify(products, null, "\t"));
+                fs.writeFileSync("./productos.txt", JSON.stringify(products, null, "\t"));
             }
             catch (error) {
                 console.log("Hubo un error");
@@ -130,7 +131,7 @@ var CartLogic = /** @class */ (function () {
         this.cart.push({
             id: this.count + 1,
             timestamp: this.timestamp,
-            product: product
+            product: product,
         });
         this.count++;
         return this.cart;
@@ -147,7 +148,7 @@ var cartLogic = new CartLogic();
 /* FS  */ //////////////////////////////////////////////////////////////////////
 /* Se autoejecuta y me carga los productos guardados en productos.txt */
 (function () {
-    fs.readFile('./productos.txt', "utf8", function (error, content) {
+    fs.readFile("./productos.txt", "utf8", function (error, content) {
         if (error) {
             console.error("Hubo un error con fs.readFile de producto!");
         }
@@ -163,7 +164,7 @@ var cartLogic = new CartLogic();
 })();
 /*  read file de chat */
 (function () {
-    fs.readFile('./messages.txt', "utf8", function (error, content) {
+    fs.readFile("./messages.txt", "utf8", function (error, content) {
         if (error) {
             console.error("Hubo un error con fs.readFile de msj!");
         }
@@ -177,7 +178,7 @@ var cartLogic = new CartLogic();
 })();
 var saveMessages = function (messages) {
     try {
-        fs.writeFileSync('./messages.txt', JSON.stringify(messages, null, "\t"));
+        fs.writeFileSync("./messages.txt", JSON.stringify(messages, null, "\t"));
     }
     catch (error) {
         console.log("Hubo un error");
@@ -228,33 +229,57 @@ routerProducts.get("/listar/:id?", checkIdProduct, function (_, res) {
     }
 });
 routerProducts.post("/agregar", function (req, res) {
-    var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
-    productLogic.addProducts(newProduct);
-    io.sockets.emit("products", productLogic.getProducts());
-    res.status(200).json({ server: "Producto creado" });
-});
-routerProducts.put("/actualizar/:id", function (req, res) {
-    var id = parseInt(req.params.id, 10);
-    var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
-    if (newProduct) {
-        res.status(200).json(productLogic.updateProduct(newProduct, id));
-        io.sockets.emit("loadProducts", productLogic.getProducts());
+    if (isAdmin) {
+        var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
+        productLogic.addProducts(newProduct);
+        io.sockets.emit("products", productLogic.getProducts());
+        res.status(200).json({ server: "Producto creado" });
     }
     else {
-        res.status(404).json({ error: "producto no encontrado" });
+        res.status(403).json({
+            error: -1,
+            descripcion: "ruta /productos/agregar metodo POST no autorizado",
+        });
+    }
+});
+routerProducts.put("/actualizar/:id", function (req, res) {
+    if (isAdmin) {
+        var id = parseInt(req.params.id, 10);
+        var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
+        if (newProduct) {
+            res.status(200).json(productLogic.updateProduct(newProduct, id));
+            io.sockets.emit("products", productLogic.getProducts());
+        }
+        else {
+            res.status(404).json({ error: "producto no encontrado" });
+        }
+    }
+    else {
+        res.status(403).json({
+            error: -1,
+            descripcion: "ruta /productos/actualizar/" + req.params.id + " metodo PUT no autorizado",
+        });
     }
 });
 routerProducts.delete("/borrar/:id", function (req, res) {
-    var id = parseInt(req.params.id, 10);
-    var productToBeDelete = productLogic.getProductsById(id);
-    if (productToBeDelete) {
-        res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-        io.sockets.emit("products", productLogic.getProducts());
+    if (isAdmin) {
+        var id = parseInt(req.params.id, 10);
+        var productToBeDelete = productLogic.getProductsById(id);
+        if (productToBeDelete) {
+            res.status(200).json(productLogic.deleteProduct(productToBeDelete));
+            io.sockets.emit("products", productLogic.getProducts());
+        }
+        else {
+            res
+                .status(404)
+                .json({ error: "producto no existente, no se puede borrar" });
+        }
     }
     else {
-        res
-            .status(404)
-            .json({ error: "producto no existente, no se puede borrar" });
+        res.status(403).json({
+            error: -1,
+            descripcion: "ruta /productos/borrar/" + req.params.id + " metodo DELETE no autorizado",
+        });
     }
 });
 /* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////

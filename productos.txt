@@ -31,13 +31,13 @@
 	},
 	{
 		"id": 4,
-		"timestamp": 1631579840415,
+		"timestamp": 0,
 		"title": "Papas Fritas",
 		"description": "Papas fritas super crujientes, especial para la birra",
 		"code": "a3268bff",
 		"thumbnail": "https://cdn3.iconfinder.com/data/icons/food-set-3/91/Food_C208-512.png",
-		"price": 120,
-		"stock": 50
+		"price": "120",
+		"stock": "50"
 	},
 	{
 		"id": 5,

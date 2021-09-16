@@ -6,7 +6,7 @@ const app = express();
 const port: number = 8080;
 // const fileName: string = "./messages.txt";
 const messages: Array<string> = [];
-
+const isAdmin: boolean = true;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -67,13 +67,13 @@ class ProductLogic {
   }
 
   addProducts(product: Product) {
-    const lastProductId = this.products[this.products.length-1].id;
+    const lastProductId = this.products[this.products.length - 1].id;
     this.products.push({
       ...product,
       id: lastProductId + 1,
       timestamp: Date.now(),
     });
-    this.saveProducts(this.products)
+    this.saveProducts(this.products);
     return product;
   }
 
@@ -90,16 +90,15 @@ class ProductLogic {
 
   loadProducts = (products: Array<Product>) => {
     this.products = products;
-  }
+  };
 
   saveProducts = (products: Array<Product>) => {
     try {
-      fs.writeFileSync('./productos.txt', JSON.stringify(products, null, "\t"));
+      fs.writeFileSync("./productos.txt", JSON.stringify(products, null, "\t"));
     } catch (error) {
       console.log("Hubo un error");
     }
   };
-  
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -109,15 +108,13 @@ class Cart {
   public timestamp: number = 0;
   public product: Product | undefined;
 
-  constructor() {
-  }
+  constructor() {}
 }
 
 class CartLogic {
   private cart: Array<Cart>;
   private count: number;
   private timestamp: number;
-
 
   constructor() {
     this.count = 0;
@@ -134,14 +131,14 @@ class CartLogic {
   }
 
   getCartById(id: number) {
-    return this.cart.find((element) =>element.id === id);
+    return this.cart.find((element) => element.id === id);
   }
 
   addProductToCart(product: Product) {
     this.cart.push({
       id: this.count + 1,
       timestamp: this.timestamp,
-      product
+      product,
     });
     this.count++;
     return this.cart;
@@ -154,16 +151,14 @@ class CartLogic {
   }
 }
 
-
 const productLogic = new ProductLogic();
 const cartLogic = new CartLogic();
 
-
-/* FS  *///////////////////////////////////////////////////////////////////////
+/* FS  */ //////////////////////////////////////////////////////////////////////
 
 /* Se autoejecuta y me carga los productos guardados en productos.txt */
 (() => {
-  fs.readFile('./productos.txt', "utf8", (error, content: string) => {
+  fs.readFile("./productos.txt", "utf8", (error, content: string) => {
     if (error) {
       console.error("Hubo un error con fs.readFile de producto!");
     } else {
@@ -177,10 +172,9 @@ const cartLogic = new CartLogic();
   });
 })();
 
-
 /*  read file de chat */
 (() => {
-  fs.readFile('./messages.txt', "utf8", (error, content: string) => {
+  fs.readFile("./messages.txt", "utf8", (error, content: string) => {
     if (error) {
       console.error("Hubo un error con fs.readFile de msj!");
     } else {
@@ -194,15 +188,13 @@ const cartLogic = new CartLogic();
 
 const saveMessages = (messages: Array<string>) => {
   try {
-    fs.writeFileSync('./messages.txt', JSON.stringify(messages, null, "\t"));
+    fs.writeFileSync("./messages.txt", JSON.stringify(messages, null, "\t"));
   } catch (error) {
     console.log("Hubo un error");
   }
 };
 
-
 /* sockets */ /////////////////////////////////////////////////////////////////////////////////
-
 
 app.use(express.static("./public"));
 
@@ -219,10 +211,7 @@ io.on("connection", (socket) => {
     io.sockets.emit("messages", messages);
     saveMessages(messages);
   });
-
 });
-
-
 
 /* PRODUCTOS API */ /////////////////////////////////////////////////////////////////////////
 
@@ -259,52 +248,72 @@ routerProducts.get(
 );
 
 routerProducts.post("/agregar", (req: Request, res: Response) => {
-  const newProduct: Product = new Product(
-    req.body.title,
-    req.body.description,
-    req.body.code,
-    req.body.thumbnail,
-    req.body.price,
-    req.body.stock
-  );
-  productLogic.addProducts(newProduct);
-  io.sockets.emit("products", productLogic.getProducts());
-  res.status(200).json({ server: "Producto creado" });
+  if (isAdmin) {
+    const newProduct: Product = new Product(
+      req.body.title,
+      req.body.description,
+      req.body.code,
+      req.body.thumbnail,
+      req.body.price,
+      req.body.stock
+    );
+    productLogic.addProducts(newProduct);
+    io.sockets.emit("products", productLogic.getProducts());
+    res.status(200).json({ server: "Producto creado" });
+  } else {
+    res.status(403).json({
+      error: -1,
+      descripcion: "ruta /productos/agregar metodo POST no autorizado",
+    });
+  }
 });
 
 routerProducts.put("/actualizar/:id", (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const newProduct: Product = new Product(
-    req.body.title,
-    req.body.description,
-    req.body.code,
-    req.body.thumbnail,
-    req.body.price,
-    req.body.stock
-  );
-  if (newProduct) {
-    res.status(200).json(productLogic.updateProduct(newProduct, id));
-    io.sockets.emit("loadProducts", productLogic.getProducts());
+  if (isAdmin) {
+    const id: number = parseInt(req.params.id, 10);
+    const newProduct: Product = new Product(
+      req.body.title,
+      req.body.description,
+      req.body.code,
+      req.body.thumbnail,
+      req.body.price,
+      req.body.stock
+    );
+    if (newProduct) {
+      res.status(200).json(productLogic.updateProduct(newProduct, id));
+      io.sockets.emit("products", productLogic.getProducts());
+    } else {
+      res.status(404).json({ error: "producto no encontrado" });
+    }
   } else {
-    res.status(404).json({ error: "producto no encontrado" });
+    res.status(403).json({
+      error: -1,
+      descripcion: `ruta /productos/actualizar/${req.params.id} metodo PUT no autorizado`,
+    });
   }
 });
 
 routerProducts.delete("/borrar/:id", (req: Request, res: Response) => {
-  const id: number = parseInt(req.params.id, 10);
-  const productToBeDelete = productLogic.getProductsById(id);
-  if (productToBeDelete) {
-    res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-    io.sockets.emit("products", productLogic.getProducts());
+  if (isAdmin) {
+    const id: number = parseInt(req.params.id, 10);
+    const productToBeDelete = productLogic.getProductsById(id);
+    if (productToBeDelete) {
+      res.status(200).json(productLogic.deleteProduct(productToBeDelete));
+      io.sockets.emit("products", productLogic.getProducts());
+    } else {
+      res
+        .status(404)
+        .json({ error: "producto no existente, no se puede borrar" });
+    }
   } else {
-    res
-      .status(404)
-      .json({ error: "producto no existente, no se puede borrar" });
+    res.status(403).json({
+      error: -1,
+      descripcion: `ruta /productos/borrar/${req.params.id} metodo DELETE no autorizado`,
+    });
   }
 });
 
 /* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////
-
 
 carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id_producto, 10);
@@ -317,7 +326,11 @@ carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
   }
 });
 
-const checkIdProductInCarrito = (req: Request,res: Response,next: () => void) => {
+const checkIdProductInCarrito = (
+  req: Request,
+  res: Response,
+  next: () => void
+) => {
   const id: number = parseInt(req.params.id, 10);
   const cart = cartLogic.getCartById(id);
 
@@ -334,7 +347,10 @@ const checkIdProductInCarrito = (req: Request,res: Response,next: () => void) =>
   }
 };
 
-carritoProducts.get("/listar/:id?",checkIdProductInCarrito,(_: Request, res: Response) => {
+carritoProducts.get(
+  "/listar/:id?",
+  checkIdProductInCarrito,
+  (_: Request, res: Response) => {
     const carritos = cartLogic.getCart();
     res.status(200).json(carritos);
   }

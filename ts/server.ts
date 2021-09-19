@@ -243,10 +243,7 @@ const checkIdProduct = (req: Request, res: Response, next: () => void) => {
   }
 };
 
-routerProducts.get(
-  "/listar/:id?",
-  checkIdProduct,
-  (_: Request, res: Response) => {
+routerProducts.get("/listar/:id?",checkIdProduct,(_: Request, res: Response) => {
     const products = productLogic.getProducts();
     if (products.length > 0) {
       res.status(200).json(products);
@@ -345,14 +342,9 @@ carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
   }
 });
 
-const checkIdProductInCarrito = (
-  req: Request,
-  res: Response,
-  next: () => void
-) => {
+const checkIdProductInCarrito = (req: Request,res: Response,next: () => void) => {
   const id: number = parseInt(req.params.id, 10);
   const cart = cartLogic.getCartById(id);
-
   if (id) {
     if (cart?.id === id) {
       res.status(200).json(cart.product);
@@ -366,10 +358,7 @@ const checkIdProductInCarrito = (
   }
 };
 
-carritoProducts.get(
-  "/listar/:id?",
-  checkIdProductInCarrito,
-  (_: Request, res: Response) => {
+carritoProducts.get("/listar/:id?",checkIdProductInCarrito,(_: Request, res: Response) => {
     const carritos = cartLogic.getCart();
     res.status(200).json(carritos);
   }

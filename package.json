@@ -2,7 +2,7 @@
   "name": "desafiosgithub",
   "version": "1.0.0",
   "description": "Carpeta para proximos desafios",
-  "main": "server.es6.js",
+  "main": "server.js",
   "scripts": {
     "ServerTStoJS5": "./node_modules/.bin/tsc",
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",

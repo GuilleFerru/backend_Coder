@@ -4,20 +4,6 @@ const socket = io();
 fromEvent(window, 'load').subscribe(() => {
     const navbar = navBarTemplate();
     document.getElementById('navbar').innerHTML = navbar;
-
-});
-
-Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
-    lvalue = parseFloat(lvalue);
-    rvalue = parseFloat(rvalue);
-        
-    return {
-        "+": lvalue + rvalue,
-        "-": lvalue - rvalue,
-        "*": lvalue * rvalue,
-        "/": lvalue / rvalue,
-        "%": lvalue % rvalue
-    }[operator];
 });
 
 
@@ -35,13 +21,22 @@ socket.on('messages', (messages) => {
     document.getElementById('productsChat').innerHTML = newChat;
 });
 
-socket.on('products', (productos, isAdmin) => {
+socket.on('carts', (cart) => {
+        let orderTotal = 0;
+        cart.map(obj => {
+            obj['total'] = obj.quantity * obj.product.price;
+            orderTotal += obj['total']
+        });  
+        const modalCart = modalCartTemplate({ cart, orderTotal })
+        document.getElementById('modalCart').innerHTML = modalCart;
+});
 
+
+socket.on('products', (productos, isAdmin) => {
     const cardProducts = cardsTemplate({
         isAdmin: isAdmin,
         productos: productos,
         inputInfo: inputInfo,
-
     })
     if (isAdmin) {
         const newForm = formTemplate({ inputInfo });
@@ -49,8 +44,6 @@ socket.on('products', (productos, isAdmin) => {
     }
     document.getElementById('productsCard').innerHTML = cardProducts;
 });
-
-
 
 
 const getInputValues = () => {
@@ -81,13 +74,23 @@ const cleanInputValues = () => {
     document.getElementById('stock').value = '';
 }
 
+const deleteCart = (id) => {
+    const url = `http://localhost:8080/carrito/borrar/${id}`
+    fetch(url, {
+        method: "DELETE",
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+        .then(res => res.json())
+        .catch(error => console.log(error))
+}
+
+
 const showCart = () => {
     fetch("http://localhost:8080/carrito/listar/", {
         method: "GET",
     }).then(response => response.json()).then(cart => {
         let orderTotal = 0;
         cart.map(obj => {
-            console.log(cart);
             obj['total'] = obj.quantity * obj.product.price;
             orderTotal += obj['total']
         });  
@@ -136,7 +139,6 @@ const deleteProduct = (id) => {
 
 const updateProduct = (id) => {
     const url = `http://localhost:8080/productos/actualizar/${id}`
-    console.log(url);
     fetch(url, {
         method: "PUT",
         body: JSON.stringify(getInputValues()),

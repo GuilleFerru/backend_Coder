@@ -380,6 +380,7 @@ carritoProducts.delete("/borrar/:id", (req: Request, res: Response) => {
   const cartToBeDelete = cartLogic.getCartById(id);
   if (cartToBeDelete) {
     res.status(200).json(cartLogic.deleteCart(cartToBeDelete));
+    io.sockets.emit("carts", cartLogic.getCart());
   } else {
     res.status(404).json({ error: "carrito no existente, no se puede borrar" });
   }

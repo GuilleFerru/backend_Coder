@@ -20,15 +20,15 @@
 		"stock": 15
 	},
 	{
-		"id": 3,
-		"timestamp": 1631579589130,
-		"title": "Pizza",
-		"description": "Pizza de Muzza a la piedra! No te la pierdas",
-		"code": "d23358as",
-		"thumbnail": "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/pizza-fast-food-bake-bread-512.png",
-		"price": 450,
-		"stock": 15
-	},
+        "id": 3,
+        "timestamp": 1631579589130,
+        "title": "Pizza",
+        "description":"Pizza de Muzza a la piedra! No te la pierdas",
+        "code":"d23358as",
+        "thumbnail":"https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/pizza-fast-food-bake-bread-512.png",
+        "price":450,
+        "stock":15
+    },
 	{
 		"id": 4,
 		"timestamp": 0,

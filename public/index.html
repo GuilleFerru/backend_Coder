@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,17 +11,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
+
     <script src="/socket.io/socket.io.js"></script>
     <title>Carga de productos</title>
 </head>
 
 <body>
-    <div class="container">
-        <section id="productsCard"> </section>
+    <header id="navbar" style="margin-bottom: 5rem;"></header>
+    <div class="container" >
+        <section id="productsCard"></section>
         <section id="productsForm"> </section>
         <section id="productsTable"></section>
         <section id="productsChat"></section>
     </div>
+
     <script src="./js/templates.js"></script>
     <script src="./js/templatesData.js"></script>
     <script src="./js/index.js"></script>

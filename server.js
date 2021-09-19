@@ -104,18 +104,10 @@ var ProductLogic = /** @class */ (function () {
     };
     return ProductLogic;
 }());
-//////////////////////////////////////////////////////////////////////////////
-var Cart = /** @class */ (function () {
-    function Cart() {
-        this.id = 0;
-        this.timestamp = 0;
-    }
-    return Cart;
-}());
 var CartLogic = /** @class */ (function () {
     function CartLogic() {
         this.count = 0;
-        this.timestamp = Date.now();
+        this.timestamp = 0;
         this.cart = new Array();
     }
     CartLogic.prototype.getCart = function () {
@@ -130,11 +122,17 @@ var CartLogic = /** @class */ (function () {
     CartLogic.prototype.addProductToCart = function (product) {
         this.cart.push({
             id: this.count + 1,
-            timestamp: this.timestamp,
+            timestamp: Date.now(),
+            quantity: 1,
             product: product,
         });
         this.count++;
         return this.cart;
+    };
+    CartLogic.prototype.updateQtyInCart = function (cart) {
+        var newCart = __assign(__assign({}, cart), { quantity: cart.quantity + 1 });
+        var index = this.cart.indexOf(cart);
+        this.cart[index] = newCart;
     };
     CartLogic.prototype.deleteCart = function (cartToBeDelete) {
         var index = this.cart.indexOf(cartToBeDelete);
@@ -192,7 +190,7 @@ app.get("/", function (_, res) {
 io.on("connection", function (socket) {
     // socket.emit("loadProducts", productLogic.getProducts());
     socket.emit("messages", messages);
-    socket.emit("products", productLogic.getProducts());
+    socket.emit("products", productLogic.getProducts(), isAdmin);
     socket.on("newMessage", function (message) {
         messages.push(message);
         io.sockets.emit("messages", messages);
@@ -282,12 +280,24 @@ routerProducts.delete("/borrar/:id", function (req, res) {
         });
     }
 });
-/* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////
+/* CARRITO API */ ///////////////////////////////////////////////////////////////////////////////////////
 carritoProducts.post("/agregar/:id_producto", function (req, res) {
     var id = parseInt(req.params.id_producto, 10);
     var productById = productLogic.getProductsById(id);
     if (productById) {
-        cartLogic.addProductToCart(productById);
+        var carts = cartLogic.getCart();
+        if (carts.length > 0) {
+            var cartToBeUpdate = carts.find(function (cart) { var _a; return ((_a = cart.product) === null || _a === void 0 ? void 0 : _a.id) === id; });
+            if (cartToBeUpdate) {
+                cartLogic.updateQtyInCart(cartToBeUpdate);
+            }
+            else {
+                cartLogic.addProductToCart(productById);
+            }
+        }
+        else {
+            cartLogic.addProductToCart(productById);
+        }
         res.status(200).json({ server: "Producto agregado al carrito" });
     }
     else {

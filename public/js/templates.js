@@ -1,3 +1,23 @@
+const navBarTemplate = Handlebars.compile(`
+    <nav class="navbar fixed-top navbar-dark bg-dark">
+        <a href="#cartModal" data-toggle="modal" onclick="showCart()" style="text-decoration:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16" style="color:white">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+        </a>
+        <div id="alertContainer"></div>
+    </nav>
+`);
+
+const alertTemplate = Handlebars.compile(`
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Producto Agregado al Carrito</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+`)
+
 const formTemplate = Handlebars.compile(`
     <div class="card mt-3">
         <div class="card-body">
@@ -12,7 +32,7 @@ const formTemplate = Handlebars.compile(`
                             </div>
                         </div>
                     {{/each}}
-                    <button class="btn btn-success" id="submit" onclick="addProduct()" > Enviar</button>
+                    <button class="btn btn-primary" id="submit" onclick="addProduct()" > Enviar</button>
                 </form>
         </div>
     </div>    
@@ -58,6 +78,27 @@ const tableTemplate = Handlebars.compile(`
 `);
 
 const cardsTemplate = Handlebars.compile(`
+
+    <div class="modal fade show" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Shopping Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalCart">
+        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Seguir comprando</button>
+                    <button type="button" class="btn btn-primary">Confirmar Compra</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {{#if productos}}
     <div class="row row-cols-1 row-cols-md-3 mt-2">
         {{#each productos}}
@@ -68,6 +109,7 @@ const cardsTemplate = Handlebars.compile(`
                         <h5 class="card-title">{{this.title}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted font-weight-bolder"><bdi>{{this.price}} <span>$</span></bdi></h6>
                         <p class="card-text">{{this.description}}</p>
+                        <a href="javascript:void(0)" data-toggle="modal" onclick="addToCart({{this.id}})" class="card-link">Agregar al Carrito</a>
                         <a href="#updateModal" data-toggle="modal" onclick="passIdProductToModal({{this.id}})" class="card-link">Actualizar</a>
                         <a href="javascript:void(0)" onclick="deleteProduct({{this.id}})" class="card-link">Eliminar</a>             
                     </div>
@@ -79,19 +121,173 @@ const cardsTemplate = Handlebars.compile(`
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" id="modalForm">
-
             </div>
         </div>
     </div>
 
-
 {{/if}}
 `)
 
-const modalTemplate = Handlebars.compile(`
+const modalCartTemplate = Handlebars.compile(`
+    <div class="cart_section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="cart_container">
+                        <div class="cart_items">
+                        {{#each cart}}
+                            <ul class="cart_list">
+                                <li class="cart_item clearfix">
+                                    <div class="cart_item_image"><img src="{{this.product.thumbnail}}" alt="{{this.product.description}}"></div>
+                                    <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
+                                        <div class="cart_item_name cart_info_col">
+                                            <div class="cart_item_title">Nombre</div>
+                                            <div class="cart_item_text">{{this.product.title}}</div>
+                                        </div>
+                                        <div class="cart_item_quantity cart_info_col">
+                                            <div class="cart_item_title">Cantidad</div>
+                                            <div class="cart_item_text">{{this.quantity}}</div>
+                                        </div>
+                                        <div class="cart_item_price cart_info_col">
+                                            <div class="cart_item_title">Precio</div>
+                                            <div class="cart_item_text">{{this.product.price}}</div>
+                                        </div>
+                                        <div class="cart_item_total cart_info_col">
+                                            <div class="cart_item_title">Total</div>
+                                            
+                                            <div class="cart_item_text">{{this.total}}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        {{/each}}    
+                        </div>
+                        <div class="order_total">
+                            <div class="order_total_content text-md-right">
+                                <div class="order_total_title">Orden Total:</div>
+                                <div class="order_total_amount">{{orderTotal}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        ul {
+            list-style: none;
+            margin-bottom: 0px
+        }
+        .cart_section {
+            width: 100%;
+            padding-top: 93px;
+            padding-bottom: 111px
+        }
+        
+        .cart_title {
+            font-size: 30px;
+            font-weight: 500
+        }
+        
+        .cart_items {
+            margin-top: 8px
+        }
+        
+        .cart_list {
+            border: solid 1px #e8e8e8;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff
+        }
+        
+        .cart_item {
+            width: 100%;
+            padding: 15px;
+            padding-right: 46px
+        }
+        
+        .cart_item_image {
+            width: 133px;
+            height: 133px;
+            float: left
+        }
+        
+        .cart_item_image img {
+            max-width: 100%
+        }
+        
+        .cart_item_info {
+            width: calc(100% - 133px);
+            float: left;
+            padding-top: 18px
+        }
+        
+        .cart_item_name {
+            margin-left: 7.53%
+        }
+        
+        .cart_item_title {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(0, 0, 0, 0.5)
+        }
+        
+        .cart_item_text {
+            font-size: 18px;
+            margin-top: 35px
+        }
+        
+        .cart_item_text span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 11px;
+            -webkit-transform: translateY(4px);
+            -moz-transform: translateY(4px);
+            -ms-transform: translateY(4px);
+            -o-transform: translateY(4px);
+            transform: translateY(4px)
+        }
+        
+        .cart_item_price {
+            text-align: right
+        }
+        
+        .cart_item_total {
+            text-align: right
+        }
+        
+        .order_total {
+            width: 100%;
+            height: 60px;
+            margin-top: 30px;
+            border: solid 1px #e8e8e8;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+            padding-right: 46px;
+            padding-left: 15px;
+            background-color: #fff
+        }
+        
+        .order_total_title {
+            display: inline-block;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 60px
+        }
+        
+        .order_total_amount {
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 500;
+            margin-left: 26px;
+            line-height: 60px
+        }
+    </style>
+`);
 
+const modalTemplate = Handlebars.compile(`
     <div class="modal-header">
-        <h5 class="modal-title" id="updateModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="updateModalLabel">Actualizar producto {{this.productCode}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

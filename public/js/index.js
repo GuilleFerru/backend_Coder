@@ -2,8 +2,22 @@ const { fromEvent } = rxjs;
 const socket = io();
 
 fromEvent(window, 'load').subscribe(() => {
-    const newForm = formTemplate({ inputInfo });
-    document.getElementById('productsForm').innerHTML = newForm;
+    const navbar = navBarTemplate();
+    document.getElementById('navbar').innerHTML = navbar;
+
+});
+
+Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+        
+    return {
+        "+": lvalue + rvalue,
+        "-": lvalue - rvalue,
+        "*": lvalue * rvalue,
+        "/": lvalue / rvalue,
+        "%": lvalue % rvalue
+    }[operator];
 });
 
 
@@ -21,14 +35,22 @@ socket.on('messages', (messages) => {
     document.getElementById('productsChat').innerHTML = newChat;
 });
 
-socket.on('products', (productos) => {
+socket.on('products', (productos, isAdmin) => {
+
     const cardProducts = cardsTemplate({
+        isAdmin: isAdmin,
         productos: productos,
         inputInfo: inputInfo,
 
     })
+    if (isAdmin) {
+        const newForm = formTemplate({ inputInfo });
+        document.getElementById('productsForm').innerHTML = newForm;
+    }
     document.getElementById('productsCard').innerHTML = cardProducts;
 });
+
+
 
 
 const getInputValues = () => {
@@ -57,6 +79,36 @@ const cleanInputValues = () => {
     document.getElementById('thumbnail').value = '';
     document.getElementById('price').value = '';
     document.getElementById('stock').value = '';
+}
+
+const showCart = () => {
+    fetch("http://localhost:8080/carrito/listar/", {
+        method: "GET",
+    }).then(response => response.json()).then(cart => {
+        let orderTotal = 0;
+        cart.map(obj => {
+            console.log(cart);
+            obj['total'] = obj.quantity * obj.product.price;
+            orderTotal += obj['total']
+        });  
+        const modalCart = modalCartTemplate({ cart, orderTotal })
+        document.getElementById('modalCart').innerHTML = modalCart;
+    });
+
+}
+
+const addToCart = (id) => {
+    const url = `http://localhost:8080/carrito/agregar/${id}`;
+    fetch(url, {
+        method: "POST",
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+        .then(res => {
+            const cartAlert = alertTemplate({})
+            document.getElementById('alertContainer').innerHTML = cartAlert;
+            res.json();
+        })
+        .catch(error => console.log(error))
 }
 
 const addProduct = () => {
@@ -90,9 +142,7 @@ const updateProduct = (id) => {
         body: JSON.stringify(getInputValues()),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
-        .then(_ => {
-
-        })
+        .then(_ => { })
         .catch(error => console.log(error))
 }
 
@@ -103,10 +153,12 @@ const passIdProductToModal = (id) => {
     }).then(response => response.json()).then(product => {
         inputInfo.map(inputValue => {
             inputValue['value'] = product[inputValue.tag];
-        })
+        });
+
         const modalProduct = modalTemplate({
             inputInfo: inputInfo,
-            productId: product.id
+            productId: product.id,
+            productCode: product.code
         })
         document.getElementById('modalForm').innerHTML = modalProduct;
     })

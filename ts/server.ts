@@ -103,12 +103,11 @@ class ProductLogic {
 
 //////////////////////////////////////////////////////////////////////////////
 
-class Cart {
-  public id: number = 0;
-  public timestamp: number = 0;
-  public product: Product | undefined;
-
-  constructor() {}
+interface Cart {
+  id: number;
+  timestamp: number;
+  quantity: number;
+  product?: Product;
 }
 
 class CartLogic {
@@ -118,7 +117,7 @@ class CartLogic {
 
   constructor() {
     this.count = 0;
-    this.timestamp = Date.now();
+    this.timestamp = 0;
     this.cart = new Array<Cart>();
   }
 
@@ -137,11 +136,21 @@ class CartLogic {
   addProductToCart(product: Product) {
     this.cart.push({
       id: this.count + 1,
-      timestamp: this.timestamp,
+      timestamp: Date.now(),
+      quantity: 1,
       product,
     });
     this.count++;
     return this.cart;
+  }
+
+  updateQtyInCart(cart: Cart) {
+    const newCart: Cart = {
+      ...cart,
+      quantity: cart.quantity + 1,
+    };
+    const index = this.cart.indexOf(cart);
+    this.cart[index] = newCart;
   }
 
   deleteCart(cartToBeDelete: Cart) {
@@ -205,7 +214,7 @@ app.get("/", (_: Request, res: Response) => {
 io.on("connection", (socket) => {
   // socket.emit("loadProducts", productLogic.getProducts());
   socket.emit("messages", messages);
-  socket.emit("products", productLogic.getProducts());
+  socket.emit("products", productLogic.getProducts(),isAdmin);
   socket.on("newMessage", (message) => {
     messages.push(message);
     io.sockets.emit("messages", messages);
@@ -313,13 +322,23 @@ routerProducts.delete("/borrar/:id", (req: Request, res: Response) => {
   }
 });
 
-/* CARRITO API */ ////////////////////////////////////////////////////////////////////////////////////////
+/* CARRITO API */ ///////////////////////////////////////////////////////////////////////////////////////
 
 carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
   const id: number = parseInt(req.params.id_producto, 10);
   const productById = productLogic.getProductsById(id);
   if (productById) {
-    cartLogic.addProductToCart(productById);
+    const carts = cartLogic.getCart();
+    if (carts.length > 0) {
+      const cartToBeUpdate = carts.find((cart) => cart.product?.id === id);
+      if (cartToBeUpdate) {
+        cartLogic.updateQtyInCart(cartToBeUpdate);
+      } else {
+        cartLogic.addProductToCart(productById);
+      }
+    } else {
+      cartLogic.addProductToCart(productById);
+    }
     res.status(200).json({ server: "Producto agregado al carrito" });
   } else {
     res.status(404).json({ error: "producto no encontrado" });

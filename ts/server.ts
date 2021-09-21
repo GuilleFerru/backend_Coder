@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
 import * as SocketIO from "socket.io";
 import * as fs from "fs";
+import { optionsSQLite } from "./SQLite3";
+import { optionsMariaDB } from "./mariaDB";
 
 const app = express();
 const port: number = 8080;
 // const fileName: string = "./messages.txt";
-const messages: Array<string> = [];
+const messages: Array<Mensaje> = [];
 const isAdmin: boolean = true;
 
 app.use(express.json());
@@ -58,7 +60,25 @@ class ProductLogic {
     this.products = new Array<Product>();
   }
 
+  // getProducts() {
+  //   return this.products;
+  // }
+
   getProducts() {
+    const knex = require("knex")(optionsMariaDB);
+    knex.from("productos").select("*").then((rows: any) => {
+      this.products = [];
+      for (const row of rows) {
+        this.products.push(row);
+      }
+    })
+      .catch((error: any) => {
+        console.log(error);
+        throw error;
+      })
+      .finally(() => {
+        knex.destroy();
+      });
     return this.products;
   }
 
@@ -66,40 +86,71 @@ class ProductLogic {
     return this.products.find((element) => element.id === id);
   }
 
-  addProducts(product: Product) {
-    const lastProductId = this.products[this.products.length - 1].id;
-    this.products.push({
-      ...product,
-      id: lastProductId + 1,
-      timestamp: Date.now(),
-    });
-    this.saveProducts(this.products);
-    return product;
+  async addProducts(product: Product) {
+    const knex = require("knex")(optionsMariaDB);
+    try {
+      await knex("productos").insert([
+        {
+          timestamp: Date.now(),
+          title: product.title,
+          description: product.description,
+          code: product.code,
+          thumbnail: product.thumbnail,
+          price: product.price,
+          stock: product.stock
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      knex.destroy();
+      return product;
+    }
+    // const lastProductId = this.products[this.products.length - 1].id;
+    // this.products.push({
+    //   ...product,
+    //   id: lastProductId + 1,
+    //   timestamp: Date.now(),
+    // });
+    // this.saveProducts(this.products);
   }
 
   updateProduct(newProduct: Product, id: number) {
     return (this.products[id - 1] = { ...newProduct, id: id });
   }
 
-  deleteProduct(productToBeDelete: Product) {
-    const index = this.products.indexOf(productToBeDelete);
-    this.products.splice(index, 1);
-    this.saveProducts(this.products);
-    return productToBeDelete;
+
+  async deleteProduct(productToBeDelete: Product) {
+    const index = this.products.indexOf(productToBeDelete) +1;
+    const knex = require("knex")(optionsMariaDB);
+    try {
+      console.log(index);
+      
+     await knex.from("productos").where("id", index).del();
+     
+      this.products.splice(index, 1);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      knex.destroy();
+      return productToBeDelete;
+    }
   }
 
   loadProducts = (products: Array<Product>) => {
     this.products = products;
   };
 
-  saveProducts = (products: Array<Product>) => {
-    try {
-      fs.writeFileSync("./productos.txt", JSON.stringify(products, null, "\t"));
-    } catch (error) {
-      console.log("Hubo un error");
-    }
-  };
-}
+//   saveProducts = (products: Array<Product>) => {
+//     try {
+//       fs.writeFileSync("./productos.txt", JSON.stringify(products, null, "\t"));
+//     } catch (error) {
+//       console.log("Hubo un error");
+//     }
+//   };
+// }
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -160,48 +211,90 @@ class CartLogic {
   }
 }
 
+interface Mensaje {
+  author: string;
+  date: string;
+  text: string;
+}
+
 const productLogic = new ProductLogic();
 const cartLogic = new CartLogic();
 
 /* FS  */ //////////////////////////////////////////////////////////////////////
 
 /* Se autoejecuta y me carga los productos guardados en productos.txt */
-(() => {
-  fs.readFile("./productos.txt", "utf8", (error, content: string) => {
-    if (error) {
-      console.error("Hubo un error con fs.readFile de producto!");
-    } else {
-      const products: Array<Product> = [];
-      const savedProducts = JSON.parse(content);
-      savedProducts.forEach((product: Product) => {
-        products.push(product);
-      });
-      productLogic.loadProducts(products);
-    }
-  });
-})();
+// (() => {
+//   fs.readFile("./productos.txt", "utf8", (error, content: string) => {
+//     if (error) {
+//       console.error("Hubo un error con fs.readFile de producto!");
+//     } else {
+//       const products: Array<Product> = [];
+//       const savedProducts = JSON.parse(content);
+//       savedProducts.forEach((product: Product) => {
+//         products.push(product);
+//       });
+//       productLogic.loadProducts(products);
+//     }
+//   });
+// })();
+
 
 /*  read file de chat */
-(() => {
-  fs.readFile("./messages.txt", "utf8", (error, content: string) => {
-    if (error) {
-      console.error("Hubo un error con fs.readFile de msj!");
-    } else {
-      const savedMessages = JSON.parse(content);
-      savedMessages.forEach((message: string) => {
-        messages.push(message);
-      });
-    }
-  });
+
+(async () => {
+  const knex = require("knex")(optionsSQLite);
+  try {
+    let mensajes = await knex.from("mensajes").select("*");
+    const savedMessages = mensajes;
+    savedMessages.forEach((message: Mensaje) => {
+      messages.push(message);
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    knex.destroy();
+  }
 })();
 
-const saveMessages = (messages: Array<string>) => {
+const saveMessages = async (message: Mensaje) => {
+  const knex = require("knex")(optionsSQLite);
   try {
-    fs.writeFileSync("./messages.txt", JSON.stringify(messages, null, "\t"));
+    await knex("mensajes").insert([
+      {
+        author: message.author,
+        date: message.date,
+        text: message.text,
+      },
+    ]);
   } catch (error) {
-    console.log("Hubo un error");
+    console.log(error);
+    throw error;
+  } finally {
+    knex.destroy();
   }
 };
+
+// (() => {
+//   fs.readFile("./messages.txt", "utf8", (error, content: string) => {
+//     if (error) {
+//       console.error("Hubo un error con fs.readFile de msj!");
+//     } else {
+//       const savedMessages = JSON.parse(content);
+//       savedMessages.forEach((message: string) => {
+//         messages.push(message);
+//       });
+//     }
+//   });
+// })();
+
+// const saveMessages = (messages: Array<string>) => {
+//   try {
+//     fs.writeFileSync("./messages.txt", JSON.stringify(messages, null, "\t"));
+//   } catch (error) {
+//     console.log("Hubo un error");
+//   }
+// };
 
 /* sockets */ /////////////////////////////////////////////////////////////////////////////////
 
@@ -214,11 +307,11 @@ app.get("/", (_: Request, res: Response) => {
 io.on("connection", (socket) => {
   // socket.emit("loadProducts", productLogic.getProducts());
   socket.emit("messages", messages);
-  socket.emit("products", productLogic.getProducts(),isAdmin);
+  socket.emit("products", productLogic.getProducts(), isAdmin);
   socket.on("newMessage", (message) => {
     messages.push(message);
     io.sockets.emit("messages", messages);
-    saveMessages(messages);
+    saveMessages(message);
   });
 });
 
@@ -243,7 +336,10 @@ const checkIdProduct = (req: Request, res: Response, next: () => void) => {
   }
 };
 
-routerProducts.get("/listar/:id?",checkIdProduct,(_: Request, res: Response) => {
+routerProducts.get(
+  "/listar/:id?",
+  checkIdProduct,
+  (_: Request, res: Response) => {
     const products = productLogic.getProducts();
     if (products.length > 0) {
       res.status(200).json(products);
@@ -342,7 +438,11 @@ carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
   }
 });
 
-const checkIdProductInCarrito = (req: Request,res: Response,next: () => void) => {
+const checkIdProductInCarrito = (
+  req: Request,
+  res: Response,
+  next: () => void
+) => {
   const id: number = parseInt(req.params.id, 10);
   const cart = cartLogic.getCartById(id);
   if (id) {
@@ -358,7 +458,10 @@ const checkIdProductInCarrito = (req: Request,res: Response,next: () => void) =>
   }
 };
 
-carritoProducts.get("/listar/:id?",checkIdProductInCarrito,(_: Request, res: Response) => {
+carritoProducts.get(
+  "/listar/:id?",
+  checkIdProductInCarrito,
+  (_: Request, res: Response) => {
     const carritos = cartLogic.getCart();
     res.status(200).json(carritos);
   }

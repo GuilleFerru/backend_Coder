@@ -156,7 +156,6 @@ const passIdProductToModal = (id) => {
         inputInfo.map(inputValue => {
             inputValue['value'] = product[inputValue.tag];
         });
-
         const modalProduct = modalTemplate({
             inputInfo: inputInfo,
             productId: product.id,

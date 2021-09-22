@@ -6,7 +6,7 @@ import { optionsMariaDB } from "./mariaDB";
 
 const app = express();
 const port: number = 8080;
-// const fileName: string = "./messages.txt";
+
 const messages: Array<Mensaje> = [];
 const isAdmin: boolean = true;
 
@@ -60,26 +60,21 @@ class ProductLogic {
     this.products = new Array<Product>();
   }
 
-  // getProducts() {
-  //   return this.products;
-  // }
-
-  getProducts() {
+  async getProducts() {
     const knex = require("knex")(optionsMariaDB);
-    knex.from("productos").select("*").then((rows: any) => {
+    try {
+      const productosFromDB = await knex.from("productos").select("*");
       this.products = [];
-      for (const row of rows) {
-        this.products.push(row);
+      for (const producto of productosFromDB) {
+        this.products.push(producto);
       }
-    })
-      .catch((error: any) => {
-        console.log(error);
-        throw error;
-      })
-      .finally(() => {
-        knex.destroy();
-      });
-    return this.products;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      knex.destroy();
+      return this.products;
+    }
   }
 
   getProductsById(id: number) {
@@ -97,7 +92,7 @@ class ProductLogic {
           code: product.code,
           thumbnail: product.thumbnail,
           price: product.price,
-          stock: product.stock
+          stock: product.stock,
         },
       ]);
     } catch (error) {
@@ -105,30 +100,36 @@ class ProductLogic {
       throw error;
     } finally {
       knex.destroy();
-      return product;
+      return this.products;
     }
-    // const lastProductId = this.products[this.products.length - 1].id;
-    // this.products.push({
-    //   ...product,
-    //   id: lastProductId + 1,
-    //   timestamp: Date.now(),
-    // });
-    // this.saveProducts(this.products);
   }
 
-  updateProduct(newProduct: Product, id: number) {
-    return (this.products[id - 1] = { ...newProduct, id: id });
-  }
-
-
-  async deleteProduct(productToBeDelete: Product) {
-    const index = this.products.indexOf(productToBeDelete) +1;
+  async updateProduct(newProduct: Product, id: number) {
     const knex = require("knex")(optionsMariaDB);
     try {
-      console.log(index);
-      
-     await knex.from("productos").where("id", index).del();
-     
+      await knex.from("productos").where("id", id).update({
+        title: newProduct.title,
+        description: newProduct.description,
+        code: newProduct.code,
+        thumbnail: newProduct.thumbnail,
+        price: newProduct.price,
+        stock: newProduct.stock
+      })    
+    }catch(error){
+      console.log(error);
+      throw error;
+    }finally{
+      knex.destroy();
+      return (this.products[id - 1] = { ...newProduct, id: id });     
+    }
+  }
+
+  async deleteProduct(productToBeDelete: Product) {
+    const knex = require("knex")(optionsMariaDB);
+    try {
+      const index = this.products.indexOf(productToBeDelete);
+      const id = productToBeDelete.id;
+      await knex.from("productos").where("id", id).del();
       this.products.splice(index, 1);
     } catch (error) {
       console.log(error);
@@ -142,17 +143,7 @@ class ProductLogic {
   loadProducts = (products: Array<Product>) => {
     this.products = products;
   };
-
-//   saveProducts = (products: Array<Product>) => {
-//     try {
-//       fs.writeFileSync("./productos.txt", JSON.stringify(products, null, "\t"));
-//     } catch (error) {
-//       console.log("Hubo un error");
-//     }
-//   };
-// }
-
-//////////////////////////////////////////////////////////////////////////////
+}
 
 interface Cart {
   id: number;
@@ -222,23 +213,6 @@ const cartLogic = new CartLogic();
 
 /* FS  */ //////////////////////////////////////////////////////////////////////
 
-/* Se autoejecuta y me carga los productos guardados en productos.txt */
-// (() => {
-//   fs.readFile("./productos.txt", "utf8", (error, content: string) => {
-//     if (error) {
-//       console.error("Hubo un error con fs.readFile de producto!");
-//     } else {
-//       const products: Array<Product> = [];
-//       const savedProducts = JSON.parse(content);
-//       savedProducts.forEach((product: Product) => {
-//         products.push(product);
-//       });
-//       productLogic.loadProducts(products);
-//     }
-//   });
-// })();
-
-
 /*  read file de chat */
 
 (async () => {
@@ -275,27 +249,6 @@ const saveMessages = async (message: Mensaje) => {
   }
 };
 
-// (() => {
-//   fs.readFile("./messages.txt", "utf8", (error, content: string) => {
-//     if (error) {
-//       console.error("Hubo un error con fs.readFile de msj!");
-//     } else {
-//       const savedMessages = JSON.parse(content);
-//       savedMessages.forEach((message: string) => {
-//         messages.push(message);
-//       });
-//     }
-//   });
-// })();
-
-// const saveMessages = (messages: Array<string>) => {
-//   try {
-//     fs.writeFileSync("./messages.txt", JSON.stringify(messages, null, "\t"));
-//   } catch (error) {
-//     console.log("Hubo un error");
-//   }
-// };
-
 /* sockets */ /////////////////////////////////////////////////////////////////////////////////
 
 app.use(express.static("./public"));
@@ -304,10 +257,10 @@ app.get("/", (_: Request, res: Response) => {
   return res.sendFile("index.html", { root: __dirname });
 });
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   // socket.emit("loadProducts", productLogic.getProducts());
   socket.emit("messages", messages);
-  socket.emit("products", productLogic.getProducts(), isAdmin);
+  socket.emit("products", await productLogic.getProducts(), isAdmin);
   socket.on("newMessage", (message) => {
     messages.push(message);
     io.sockets.emit("messages", messages);
@@ -339,8 +292,8 @@ const checkIdProduct = (req: Request, res: Response, next: () => void) => {
 routerProducts.get(
   "/listar/:id?",
   checkIdProduct,
-  (_: Request, res: Response) => {
-    const products = productLogic.getProducts();
+  async (_: Request, res: Response) => {
+    const products = await productLogic.getProducts();
     if (products.length > 0) {
       res.status(200).json(products);
     } else {
@@ -349,7 +302,7 @@ routerProducts.get(
   }
 );
 
-routerProducts.post("/agregar", (req: Request, res: Response) => {
+routerProducts.post("/agregar", async (req: Request, res: Response) => {
   if (isAdmin) {
     const newProduct: Product = new Product(
       req.body.title,
@@ -359,8 +312,8 @@ routerProducts.post("/agregar", (req: Request, res: Response) => {
       req.body.price,
       req.body.stock
     );
-    productLogic.addProducts(newProduct);
-    io.sockets.emit("products", productLogic.getProducts());
+    await productLogic.addProducts(newProduct);
+    io.sockets.emit("products", await productLogic.getProducts());
     res.status(200).json({ server: "Producto creado" });
   } else {
     res.status(403).json({
@@ -370,7 +323,7 @@ routerProducts.post("/agregar", (req: Request, res: Response) => {
   }
 });
 
-routerProducts.put("/actualizar/:id", (req: Request, res: Response) => {
+routerProducts.put("/actualizar/:id", async (req: Request, res: Response) => {
   if (isAdmin) {
     const id: number = parseInt(req.params.id, 10);
     const newProduct: Product = new Product(
@@ -382,8 +335,8 @@ routerProducts.put("/actualizar/:id", (req: Request, res: Response) => {
       req.body.stock
     );
     if (newProduct) {
-      res.status(200).json(productLogic.updateProduct(newProduct, id));
-      io.sockets.emit("products", productLogic.getProducts());
+      res.status(200).json(await productLogic.updateProduct(newProduct, id));
+      io.sockets.emit("products",await productLogic.getProducts());
     } else {
       res.status(404).json({ error: "producto no encontrado" });
     }
@@ -395,13 +348,13 @@ routerProducts.put("/actualizar/:id", (req: Request, res: Response) => {
   }
 });
 
-routerProducts.delete("/borrar/:id", (req: Request, res: Response) => {
+routerProducts.delete("/borrar/:id", async (req: Request, res: Response) => {
   if (isAdmin) {
     const id: number = parseInt(req.params.id, 10);
     const productToBeDelete = productLogic.getProductsById(id);
     if (productToBeDelete) {
-      res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-      io.sockets.emit("products", productLogic.getProducts());
+      res.status(200).json(await productLogic.deleteProduct(productToBeDelete));
+      io.sockets.emit("products", await productLogic.getProducts());
     } else {
       res
         .status(404)

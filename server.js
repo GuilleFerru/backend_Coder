@@ -75,7 +75,6 @@ var SQLite3_1 = require("./SQLite3");
 var mariaDB_1 = require("./mariaDB");
 var app = (0, express_1.default)();
 var port = 8080;
-// const fileName: string = "./messages.txt";
 var messages = [];
 var isAdmin = true;
 app.use(express_1.default.json());
@@ -110,34 +109,43 @@ var ProductLogic = /** @class */ (function () {
         };
         this.products = new Array();
     }
-    // getProducts() {
-    //   return this.products;
-    // }
     ProductLogic.prototype.getProducts = function () {
-        var _this = this;
-        var knex = require("knex")(mariaDB_1.optionsMariaDB);
-        knex.from("productos").select("*").then(function (rows) {
-            _this.products = [];
-            for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
-                var row = rows_1[_i];
-                _this.products.push(row);
-            }
-        })
-            .catch(function (error) {
-            console.log(error);
-            throw error;
-        })
-            .finally(function () {
-            knex.destroy();
+        return __awaiter(this, void 0, void 0, function () {
+            var knex, productosFromDB, _i, productosFromDB_1, producto, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        knex = require("knex")(mariaDB_1.optionsMariaDB);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, 4, 5]);
+                        return [4 /*yield*/, knex.from("productos").select("*")];
+                    case 2:
+                        productosFromDB = _a.sent();
+                        this.products = [];
+                        for (_i = 0, productosFromDB_1 = productosFromDB; _i < productosFromDB_1.length; _i++) {
+                            producto = productosFromDB_1[_i];
+                            this.products.push(producto);
+                        }
+                        return [3 /*break*/, 5];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        throw error_1;
+                    case 4:
+                        knex.destroy();
+                        return [2 /*return*/, this.products];
+                    case 5: return [2 /*return*/];
+                }
+            });
         });
-        return this.products;
     };
     ProductLogic.prototype.getProductsById = function (id) {
         return this.products.find(function (element) { return element.id === id; });
     };
     ProductLogic.prototype.addProducts = function (product) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, error_1;
+            var knex, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -153,48 +161,78 @@ var ProductLogic = /** @class */ (function () {
                                     code: product.code,
                                     thumbnail: product.thumbnail,
                                     price: product.price,
-                                    stock: product.stock
+                                    stock: product.stock,
                                 },
                             ])];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 5];
                     case 3:
-                        error_1 = _a.sent();
-                        console.log(error_1);
-                        throw error_1;
+                        error_2 = _a.sent();
+                        console.log(error_2);
+                        throw error_2;
                     case 4:
                         knex.destroy();
-                        return [2 /*return*/, product];
+                        return [2 /*return*/, this.products];
                     case 5: return [2 /*return*/];
                 }
             });
         });
     };
     ProductLogic.prototype.updateProduct = function (newProduct, id) {
-        return (this.products[id - 1] = __assign(__assign({}, newProduct), { id: id }));
-    };
-    ProductLogic.prototype.deleteProduct = function (productToBeDelete) {
         return __awaiter(this, void 0, void 0, function () {
-            var index, knex, error_2;
+            var knex, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        index = this.products.indexOf(productToBeDelete) + 1;
                         knex = require("knex")(mariaDB_1.optionsMariaDB);
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, 4, 5]);
-                        console.log(index);
-                        return [4 /*yield*/, knex.from("productos").where("id", index).del()];
+                        return [4 /*yield*/, knex.from("productos").where("id", id).update({
+                                title: newProduct.title,
+                                description: newProduct.description,
+                                code: newProduct.code,
+                                thumbnail: newProduct.thumbnail,
+                                price: newProduct.price,
+                                stock: newProduct.stock
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.log(error_3);
+                        throw error_3;
+                    case 4:
+                        knex.destroy();
+                        return [2 /*return*/, (this.products[id - 1] = __assign(__assign({}, newProduct), { id: id }))];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ProductLogic.prototype.deleteProduct = function (productToBeDelete) {
+        return __awaiter(this, void 0, void 0, function () {
+            var knex, index, id, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        knex = require("knex")(mariaDB_1.optionsMariaDB);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, 4, 5]);
+                        index = this.products.indexOf(productToBeDelete);
+                        id = productToBeDelete.id;
+                        return [4 /*yield*/, knex.from("productos").where("id", id).del()];
                     case 2:
                         _a.sent();
                         this.products.splice(index, 1);
                         return [3 /*break*/, 5];
                     case 3:
-                        error_2 = _a.sent();
-                        console.log(error_2);
-                        throw error_2;
+                        error_4 = _a.sent();
+                        console.log(error_4);
+                        throw error_4;
                     case 4:
                         knex.destroy();
                         return [2 /*return*/, productToBeDelete];
@@ -245,24 +283,9 @@ var CartLogic = /** @class */ (function () {
 var productLogic = new ProductLogic();
 var cartLogic = new CartLogic();
 /* FS  */ //////////////////////////////////////////////////////////////////////
-/* Se autoejecuta y me carga los productos guardados en productos.txt */
-// (() => {
-//   fs.readFile("./productos.txt", "utf8", (error, content: string) => {
-//     if (error) {
-//       console.error("Hubo un error con fs.readFile de producto!");
-//     } else {
-//       const products: Array<Product> = [];
-//       const savedProducts = JSON.parse(content);
-//       savedProducts.forEach((product: Product) => {
-//         products.push(product);
-//       });
-//       productLogic.loadProducts(products);
-//     }
-//   });
-// })();
 /*  read file de chat */
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var knex, mensajes, savedMessages, error_3;
+    var knex, mensajes, savedMessages, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -279,9 +302,9 @@ var cartLogic = new CartLogic();
                 });
                 return [3 /*break*/, 5];
             case 3:
-                error_3 = _a.sent();
-                console.log(error_3);
-                throw error_3;
+                error_5 = _a.sent();
+                console.log(error_5);
+                throw error_5;
             case 4:
                 knex.destroy();
                 return [7 /*endfinally*/];
@@ -290,7 +313,7 @@ var cartLogic = new CartLogic();
     });
 }); })();
 var saveMessages = function (message) { return __awaiter(void 0, void 0, void 0, function () {
-    var knex, error_4;
+    var knex, error_6;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -309,9 +332,9 @@ var saveMessages = function (message) { return __awaiter(void 0, void 0, void 0,
                 _a.sent();
                 return [3 /*break*/, 5];
             case 3:
-                error_4 = _a.sent();
-                console.log(error_4);
-                throw error_4;
+                error_6 = _a.sent();
+                console.log(error_6);
+                throw error_6;
             case 4:
                 knex.destroy();
                 return [7 /*endfinally*/];
@@ -319,40 +342,32 @@ var saveMessages = function (message) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-// (() => {
-//   fs.readFile("./messages.txt", "utf8", (error, content: string) => {
-//     if (error) {
-//       console.error("Hubo un error con fs.readFile de msj!");
-//     } else {
-//       const savedMessages = JSON.parse(content);
-//       savedMessages.forEach((message: string) => {
-//         messages.push(message);
-//       });
-//     }
-//   });
-// })();
-// const saveMessages = (messages: Array<string>) => {
-//   try {
-//     fs.writeFileSync("./messages.txt", JSON.stringify(messages, null, "\t"));
-//   } catch (error) {
-//     console.log("Hubo un error");
-//   }
-// };
 /* sockets */ /////////////////////////////////////////////////////////////////////////////////
 app.use(express_1.default.static("./public"));
 app.get("/", function (_, res) {
     return res.sendFile("index.html", { root: __dirname });
 });
-io.on("connection", function (socket) {
-    // socket.emit("loadProducts", productLogic.getProducts());
-    socket.emit("messages", messages);
-    socket.emit("products", productLogic.getProducts(), isAdmin);
-    socket.on("newMessage", function (message) {
-        messages.push(message);
-        io.sockets.emit("messages", messages);
-        saveMessages(message);
+io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, _b, _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                // socket.emit("loadProducts", productLogic.getProducts());
+                socket.emit("messages", messages);
+                _b = (_a = socket).emit;
+                _c = ["products"];
+                return [4 /*yield*/, productLogic.getProducts()];
+            case 1:
+                _b.apply(_a, _c.concat([_d.sent(), isAdmin]));
+                socket.on("newMessage", function (message) {
+                    messages.push(message);
+                    io.sockets.emit("messages", messages);
+                    saveMessages(message);
+                });
+                return [2 /*return*/];
+        }
     });
-});
+}); });
 /* PRODUCTOS API */ /////////////////////////////////////////////////////////////////////////
 var routerProducts = express_1.default.Router();
 app.use("/productos", routerProducts);
@@ -373,69 +388,118 @@ var checkIdProduct = function (req, res, next) {
         next();
     }
 };
-routerProducts.get("/listar/:id?", checkIdProduct, function (_, res) {
-    var products = productLogic.getProducts();
-    if (products.length > 0) {
-        res.status(200).json(products);
-    }
-    else {
-        res.status(404).json({ error: "no hay productos cargados" });
-    }
-});
-routerProducts.post("/agregar", function (req, res) {
-    if (isAdmin) {
-        var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
-        productLogic.addProducts(newProduct);
-        io.sockets.emit("products", productLogic.getProducts());
-        res.status(200).json({ server: "Producto creado" });
-    }
-    else {
-        res.status(403).json({
-            error: -1,
-            descripcion: "ruta /productos/agregar metodo POST no autorizado",
-        });
-    }
-});
-routerProducts.put("/actualizar/:id", function (req, res) {
-    if (isAdmin) {
-        var id = parseInt(req.params.id, 10);
-        var newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
-        if (newProduct) {
-            res.status(200).json(productLogic.updateProduct(newProduct, id));
-            io.sockets.emit("products", productLogic.getProducts());
+routerProducts.get("/listar/:id?", checkIdProduct, function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var products;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, productLogic.getProducts()];
+            case 1:
+                products = _a.sent();
+                if (products.length > 0) {
+                    res.status(200).json(products);
+                }
+                else {
+                    res.status(404).json({ error: "no hay productos cargados" });
+                }
+                return [2 /*return*/];
         }
-        else {
-            res.status(404).json({ error: "producto no encontrado" });
+    });
+}); });
+routerProducts.post("/agregar", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var newProduct, _a, _b, _c;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
+            case 0:
+                if (!isAdmin) return [3 /*break*/, 3];
+                newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
+                return [4 /*yield*/, productLogic.addProducts(newProduct)];
+            case 1:
+                _d.sent();
+                _b = (_a = io.sockets).emit;
+                _c = ["products"];
+                return [4 /*yield*/, productLogic.getProducts()];
+            case 2:
+                _b.apply(_a, _c.concat([_d.sent()]));
+                res.status(200).json({ server: "Producto creado" });
+                return [3 /*break*/, 4];
+            case 3:
+                res.status(403).json({
+                    error: -1,
+                    descripcion: "ruta /productos/agregar metodo POST no autorizado",
+                });
+                _d.label = 4;
+            case 4: return [2 /*return*/];
         }
-    }
-    else {
-        res.status(403).json({
-            error: -1,
-            descripcion: "ruta /productos/actualizar/" + req.params.id + " metodo PUT no autorizado",
-        });
-    }
-});
-routerProducts.delete("/borrar/:id", function (req, res) {
-    if (isAdmin) {
-        var id = parseInt(req.params.id, 10);
-        var productToBeDelete = productLogic.getProductsById(id);
-        if (productToBeDelete) {
-            res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-            io.sockets.emit("products", productLogic.getProducts());
+    });
+}); });
+routerProducts.put("/actualizar/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, newProduct, _a, _b, _c, _d, _e;
+    return __generator(this, function (_f) {
+        switch (_f.label) {
+            case 0:
+                if (!isAdmin) return [3 /*break*/, 5];
+                id = parseInt(req.params.id, 10);
+                newProduct = new Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
+                if (!newProduct) return [3 /*break*/, 3];
+                _b = (_a = res.status(200)).json;
+                return [4 /*yield*/, productLogic.updateProduct(newProduct, id)];
+            case 1:
+                _b.apply(_a, [_f.sent()]);
+                _d = (_c = io.sockets).emit;
+                _e = ["products"];
+                return [4 /*yield*/, productLogic.getProducts()];
+            case 2:
+                _d.apply(_c, _e.concat([_f.sent()]));
+                return [3 /*break*/, 4];
+            case 3:
+                res.status(404).json({ error: "producto no encontrado" });
+                _f.label = 4;
+            case 4: return [3 /*break*/, 6];
+            case 5:
+                res.status(403).json({
+                    error: -1,
+                    descripcion: "ruta /productos/actualizar/" + req.params.id + " metodo PUT no autorizado",
+                });
+                _f.label = 6;
+            case 6: return [2 /*return*/];
         }
-        else {
-            res
-                .status(404)
-                .json({ error: "producto no existente, no se puede borrar" });
+    });
+}); });
+routerProducts.delete("/borrar/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, productToBeDelete, _a, _b, _c, _d, _e;
+    return __generator(this, function (_f) {
+        switch (_f.label) {
+            case 0:
+                if (!isAdmin) return [3 /*break*/, 5];
+                id = parseInt(req.params.id, 10);
+                productToBeDelete = productLogic.getProductsById(id);
+                if (!productToBeDelete) return [3 /*break*/, 3];
+                _b = (_a = res.status(200)).json;
+                return [4 /*yield*/, productLogic.deleteProduct(productToBeDelete)];
+            case 1:
+                _b.apply(_a, [_f.sent()]);
+                _d = (_c = io.sockets).emit;
+                _e = ["products"];
+                return [4 /*yield*/, productLogic.getProducts()];
+            case 2:
+                _d.apply(_c, _e.concat([_f.sent()]));
+                return [3 /*break*/, 4];
+            case 3:
+                res
+                    .status(404)
+                    .json({ error: "producto no existente, no se puede borrar" });
+                _f.label = 4;
+            case 4: return [3 /*break*/, 6];
+            case 5:
+                res.status(403).json({
+                    error: -1,
+                    descripcion: "ruta /productos/borrar/" + req.params.id + " metodo DELETE no autorizado",
+                });
+                _f.label = 6;
+            case 6: return [2 /*return*/];
         }
-    }
-    else {
-        res.status(403).json({
-            error: -1,
-            descripcion: "ruta /productos/borrar/" + req.params.id + " metodo DELETE no autorizado",
-        });
-    }
-});
+    });
+}); });
 /* CARRITO API */ ///////////////////////////////////////////////////////////////////////////////////////
 carritoProducts.post("/agregar/:id_producto", function (req, res) {
     var id = parseInt(req.params.id_producto, 10);

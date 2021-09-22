@@ -22,13 +22,13 @@ socket.on('messages', (messages) => {
 });
 
 socket.on('carts', (cart) => {
-        let orderTotal = 0;
-        cart.map(obj => {
-            obj['total'] = obj.quantity * obj.product.price;
-            orderTotal += obj['total']
-        });  
-        const modalCart = modalCartTemplate({ cart, orderTotal })
-        document.getElementById('modalCart').innerHTML = modalCart;
+    let orderTotal = 0;
+    cart.map(obj => {
+        obj['total'] = obj.quantity * obj.product.price;
+        orderTotal += obj['total']
+    });
+    const modalCart = modalCartTemplate({ cart, orderTotal })
+    document.getElementById('modalCart').innerHTML = modalCart;
 });
 
 
@@ -93,7 +93,7 @@ const showCart = () => {
         cart.map(obj => {
             obj['total'] = obj.quantity * obj.product.price;
             orderTotal += obj['total']
-        });  
+        });
         const modalCart = modalCartTemplate({ cart, orderTotal })
         document.getElementById('modalCart').innerHTML = modalCart;
     });
@@ -107,14 +107,14 @@ const addToCart = (id) => {
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
         .then(res => {
-            const cartAlert = alertTemplate({})
+            const cartAlert = alertTemplate({});
             document.getElementById('alertContainer').innerHTML = cartAlert;
             res.json();
         })
         .catch(error => console.log(error))
 }
 
-const addProduct = () => {
+const addProduct = (event) => {
     fetch('http://localhost:8080/productos/agregar', {
         method: "POST",
         body: JSON.stringify(getInputValues()),

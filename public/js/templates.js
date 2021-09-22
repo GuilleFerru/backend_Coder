@@ -10,19 +10,20 @@ const navBarTemplate = Handlebars.compile(`
 `);
 
 const alertTemplate = Handlebars.compile(`
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="cartAlert">
     <strong>Producto Agregado al Carrito</strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
     </div>
+
 `)
 
 const formTemplate = Handlebars.compile(`
     <div class="card mt-3">
         <div class="card-body">
             <h2 class="pt-1 pb-2">Agregar nuevo Producto</h2>
-                <form  class="needs-validation" onsubmit="return false" novalidate>
+                <form  class="needs-validation" onsubmit="return false" novalidate id="productForm">
                     {{#each inputInfo}}
                         <div class="form-group">
                             <label for={{this.tag}}>{{this.name}}</label>
@@ -32,10 +33,12 @@ const formTemplate = Handlebars.compile(`
                             </div>
                         </div>
                     {{/each}}
-                    <button class="btn btn-primary" id="submit" onclick="addProduct()" > Enviar</button>
+                    <button class="btn btn-primary" id="submit" onclick="addProduct(event)" > Enviar</button>
                 </form>
         </div>
-    </div>    
+    </div>
+    
+
 `)
 
 const tableTemplate = Handlebars.compile(`

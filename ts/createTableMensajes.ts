@@ -1,9 +1,9 @@
-import { options } from "./SQLite3";
+import { optionsSQLite } from "./SQLite3";
 
 export const createTable =  () => {
   console.log("holis");
 
-  const knex = require("knex")(options);
+  const knex = require("knex")(optionsSQLite);
   try {
     const tableName = "mensajes";
     if ( knex.schema.hasTable(tableName)) {

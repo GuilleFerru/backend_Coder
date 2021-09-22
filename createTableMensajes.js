@@ -4,7 +4,7 @@ exports.createTable = void 0;
 var SQLite3_1 = require("./SQLite3");
 var createTable = function () {
     console.log("holis");
-    var knex = require("knex")(SQLite3_1.options);
+    var knex = require("knex")(SQLite3_1.optionsSQLite);
     try {
         var tableName = "mensajes";
         if (knex.schema.hasTable(tableName)) {

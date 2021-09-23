@@ -1,13 +1,13 @@
 [
 	{
 		"id": 1,
-		"timestamp": 1631579588820,
+		"timestamp": 1631579588521,
 		"title": "Pinta",
 		"description": "Cerveza rubia de sabor amargo 568 ml",
 		"code": "7as5Mdf4",
 		"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
-		"price": 150,
-		"stock": 25
+		"price": "180",
+		"stock": "250"
 	},
 	{
 		"id": 2,
@@ -20,15 +20,15 @@
 		"stock": 15
 	},
 	{
-        "id": 3,
-        "timestamp": 1631579589130,
-        "title": "Pizza",
-        "description":"Pizza de Muzza a la piedra! No te la pierdas",
-        "code":"d23358as",
-        "thumbnail":"https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/pizza-fast-food-bake-bread-512.png",
-        "price":450,
-        "stock":15
-    },
+		"id": 3,
+		"timestamp": 1631579589130,
+		"title": "Pizza",
+		"description": "Pizza de Muzza a la piedra! No te la pierdas",
+		"code": "d23358as",
+		"thumbnail": "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/pizza-fast-food-bake-bread-512.png",
+		"price": 450,
+		"stock": 15
+	},
 	{
 		"id": 4,
 		"timestamp": 0,

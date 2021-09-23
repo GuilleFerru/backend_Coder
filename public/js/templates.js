@@ -93,7 +93,7 @@ const cardsTemplate = Handlebars.compile(`
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Seguir comprando</button>
-                    <button type="button" class="btn btn-primary">Confirmar Compra</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCart()">Confirmar Compra</button>
                 </div>
             </div>
         </div>

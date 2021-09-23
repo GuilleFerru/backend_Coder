@@ -74,6 +74,22 @@ const cleanInputValues = () => {
     document.getElementById('stock').value = '';
 }
 
+const saveCart = ()=>{
+    fetch("http://localhost:8080/carrito/listar/", {
+        method: "GET",
+    }).then(response => response.json()).then(cart => {
+        let orderTotal = 0;
+        cart.map(obj => {
+            obj['total'] = obj.quantity * obj.product.price;
+            orderTotal += obj['total']
+            
+        });  
+        cart.push({orderTotal: orderTotal})
+    
+        socket.emit('saveCart',cart);
+    });
+}
+
 const deleteCart = (id) => {
     const url = `http://localhost:8080/carrito/borrar/${id}`
     fetch(url, {

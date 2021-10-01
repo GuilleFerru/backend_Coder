@@ -1,8 +1,7 @@
 import express, { Request, Response } from "express";
 import * as SocketIO from "socket.io";
 import { productsFS } from "./productosFS";
-import { mensajesFS } from "./mensajesFS";
-import { Product, ProductLogic } from "./Product";
+import { ProductLogic } from "./Product";
 import { CartLogic } from "./Cart";
 import { productApi } from "./productAPI"
 import { cartApi } from "./cartAPI";
@@ -23,14 +22,15 @@ server.on("error", (error: string) => {
   console.error(error);
 });
 
+
+
 export const isAdmin: boolean = true;
 export const io = new SocketIO.Server(server);
 export const productLogic = new ProductLogic();
 export const cartLogic = new CartLogic();
 
-/* FS  */ //////////////////////////////////////////////////////////////////////
- productsFS;
-export const messages: Array<string> = mensajesFS;
+/* Mongoose  */ //////////////////////////////////////////////////////////////////////
+productsFS;
 
 /* cliente */ /////////////////////////////////////////////////////////////////////////////////
 

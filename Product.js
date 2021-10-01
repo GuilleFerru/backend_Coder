@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -34,8 +23,6 @@ exports.ProductLogic = exports.Product = void 0;
 var fs = __importStar(require("fs"));
 var Product = /** @class */ (function () {
     function Product(title, description, code, thumbnail, price, stock) {
-        this.id = 0;
-        this.timestamp = 0;
         this.title = title;
         this.description = description;
         this.code = code;
@@ -67,21 +54,27 @@ var ProductLogic = /** @class */ (function () {
         return this.products;
     };
     ProductLogic.prototype.getProductsById = function (id) {
-        return this.products.find(function (element) { return element.id === id; });
+        // return this.products.find((element) => element.id === id);
+        return '';
     };
     ProductLogic.prototype.addProducts = function (product) {
-        var lastProductId = this.products[this.products.length - 1].id;
-        this.products.push(__assign(__assign({}, product), { id: lastProductId + 1, timestamp: Date.now() }));
-        this.saveProducts(this.products);
-        return product;
+        // const lastProductId = this.products[this.products.length - 1].id;
+        // this.products.push({
+        //   ...product,
+        //   // id: lastProductId + 1,
+        //   // timestamp: Date.now(),
+        // });
+        // this.saveProducts(this.products);
+        return 'product';
     };
     ProductLogic.prototype.updateProduct = function (newProduct, id) {
-        return (this.products[id - 1] = __assign(__assign({}, newProduct), { id: id }));
+        // return (this.products[id - 1] = { ...newProduct, id: id });
+        return '';
     };
     ProductLogic.prototype.deleteProduct = function (productToBeDelete) {
-        var index = this.products.indexOf(productToBeDelete);
-        this.products.splice(index, 1);
-        this.saveProducts(this.products);
+        // const index = this.products.indexOf(productToBeDelete);
+        // this.products.splice(index, 1);
+        // this.saveProducts(this.products);
         return productToBeDelete;
     };
     return ProductLogic;

@@ -109,8 +109,8 @@ const cardsTemplate = Handlebars.compile(`
                         <h5 class="card-title">{{this.title}}</h5>
                         <h6 class="card-subtitle mb-2 text-muted font-weight-bolder"><bdi>{{this.price}} <span>$</span></bdi></h6>
                         <p class="card-text">{{this.description}}</p>
-                        <a href="javascript:void(0)" data-toggle="modal" onclick="addToCart({{this.id}})" class="card-link">Agregar al Carrito</a>
-                        <a href="#updateModal" data-toggle="modal" onclick="passIdProductToModal({{this.id}})" class="card-link">Actualizar</a>
+                        <a href="javascript:void(0)" data-toggle="modal" onclick="addToCart('{{this.code}}')" class="card-link">Agregar al Carrito</a>
+                        <a href="#updateModal" data-toggle="modal" onclick="passIdProductToModal('{{this.code}}')" class="card-link">Actualizar</a>
                         <a href="javascript:void(0)" onclick="deleteProduct({{this.id}})" class="card-link">Eliminar</a>             
                     </div>
                 </div>

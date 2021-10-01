@@ -137,7 +137,7 @@ const addProduct = () => {
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
         .then(res => {
-            console.log(res.json());
+            // console.log(res.json());
             cleanInputValues();
         })
         .catch(error => console.log(error))
@@ -165,14 +165,16 @@ const updateProduct = (id) => {
 }
 
 const passIdProductToModal = (id) => {
+    
     const url = `http://localhost:8080/productos/listar/${id}`
     fetch(url, {
         method: "GET",
     }).then(response => response.json()).then(product => {
         inputInfo.map(inputValue => {
-            inputValue['value'] = product[inputValue.tag];
+            console.log(inputValue.tag)
+            inputValue['value'] = product[0][inputValue.tag];
         });
-
+        
         const modalProduct = modalTemplate({
             inputInfo: inputInfo,
             productId: product.id,

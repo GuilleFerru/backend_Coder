@@ -1,5 +1,35 @@
 [
 	{
-		"orderTotal": 0
+		"id": 1,
+		"timestamp": 1633138232984,
+		"quantity": 5,
+		"product": {
+			"_id": "6157a843f30070e1ff0f44ef",
+			"title": "Pinta",
+			"description": "Cerveza rubia de sabor amargo 568 ml",
+			"code": "7as5Mdf4",
+			"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
+			"price": 220,
+			"stock": 500
+		},
+		"total": 1100
+	},
+	{
+		"id": 2,
+		"timestamp": 1633138250789,
+		"quantity": 2,
+		"product": {
+			"_id": "6157b2fbdee17383d01de7a9",
+			"title": "Hamburguesa",
+			"description": "Hamburguesa Triple con de todo!!",
+			"code": "2ad3s487",
+			"thumbnail": "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/hamburger-fast-food-patty-bread-512.png",
+			"price": 385,
+			"stock": 150
+		},
+		"total": 770
+	},
+	{
+		"orderTotal": 1870
 	}
 ]

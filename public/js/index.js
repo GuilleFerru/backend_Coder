@@ -82,10 +82,8 @@ const saveCart = ()=>{
         cart.map(obj => {
             obj['total'] = obj.quantity * obj.product.price;
             orderTotal += obj['total']
-            
         });  
         cart.push({orderTotal: orderTotal})
-    
         socket.emit('saveCart',cart);
     });
 }
@@ -171,13 +169,11 @@ const passIdProductToModal = (id) => {
         method: "GET",
     }).then(response => response.json()).then(product => {
         inputInfo.map(inputValue => {
-            console.log(inputValue.tag)
-            inputValue['value'] = product[0][inputValue.tag];
-        });
-        
+            inputValue['value'] = product[inputValue.tag];
+        });     
         const modalProduct = modalTemplate({
             inputInfo: inputInfo,
-            productId: product.id,
+            productId: product._id,
             productCode: product.code
         })
         document.getElementById('modalForm').innerHTML = modalProduct;

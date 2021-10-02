@@ -1,14 +1,15 @@
 import express, { Request, Response } from "express";
-import { app, productLogic, io, cartLogic } from "./server";
+import { app, io, cartLogic } from "./server";
+import { loadProductByIdFromDB } from "./productosDB";
 
 export const cartApi = () => {
 
     const carritoProducts = express.Router();
     app.use("/carrito", carritoProducts);
 
-    carritoProducts.post("/agregar/:id_producto", (req: Request, res: Response) => {
-        const id: number = parseInt(req.params.id_producto, 10);
-        const productById = productLogic.getProductsById(id);
+    carritoProducts.post("/agregar/:id_producto", async (req: Request, res: Response) => {
+        const id: string = req.params.id_producto;        
+        const productById = await loadProductByIdFromDB(id);
         if (productById) {
             const carts = cartLogic.getCart();
             if (carts.length > 0) {

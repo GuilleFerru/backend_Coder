@@ -12,7 +12,6 @@ export const sockets = () => {
             io.sockets.emit("messages", await loadMessagesFromDB());
         });
         socket.on("saveCart", (cart) => {
-            console.log(cart);
             saveCarrito(cart);
         })
     });

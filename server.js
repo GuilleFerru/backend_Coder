@@ -22,11 +22,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartLogic = exports.productLogic = exports.io = exports.isAdmin = exports.app = void 0;
+exports.cartLogic = exports.io = exports.isAdmin = exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var SocketIO = __importStar(require("socket.io"));
-var productosFS_1 = require("./productosFS");
-var Product_1 = require("./Product");
+// import { productsFS } from "./productosFS";
+// import { ProductLogic } from "./Product";
 var Cart_1 = require("./Cart");
 var productAPI_1 = require("./productAPI");
 var cartAPI_1 = require("./cartAPI");
@@ -44,10 +44,10 @@ server.on("error", function (error) {
 });
 exports.isAdmin = true;
 exports.io = new SocketIO.Server(server);
-exports.productLogic = new Product_1.ProductLogic();
+// export const productLogic = new ProductLogic();
 exports.cartLogic = new Cart_1.CartLogic();
 /* Mongoose  */ //////////////////////////////////////////////////////////////////////
-productosFS_1.productsFS;
+// productsFS;
 /* cliente */ /////////////////////////////////////////////////////////////////////////////////
 exports.app.use(express_1.default.static("./public"));
 exports.app.get("/", function (_, res) {

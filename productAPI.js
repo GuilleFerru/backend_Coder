@@ -48,17 +48,16 @@ var productApi = function () {
     var routerProducts = express_1.default.Router();
     server_1.app.use("/productos", routerProducts);
     var checkIdProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var code, productById;
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var id, productById;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    code = (req.params.id);
-                    return [4 /*yield*/, (0, productosDB_1.loadProductByIdFromDB)(code)];
+                    id = (req.params.id);
+                    return [4 /*yield*/, (0, productosDB_1.loadProductByIdFromDB)(id)];
                 case 1:
-                    productById = _b.sent();
-                    if (code) {
-                        if (((_a = productById[0]) === null || _a === void 0 ? void 0 : _a.code) === code) {
+                    productById = _a.sent();
+                    if (id) {
+                        if (productById.id === id) {
                             res.status(200).json(productById);
                         }
                         else {
@@ -116,43 +115,75 @@ var productApi = function () {
             }
         });
     }); });
-    routerProducts.put("/actualizar/:id", function (req, res) {
-        if (server_1.isAdmin) {
-            var id = parseInt(req.params.id, 10);
-            var newProduct = new Product_1.Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
-            if (newProduct) {
-                res.status(200).json(server_1.productLogic.updateProduct(newProduct, id));
-                server_1.io.sockets.emit("products", server_1.productLogic.getProducts());
+    routerProducts.put("/actualizar/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var id, newProduct, _a, _b, _c, _d, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
+                case 0:
+                    if (!server_1.isAdmin) return [3 /*break*/, 5];
+                    id = (req.params.id);
+                    newProduct = new Product_1.Product(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
+                    if (!newProduct) return [3 /*break*/, 3];
+                    _b = (_a = res.status(200)).json;
+                    return [4 /*yield*/, (0, productosDB_1.updateProductByIdFromDB)(id, newProduct)];
+                case 1:
+                    _b.apply(_a, [_f.sent()]);
+                    _d = (_c = server_1.io.sockets).emit;
+                    _e = ["products"];
+                    return [4 /*yield*/, (0, productosDB_1.loadProductsFromDB)()];
+                case 2:
+                    _d.apply(_c, _e.concat([_f.sent()]));
+                    return [3 /*break*/, 4];
+                case 3:
+                    res.status(404).json({ error: "producto no encontrado" });
+                    _f.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    res.status(403).json({
+                        error: -1,
+                        descripcion: "ruta /productos/actualizar/" + req.params.id + " metodo PUT no autorizado",
+                    });
+                    _f.label = 6;
+                case 6: return [2 /*return*/];
             }
-            else {
-                res.status(404).json({ error: "producto no encontrado" });
+        });
+    }); });
+    routerProducts.delete("/borrar/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var id, productToBeDelete, _a, _b, _c, _d, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
+                case 0:
+                    if (!server_1.isAdmin) return [3 /*break*/, 6];
+                    id = req.params.id;
+                    return [4 /*yield*/, (0, productosDB_1.loadProductByIdFromDB)(id)];
+                case 1:
+                    productToBeDelete = _f.sent();
+                    if (!productToBeDelete) return [3 /*break*/, 4];
+                    _b = (_a = res.status(200)).json;
+                    return [4 /*yield*/, (0, productosDB_1.deleteProductByIdFromDB)(productToBeDelete.id)];
+                case 2:
+                    _b.apply(_a, [_f.sent()]);
+                    _d = (_c = server_1.io.sockets).emit;
+                    _e = ["products"];
+                    return [4 /*yield*/, (0, productosDB_1.loadProductsFromDB)()];
+                case 3:
+                    _d.apply(_c, _e.concat([_f.sent()]));
+                    return [3 /*break*/, 5];
+                case 4:
+                    res
+                        .status(404)
+                        .json({ error: "producto no existente, no se puede borrar" });
+                    _f.label = 5;
+                case 5: return [3 /*break*/, 7];
+                case 6:
+                    res.status(403).json({
+                        error: -1,
+                        descripcion: "ruta /productos/borrar/" + req.params.id + " metodo DELETE no autorizado",
+                    });
+                    _f.label = 7;
+                case 7: return [2 /*return*/];
             }
-        }
-        else {
-            res.status(403).json({
-                error: -1,
-                descripcion: "ruta /productos/actualizar/" + req.params.id + " metodo PUT no autorizado",
-            });
-        }
-    });
-    routerProducts.delete("/borrar/:id", function (req, res) {
-        // if (isAdmin) {
-        //     const id: number = parseInt(req.params.id, 10);
-        //     const productToBeDelete = productLogic.getProductsById(id);
-        //     if (productToBeDelete) {
-        //         res.status(200).json(productLogic.deleteProduct(productToBeDelete));
-        //         io.sockets.emit("products", productLogic.getProducts());
-        //     } else {
-        //         res
-        //             .status(404)
-        //             .json({ error: "producto no existente, no se puede borrar" });
-        //     }
-        // } else {
-        //     res.status(403).json({
-        //         error: -1,
-        //         descripcion: `ruta /productos/borrar/${req.params.id} metodo DELETE no autorizado`,
-        //     });
-        // }
-    });
+        });
+    }); });
 };
 exports.productApi = productApi;

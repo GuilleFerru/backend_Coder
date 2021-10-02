@@ -39,11 +39,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveProductsToDB = exports.loadProductsFromDB = exports.loadProductByIdFromDB = void 0;
+exports.saveProductsToDB = exports.loadProductsFromDB = exports.loadProductByIdFromDB = exports.deleteProductByIdFromDB = exports.updateProductByIdFromDB = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var productos_1 = require("./models/productos");
 var MONGO_URL = 'mongodb://localhost:27017/ecommerce';
-var loadProductByIdFromDB = function (code) { return __awaiter(void 0, void 0, void 0, function () {
+var updateProductByIdFromDB = function (id, product) { return __awaiter(void 0, void 0, void 0, function () {
     var savedProduct, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -53,7 +53,16 @@ var loadProductByIdFromDB = function (code) { return __awaiter(void 0, void 0, v
             case 1:
                 _a.sent();
                 console.log("Base de datos conectada");
-                return [4 /*yield*/, productos_1.productoModel.find({ code: code }, { __v: 0, _id: 0, createdAt: 0, updatedAt: 0 })];
+                return [4 /*yield*/, productos_1.productoModel.updateOne({ _id: id }, {
+                        $set: {
+                            title: product.title,
+                            description: product.description,
+                            code: product.code,
+                            thumbnail: product.thumbnail,
+                            price: product.price,
+                            stock: product.stock
+                        }
+                    }, { multi: true })];
             case 2:
                 savedProduct = _a.sent();
                 return [2 /*return*/, savedProduct];
@@ -70,9 +79,65 @@ var loadProductByIdFromDB = function (code) { return __awaiter(void 0, void 0, v
         }
     });
 }); };
+exports.updateProductByIdFromDB = updateProductByIdFromDB;
+var deleteProductByIdFromDB = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var savedProduct, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, 4, 6]);
+                return [4 /*yield*/, mongoose_1.default.connect(MONGO_URL)];
+            case 1:
+                _a.sent();
+                console.log("Base de datos conectada");
+                return [4 /*yield*/, productos_1.productoModel.deleteMany({ _id: id })];
+            case 2:
+                savedProduct = _a.sent();
+                return [2 /*return*/, savedProduct];
+            case 3:
+                error_2 = _a.sent();
+                console.log(error_2);
+                return [3 /*break*/, 6];
+            case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
+            case 5:
+                _a.sent();
+                console.log("Base de datos desconectada");
+                return [7 /*endfinally*/];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); };
+exports.deleteProductByIdFromDB = deleteProductByIdFromDB;
+var loadProductByIdFromDB = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var savedProduct, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, 4, 6]);
+                return [4 /*yield*/, mongoose_1.default.connect(MONGO_URL)];
+            case 1:
+                _a.sent();
+                console.log("Base de datos conectada");
+                return [4 /*yield*/, productos_1.productoModel.findOne({ _id: id }, { __v: 0, createdAt: 0, updatedAt: 0 })];
+            case 2:
+                savedProduct = _a.sent();
+                return [2 /*return*/, savedProduct];
+            case 3:
+                error_3 = _a.sent();
+                console.log(error_3);
+                return [3 /*break*/, 6];
+            case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
+            case 5:
+                _a.sent();
+                console.log("Base de datos desconectada");
+                return [7 /*endfinally*/];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); };
 exports.loadProductByIdFromDB = loadProductByIdFromDB;
 var loadProductsFromDB = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var products, savedProducts, error_2;
+    var products, savedProducts, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -92,8 +157,8 @@ var loadProductsFromDB = function () { return __awaiter(void 0, void 0, void 0, 
                 });
                 return [3 /*break*/, 7];
             case 4:
-                error_2 = _a.sent();
-                console.log(error_2);
+                error_4 = _a.sent();
+                console.log(error_4);
                 return [3 /*break*/, 7];
             case 5: return [4 /*yield*/, mongoose_1.default.disconnect()];
             case 6:
@@ -106,7 +171,7 @@ var loadProductsFromDB = function () { return __awaiter(void 0, void 0, void 0, 
 }); };
 exports.loadProductsFromDB = loadProductsFromDB;
 var saveProductsToDB = function (product) { return __awaiter(void 0, void 0, void 0, function () {
-    var error_3;
+    var error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -120,8 +185,8 @@ var saveProductsToDB = function (product) { return __awaiter(void 0, void 0, voi
                 _a.sent();
                 return [3 /*break*/, 6];
             case 3:
-                error_3 = _a.sent();
-                console.log(error_3);
+                error_5 = _a.sent();
+                console.log(error_5);
                 return [3 /*break*/, 6];
             case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
             case 5:

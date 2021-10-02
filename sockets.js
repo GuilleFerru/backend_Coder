@@ -74,7 +74,6 @@ var sockets = function () {
                         });
                     }); });
                     socket.on("saveCart", function (cart) {
-                        console.log(cart);
                         (0, carritoFS_1.saveCarrito)(cart);
                     });
                     return [2 /*return*/];

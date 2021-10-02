@@ -6,19 +6,55 @@ const MONGO_URL = 'mongodb://localhost:27017/ecommerce';
 
 
 
-export const loadProductByIdFromDB = async (code: string) => {
-
+export const updateProductByIdFromDB = async (id: string, product: Product) => {
     try {
         await mongoose.connect(MONGO_URL);
         console.log("Base de datos conectada");
-        const savedProduct: Product | any = await productoModel.find({ code: code }, { __v: 0, _id: 0, createdAt: 0, updatedAt: 0 });
+        const savedProduct: Product | any = await productoModel.updateOne({ _id: id }, {
+            $set: {
+                title: product.title,
+                description: product.description,
+                code: product.code,
+                thumbnail: product.thumbnail,
+                price: product.price,
+                stock: product.stock
+            }
+        }, { multi: true });
         return savedProduct;
     } catch (error) {
         console.log(error);
     } finally {
         await mongoose.disconnect();
         console.log("Base de datos desconectada");
+    }
+};
 
+
+export const deleteProductByIdFromDB = async (id: string) => {
+    try {
+        await mongoose.connect(MONGO_URL);
+        console.log("Base de datos conectada");
+        const savedProduct: Product | any = await productoModel.deleteMany({ _id: id });
+        return savedProduct;
+    } catch (error) {
+        console.log(error);
+    } finally {
+        await mongoose.disconnect();
+        console.log("Base de datos desconectada");
+    }
+};
+
+export const loadProductByIdFromDB = async (id: string) => {
+    try {
+        await mongoose.connect(MONGO_URL);
+        console.log("Base de datos conectada");
+        const savedProduct: Product | any = await productoModel.findOne({ _id: id }, { __v: 0, createdAt: 0, updatedAt: 0 });
+        return savedProduct;
+    } catch (error) {
+        console.log(error);
+    } finally {
+        await mongoose.disconnect();
+        console.log("Base de datos desconectada");
     }
 };
 

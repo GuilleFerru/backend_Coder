@@ -1,9 +1,10 @@
->> Consigna: 
-Sobre el desafío entregable de la clase número 17, almacenar los mensajes en una base de datos MongoDB llamada ‘ecommerce’ dentro de una colección ‘mensajes’.
-Cambiar la capa de persistencia de la Api Rest de productos por un servicio de base de datos MongoDB. 
-La base de datos a utilizar será ‘ecommerce’, colección ‘productos’.
+Consigna: Deberás entregar el estado de avance de tu aplicación eCommerce Backend, agregando 7 tipos de persistencia de datos:
 
->> Notas:
-- Utilizar la dependencia Mongoose para interactuar con la base de datos
-
+1) File System (fs)
+2) MySQL/MariaDB local
+3) MySQL/MariaDB DBaaS
+4) SQLite3
+5) MongoDB Local
+6) MongoDB DBaaS
+7) Firebase
 

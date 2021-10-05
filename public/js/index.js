@@ -22,13 +22,11 @@ socket.on('messages', (messages) => {
 });
 
 socket.on('carts', (cart) => {
-        let orderTotal = 0;
-        cart.map(obj => {
-            obj['total'] = obj.quantity * obj.product.price;
-            orderTotal += obj['total']
-        });  
-        const modalCart = modalCartTemplate({ cart, orderTotal })
-        document.getElementById('modalCart').innerHTML = modalCart;
+    const order = generateOrder(cart);
+    const orderTotalObject = order.pop();
+    const orderTotal = orderTotalObject.orderTotal;
+    const modalCart = modalCartTemplate({ order, orderTotal })
+    document.getElementById('modalCart').innerHTML = modalCart;
 });
 
 
@@ -74,17 +72,33 @@ const cleanInputValues = () => {
     document.getElementById('stock').value = '';
 }
 
-const saveCart = ()=>{
+const generateOrder = (cart) => {
+    let orderTotal = 0;
+    cart.map(obj => {
+        obj['total'] = obj.quantity * obj.producto.price;
+        orderTotal += obj['total']
+    });
+    cart.push({ orderTotal: orderTotal });
+    return cart;
+}
+
+const saveCart = () => {
     fetch("http://localhost:8080/carrito/listar/", {
         method: "GET",
     }).then(response => response.json()).then(cart => {
-        let orderTotal = 0;
-        cart.map(obj => {
-            obj['total'] = obj.quantity * obj.product.price;
-            orderTotal += obj['total']
-        });  
-        cart.push({orderTotal: orderTotal})
-        socket.emit('saveCart',cart);
+        const order = generateOrder(cart);
+        if (order.length > 1) {
+            fetch("http://localhost:8080/carrito/agregar/", {
+                method: "POST",
+                body: JSON.stringify(order),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+            }).then(res => {
+                alert('Compra Finalizada');
+            }).catch(error => console.log(error))
+        } else {
+
+        }
+        // socket.emit('saveCart',cart);
     });
 }
 
@@ -93,9 +107,7 @@ const deleteCart = (id) => {
     fetch(url, {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
-    })
-        .then(res => res.json())
-        .catch(error => console.log(error))
+    }).then(_ => { }).catch(error => console.log(error))
 }
 
 
@@ -103,15 +115,12 @@ const showCart = () => {
     fetch("http://localhost:8080/carrito/listar/", {
         method: "GET",
     }).then(response => response.json()).then(cart => {
-        let orderTotal = 0;
-        cart.map(obj => {
-            obj['total'] = obj.quantity * obj.product.price;
-            orderTotal += obj['total']
-        });  
-        const modalCart = modalCartTemplate({ cart, orderTotal })
+        const order = generateOrder(cart);
+        const orderTotalObject = order.pop();
+        const orderTotal = orderTotalObject.orderTotal
+        const modalCart = modalCartTemplate({ order, orderTotal })
         document.getElementById('modalCart').innerHTML = modalCart;
     });
-
 }
 
 const addToCart = (id) => {
@@ -147,7 +156,7 @@ const deleteProduct = (id) => {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
-        .then(res => res.json())
+        .then(_ => { })
         .catch(error => console.log(error))
 }
 
@@ -163,14 +172,13 @@ const updateProduct = (id) => {
 }
 
 const passIdProductToModal = (id) => {
-    
     const url = `http://localhost:8080/productos/listar/${id}`
     fetch(url, {
         method: "GET",
     }).then(response => response.json()).then(product => {
         inputInfo.map(inputValue => {
             inputValue['value'] = product[inputValue.tag];
-        });     
+        });
         const modalProduct = modalTemplate({
             inputInfo: inputInfo,
             productId: product._id,
@@ -184,11 +192,9 @@ const passIdProductToModal = (id) => {
 const addMessage = () => {
     const author = document.getElementById("emailChat").value;
     const text = document.getElementById("chatText").value;
-    const date = new Date().toLocaleString("es-AR", "DD-M-YYYY HH:MM:SS");
     if ((/$^|.+@.+..+/).test(author) && author !== "") {
         const message = {
             author: author,
-            date: date,
             text: text,
         }
         socket.emit('newMessage', message)

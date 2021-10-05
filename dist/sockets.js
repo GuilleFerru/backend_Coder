@@ -38,9 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
 var server_1 = require("./server");
-var carritoFS_1 = require("./carritoFS");
-var mensajesDB_1 = require("./mensajesDB");
-var productosDB_1 = require("./productosDB");
+var main_1 = require("./main");
+var IMensaje_1 = require("./interfaces/IMensaje");
 var sockets = function () {
     server_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, _b, _c, _d, _e, _f;
@@ -49,33 +48,35 @@ var sockets = function () {
                 case 0:
                     _b = (_a = socket).emit;
                     _c = ["messages"];
-                    return [4 /*yield*/, (0, mensajesDB_1.loadMessagesFromDB)()];
+                    return [4 /*yield*/, main_1.dao.getMensajes()];
                 case 1:
                     _b.apply(_a, _c.concat([_g.sent()]));
+                    // socket.emit("messages", await loadMessagesFromDB());
                     _e = (_d = socket).emit;
                     _f = ["products"];
-                    return [4 /*yield*/, (0, productosDB_1.loadProductsFromDB)()];
+                    return [4 /*yield*/, main_1.dao.getProductos()];
                 case 2:
+                    // socket.emit("messages", await loadMessagesFromDB());
                     _e.apply(_d, _f.concat([_g.sent(), server_1.isAdmin]));
                     socket.on("newMessage", function (message) { return __awaiter(void 0, void 0, void 0, function () {
-                        var _a, _b, _c;
+                        var date, newMensaje, _a, _b, _c;
                         return __generator(this, function (_d) {
                             switch (_d.label) {
-                                case 0: return [4 /*yield*/, (0, mensajesDB_1.saveMessageToDB)(message)];
+                                case 0:
+                                    date = new Date().toLocaleString('es-AR');
+                                    newMensaje = new IMensaje_1.Mensaje(message.author, date, message.text);
+                                    return [4 /*yield*/, main_1.dao.insertMensajes(newMensaje)];
                                 case 1:
                                     _d.sent();
                                     _b = (_a = server_1.io.sockets).emit;
                                     _c = ["messages"];
-                                    return [4 /*yield*/, (0, mensajesDB_1.loadMessagesFromDB)()];
+                                    return [4 /*yield*/, main_1.dao.getMensajes()];
                                 case 2:
                                     _b.apply(_a, _c.concat([_d.sent()]));
                                     return [2 /*return*/];
                             }
                         });
                     }); });
-                    socket.on("saveCart", function (cart) {
-                        (0, carritoFS_1.saveCarrito)(cart);
-                    });
                     return [2 /*return*/];
             }
         });

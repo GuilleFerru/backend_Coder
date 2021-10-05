@@ -1,7 +1,7 @@
+"use strict";
 // import * as fs from "fs";
 // import { productLogic } from "./server";
 // import { Product } from "./Product";
-
 // export const productsFS = (() => {
 //   fs.readFile("./productos.txt", "utf8", (error, content: string) => {
 //     if (error) {

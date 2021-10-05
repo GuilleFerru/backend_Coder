@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import { mensajesModel } from "./models/mensajes";
-
-export const mongooseDB = () => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.mongooseDB = void 0;
+var mongooseDB = function () {
     // (async () => {
     //     try {
     //         await mongoose.connect('mongodb://localhost:27017/ecommerce');
@@ -12,12 +12,8 @@ export const mongooseDB = () => {
     //             date: new Date().toLocaleString(),
     //             text: "probando babel ServerES6toJS5"
     //         })
-            
     // const savedMessages = await mensajesModel.find({})
     //   console.log(savedMessages, 'hola');
-            
-             
-
     //     } catch (error) {
     //         console.log(error);
     //     } finally {
@@ -25,5 +21,5 @@ export const mongooseDB = () => {
     //         console.log("Base de datos desconectada");
     //     }
     // })();
-
-}
+};
+exports.mongooseDB = mongooseDB;

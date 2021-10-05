@@ -8,7 +8,7 @@
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
     "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
-    "start": "nodemon server.js",
+    "start": "nodemon ./dist/main.js",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

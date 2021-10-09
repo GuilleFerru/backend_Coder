@@ -44,10 +44,10 @@ var fs = __importStar(require("fs"));
 var IOrder_1 = require("../interfaces/IOrder");
 var FileSystemDao = /** @class */ (function () {
     function FileSystemDao() {
-        this.pathProducto = "./fileSystemDB/productos.txt";
-        this.pathCarrito = "./fileSystemDB/carrito.txt";
-        this.pathOrder = "./fileSystemDB/order.txt";
-        this.pathMensajes = "./fileSystemDB/mensajes.txt";
+        this.pathProducto = "./DB/fileSystemDB/productos.txt";
+        this.pathCarrito = "./DB/fileSystemDB/carrito.txt";
+        this.pathOrder = "./DB/fileSystemDB/order.txt";
+        this.pathMensajes = "./DB/fileSystemDB/mensajes.txt";
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();

@@ -3,7 +3,6 @@ import { Producto } from "../interfaces/IProducto";
 import { Cart } from "../interfaces/ICart";
 import { Order } from "../interfaces/IOrder";
 import { Mensaje } from "../interfaces/IMensaje";
-// import { optionsMariaDB } from "../options/mariaDB";
 
 const optionsMariaDB = {
     client: "mysql",
@@ -22,6 +21,8 @@ export class MySqlDao implements IDao {
     mensajes: Array<Mensaje>
     countCarrito: number;
     countOrder: number;
+    knex: any;
+
 
     constructor() {
         this.productos = new Array<Producto>();
@@ -30,18 +31,19 @@ export class MySqlDao implements IDao {
         this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
-
+        this.knex = require("knex")(optionsMariaDB);
+        
     }
 
     private createTableMensajes = async () => {
-        const knex = require("knex")(optionsMariaDB);
+          // const knex = require("knex")(optionsMariaDB);
         try {
             const tableName = "mensajes";
-            if (await knex.schema.hasTable(tableName)) {
+            if (await this.knex.schema.hasTable(tableName)) {
                 return;
             } else {
                 console.log('mensajes Table create');
-                await knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; string: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; }) => {
+                await this.knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; string: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; }) => {
                     table.increments("_id").primary();
                     table.string("date").notNullable();
                     table.string("author").notNullable();
@@ -53,21 +55,21 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await this.knex.destroy();
         }
     }
 
 
     private createTableOrdenes = async () => {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             const tableName = "ordenes";
-            if (await knex.schema.hasTable(tableName)) {
+            if (await this.knex.schema.hasTable(tableName)) {
 
                 return;
             } else {
                 console.log('ordenes Table create');
-                await knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; bigInteger: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; float: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; }) => {
+                await this.knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; bigInteger: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; float: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; }) => {
                     table.increments("_id").primary();
                     table.bigInteger("timestamp").notNullable();
                     table.float("orderTotal").notNullable();
@@ -78,20 +80,20 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await knex.destroy();
         }
     }
 
     private createTableCarrito = async () => {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             const tableName = "carrito";
-            if (await knex.schema.hasTable(tableName)) {
+            if (await this.knex.schema.hasTable(tableName)) {
 
                 return;
             } else {
                 console.log('carito Table create');
-                await knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; bigInteger: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; integer: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; unsigned: { (): { (): any; new(): any; index: { (): { (): any; new(): any; notNullable: { (): void; new(): any; }; }; new(): any; }; }; new(): any; }; }; foreign: (arg0: string) => { (): any; new(): any; references: { (arg0: string): { (): any; new(): any; inTable: { (arg0: string): void; new(): any; }; }; new(): any; }; }; }) => {
+                await this.knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; bigInteger: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; integer: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; unsigned: { (): { (): any; new(): any; index: { (): { (): any; new(): any; notNullable: { (): void; new(): any; }; }; new(): any; }; }; new(): any; }; }; foreign: (arg0: string) => { (): any; new(): any; references: { (arg0: string): { (): any; new(): any; inTable: { (arg0: string): void; new(): any; }; }; new(): any; }; }; }) => {
                     table.increments("_id").primary();
                     table.bigInteger("timestamp").notNullable();
                     table.integer("quantity").notNullable();
@@ -106,20 +108,20 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await knex.destroy();
         }
     }
 
     private createTableProductos = async () => {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             const tableName = "productos";
-            if (await knex.schema.hasTable(tableName)) {
+            if (await this.knex.schema.hasTable(tableName)) {
 
                 return;
             } else {
                 console.log('productos Table create');
-                await knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; bigInteger: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; string: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; float: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; integer: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; }) => {
+                await this.knex.schema.createTable(tableName, (table: { increments: (arg0: string) => { (): any; new(): any; primary: { (): void; new(): any; }; }; bigInteger: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; string: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; float: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; integer: (arg0: string) => { (): any; new(): any; notNullable: { (): void; new(): any; }; }; }) => {
                     table.increments("_id").primary();
                     table.bigInteger("timestamp").notNullable();
                     table.string("title").notNullable();
@@ -135,14 +137,14 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await knex.destroy();
         }
     }
 
     async insertProducto(producto: Producto) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            await knex("productos").insert([
+            await this.knex("productos").insert([
                 {
                     timestamp: Number(Date.now()),
                     title: producto.title,
@@ -158,7 +160,7 @@ export class MySqlDao implements IDao {
             throw error;
         } finally {
             console.log('Producto Agregado');
-            await knex.destroy();
+            // await knex.destroy();
         }
 
     }
@@ -167,9 +169,10 @@ export class MySqlDao implements IDao {
         await this.createTableProductos();
         await this.createTableOrdenes();
         await this.createTableMensajes();
-        const knex = require("knex")(optionsMariaDB);
+
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            const productosFromDB = await knex.from("productos").select("*");
+            const productosFromDB = await this.knex.from("productos").select("*");
             this.productos = [];
             for (const producto of productosFromDB) {
                 producto._id = String(producto._id)
@@ -179,7 +182,7 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await this.knex.destroy();
 
             return this.productos;
         }
@@ -191,9 +194,9 @@ export class MySqlDao implements IDao {
     };
 
     async updateProducto(id: string, productoToBeUpdate: Producto) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            await knex.from("productos").where("_id", Number(id)).update({
+            await this.knex.from("productos").where("_id", Number(id)).update({
                 title: productoToBeUpdate.title,
                 description: productoToBeUpdate.description,
                 code: productoToBeUpdate.code,
@@ -211,48 +214,48 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            knex.destroy();
+            // knex.destroy();
         }
 
     };
 
     async deleteProducto(id: string) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             const productoToBeDelete: any = this.getProductoById(id);
             const index = this.productos.indexOf(productoToBeDelete);
-            await knex.from("productos").where("_id", Number(id)).del();
+            await this.knex.from("productos").where("_id", Number(id)).del();
             this.productos.splice(index, 1);
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            knex.destroy();
+            // knex.destroy();
         }
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     async insertOrder(order: Array<Cart>) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             const newOrder: Order = new Order(
                 String(this.countOrder),
                 Date.now(),
                 order
             );
-            await knex("ordenes").insert([
+            await this.knex("ordenes").insert([
                 {
                     timestamp: Date.now(),
                     orderTotal: newOrder.carrito[order.length - 1].orderTotal
                 },
             ]);
             order.pop();
-            const lastOrderInserted = await knex('ordenes').max('_id as id').first();
+            const lastOrderInserted = await this.knex('ordenes').max('_id as id').first();
             const _id = lastOrderInserted.id;
 
             for (const cart of order) {
-                await knex.from("carrito").where("_id", Number(cart._id)).update({ orden_id: _id })
+                await this.knex.from("carrito").where("_id", Number(cart._id)).update({ orden_id: _id })
             }
             this.carrito = [];
         } catch (error) {
@@ -260,23 +263,23 @@ export class MySqlDao implements IDao {
             throw error;
         } finally {
             console.log('Orden Agregada');
-            await knex.destroy();
+            // await knex.destroy();
         }
 
     }
 
     async insertProductToCarrito(producto: Producto) {
         await this.createTableCarrito();
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            await knex("carrito").insert([
+            await this.knex("carrito").insert([
                 {
                     timestamp: Number(Date.now()),
                     quantity: 1,
                     producto_id: producto._id
                 },
             ]);
-            const lastCarritoId = await knex('carrito').max('_id as id').first();
+            const lastCarritoId = await this.knex('carrito').max('_id as id').first();
             const _id = String(lastCarritoId.id);
             this.carrito.push({
                 _id: _id,
@@ -289,20 +292,20 @@ export class MySqlDao implements IDao {
             throw error;
         } finally {
             console.log('Producto agregado a carrito');
-            await knex.destroy();
+            // await knex.destroy();
         }
     }
 
     async getCarrito(): Promise<Cart[]> {
+        
         await this.createTableCarrito();
-
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            const productosEnCarrito = await knex.from("carrito").select("*").whereNull('orden_id');
+            const productosEnCarrito = await this.knex.from("carrito").select("*").whereNull('orden_id');
             this.carrito = [];
             for (const carrito of productosEnCarrito) {
                 const productoId = carrito.producto_id;
-                const productoEnCarrito = await knex.from("productos").select("*").where("_id", "=", productoId);
+                const productoEnCarrito = await this.knex.from("productos").select("*").where("_id", "=", productoId);
                 const producto: Producto | any = productoEnCarrito[0];
                 producto._id = String(producto._id)
                 carrito._id = String(carrito._id);
@@ -317,7 +320,7 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await knex.destroy();
 
             return this.carrito;
         }
@@ -329,9 +332,9 @@ export class MySqlDao implements IDao {
     }
 
     async updateQtyInCarrito(carrito: Cart) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            await knex.from("carrito").where("_id", Number(carrito._id)).update({ quantity: carrito.quantity + 1 })
+            await this.knex.from("carrito").where("_id", Number(carrito._id)).update({ quantity: carrito.quantity + 1 })
             const newCarrito: Cart = {
                 ...carrito,
                 quantity: carrito.quantity + 1,
@@ -342,22 +345,22 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            knex.destroy();
+            // knex.destroy();
         }
     }
 
     async deleteCarrito(id: string) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             const productoToBeDelete: any = this.getCarritoById(id);
             const index = this.carrito.indexOf(productoToBeDelete);
-            await knex.from("carrito").where("_id", Number(id)).del();
+            await this.knex.from("carrito").where("_id", Number(id)).del();
             this.carrito.splice(index, 1);
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            knex.destroy();
+            // knex.destroy();
         }
     }
 
@@ -365,9 +368,9 @@ export class MySqlDao implements IDao {
 
     async getMensajes(): Promise<Mensaje[]> {
 
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
-            const mensajesFromDB = await knex.from("mensajes").select("*");
+            const mensajesFromDB = await this.knex.from("mensajes").select("*");
             this.mensajes = [];
             for (const mensaje of mensajesFromDB) {
                 mensaje._id = String(mensaje._id)
@@ -377,17 +380,17 @@ export class MySqlDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            await knex.destroy();
+            // await knex.destroy();
 
             return this.mensajes;
         }
     }
 
     async insertMensajes(mensaje: Mensaje) {
-        const knex = require("knex")(optionsMariaDB);
+        // const knex = require("knex")(optionsMariaDB);
         try {
             this.mensajes.push(mensaje);
-            await knex("mensajes").insert([
+            await this.knex("mensajes").insert([
                 {
                     date: mensaje.date,
                     author: mensaje.author,
@@ -399,7 +402,7 @@ export class MySqlDao implements IDao {
             throw error;
         } finally {
             console.log('Mensaje Agregado');
-            await knex.destroy();
+            // await knex.destroy();
         }
     }
 }

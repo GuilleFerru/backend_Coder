@@ -24,10 +24,10 @@ export class FileSystemDao implements IDao {
         this.countOrder = 1;
     }
 
-    private pathProducto: string = "./fileSystemDB/productos.txt";
-    private pathCarrito: string = "./fileSystemDB/carrito.txt";
-    private pathOrder: string = "./fileSystemDB/order.txt";
-    private pathMensajes: string = "./fileSystemDB/mensajes.txt";
+    private pathProducto: string = "./DB/fileSystemDB/productos.txt";
+    private pathCarrito: string = "./DB/fileSystemDB/carrito.txt";
+    private pathOrder: string = "./DB/fileSystemDB/order.txt";
+    private pathMensajes: string = "./DB/fileSystemDB/mensajes.txt";
 
     private getNewId(): string {
         const maxId: number = Math.max(...this.productos.map(prd => Number(prd._id)), 0);

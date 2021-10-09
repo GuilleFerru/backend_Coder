@@ -49,7 +49,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MySqlDao = void 0;
 var IOrder_1 = require("../interfaces/IOrder");
-// import { optionsMariaDB } from "../options/mariaDB";
 var optionsMariaDB = {
     client: "mysql",
     connection: {
@@ -63,97 +62,82 @@ var MySqlDao = /** @class */ (function () {
     function MySqlDao() {
         var _this = this;
         this.createTableMensajes = function () { return __awaiter(_this, void 0, void 0, function () {
-            var knex, tableName, error_1;
+            var tableName, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 6, 7, 9]);
+                        _a.trys.push([0, 5, 6, 7]);
                         tableName = "mensajes";
-                        return [4 /*yield*/, knex.schema.hasTable(tableName)];
-                    case 2:
-                        if (!_a.sent()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.knex.schema.hasTable(tableName)];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 2];
                         return [2 /*return*/];
-                    case 3:
+                    case 2:
                         console.log('mensajes Table create');
-                        return [4 /*yield*/, knex.schema.createTable(tableName, function (table) {
+                        return [4 /*yield*/, this.knex.schema.createTable(tableName, function (table) {
                                 table.increments("_id").primary();
                                 table.string("date").notNullable();
                                 table.string("author").notNullable();
                                 table.string("text");
                             })];
-                    case 4:
+                    case 3:
                         _a.sent();
-                        _a.label = 5;
-                    case 5: return [3 /*break*/, 9];
-                    case 6:
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 7];
+                    case 5:
                         error_1 = _a.sent();
                         console.log(error_1);
                         throw error_1;
-                    case 7: return [4 /*yield*/, knex.destroy()];
-                    case 8:
-                        _a.sent();
-                        return [7 /*endfinally*/];
-                    case 9: return [2 /*return*/];
+                    case 6: return [7 /*endfinally*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };
         this.createTableOrdenes = function () { return __awaiter(_this, void 0, void 0, function () {
-            var knex, tableName, error_2;
+            var tableName, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 6, 7, 9]);
+                        _a.trys.push([0, 5, 6, 7]);
                         tableName = "ordenes";
-                        return [4 /*yield*/, knex.schema.hasTable(tableName)];
-                    case 2:
-                        if (!_a.sent()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.knex.schema.hasTable(tableName)];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 2];
                         return [2 /*return*/];
-                    case 3:
+                    case 2:
                         console.log('ordenes Table create');
-                        return [4 /*yield*/, knex.schema.createTable(tableName, function (table) {
+                        return [4 /*yield*/, this.knex.schema.createTable(tableName, function (table) {
                                 table.increments("_id").primary();
                                 table.bigInteger("timestamp").notNullable();
                                 table.float("orderTotal").notNullable();
                             })];
-                    case 4:
+                    case 3:
                         _a.sent();
-                        _a.label = 5;
-                    case 5: return [3 /*break*/, 9];
-                    case 6:
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 7];
+                    case 5:
                         error_2 = _a.sent();
                         console.log(error_2);
                         throw error_2;
-                    case 7: return [4 /*yield*/, knex.destroy()];
-                    case 8:
-                        _a.sent();
-                        return [7 /*endfinally*/];
-                    case 9: return [2 /*return*/];
+                    case 6: return [7 /*endfinally*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };
         this.createTableCarrito = function () { return __awaiter(_this, void 0, void 0, function () {
-            var knex, tableName, error_3;
+            var tableName, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 6, 7, 9]);
+                        _a.trys.push([0, 5, 6, 7]);
                         tableName = "carrito";
-                        return [4 /*yield*/, knex.schema.hasTable(tableName)];
-                    case 2:
-                        if (!_a.sent()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.knex.schema.hasTable(tableName)];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 2];
                         return [2 /*return*/];
-                    case 3:
+                    case 2:
                         console.log('carito Table create');
-                        return [4 /*yield*/, knex.schema.createTable(tableName, function (table) {
+                        return [4 /*yield*/, this.knex.schema.createTable(tableName, function (table) {
                                 table.increments("_id").primary();
                                 table.bigInteger("timestamp").notNullable();
                                 table.integer("quantity").notNullable();
@@ -162,39 +146,33 @@ var MySqlDao = /** @class */ (function () {
                                 table.foreign("producto_id").references('_id').inTable('productos');
                                 table.foreign("orden_id").references('_id').inTable('ordenes');
                             })];
-                    case 4:
+                    case 3:
                         _a.sent();
-                        _a.label = 5;
-                    case 5: return [3 /*break*/, 9];
-                    case 6:
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 7];
+                    case 5:
                         error_3 = _a.sent();
                         console.log(error_3);
                         throw error_3;
-                    case 7: return [4 /*yield*/, knex.destroy()];
-                    case 8:
-                        _a.sent();
-                        return [7 /*endfinally*/];
-                    case 9: return [2 /*return*/];
+                    case 6: return [7 /*endfinally*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };
         this.createTableProductos = function () { return __awaiter(_this, void 0, void 0, function () {
-            var knex, tableName, error_4;
+            var tableName, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 6, 7, 9]);
+                        _a.trys.push([0, 5, 6, 7]);
                         tableName = "productos";
-                        return [4 /*yield*/, knex.schema.hasTable(tableName)];
-                    case 2:
-                        if (!_a.sent()) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.knex.schema.hasTable(tableName)];
+                    case 1:
+                        if (!_a.sent()) return [3 /*break*/, 2];
                         return [2 /*return*/];
-                    case 3:
+                    case 2:
                         console.log('productos Table create');
-                        return [4 /*yield*/, knex.schema.createTable(tableName, function (table) {
+                        return [4 /*yield*/, this.knex.schema.createTable(tableName, function (table) {
                                 table.increments("_id").primary();
                                 table.bigInteger("timestamp").notNullable();
                                 table.string("title").notNullable();
@@ -204,19 +182,16 @@ var MySqlDao = /** @class */ (function () {
                                 table.float("price").notNullable();
                                 table.integer("stock").notNullable();
                             })];
-                    case 4:
+                    case 3:
                         _a.sent();
-                        _a.label = 5;
-                    case 5: return [3 /*break*/, 9];
-                    case 6:
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 7];
+                    case 5:
                         error_4 = _a.sent();
                         console.log(error_4);
                         throw error_4;
-                    case 7: return [4 /*yield*/, knex.destroy()];
-                    case 8:
-                        _a.sent();
-                        return [7 /*endfinally*/];
-                    case 9: return [2 /*return*/];
+                    case 6: return [7 /*endfinally*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };
@@ -226,18 +201,16 @@ var MySqlDao = /** @class */ (function () {
         this.mensajes = new Array();
         this.countCarrito = 1;
         this.countOrder = 1;
+        this.knex = require("knex")(optionsMariaDB);
     }
     MySqlDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, error_5;
+            var error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, 4, 6]);
-                        return [4 /*yield*/, knex("productos").insert([
+                        _a.trys.push([0, 2, 3, 4]);
+                        return [4 /*yield*/, this.knex("productos").insert([
                                 {
                                     timestamp: Number(Date.now()),
                                     title: producto.title,
@@ -248,27 +221,24 @@ var MySqlDao = /** @class */ (function () {
                                     stock: producto.stock,
                                 },
                             ])];
-                    case 2:
+                    case 1:
                         _a.sent();
-                        return [3 /*break*/, 6];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_5 = _a.sent();
                         console.log(error_5);
                         throw error_5;
-                    case 4:
+                    case 3:
                         console.log('Producto Agregado');
-                        return [4 /*yield*/, knex.destroy()];
-                    case 5:
-                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 6: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     MySqlDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, productosFromDB, _i, productosFromDB_1, producto, error_6;
+            var productosFromDB, _i, productosFromDB_1, producto, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.createTableProductos()];
@@ -280,11 +250,10 @@ var MySqlDao = /** @class */ (function () {
                         return [4 /*yield*/, this.createTableMensajes()];
                     case 3:
                         _a.sent();
-                        knex = require("knex")(optionsMariaDB);
                         _a.label = 4;
                     case 4:
-                        _a.trys.push([4, 6, 7, 9]);
-                        return [4 /*yield*/, knex.from("productos").select("*")];
+                        _a.trys.push([4, 6, 7, 8]);
+                        return [4 /*yield*/, this.knex.from("productos").select("*")];
                     case 5:
                         productosFromDB = _a.sent();
                         this.productos = [];
@@ -293,16 +262,15 @@ var MySqlDao = /** @class */ (function () {
                             producto._id = String(producto._id);
                             this.productos.push(producto);
                         }
-                        return [3 /*break*/, 9];
+                        return [3 /*break*/, 8];
                     case 6:
                         error_6 = _a.sent();
                         console.log(error_6);
                         throw error_6;
-                    case 7: return [4 /*yield*/, knex.destroy()];
-                    case 8:
-                        _a.sent();
-                        return [2 /*return*/, this.productos];
-                    case 9: return [2 /*return*/];
+                    case 7: 
+                    // await this.knex.destroy();
+                    return [2 /*return*/, this.productos];
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -314,16 +282,13 @@ var MySqlDao = /** @class */ (function () {
     ;
     MySqlDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, error_7;
+            var error_7;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, 4, 5]);
-                        return [4 /*yield*/, knex.from("productos").where("_id", Number(id)).update({
+                        _a.trys.push([0, 2, 3, 4]);
+                        return [4 /*yield*/, this.knex.from("productos").where("_id", Number(id)).update({
                                 title: productoToBeUpdate.title,
                                 description: productoToBeUpdate.description,
                                 code: productoToBeUpdate.code,
@@ -331,7 +296,7 @@ var MySqlDao = /** @class */ (function () {
                                 price: productoToBeUpdate.price,
                                 stock: productoToBeUpdate.stock
                             })];
-                    case 2:
+                    case 1:
                         _a.sent();
                         this.productos.map(function (thisProduct) {
                             if (thisProduct._id === id) {
@@ -339,15 +304,13 @@ var MySqlDao = /** @class */ (function () {
                                 _this.productos[index] = __assign(__assign({}, productoToBeUpdate), { _id: id, price: Number(productoToBeUpdate.price), stock: Number(productoToBeUpdate.stock) });
                             }
                         });
-                        return [3 /*break*/, 5];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_7 = _a.sent();
                         console.log(error_7);
                         throw error_7;
-                    case 4:
-                        knex.destroy();
-                        return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 3: return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -355,29 +318,24 @@ var MySqlDao = /** @class */ (function () {
     ;
     MySqlDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, productoToBeDelete, index, error_8;
+            var productoToBeDelete, index, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, 4, 5]);
+                        _a.trys.push([0, 2, 3, 4]);
                         productoToBeDelete = this.getProductoById(id);
                         index = this.productos.indexOf(productoToBeDelete);
-                        return [4 /*yield*/, knex.from("productos").where("_id", Number(id)).del()];
-                    case 2:
+                        return [4 /*yield*/, this.knex.from("productos").where("_id", Number(id)).del()];
+                    case 1:
                         _a.sent();
                         this.productos.splice(index, 1);
-                        return [3 /*break*/, 5];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_8 = _a.sent();
                         console.log(error_8);
                         throw error_8;
-                    case 4:
-                        knex.destroy();
-                        return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 3: return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -386,71 +344,64 @@ var MySqlDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////
     MySqlDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, newOrder, lastOrderInserted, _id, _i, order_1, cart, error_9;
+            var newOrder, lastOrderInserted, _id, _i, order_1, cart, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 8, 9, 11]);
+                        _a.trys.push([0, 7, 8, 9]);
                         newOrder = new IOrder_1.Order(String(this.countOrder), Date.now(), order);
-                        return [4 /*yield*/, knex("ordenes").insert([
+                        return [4 /*yield*/, this.knex("ordenes").insert([
                                 {
                                     timestamp: Date.now(),
                                     orderTotal: newOrder.carrito[order.length - 1].orderTotal
                                 },
                             ])];
-                    case 2:
+                    case 1:
                         _a.sent();
                         order.pop();
-                        return [4 /*yield*/, knex('ordenes').max('_id as id').first()];
-                    case 3:
+                        return [4 /*yield*/, this.knex('ordenes').max('_id as id').first()];
+                    case 2:
                         lastOrderInserted = _a.sent();
                         _id = lastOrderInserted.id;
                         _i = 0, order_1 = order;
-                        _a.label = 4;
-                    case 4:
-                        if (!(_i < order_1.length)) return [3 /*break*/, 7];
+                        _a.label = 3;
+                    case 3:
+                        if (!(_i < order_1.length)) return [3 /*break*/, 6];
                         cart = order_1[_i];
-                        return [4 /*yield*/, knex.from("carrito").where("_id", Number(cart._id)).update({ orden_id: _id })];
-                    case 5:
+                        return [4 /*yield*/, this.knex.from("carrito").where("_id", Number(cart._id)).update({ orden_id: _id })];
+                    case 4:
                         _a.sent();
-                        _a.label = 6;
-                    case 6:
+                        _a.label = 5;
+                    case 5:
                         _i++;
-                        return [3 /*break*/, 4];
-                    case 7:
+                        return [3 /*break*/, 3];
+                    case 6:
                         this.carrito = [];
-                        return [3 /*break*/, 11];
-                    case 8:
+                        return [3 /*break*/, 9];
+                    case 7:
                         error_9 = _a.sent();
                         console.log(error_9);
                         throw error_9;
-                    case 9:
+                    case 8:
                         console.log('Orden Agregada');
-                        return [4 /*yield*/, knex.destroy()];
-                    case 10:
-                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 11: return [2 /*return*/];
+                    case 9: return [2 /*return*/];
                 }
             });
         });
     };
     MySqlDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, lastCarritoId, _id, error_10;
+            var lastCarritoId, _id, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.createTableCarrito()];
                     case 1:
                         _a.sent();
-                        knex = require("knex")(optionsMariaDB);
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, 5, 6, 8]);
-                        return [4 /*yield*/, knex("carrito").insert([
+                        _a.trys.push([2, 5, 6, 7]);
+                        return [4 /*yield*/, this.knex("carrito").insert([
                                 {
                                     timestamp: Number(Date.now()),
                                     quantity: 1,
@@ -459,7 +410,7 @@ var MySqlDao = /** @class */ (function () {
                             ])];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, knex('carrito').max('_id as id').first()];
+                        return [4 /*yield*/, this.knex('carrito').max('_id as id').first()];
                     case 4:
                         lastCarritoId = _a.sent();
                         _id = String(lastCarritoId.id);
@@ -469,35 +420,31 @@ var MySqlDao = /** @class */ (function () {
                             quantity: 1,
                             producto: producto,
                         });
-                        return [3 /*break*/, 8];
+                        return [3 /*break*/, 7];
                     case 5:
                         error_10 = _a.sent();
                         console.log(error_10);
                         throw error_10;
                     case 6:
                         console.log('Producto agregado a carrito');
-                        return [4 /*yield*/, knex.destroy()];
-                    case 7:
-                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 8: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
     };
     MySqlDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, productosEnCarrito, _i, productosEnCarrito_1, carrito, productoId, productoEnCarrito, producto, error_11;
+            var productosEnCarrito, _i, productosEnCarrito_1, carrito, productoId, productoEnCarrito, producto, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.createTableCarrito()];
                     case 1:
                         _a.sent();
-                        knex = require("knex")(optionsMariaDB);
                         _a.label = 2;
                     case 2:
-                        _a.trys.push([2, 8, 9, 11]);
-                        return [4 /*yield*/, knex.from("carrito").select("*").whereNull('orden_id')];
+                        _a.trys.push([2, 8, 9, 10]);
+                        return [4 /*yield*/, this.knex.from("carrito").select("*").whereNull('orden_id')];
                     case 3:
                         productosEnCarrito = _a.sent();
                         this.carrito = [];
@@ -507,7 +454,7 @@ var MySqlDao = /** @class */ (function () {
                         if (!(_i < productosEnCarrito_1.length)) return [3 /*break*/, 7];
                         carrito = productosEnCarrito_1[_i];
                         productoId = carrito.producto_id;
-                        return [4 /*yield*/, knex.from("productos").select("*").where("_id", "=", productoId)];
+                        return [4 /*yield*/, this.knex.from("productos").select("*").where("_id", "=", productoId)];
                     case 5:
                         productoEnCarrito = _a.sent();
                         producto = productoEnCarrito[0];
@@ -523,16 +470,15 @@ var MySqlDao = /** @class */ (function () {
                     case 6:
                         _i++;
                         return [3 /*break*/, 4];
-                    case 7: return [3 /*break*/, 11];
+                    case 7: return [3 /*break*/, 10];
                     case 8:
                         error_11 = _a.sent();
                         console.log(error_11);
                         throw error_11;
-                    case 9: return [4 /*yield*/, knex.destroy()];
-                    case 10:
-                        _a.sent();
-                        return [2 /*return*/, this.carrito];
-                    case 11: return [2 /*return*/];
+                    case 9: 
+                    // await knex.destroy();
+                    return [2 /*return*/, this.carrito];
+                    case 10: return [2 /*return*/];
                 }
             });
         });
@@ -542,58 +488,48 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, newCarrito, index, error_12;
+            var newCarrito, index, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
+                        _a.trys.push([0, 2, 3, 4]);
+                        return [4 /*yield*/, this.knex.from("carrito").where("_id", Number(carrito._id)).update({ quantity: carrito.quantity + 1 })];
                     case 1:
-                        _a.trys.push([1, 3, 4, 5]);
-                        return [4 /*yield*/, knex.from("carrito").where("_id", Number(carrito._id)).update({ quantity: carrito.quantity + 1 })];
-                    case 2:
                         _a.sent();
                         newCarrito = __assign(__assign({}, carrito), { quantity: carrito.quantity + 1 });
                         index = this.carrito.indexOf(carrito);
                         this.carrito[index] = newCarrito;
-                        return [3 /*break*/, 5];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_12 = _a.sent();
                         console.log(error_12);
                         throw error_12;
-                    case 4:
-                        knex.destroy();
-                        return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 3: return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     MySqlDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, productoToBeDelete, index, error_13;
+            var productoToBeDelete, index, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, 4, 5]);
+                        _a.trys.push([0, 2, 3, 4]);
                         productoToBeDelete = this.getCarritoById(id);
                         index = this.carrito.indexOf(productoToBeDelete);
-                        return [4 /*yield*/, knex.from("carrito").where("_id", Number(id)).del()];
-                    case 2:
+                        return [4 /*yield*/, this.knex.from("carrito").where("_id", Number(id)).del()];
+                    case 1:
                         _a.sent();
                         this.carrito.splice(index, 1);
-                        return [3 /*break*/, 5];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_13 = _a.sent();
                         console.log(error_13);
                         throw error_13;
-                    case 4:
-                        knex.destroy();
-                        return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 3: return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -601,16 +537,13 @@ var MySqlDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     MySqlDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, mensajesFromDB, _i, mensajesFromDB_1, mensaje, error_14;
+            var mensajesFromDB, _i, mensajesFromDB_1, mensaje, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
+                        _a.trys.push([0, 2, 3, 4]);
+                        return [4 /*yield*/, this.knex.from("mensajes").select("*")];
                     case 1:
-                        _a.trys.push([1, 3, 4, 6]);
-                        return [4 /*yield*/, knex.from("mensajes").select("*")];
-                    case 2:
                         mensajesFromDB = _a.sent();
                         this.mensajes = [];
                         for (_i = 0, mensajesFromDB_1 = mensajesFromDB; _i < mensajesFromDB_1.length; _i++) {
@@ -618,52 +551,45 @@ var MySqlDao = /** @class */ (function () {
                             mensaje._id = String(mensaje._id);
                             this.mensajes.push(mensaje);
                         }
-                        return [3 /*break*/, 6];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_14 = _a.sent();
                         console.log(error_14);
                         throw error_14;
-                    case 4: return [4 /*yield*/, knex.destroy()];
-                    case 5:
-                        _a.sent();
-                        return [2 /*return*/, this.mensajes];
-                    case 6: return [2 /*return*/];
+                    case 3: 
+                    // await knex.destroy();
+                    return [2 /*return*/, this.mensajes];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     MySqlDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
-            var knex, error_15;
+            var error_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        knex = require("knex")(optionsMariaDB);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, 4, 6]);
+                        _a.trys.push([0, 2, 3, 4]);
                         this.mensajes.push(mensaje);
-                        return [4 /*yield*/, knex("mensajes").insert([
+                        return [4 /*yield*/, this.knex("mensajes").insert([
                                 {
                                     date: mensaje.date,
                                     author: mensaje.author,
                                     text: mensaje.text,
                                 },
                             ])];
-                    case 2:
+                    case 1:
                         _a.sent();
-                        return [3 /*break*/, 6];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_15 = _a.sent();
                         console.log(error_15);
                         throw error_15;
-                    case 4:
+                    case 3:
                         console.log('Mensaje Agregado');
-                        return [4 /*yield*/, knex.destroy()];
-                    case 5:
-                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 6: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

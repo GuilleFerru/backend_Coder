@@ -1,26 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MongoDbaaSDao = void 0;
-var MongoDbaaSDao = /** @class */ (function () {
-    function MongoDbaaSDao() {
-        this.productos = new Array();
-    }
-    MongoDbaaSDao.prototype.insertProducto = function (producto) {
-        console.log("Insertando " + producto + " en MongoDbaaSDao");
-        this.productos.push(producto);
-    };
-    MongoDbaaSDao.prototype.getProductos = function (producto) {
-    };
-    ;
-    MongoDbaaSDao.prototype.getProductoById = function (id) {
-    };
-    ;
-    MongoDbaaSDao.prototype.updateProducto = function (id) {
-    };
-    ;
-    MongoDbaaSDao.prototype.deleteProducto = function (id) {
-    };
-    ;
-    return MongoDbaaSDao;
-}());
-exports.MongoDbaaSDao = MongoDbaaSDao;
+// export class MongoDbaaSDao implements IDao {
+//     productos: Array<string>;
+//     constructor() {
+//         this.productos = new Array<string>();
+//     }
+//     insertProducto(producto: string): void {
+//         console.log(`Insertando ${producto} en MongoDbaaSDao`);
+//         this.productos.push(producto);
+//     }
+//     getProductos(producto: string): void {
+//     };
+//     getProductoById(id: string): void {
+//     };
+//     updateProducto(id: string): void {
+//     };
+//     deleteProducto(id: string): void {
+//     };
+// }

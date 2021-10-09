@@ -16,7 +16,7 @@ var SQLITE = 3;
 var MONGO = 4;
 var MONGOAAS = 5;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-var OPCION = FILESYSTEM;
+var OPCION = MYSQL;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var daoFactory = new daoFactory_1.DaoFactory();
 exports.dao = daoFactory.getDao(OPCION);
@@ -24,5 +24,3 @@ exports.dao = daoFactory.getDao(OPCION);
 (0, sockets_1.sockets)();
 (0, productoAPI_1.productoAPI)();
 (0, carritoAPI_1.carritoAPI)();
-// dao.insertProducto("Guitarra");
-// dao.getProductos();

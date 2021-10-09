@@ -14,7 +14,7 @@ const SQLITE: number = 3;
 const MONGO: number = 4;
 const MONGOAAS: number = 5;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const OPCION = FILESYSTEM ;
+const OPCION = MYSQL ;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 const daoFactory = new DaoFactory();
 export const dao: IDao = daoFactory.getDao(OPCION);
@@ -24,5 +24,4 @@ sockets();
 productoAPI();
 carritoAPI();
 
-// dao.insertProducto("Guitarra");
-// dao.getProductos();
+

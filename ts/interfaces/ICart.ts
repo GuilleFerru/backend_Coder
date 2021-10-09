@@ -8,10 +8,11 @@ interface ICart {
 }
 
 export class Cart implements ICart {
-    public _id: string = '';
-    public timestamp: number = 0;
-    public quantity: number;
-    public producto: Producto;
+    [x: string]: any;
+    public _id: string | any = '';
+    public timestamp: number | any = 0;
+    public quantity: number | any;
+    public producto: Producto | any;
 
     constructor(quantity: number, producto: Producto) {
         this.producto = producto;

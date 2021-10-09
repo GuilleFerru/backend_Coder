@@ -1,12 +1,12 @@
 [
 	{
 		"_id": "1",
-		"timestamp": 1633367572811,
+		"timestamp": 1633807195117,
 		"title": "Pinta",
 		"description": "Cerveza rubia de sabor amargo 568 ml.",
 		"code": "7as5Mdff",
 		"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
-		"price": "180",
+		"price": "190",
 		"stock": "250"
 	},
 	{

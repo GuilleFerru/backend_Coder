@@ -19,17 +19,19 @@ export class MemoryDao implements IDao {
     this.carrito = new Array<Cart>();
     this.order = new Array<Cart>();
     this.mensajes = new Array<Mensaje>();
-
     this.countProducto = 1;
     this.countCarrito = 1;
     this.countOrder = 1;
   }
 
+
+
+
   insertProducto(producto: Producto): void {
     producto._id = String(this.countProducto);
     this.productos.push(producto);
     console.log(this.productos);
-    
+
     this.countProducto++;
   }
 
@@ -58,7 +60,7 @@ export class MemoryDao implements IDao {
   };
 
   insertOrder(order: Array<Cart>): void {
-    // console.log(order[0].producto,'en dao');
+
     const newOrder: Order = new Order(
       String(this.countOrder),
       Date.now(),

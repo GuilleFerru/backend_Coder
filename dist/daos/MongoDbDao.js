@@ -1,26 +1,18 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MongoDbDao = void 0;
-var MongoDbDao = /** @class */ (function () {
-    function MongoDbDao() {
-        // TODO: Conectarse a la base
-    }
-    MongoDbDao.prototype.insertProducto = function (producto) {
-        console.log("Insertando " + producto + " en MongoDbDao");
-    };
-    ;
-    MongoDbDao.prototype.getProductos = function (producto) {
-    };
-    ;
-    MongoDbDao.prototype.getProductoById = function (id) {
-    };
-    ;
-    MongoDbDao.prototype.updateProducto = function (id) {
-    };
-    ;
-    MongoDbDao.prototype.deleteProducto = function (id) {
-    };
-    ;
-    return MongoDbDao;
-}());
-exports.MongoDbDao = MongoDbDao;
+// import { IDao } from "../interfaces/IDao";
+// export class MongoDbDao implements IDao {
+//   constructor() {
+//     // TODO: Conectarse a la base
+//   }
+//   insertProducto(producto: string): void {
+//     console.log(`Insertando ${producto} en MongoDbDao`);
+//   };
+//   getProductos(producto: string): void {
+//   };
+//   getProductoById(id: string): void {
+//   };
+//   updateProducto(id: string): void {
+//   };
+//   deleteProducto(id: string): void {
+//   };
+// }

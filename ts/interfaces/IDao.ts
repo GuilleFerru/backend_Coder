@@ -5,20 +5,29 @@ import {Mensaje} from "./IMensaje"
 export interface IDao {
 
   insertProducto(producto: Producto): void;
-  getProductos(): Array<Producto>;
+
+  
+  getProductos(): Promise<Producto[]> | Producto[] ;
   getProductoById(id: string): Producto | undefined;
+
   updateProducto(id: string, producto: Producto): void;
+  
+
   deleteProducto(id: string): void;
 
-  insertOrder(order: Array<Cart>): void;
+  insertOrder(order: Cart[]): void;
   insertProductToCarrito(producto: Producto): void;
-  getCarrito(): Array<Cart>;
+
+  
+  getCarrito(): Promise<Cart[]> | Cart[] ;
   getCarritoById(id: string): Cart | undefined;
-  // getProductoById(id: string): Producto | undefined;
+
   updateQtyInCarrito(carrito: Cart): void;
   deleteCarrito(id: string): void;
 
   insertMensajes(mensaje: Mensaje): void;
-  getMensajes():Array<Mensaje>;
+ 
+  
+  getMensajes():Promise<Mensaje[]> | Mensaje[];
 
 }

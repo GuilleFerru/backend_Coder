@@ -55,7 +55,6 @@ var MemoryDao = /** @class */ (function () {
     };
     ;
     MemoryDao.prototype.insertOrder = function (order) {
-        // console.log(order[0].producto,'en dao');
         var newOrder = new IOrder_1.Order(String(this.countOrder), Date.now(), order);
         this.carrito = [];
         console.log(newOrder);

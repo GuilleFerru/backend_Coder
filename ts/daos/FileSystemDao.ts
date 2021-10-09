@@ -23,7 +23,7 @@ export class FileSystemDao implements IDao {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
-    
+
     private pathProducto: string = "./fileSystemDB/productos.txt";
     private pathCarrito: string = "./fileSystemDB/carrito.txt";
     private pathOrder: string = "./fileSystemDB/order.txt";

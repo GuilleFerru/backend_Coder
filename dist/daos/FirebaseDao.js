@@ -46,26 +46,35 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MongoDbaaSDao = void 0;
-var productos_1 = require("../models/productos");
-var mensajes_1 = require("../models/mensajes");
-var carrito_1 = require("../models/carrito");
-var order_1 = require("../models/order");
-var MongoDbaaSDao = /** @class */ (function () {
-    function MongoDbaaSDao() {
-        this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+exports.FirebaseDao = void 0;
+var IProducto_1 = require("../interfaces/IProducto");
+var ICart_1 = require("../interfaces/ICart");
+// import { Order } from "../interfaces/IOrder";
+var IMensaje_1 = require("../interfaces/IMensaje");
+var firebase_admin_1 = __importDefault(require("firebase-admin"));
+firebase_admin_1.default.initializeApp({
+    credential: firebase_admin_1.default.credential.cert("./DB/Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json"),
+    databaseURL: "https://backend-coder.firebaseio.com",
+});
+console.log("Base de datos conectada!");
+var FirebaseDao = /** @class */ (function () {
+    function FirebaseDao() {
+        this.firestoreAdmin = firebase_admin_1.default.firestore();
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
         this.mensajes = new Array();
         this.countCarrito = 1;
         this.countOrder = 1;
-        // this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
-        //     console.log('Connected to MongoDB 1');
-        // });
     }
-    MongoDbaaSDao.prototype.insertProducto = function (producto) {
+    FirebaseDao.prototype.Collection = function (collection) {
+        return this.firestoreAdmin.collection(collection);
+    };
+    FirebaseDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
             var _id, timestamp, productoMoficado, error_1;
             return __generator(this, function (_a) {
@@ -73,7 +82,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
                         _id = producto._id, timestamp = producto.timestamp, productoMoficado = __rest(producto, ["_id", "timestamp"]);
-                        return [4 /*yield*/, productos_1.productoModel.insertMany(productoMoficado)];
+                        return [4 /*yield*/, this.Collection('productos').add(productoMoficado)];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -90,7 +99,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getProductos = function () {
+    FirebaseDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var savedProducts, error_2;
             var _this = this;
@@ -99,11 +108,14 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
                         this.productos = [];
-                        return [4 /*yield*/, productos_1.productoModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 })];
+                        return [4 /*yield*/, this.Collection('productos').get()];
                     case 1:
                         savedProducts = _a.sent();
-                        savedProducts.forEach(function (producto) {
-                            _this.productos.push(producto);
+                        savedProducts.docs.map(function (producto) {
+                            producto.data()._id = String(producto.id);
+                            var newProducto = new IProducto_1.Producto(producto.data().title, producto.data().description, producto.data().code, producto.data().thumbnail, producto.data().price, producto.data().stock);
+                            newProducto._id = String(producto.id);
+                            _this.productos.push(newProducto);
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -119,27 +131,25 @@ var MongoDbaaSDao = /** @class */ (function () {
         });
     };
     ;
-    MongoDbaaSDao.prototype.getProductoById = function (id) {
+    FirebaseDao.prototype.getProductoById = function (id) {
         return this.productos.find(function (element) { return String(element._id) === id; });
     };
     ;
-    MongoDbaaSDao.prototype.updateProducto = function (id, productoToBeUpdate) {
+    FirebaseDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
             var error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, productos_1.productoModel.updateOne({ _id: id }, {
-                                $set: {
-                                    title: productoToBeUpdate.title,
-                                    description: productoToBeUpdate.description,
-                                    code: productoToBeUpdate.code,
-                                    thumbnail: productoToBeUpdate.thumbnail,
-                                    price: productoToBeUpdate.price,
-                                    stock: productoToBeUpdate.stock
-                                }
-                            }, { multi: true })];
+                        return [4 /*yield*/, this.Collection('productos').doc(id).update({
+                                title: productoToBeUpdate.title,
+                                description: productoToBeUpdate.description,
+                                code: productoToBeUpdate.code,
+                                thumbnail: productoToBeUpdate.thumbnail,
+                                price: productoToBeUpdate.price,
+                                stock: productoToBeUpdate.stock
+                            })];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.getProductos()];
@@ -159,14 +169,14 @@ var MongoDbaaSDao = /** @class */ (function () {
         });
     };
     ;
-    MongoDbaaSDao.prototype.deleteProducto = function (id) {
+    FirebaseDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, productos_1.productoModel.deleteMany({ _id: id })];
+                        return [4 /*yield*/, this.Collection('productos').doc(id).delete()];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.getProductos()];
@@ -187,64 +197,53 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     ;
     ////////////////////////////////////////////////////////////////////////////////////////////
-    MongoDbaaSDao.prototype.insertOrder = function (order) {
+    FirebaseDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_2, carrito, error_5, _a, _b, _c, _d, _e;
-            return __generator(this, function (_f) {
-                switch (_f.label) {
+            var orderTotal, _i, order_1, carrito, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _f.trys.push([0, 7, 8, 10]);
+                        _a.trys.push([0, 3, 4, 5]);
                         orderTotal = order.pop();
-                        _i = 0, order_2 = order;
-                        _f.label = 1;
+                        for (_i = 0, order_1 = order; _i < order_1.length; _i++) {
+                            carrito = order_1[_i];
+                            this.Collection('carrito').doc(carrito._id).update({ cerrado: true });
+                            // await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "cerrado": true } });
+                            delete carrito.cerrado;
+                        }
+                        return [4 /*yield*/, this.Collection('ordenes').add({
+                                productos: order,
+                                orderTotal: orderTotal.orderTotal,
+                                timestamp: Date.now()
+                            })];
                     case 1:
-                        if (!(_i < order_2.length)) return [3 /*break*/, 4];
-                        carrito = order_2[_i];
-                        return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "cerrado": true } })];
-                    case 2:
-                        _f.sent();
-                        delete carrito.cerrado;
-                        _f.label = 3;
-                    case 3:
-                        _i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [4 /*yield*/, order_1.ordenModel.insertMany({
-                            productos: order,
-                            orderTotal: orderTotal.orderTotal
-                        })];
-                    case 5:
-                        _f.sent();
+                        _a.sent();
                         return [4 /*yield*/, this.getCarrito()];
-                    case 6:
-                        _f.sent();
-                        return [3 /*break*/, 10];
-                    case 7:
-                        error_5 = _f.sent();
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 3:
+                        error_5 = _a.sent();
                         console.log(error_5);
                         throw error_5;
-                    case 8:
-                        _b = (_a = console).log;
-                        _c = ['Orden Agregada'];
-                        _e = (_d = JSON).stringify;
-                        return [4 /*yield*/, order_1.ordenModel.find().sort({ _id: -1 }).limit(1)];
-                    case 9:
-                        _b.apply(_a, _c.concat([_e.apply(_d, [_f.sent()])]));
-                        return [7 /*endfinally*/];
-                    case 10: return [2 /*return*/];
+                    case 4: return [7 /*endfinally*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
-    MongoDbaaSDao.prototype.insertProductToCarrito = function (producto) {
+    FirebaseDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_6;
+            var timestamp, productoMoficado, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        return [4 /*yield*/, carrito_1.carritoModel.insertMany({
+                        timestamp = producto.timestamp, productoMoficado = __rest(producto, ["timestamp"]);
+                        return [4 /*yield*/, this.Collection('carrito').add({
                                 quantity: 1,
-                                producto: producto
+                                producto: productoMoficado,
+                                cerrado: false
                             })];
                     case 1:
                         _a.sent();
@@ -261,7 +260,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getCarrito = function () {
+    FirebaseDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
             var carritosEnDB, error_7;
             var _this = this;
@@ -270,11 +269,17 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
                         this.carrito = [];
-                        return [4 /*yield*/, carrito_1.carritoModel.find({ "cerrado": false }, { __v: 0, createdAt: 0, updatedAt: 0 })];
+                        return [4 /*yield*/, this.Collection('carrito').get()];
                     case 1:
                         carritosEnDB = _a.sent();
-                        carritosEnDB.forEach(function (carrito) {
-                            _this.carrito.push(carrito);
+                        carritosEnDB.docs.map(function (carrito) {
+                            if (carrito.data().cerrado === false) {
+                                carrito.data()._id = String(carrito.id);
+                                var newCarrito = new ICart_1.Cart(carrito.data().quantity, carrito.data().producto);
+                                newCarrito._id = String(carrito.id);
+                                newCarrito.cerrado = carrito.data().cerrado;
+                                _this.carrito.push(newCarrito);
+                            }
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -289,43 +294,41 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getCarritoById = function (id) {
+    FirebaseDao.prototype.getCarritoById = function (id) {
         return this.carrito.find(function (element) { return String(element._id) === id; });
     };
-    MongoDbaaSDao.prototype.updateQtyInCarrito = function (carrito) {
+    FirebaseDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
             var error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1 } })];
+                        _a.trys.push([0, 2, 3, 4]);
+                        this.Collection('carrito').doc(carrito._id).update({ quantity: carrito.quantity + 1 });
+                        return [4 /*yield*/, this.getCarrito()];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.getCarrito()];
+                        return [3 /*break*/, 4];
                     case 2:
-                        _a.sent();
-                        return [3 /*break*/, 5];
-                    case 3:
                         error_8 = _a.sent();
                         console.log(error_8);
                         throw error_8;
-                    case 4:
+                    case 3:
                         console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [7 /*endfinally*/];
-                    case 5: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
-    MongoDbaaSDao.prototype.deleteCarrito = function (id) {
+    FirebaseDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, carrito_1.carritoModel.deleteMany({ _id: id })];
+                        return [4 /*yield*/, this.Collection('carrito').doc(id).delete()];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.getCarrito()];
@@ -345,7 +348,7 @@ var MongoDbaaSDao = /** @class */ (function () {
         });
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    MongoDbaaSDao.prototype.getMensajes = function () {
+    FirebaseDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
             var savedMessages, error_10;
             var _this = this;
@@ -354,11 +357,12 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
                         this.mensajes = [];
-                        return [4 /*yield*/, mensajes_1.mensajesModel.find({}, { __v: 0, _id: 0 })];
+                        return [4 /*yield*/, this.Collection('mensajes').get()];
                     case 1:
                         savedMessages = _a.sent();
-                        savedMessages.forEach(function (msg) {
-                            _this.mensajes.push(msg);
+                        savedMessages.docs.map(function (mensaje) {
+                            var newMensaje = new IMensaje_1.Mensaje(mensaje.data().author, mensaje.data().date, mensaje.data().text);
+                            _this.mensajes.push(newMensaje);
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -373,14 +377,15 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.insertMensajes = function (mensaje) {
+    FirebaseDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_11;
+            var mensajeModificado, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        return [4 /*yield*/, mensajes_1.mensajesModel.insertMany(mensaje)];
+                        mensajeModificado = __rest(mensaje, []);
+                        return [4 /*yield*/, this.Collection('mensajes').add(mensaje)];
                     case 1:
                         _a.sent();
                         this.mensajes.push(mensaje);
@@ -397,6 +402,6 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    return MongoDbaaSDao;
+    return FirebaseDao;
 }());
-exports.MongoDbaaSDao = MongoDbaaSDao;
+exports.FirebaseDao = FirebaseDao;

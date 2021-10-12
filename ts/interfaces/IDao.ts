@@ -2,6 +2,7 @@ import { Cart } from "./ICart";
 import { Producto } from "./IProducto"
 import {Mensaje} from "./IMensaje"
 
+
 export interface IDao {
 
   insertProducto(producto: Producto): void;

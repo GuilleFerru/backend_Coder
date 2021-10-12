@@ -2,10 +2,10 @@ import { MemoryDao } from "./daos/MemoryDao";
 import { FileSystemDao } from "./daos/FileSystemDao";
 import { MySqlDao } from "./daos/MySqlDao";
 import { SQLiteDao } from "./daos/SQLiteDao";
-// import { MongoDbDao } from "./daos/MongoDbDao";
-// import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
-
+import { MongoDbDao } from "./daos/MongoDbDao";
 import { IDao } from "./interfaces/IDao";
+import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
+import { FirebaseDao } from "./daos/FirebaseDao";
 
 export class DaoFactory {
 
@@ -13,6 +13,9 @@ export class DaoFactory {
     fileSystem: any;
     mysqlDao: any;
     sqliteDao: any;
+    mongoDao: any;
+    mongoDaoAsS: any;
+    firebaseDao: any;
     static instancia: DaoFactory;
 
 
@@ -24,6 +27,9 @@ export class DaoFactory {
         this.fileSystem = new FileSystemDao();
         this.mysqlDao = new MySqlDao();
         this.sqliteDao = new SQLiteDao();
+        this.mongoDao = new MongoDbDao();
+        this.mongoDaoAsS = new MongoDbaaSDao();
+        this.firebaseDao = new FirebaseDao();
         DaoFactory.instancia = this;
     }
 
@@ -37,10 +43,12 @@ export class DaoFactory {
                 return this.mysqlDao;
             case 3:
                 return this.sqliteDao;
-            // case 4:
-            //     return new MongoDbDao();
-            // case 5:
-            //     return new MongoDbaaSDao();
+            case 4:
+                return this.mongoDao;
+            case 5:
+                return this.mongoDaoAsS;
+            case 6:
+                return this.firebaseDao;
             default:
                 throw new Error("DAO no encontrado");
         }

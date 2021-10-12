@@ -10,11 +10,12 @@ server;
 const MEMORY: number = 0;
 const FILESYSTEM: number = 1;
 const MYSQL: number = 2;
-const SQLITE: number = 3;
+const SQLITE: number = 3; 
 const MONGO: number = 4;
 const MONGOAAS: number = 5;
+const FIREBASE: number = 6;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const OPCION = FILESYSTEM ;
+const OPCION = FIREBASE ;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 const daoFactory = new DaoFactory();
 export const dao: IDao = daoFactory.getDao(OPCION);

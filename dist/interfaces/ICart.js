@@ -4,7 +4,7 @@ exports.Cart = void 0;
 var Cart = /** @class */ (function () {
     function Cart(quantity, producto) {
         this._id = '';
-        this.timestamp = 0;
+        this.timestamp = Date.now();
         this.producto = producto;
         this.quantity = quantity;
     }

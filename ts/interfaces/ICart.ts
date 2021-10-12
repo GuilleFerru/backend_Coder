@@ -10,7 +10,7 @@ interface ICart {
 export class Cart implements ICart {
     [x: string]: any;
     public _id: string | any = '';
-    public timestamp: number | any = 0;
+    public timestamp: number | any = Date.now();
     public quantity: number | any;
     public producto: Producto | any;
 

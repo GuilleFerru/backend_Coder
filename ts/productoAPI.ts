@@ -12,9 +12,8 @@ export const productoAPI = () => {
     const checkIdProduct = async (req: Request, res: Response, next: () => void) => {
         const id: string = (req.params.id);
         const productoById: Producto | undefined = await dao.getProductoById(id);
-        
         if (productoById) {
-            if (productoById._id === id) {
+            if (String(productoById._id) === id) {
                 res.status(200).json(productoById);
             } else {
                 res.status(404).json({ error: "este producto no esta cargado" });

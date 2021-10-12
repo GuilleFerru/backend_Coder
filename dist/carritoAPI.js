@@ -60,7 +60,7 @@ var carritoAPI = function () {
                 case 2:
                     carrrito = _a.sent();
                     if (!(carrrito.length > 0)) return [3 /*break*/, 7];
-                    cartToBeUpdate = carrrito.find(function (cart) { var _a; return ((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
+                    cartToBeUpdate = carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
                     if (!cartToBeUpdate) return [3 /*break*/, 4];
                     return [4 /*yield*/, main_1.dao.updateQtyInCarrito(cartToBeUpdate)];
                 case 3:

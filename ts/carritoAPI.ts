@@ -17,7 +17,7 @@ export const carritoAPI = () => {
         if (productoById) {
             const carrrito = await dao.getCarrito();
             if (carrrito.length > 0) {
-                const cartToBeUpdate = carrrito.find((cart) => cart.producto?._id === id);
+                const cartToBeUpdate = carrrito.find((cart) => String(cart.producto?._id) === id);
                 if (cartToBeUpdate) {
                     await dao.updateQtyInCarrito(cartToBeUpdate);
                 } else {
@@ -63,7 +63,7 @@ export const carritoAPI = () => {
 
     carritoProducts.delete("/borrar/:id", async (req: Request, res: Response) => {
         const id: string = req.params.id;
-        const cartToBeDelete = await dao.getCarritoById(id);
+        const cartToBeDelete = await dao.getCarritoById(id);   
         if (cartToBeDelete) {
             res.status(200).json(await dao.deleteCarrito(cartToBeDelete._id));
             io.sockets.emit("carts", await dao.getCarrito());

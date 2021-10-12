@@ -57,7 +57,7 @@ var productoAPI = function () {
                 case 1:
                     productoById = _a.sent();
                     if (productoById) {
-                        if (productoById._id === id) {
+                        if (String(productoById._id) === id) {
                             res.status(200).json(productoById);
                         }
                         else {

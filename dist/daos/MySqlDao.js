@@ -203,6 +203,9 @@ var MySqlDao = /** @class */ (function () {
         this.countOrder = 1;
         this.knex = require("knex")(optionsMariaDB);
     }
+    MySqlDao.prototype.filterProducto = function (filtro) {
+        throw new Error("Method not implemented.");
+    };
     MySqlDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
             var error_5;

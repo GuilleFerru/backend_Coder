@@ -39,6 +39,10 @@ export class FirebaseDao implements IDao {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
+    filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
+        throw new Error("Method not implemented.");
+    }
+
 
     private Collection(collection: string) {
         return this.firestoreAdmin.collection(collection);

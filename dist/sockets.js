@@ -77,6 +77,34 @@ var sockets = function () {
                             }
                         });
                     }); });
+                    socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a, _b, _c;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
+                                case 0:
+                                    _b = (_a = socket).emit;
+                                    _c = ["products"];
+                                    return [4 /*yield*/, main_1.dao.filterProducto(filter, filterBy)];
+                                case 1:
+                                    _b.apply(_a, _c.concat([_d.sent(), server_1.isAdmin]));
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
+                    socket.on("getAllProductos", function () { return __awaiter(void 0, void 0, void 0, function () {
+                        var _a, _b, _c;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
+                                case 0:
+                                    _b = (_a = socket).emit;
+                                    _c = ["products"];
+                                    return [4 /*yield*/, main_1.dao.getProductos()];
+                                case 1:
+                                    _b.apply(_a, _c.concat([_d.sent()]));
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
                     return [2 /*return*/];
             }
         });

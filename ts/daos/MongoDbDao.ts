@@ -30,6 +30,40 @@ export class MongoDbDao implements IDao {
         this.countOrder = 1;
     }
 
+    async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {
+        try {
+            this.productos = [];
+            if (filterBy === 'nombre') {
+                const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);      
+                const productosByName = await productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })
+                productosByName.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } else if (filterBy === 'codigo') {
+                const productosByCode = await productoModel.find({ $or: [{ 'code': String(filtro[0]) }, { 'title': String(filtro[0]) }] })
+                productosByCode.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } else if (filterBy === 'precio'){
+                const productosByPrecio = await productoModel.find({'price':{$gte:filtro[0], $lte:filtro[1]}})
+                productosByPrecio.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } else if (filterBy === 'stock'){
+                const productosByStock = await productoModel.find({'stock':{$gte:filtro[0], $lte:filtro[1]}})
+                productosByStock.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } 
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            return this.productos
+        }
+    }
+
+
 
     async insertProducto(producto: Producto) {
         try {

@@ -1,13 +1,233 @@
 const navBarTemplate = Handlebars.compile(`
     <nav class="navbar fixed-top navbar-dark bg-dark">
+    <div class="col-sm-8">
         <a href="#cartModal" data-toggle="modal" onclick="showCart()" style="text-decoration:none">
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16" style="color:white">
                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
             </svg>
         </a>
+    </div>
+    <div class="col-sm-2 float-right">
         <div id="alertContainer"></div>
+    </div>
     </nav>
+
 `);
+
+const filterProductoTemplate = Handlebars.compile(`
+
+<div class="container-fluid mt-100">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-12">
+        <div class="card">
+            <article class="filter-group">
+                <header class="card-header"> 
+                    <a href="#" data-toggle="collapse" data-target="#collapse_aside1" data-abc="true" aria-expanded="false" class="collapsed" id="nombre" onclick="checkFilter(this)"> 
+                        <i class="icon-control">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </i>
+                        <h6 class="title">Nombre</h6>
+                    </a> 
+                </header>
+                <div class="filter-content collapse" id="collapse_aside1" style="">
+                    <div class="card-body">
+                        <input type="text" class="form-control" id="filterName" aria-describedby="nameHelp" placeholder="Ingresar Nombre" onkeyup="filterProductos()">
+                    </div>
+                </div>
+            </article>
+            <article class="filter-group">
+                <header class="card-header"> <a href="#" data-toggle="collapse" data-target="#collapse_aside2" data-abc="true" aria-expanded="false" class="collapsed" id="codigo" onclick="checkFilter(this)">
+                <i class="icon-control">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                </svg>
+                </i>
+                        <h6 class="title">Codidgo</h6>
+                    </a> </header>
+                <div class="filter-content collapse" id="collapse_aside2" style="">
+                    <div class="card-body">
+                        <input type="text" class="form-control" id="filterCode" aria-describedby="nameHelp" placeholder="Ingresar codigo" onkeyup="filterProductos()">
+                    </div>
+                </div>
+            </article>
+
+            <article class="filter-group">
+                <header class="card-header"> 
+                    <a href="#" data-toggle="collapse" data-target="#collapse_aside3" data-abc="true" aria-expanded="false" class="collapsed" id="precio" onclick="checkFilter(this)">
+                    <i class="icon-control">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                    </i>
+                        <h6 class="title">Precio</h6>
+                    </a> 
+                </header>
+                <div class="filter-content collapse" id="collapse_aside3">
+                    <div class="card-body"> 
+                        <div class="form-row">
+                            <div class="form-group col-md-6"> 
+                                <label>Min</label>
+                                <input class="form-control" placeholder="$0" type="number" id="minPrice">
+                            </div>
+                            <div class="form-group text-right col-md-6"> 
+                                <label>Max</label> 
+                                <input class="form-control" placeholder="$1000" type="number" id="maxPrice"> 
+                            </div>
+                        </div> 
+                    <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="filterProductos()">Filtrar</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="filter-group">
+                <header class="card-header"> 
+                    <a href="#" data-toggle="collapse" data-target="#collapse_aside4" data-abc="true" aria-expanded="false" class="collapsed" id="stock" onclick="checkFilter(this)">
+                        <i class="icon-control">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        </i>
+                        <h6 class="title">Stock </h6>
+                    </a> 
+                </header>
+                <div class="filter-content collapse" id="collapse_aside4" style="">
+                    <div class="card-body"> 
+                            <div class="form-row">
+                                <div class="form-group col-md-6"> 
+                                    <label>Min</label> 
+                                    <input class="form-control" placeholder="0" type="number" id="minStock"> 
+                                </div>
+                                <div class="form-group text-right col-md-6"> 
+                                    <label>Max</label> 
+                                    <input class="form-control" placeholder="100" type="number" id="maxStock"> 
+                                </div>
+                            </div> 
+                        <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="filterProductos()">Filtrar</a>
+                    </div>
+                </div>
+            </article>
+            <div  class="mt-2">
+                <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="limpiarFiltro()">Limpiar Filtros</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+    <style>
+    .mt-100 {
+        margin-top: 150px
+    }
+    .filter-group {
+        border-bottom: 1px solid #e4e4e4
+    }
+    .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+    }
+    .card {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0.37rem
+    }
+    .filter-group .card-header {
+        border-bottom: 0
+    }
+    .icon-control {
+        margin-top: 6px;
+        float: right;
+        font-size: 80%
+    }
+    .list-menu {
+        list-style: none;
+        margin: 0;
+        padding-left: 0
+    }
+    .list-menu a {
+        color: #343a40
+    }
+    a {
+        text-decoration: none !important;
+        background-color: transparent
+    }
+   
+    .checkbox-btn {
+        position: relative
+    }
+   
+    .checkbox-btn input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0
+    }
+   
+    .checkbox-btn input:checked~.btn {
+        border-color: #3167eb;
+        background-color: #3167eb;
+        color: #fff
+    }
+    .btn-light {
+        display: inline-block;
+        font-weight: 600;
+        color: #343a40;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #eee;
+        border: 1px solid #eee;
+        padding: 0.45rem 0.85rem;
+        font-size: 10px;
+        line-height: 1.5;
+        border-radius: 0.37rem
+    }
+   
+    .btn-light:hover {
+        background-color: #fff;
+        border-color: #989898
+    }
+    .btn-medium {
+        font-size: 12px;
+        padding: 10px 22px;
+        display: inline-block;
+        margin-right: 20px;
+        letter-spacing: 2px;
+        border: 1px solid #157af6;
+        width: 100%
+    }
+   
+    .highlight-button:hover {
+        background-color: #157af6;
+        border: 2px solid #157af6;
+        color: #fff
+    }
+   
+    .custom-control {
+        position: relative;
+        display: block;
+        min-height: 1.5rem;
+        padding-left: 1.5rem
+    }
+    </style>
+`)
+
 
 const alertTemplate = Handlebars.compile(`
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -80,7 +300,6 @@ const tableTemplate = Handlebars.compile(`
 `);
 
 const cardsTemplate = Handlebars.compile(`
-
     <div class="modal fade show" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">

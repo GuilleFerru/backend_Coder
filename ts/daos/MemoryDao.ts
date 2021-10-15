@@ -23,6 +23,26 @@ export class MemoryDao implements IDao {
     this.countCarrito = 1;
     this.countOrder = 1;
   }
+  filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
+    console.log(filtro);
+
+    if(filtro[0] === ''){
+      return this.productos;
+    }else {
+      this.productos = [];
+      const productoFiltrado: any  = this.productos.find((element) => {
+        element.title === filtro[0] ||
+        element.code === filtro[0] 
+      
+      
+      } )
+      this.productos.push(productoFiltrado)
+      return this.productos
+    }
+
+    
+    
+}
 
 
 

@@ -1,7 +1,4 @@
 import { isAdmin, io } from "./server"
-import { saveCarrito } from './carritoFS'
-import { loadMessagesFromDB, saveMessageToDB } from "./mensajesDB";
-import { loadProductsFromDB } from "./productosDB";
 import { dao } from "./main";
 import { Mensaje } from "./interfaces/IMensaje";
 
@@ -20,11 +17,14 @@ export const sockets = () => {
             )
             await dao.insertMensajes(newMensaje);
             io.sockets.emit("messages", await dao.getMensajes());
-            // await saveMessageToDB(message)
-            // io.sockets.emit("messages", await loadMessagesFromDB());
         });
-        // socket.on("saveCart", (cart) => {
-        //     saveCarrito(cart);
-        // })
+
+        socket.on("filterProducto", async (filter: string[], filterBy: string) => {
+            socket.emit("products", await dao.filterProducto(filter, filterBy), isAdmin);
+        });
+        socket.on("getAllProductos", async () => {
+            socket.emit("products", await dao.getProductos());
+        });
+
     });
 }

@@ -71,6 +71,9 @@ var FirebaseDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
+    FirebaseDao.prototype.filterProducto = function (filtro) {
+        throw new Error("Method not implemented.");
+    };
     FirebaseDao.prototype.Collection = function (collection) {
         return this.firestoreAdmin.collection(collection);
     };

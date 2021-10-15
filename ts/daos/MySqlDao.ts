@@ -34,6 +34,10 @@ export class MySqlDao implements IDao {
         this.knex = require("knex")(optionsMariaDB);
         
     }
+    filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
+        throw new Error("Method not implemented.");
+    }
+
 
     private createTableMensajes = async () => {
           // const knex = require("knex")(optionsMariaDB);

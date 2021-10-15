@@ -7,7 +7,7 @@ export interface IDao {
 
   insertProducto(producto: Producto): void;
 
-  
+  filterProducto(filtro: string[], filterBy:string): Promise<Producto[]> | Producto[];
   getProductos(): Promise<Producto[]> | Producto[] ;
   getProductoById(id: string): Producto | undefined;
   updateProducto(id: string, producto: Producto): void;

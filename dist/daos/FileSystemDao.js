@@ -55,6 +55,9 @@ var FileSystemDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
+    FileSystemDao.prototype.filterProducto = function (filtro) {
+        throw new Error("Method not implemented.");
+    };
     FileSystemDao.prototype.getNewId = function () {
         var maxId = Math.max.apply(Math, __spreadArray(__spreadArray([], this.productos.map(function (prd) { return Number(prd._id); }), false), [0], false));
         var newId = maxId + 1;

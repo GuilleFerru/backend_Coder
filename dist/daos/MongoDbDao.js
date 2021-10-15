@@ -66,9 +66,65 @@ var MongoDbDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
+    MongoDbDao.prototype.filterProducto = function (filtro, filterBy) {
+        return __awaiter(this, void 0, void 0, function () {
+            var filtroCapitalized, productosByName, productosByCode, productosByPrecio, productosByStock, error_1;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 9, 10, 11]);
+                        this.productos = [];
+                        if (!(filterBy === 'nombre')) return [3 /*break*/, 2];
+                        filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
+                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })];
+                    case 1:
+                        productosByName = _a.sent();
+                        productosByName.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 2:
+                        if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
+                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'code': String(filtro[0]) }, { 'title': String(filtro[0]) }] })];
+                    case 3:
+                        productosByCode = _a.sent();
+                        productosByCode.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 4:
+                        if (!(filterBy === 'precio')) return [3 /*break*/, 6];
+                        return [4 /*yield*/, productos_1.productoModel.find({ 'price': { $gte: filtro[0], $lte: filtro[1] } })];
+                    case 5:
+                        productosByPrecio = _a.sent();
+                        productosByPrecio.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 6:
+                        if (!(filterBy === 'stock')) return [3 /*break*/, 8];
+                        return [4 /*yield*/, productos_1.productoModel.find({ 'stock': { $gte: filtro[0], $lte: filtro[1] } })];
+                    case 7:
+                        productosByStock = _a.sent();
+                        productosByStock.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        _a.label = 8;
+                    case 8: return [3 /*break*/, 11];
+                    case 9:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        throw error_1;
+                    case 10: return [2 /*return*/, this.productos];
+                    case 11: return [2 /*return*/];
+                }
+            });
+        });
+    };
     MongoDbDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var _id, timestamp, productoMoficado, error_1;
+            var _id, timestamp, productoMoficado, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -82,9 +138,9 @@ var MongoDbDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 6];
                     case 3:
-                        error_1 = _a.sent();
-                        console.log(error_1);
-                        throw error_1;
+                        error_2 = _a.sent();
+                        console.log(error_2);
+                        throw error_2;
                     case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
                     case 5:
                         _a.sent();
@@ -97,7 +153,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedProducts, error_2;
+            var savedProducts, error_3;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -115,9 +171,9 @@ var MongoDbDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 6];
                     case 3:
-                        error_2 = _a.sent();
-                        console.log(error_2);
-                        throw error_2;
+                        error_3 = _a.sent();
+                        console.log(error_3);
+                        throw error_3;
                     case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
                     case 5:
                         _a.sent();
@@ -134,7 +190,7 @@ var MongoDbDao = /** @class */ (function () {
     ;
     MongoDbDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_3;
+            var error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -159,9 +215,9 @@ var MongoDbDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 7];
                     case 4:
-                        error_3 = _a.sent();
-                        console.log(error_3);
-                        throw error_3;
+                        error_4 = _a.sent();
+                        console.log(error_4);
+                        throw error_4;
                     case 5:
                         console.log('Producto modificado', productoToBeUpdate.title);
                         return [4 /*yield*/, mongoose_1.default.disconnect()];
@@ -176,7 +232,7 @@ var MongoDbDao = /** @class */ (function () {
     ;
     MongoDbDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_4;
+            var error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -192,9 +248,9 @@ var MongoDbDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 6];
                     case 4:
-                        error_4 = _a.sent();
-                        console.log(error_4);
-                        throw error_4;
+                        error_5 = _a.sent();
+                        console.log(error_5);
+                        throw error_5;
                     case 5:
                         console.log('Producto Eliminado');
                         return [7 /*endfinally*/];
@@ -207,7 +263,7 @@ var MongoDbDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////
     MongoDbDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_2, carrito, error_5, _a, _b, _c, _d, _e;
+            var orderTotal, _i, order_2, carrito, error_6, _a, _b, _c, _d, _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
@@ -240,9 +296,9 @@ var MongoDbDao = /** @class */ (function () {
                         _f.sent();
                         return [3 /*break*/, 12];
                     case 8:
-                        error_5 = _f.sent();
-                        console.log(error_5);
-                        throw error_5;
+                        error_6 = _f.sent();
+                        console.log(error_6);
+                        throw error_6;
                     case 9:
                         _b = (_a = console).log;
                         _c = ['Orden Agregada'];
@@ -261,7 +317,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_6;
+            var error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -277,9 +333,9 @@ var MongoDbDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 6];
                     case 3:
-                        error_6 = _a.sent();
-                        console.log(error_6);
-                        throw error_6;
+                        error_7 = _a.sent();
+                        console.log(error_7);
+                        throw error_7;
                     case 4:
                         console.log('Producto agregado a carrito', producto.title);
                         return [4 /*yield*/, mongoose_1.default.disconnect()];
@@ -293,7 +349,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var carritosEnDB, error_7;
+            var carritosEnDB, error_8;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -311,9 +367,9 @@ var MongoDbDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 5];
                     case 3:
-                        error_7 = _a.sent();
-                        console.log(error_7);
-                        throw error_7;
+                        error_8 = _a.sent();
+                        console.log(error_8);
+                        throw error_8;
                     case 4: return [2 /*return*/, this.carrito];
                     case 5: return [2 /*return*/];
                 }
@@ -325,7 +381,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_8;
+            var error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -341,9 +397,9 @@ var MongoDbDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 7];
                     case 4:
-                        error_8 = _a.sent();
-                        console.log(error_8);
-                        throw error_8;
+                        error_9 = _a.sent();
+                        console.log(error_9);
+                        throw error_9;
                     case 5:
                         console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [4 /*yield*/, mongoose_1.default.disconnect()];
@@ -357,7 +413,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_9;
+            var error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -373,9 +429,9 @@ var MongoDbDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 7];
                     case 4:
-                        error_9 = _a.sent();
-                        console.log(error_9);
-                        throw error_9;
+                        error_10 = _a.sent();
+                        console.log(error_10);
+                        throw error_10;
                     case 5:
                         console.log('Producto en carrito Eliminado');
                         return [4 /*yield*/, mongoose_1.default.disconnect()];
@@ -390,7 +446,7 @@ var MongoDbDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     MongoDbDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedMessages, error_10;
+            var savedMessages, error_11;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -408,9 +464,9 @@ var MongoDbDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 6];
                     case 3:
-                        error_10 = _a.sent();
-                        console.log(error_10);
-                        throw error_10;
+                        error_11 = _a.sent();
+                        console.log(error_11);
+                        throw error_11;
                     case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
                     case 5:
                         _a.sent();
@@ -422,7 +478,7 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_11;
+            var error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -436,9 +492,9 @@ var MongoDbDao = /** @class */ (function () {
                         this.mensajes.push(mensaje);
                         return [3 /*break*/, 6];
                     case 3:
-                        error_11 = _a.sent();
-                        console.log(error_11);
-                        throw error_11;
+                        error_12 = _a.sent();
+                        console.log(error_12);
+                        throw error_12;
                     case 4:
                         console.log('Mensaje Agregado');
                         return [4 /*yield*/, mongoose_1.default.disconnect()];

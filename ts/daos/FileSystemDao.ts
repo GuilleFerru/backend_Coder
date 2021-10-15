@@ -23,6 +23,10 @@ export class FileSystemDao implements IDao {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
+    filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
+        throw new Error("Method not implemented.");
+    }
+
 
     private pathProducto: string = "./DB/fileSystemDB/productos.txt";
     private pathCarrito: string = "./DB/fileSystemDB/carrito.txt";

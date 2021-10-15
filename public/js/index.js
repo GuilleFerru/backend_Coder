@@ -4,6 +4,8 @@ const socket = io();
 fromEvent(window, 'load').subscribe(() => {
     const navbar = navBarTemplate();
     document.getElementById('navbar').innerHTML = navbar;
+    const filtros = filterProductoTemplate()
+    document.getElementById('filterProductos').innerHTML = filtros;
 });
 
 
@@ -188,6 +190,50 @@ const passIdProductToModal = (id) => {
     })
         .catch(error => console.log(error))
 }
+
+
+let filterBy = '';
+const checkFilter = (a) => {
+    filterBy = String(a.id);
+}
+
+const filterProductos = () => {
+    let filter = [];
+    if (filterBy === 'nombre') {
+        const prducto = document.getElementById('filterName').value;
+        filter.push(prducto)
+    } else if (filterBy === 'codigo') {
+        const prducto = document.getElementById('filterCode').value;
+        filter.push(prducto)
+    } if (filterBy === 'precio') {
+        const min = document.getElementById('minPrice').value;
+        const max = document.getElementById('maxPrice').value;
+        filter.push(min, max);
+    } else if (filterBy === 'stock') {
+        const min = document.getElementById('minStock').value;
+        const max = document.getElementById('maxStock').value;
+        filter.push(min, max);
+    };
+    socket.emit('filterProducto', filter, filterBy);
+
+}
+
+const limpiarFiltro = () => {
+    var elements = document.getElementsByClassName('filter-content collapse show');
+    for (var i = 0; i < elements.length; i++) {
+        const newLocal = 'show';
+        elements[i].classList.remove(newLocal);
+    }
+    document.getElementById('filterName').value = '';
+    document.getElementById('filterCode').value = '';
+    document.getElementById('minPrice').value = '';
+    document.getElementById('maxPrice').value = '';
+    document.getElementById('minStock').value = '';
+    document.getElementById('maxStock').value = '';
+    
+    socket.emit('getAllProductos');
+}
+
 
 const addMessage = () => {
     const author = document.getElementById("emailChat").value;

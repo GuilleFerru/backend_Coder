@@ -23,6 +23,21 @@ var MemoryDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
+    MemoryDao.prototype.filterProducto = function (filtro) {
+        console.log(filtro);
+        if (filtro[0] === '') {
+            return this.productos;
+        }
+        else {
+            this.productos = [];
+            var productoFiltrado = this.productos.find(function (element) {
+                element.title === filtro[0] ||
+                    element.code === filtro[0];
+            });
+            this.productos.push(productoFiltrado);
+            return this.productos;
+        }
+    };
     MemoryDao.prototype.insertProducto = function (producto) {
         producto._id = String(this.countProducto);
         this.productos.push(producto);

@@ -32,6 +32,10 @@ export class SQLiteDao implements IDao {
         this.knex = require("knex")(optionsSQLite);
 
     }
+    filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
+        throw new Error("Method not implemented.");
+    }
+
 
     private createTableMensajes = async () => {
         // const knex = require("knex")(optionsMariaDB);

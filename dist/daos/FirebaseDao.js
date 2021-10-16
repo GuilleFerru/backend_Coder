@@ -53,14 +53,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FirebaseDao = void 0;
 var IProducto_1 = require("../interfaces/IProducto");
 var ICart_1 = require("../interfaces/ICart");
-// import { Order } from "../interfaces/IOrder";
 var IMensaje_1 = require("../interfaces/IMensaje");
 var firebase_admin_1 = __importDefault(require("firebase-admin"));
 firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert("./DB/Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json"),
     databaseURL: "https://backend-coder.firebaseio.com",
 });
-console.log("Base de datos conectada!");
+console.log("Base de datos Firebase conectada!");
 var FirebaseDao = /** @class */ (function () {
     function FirebaseDao() {
         this.firestoreAdmin = firebase_admin_1.default.firestore();
@@ -71,15 +70,77 @@ var FirebaseDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
-    FirebaseDao.prototype.filterProducto = function (filtro) {
-        throw new Error("Method not implemented.");
-    };
     FirebaseDao.prototype.Collection = function (collection) {
         return this.firestoreAdmin.collection(collection);
     };
+    FirebaseDao.prototype.createProductoObject = function (producto) {
+        producto.data()._id = String(producto.id);
+        var newProducto = new IProducto_1.Producto(producto.data().title, producto.data().description, producto.data().code, producto.data().thumbnail, producto.data().price, producto.data().stock);
+        newProducto._id = String(producto.id);
+        return newProducto;
+    };
+    FirebaseDao.prototype.filterProducto = function (filtro, filterBy) {
+        return __awaiter(this, void 0, void 0, function () {
+            var productosByName, productosByCode, productosByPrecio, productosByStock, error_1;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 9, 10, 11]);
+                        this.productos = [];
+                        if (!(filterBy === 'nombre')) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.Collection('productos').where('title', '==', filtro[0]).get()];
+                    case 1:
+                        productosByName = _a.sent();
+                        productosByName.forEach(function (producto) {
+                            var filterProducto = _this.createProductoObject(producto);
+                            _this.productos.push(filterProducto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 2:
+                        if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.Collection('productos').where('code', '==', filtro[0]).get()];
+                    case 3:
+                        productosByCode = _a.sent();
+                        productosByCode.forEach(function (producto) {
+                            var filterProducto = _this.createProductoObject(producto);
+                            _this.productos.push(filterProducto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 4:
+                        if (!(filterBy === 'precio')) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.Collection('productos').orderBy('price').startAt(filtro[0]).endAt(filtro[1]).get()];
+                    case 5:
+                        productosByPrecio = _a.sent();
+                        productosByPrecio.forEach(function (producto) {
+                            var filterProducto = _this.createProductoObject(producto);
+                            _this.productos.push(filterProducto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 6:
+                        if (!(filterBy === 'stock')) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.Collection('productos').orderBy('stock').startAt(filtro[0]).endAt(filtro[1]).get()];
+                    case 7:
+                        productosByStock = _a.sent();
+                        productosByStock.forEach(function (producto) {
+                            var filterProducto = _this.createProductoObject(producto);
+                            _this.productos.push(filterProducto);
+                        });
+                        _a.label = 8;
+                    case 8: return [3 /*break*/, 11];
+                    case 9:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        throw error_1;
+                    case 10: return [2 /*return*/, this.productos];
+                    case 11: return [2 /*return*/];
+                }
+            });
+        });
+    };
     FirebaseDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var _id, timestamp, productoMoficado, error_1;
+            var _id, timestamp, productoMoficado, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -90,11 +151,10 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        error_1 = _a.sent();
-                        console.log(error_1);
-                        throw error_1;
+                        error_2 = _a.sent();
+                        console.log(error_2);
+                        throw error_2;
                     case 3:
-                        // await mongoose.disconnect();
                         console.log('Producto Agregado');
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
@@ -104,7 +164,7 @@ var FirebaseDao = /** @class */ (function () {
     };
     FirebaseDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedProducts, error_2;
+            var savedProducts, error_3;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -115,19 +175,15 @@ var FirebaseDao = /** @class */ (function () {
                     case 1:
                         savedProducts = _a.sent();
                         savedProducts.docs.map(function (producto) {
-                            producto.data()._id = String(producto.id);
-                            var newProducto = new IProducto_1.Producto(producto.data().title, producto.data().description, producto.data().code, producto.data().thumbnail, producto.data().price, producto.data().stock);
-                            newProducto._id = String(producto.id);
+                            var newProducto = _this.createProductoObject(producto);
                             _this.productos.push(newProducto);
                         });
                         return [3 /*break*/, 4];
                     case 2:
-                        error_2 = _a.sent();
-                        console.log(error_2);
-                        throw error_2;
-                    case 3: 
-                    // await mongoose.disconnect();
-                    return [2 /*return*/, this.productos];
+                        error_3 = _a.sent();
+                        console.log(error_3);
+                        throw error_3;
+                    case 3: return [2 /*return*/, this.productos];
                     case 4: return [2 /*return*/];
                 }
             });
@@ -140,7 +196,7 @@ var FirebaseDao = /** @class */ (function () {
     ;
     FirebaseDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_3;
+            var error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -160,9 +216,9 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 5];
                     case 3:
-                        error_3 = _a.sent();
-                        console.log(error_3);
-                        throw error_3;
+                        error_4 = _a.sent();
+                        console.log(error_4);
+                        throw error_4;
                     case 4:
                         console.log('Producto modificado', productoToBeUpdate.title);
                         return [7 /*endfinally*/];
@@ -174,7 +230,7 @@ var FirebaseDao = /** @class */ (function () {
     ;
     FirebaseDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_4;
+            var error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -187,9 +243,9 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 5];
                     case 3:
-                        error_4 = _a.sent();
-                        console.log(error_4);
-                        throw error_4;
+                        error_5 = _a.sent();
+                        console.log(error_5);
+                        throw error_5;
                     case 4:
                         console.log('Producto Eliminado');
                         return [7 /*endfinally*/];
@@ -202,7 +258,7 @@ var FirebaseDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////
     FirebaseDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_1, carrito, error_5;
+            var orderTotal, _i, order_1, carrito, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -211,7 +267,6 @@ var FirebaseDao = /** @class */ (function () {
                         for (_i = 0, order_1 = order; _i < order_1.length; _i++) {
                             carrito = order_1[_i];
                             this.Collection('carrito').doc(carrito._id).update({ cerrado: true });
-                            // await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "cerrado": true } });
                             delete carrito.cerrado;
                         }
                         return [4 /*yield*/, this.Collection('ordenes').add({
@@ -226,9 +281,9 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 5];
                     case 3:
-                        error_5 = _a.sent();
-                        console.log(error_5);
-                        throw error_5;
+                        error_6 = _a.sent();
+                        console.log(error_6);
+                        throw error_6;
                     case 4: return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -237,7 +292,7 @@ var FirebaseDao = /** @class */ (function () {
     };
     FirebaseDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var timestamp, productoMoficado, error_6;
+            var timestamp, productoMoficado, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -252,9 +307,9 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        error_6 = _a.sent();
-                        console.log(error_6);
-                        throw error_6;
+                        error_7 = _a.sent();
+                        console.log(error_7);
+                        throw error_7;
                     case 3:
                         console.log('Producto agregado a carrito', producto.title);
                         return [7 /*endfinally*/];
@@ -265,7 +320,7 @@ var FirebaseDao = /** @class */ (function () {
     };
     FirebaseDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var carritosEnDB, error_7;
+            var carritosEnDB, error_8;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -286,12 +341,10 @@ var FirebaseDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 4];
                     case 2:
-                        error_7 = _a.sent();
-                        console.log(error_7);
-                        throw error_7;
-                    case 3: 
-                    // await mongoose.disconnect();
-                    return [2 /*return*/, this.carrito];
+                        error_8 = _a.sent();
+                        console.log(error_8);
+                        throw error_8;
+                    case 3: return [2 /*return*/, this.carrito];
                     case 4: return [2 /*return*/];
                 }
             });
@@ -302,7 +355,7 @@ var FirebaseDao = /** @class */ (function () {
     };
     FirebaseDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_8;
+            var error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -313,9 +366,9 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        error_8 = _a.sent();
-                        console.log(error_8);
-                        throw error_8;
+                        error_9 = _a.sent();
+                        console.log(error_9);
+                        throw error_9;
                     case 3:
                         console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [7 /*endfinally*/];
@@ -326,7 +379,7 @@ var FirebaseDao = /** @class */ (function () {
     };
     FirebaseDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_9;
+            var error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -339,9 +392,9 @@ var FirebaseDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 5];
                     case 3:
-                        error_9 = _a.sent();
-                        console.log(error_9);
-                        throw error_9;
+                        error_10 = _a.sent();
+                        console.log(error_10);
+                        throw error_10;
                     case 4:
                         console.log('Producto en carrito Eliminado');
                         return [7 /*endfinally*/];
@@ -353,7 +406,7 @@ var FirebaseDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     FirebaseDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedMessages, error_10;
+            var savedMessages, error_11;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -369,12 +422,10 @@ var FirebaseDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 4];
                     case 2:
-                        error_10 = _a.sent();
-                        console.log(error_10);
-                        throw error_10;
-                    case 3: 
-                    // await mongoose.disconnect();
-                    return [2 /*return*/, this.mensajes];
+                        error_11 = _a.sent();
+                        console.log(error_11);
+                        throw error_11;
+                    case 3: return [2 /*return*/, this.mensajes];
                     case 4: return [2 /*return*/];
                 }
             });
@@ -382,7 +433,7 @@ var FirebaseDao = /** @class */ (function () {
     };
     FirebaseDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
-            var mensajeModificado, error_11;
+            var mensajeModificado, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -394,9 +445,9 @@ var FirebaseDao = /** @class */ (function () {
                         this.mensajes.push(mensaje);
                         return [3 /*break*/, 4];
                     case 2:
-                        error_11 = _a.sent();
-                        console.log(error_11);
-                        throw error_11;
+                        error_12 = _a.sent();
+                        console.log(error_12);
+                        throw error_12;
                     case 3:
                         console.log('Mensaje Agregado');
                         return [7 /*endfinally*/];

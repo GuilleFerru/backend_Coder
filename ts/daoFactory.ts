@@ -20,35 +20,35 @@ export class DaoFactory {
 
 
     constructor() {
-        if (DaoFactory.instancia) {
-            return DaoFactory.instancia;
-        }
-        this.memoria = new MemoryDao();
-        this.fileSystem = new FileSystemDao();
-        this.mysqlDao = new MySqlDao();
-        this.sqliteDao = new SQLiteDao();
-        this.mongoDao = new MongoDbDao();
-        this.mongoDaoAsS = new MongoDbaaSDao();
-        this.firebaseDao = new FirebaseDao();
-        DaoFactory.instancia = this;
+        // if (DaoFactory.instancia) {
+        //     return DaoFactory.instancia;
+        // }
+        // this.memoria = new MemoryDao();
+        // this.fileSystem = new FileSystemDao();
+        // this.mysqlDao = new MySqlDao();
+        // this.sqliteDao = new SQLiteDao();
+        // this.mongoDao = new MongoDbDao();
+        // this.mongoDaoAsS = new MongoDbaaSDao();
+        // this.firebaseDao = new FirebaseDao();
+        // DaoFactory.instancia = this;
     }
 
     getDao(opcion: number): IDao {
         switch (opcion) {
             case 0:
-                return this.memoria;
+                return new MemoryDao();
             case 1:
-                return this.fileSystem;
+                return new FileSystemDao();
             case 2:
-                return this.mysqlDao;
+                return new MySqlDao();
             case 3:
-                return this.sqliteDao;
+                return new SQLiteDao();
             case 4:
-                return this.mongoDao;
+                return new MongoDbDao();
             case 5:
-                return this.mongoDaoAsS;
+                return new MongoDbaaSDao();
             case 6:
-                return this.firebaseDao;
+                return new FirebaseDao();
             default:
                 throw new Error("DAO no encontrado");
         }

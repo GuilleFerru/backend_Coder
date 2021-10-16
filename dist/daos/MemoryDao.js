@@ -23,20 +23,38 @@ var MemoryDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
-    MemoryDao.prototype.filterProducto = function (filtro) {
-        console.log(filtro);
-        if (filtro[0] === '') {
-            return this.productos;
-        }
-        else {
-            this.productos = [];
-            var productoFiltrado = this.productos.find(function (element) {
-                element.title === filtro[0] ||
-                    element.code === filtro[0];
+    MemoryDao.prototype.filterProducto = function (filtro, filterBy) {
+        var productos = [];
+        if (filterBy === 'nombre') {
+            var filtroCapitalized_1 = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
+            this.productos.forEach(function (producto) {
+                if (producto.title === filtro[0] || producto.title === filtroCapitalized_1) {
+                    productos.push(producto);
+                }
             });
-            this.productos.push(productoFiltrado);
-            return this.productos;
         }
+        else if (filterBy === 'codigo') {
+            this.productos.forEach(function (producto) {
+                if (producto.code === filtro[0]) {
+                    productos.push(producto);
+                }
+            });
+        }
+        else if (filterBy === 'precio') {
+            this.productos.forEach(function (producto) {
+                if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
+                    productos.push(producto);
+                }
+            });
+        }
+        else if (filterBy === 'stock') {
+            this.productos.forEach(function (producto) {
+                if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
+                    productos.push(producto);
+                }
+            });
+        }
+        return productos;
     };
     MemoryDao.prototype.insertProducto = function (producto) {
         producto._id = String(this.countProducto);

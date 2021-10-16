@@ -66,7 +66,7 @@ var MongoDbaaSDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose_1.default.connect(this.MONGO_URL, function () {
-            console.log('Connected to MongoDB 1');
+            console.log("Base de datos MongoDBAaS conectada!");
         });
     }
     MongoDbaaSDao.prototype.filterProducto = function (filtro, filterBy) {
@@ -89,7 +89,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 8];
                     case 2:
                         if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
-                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'code': String(filtro[0]) }, { 'title': String(filtro[0]) }] })];
+                        return [4 /*yield*/, productos_1.productoModel.find({ 'code': String(filtro[0]) })];
                     case 3:
                         productosByCode = _a.sent();
                         productosByCode.forEach(function (producto) {

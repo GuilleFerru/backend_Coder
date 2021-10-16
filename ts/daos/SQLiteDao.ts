@@ -29,11 +29,41 @@ export class SQLiteDao implements IDao {
         this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
-        this.knex = require("knex")(optionsSQLite);
+        this.knex = require("knex")(optionsSQLite)
 
     }
-    filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
-        throw new Error("Method not implemented.");
+
+    async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {
+        try {
+            this.productos = [];
+            if (filterBy === 'nombre') {
+                const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
+                const productosByName = await this.knex.from("productos").select("*").where("title", String(filtro[0])).orWhere("title", String(filtroCapitalized));
+                productosByName.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } else if (filterBy === 'codigo') {
+                const productosByCode = await this.knex.from("productos").select("*").where("code", String(filtro[0]))
+                productosByCode.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } else if (filterBy === 'precio') {
+                const productosByPrecio = await this.knex.from("productos").select("*").whereBetween('price', [filtro[0], filtro[1]])
+                productosByPrecio.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            } else if (filterBy === 'stock') {
+                const productosByStock = await this.knex.from("productos").select("*").whereBetween('stock', [filtro[0], filtro[1]])
+                productosByStock.forEach((producto: string | any) => {
+                    this.productos.push(producto);
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            return this.productos
+        }
     }
 
 
@@ -190,9 +220,9 @@ export class SQLiteDao implements IDao {
         }
     };
 
-    getProductoById(id: string): Producto | undefined {
-
-        return this.productos.find((element) => element._id === id)
+    async getProductoById(id: string): Promise<Producto> {
+        const producto = await this.knex.from("productos").where("_id", Number(id))
+        return producto.pop();
     };
 
     async updateProducto(id: string, productoToBeUpdate: Producto) {
@@ -216,7 +246,7 @@ export class SQLiteDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            console.log('Producto modificado',productoToBeUpdate.title);
+            console.log('Producto modificado', productoToBeUpdate.title);
             // knex.destroy();
         }
 
@@ -351,7 +381,7 @@ export class SQLiteDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            console.log('Se agrego un producto similar al mismo carrito',carrito.producto.title)
+            console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title)
             // knex.destroy();
         }
     }

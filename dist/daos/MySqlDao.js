@@ -203,12 +203,65 @@ var MySqlDao = /** @class */ (function () {
         this.countOrder = 1;
         this.knex = require("knex")(optionsMariaDB);
     }
-    MySqlDao.prototype.filterProducto = function (filtro) {
-        throw new Error("Method not implemented.");
+    MySqlDao.prototype.filterProducto = function (filtro, filterBy) {
+        return __awaiter(this, void 0, void 0, function () {
+            var filtroCapitalized, productosByName, productosByCode, productosByPrecio, productosByStock, error_5;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 9, 10, 11]);
+                        this.productos = [];
+                        if (!(filterBy === 'nombre')) return [3 /*break*/, 2];
+                        filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
+                        return [4 /*yield*/, this.knex.from("productos").select("*").where("title", String(filtro[0])).orWhere("title", String(filtroCapitalized))];
+                    case 1:
+                        productosByName = _a.sent();
+                        productosByName.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 2:
+                        if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.knex.from("productos").select("*").where("code", String(filtro[0]))];
+                    case 3:
+                        productosByCode = _a.sent();
+                        productosByCode.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 4:
+                        if (!(filterBy === 'precio')) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.knex.from("productos").select("*").whereBetween('price', [filtro[0], filtro[1]])];
+                    case 5:
+                        productosByPrecio = _a.sent();
+                        productosByPrecio.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        return [3 /*break*/, 8];
+                    case 6:
+                        if (!(filterBy === 'stock')) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.knex.from("productos").select("*").whereBetween('stock', [filtro[0], filtro[1]])];
+                    case 7:
+                        productosByStock = _a.sent();
+                        productosByStock.forEach(function (producto) {
+                            _this.productos.push(producto);
+                        });
+                        _a.label = 8;
+                    case 8: return [3 /*break*/, 11];
+                    case 9:
+                        error_5 = _a.sent();
+                        console.log(error_5);
+                        throw error_5;
+                    case 10: return [2 /*return*/, this.productos];
+                    case 11: return [2 /*return*/];
+                }
+            });
+        });
     };
     MySqlDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_5;
+            var error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -228,9 +281,9 @@ var MySqlDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        error_5 = _a.sent();
-                        console.log(error_5);
-                        throw error_5;
+                        error_6 = _a.sent();
+                        console.log(error_6);
+                        throw error_6;
                     case 3:
                         console.log('Producto Agregado');
                         return [7 /*endfinally*/];
@@ -241,7 +294,7 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var productosFromDB, _i, productosFromDB_1, producto, error_6;
+            var productosFromDB, _i, productosFromDB_1, producto, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.createTableProductos()];
@@ -267,9 +320,9 @@ var MySqlDao = /** @class */ (function () {
                         }
                         return [3 /*break*/, 8];
                     case 6:
-                        error_6 = _a.sent();
-                        console.log(error_6);
-                        throw error_6;
+                        error_7 = _a.sent();
+                        console.log(error_7);
+                        throw error_7;
                     case 7: 
                     // await this.knex.destroy();
                     return [2 /*return*/, this.productos];
@@ -280,12 +333,22 @@ var MySqlDao = /** @class */ (function () {
     };
     ;
     MySqlDao.prototype.getProductoById = function (id) {
-        return this.productos.find(function (element) { return element._id === id; });
+        return __awaiter(this, void 0, void 0, function () {
+            var producto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.knex.from("productos").where("_id", Number(id))];
+                    case 1:
+                        producto = _a.sent();
+                        return [2 /*return*/, producto.pop()];
+                }
+            });
+        });
     };
     ;
     MySqlDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_7;
+            var error_8;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -309,9 +372,9 @@ var MySqlDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 4];
                     case 2:
-                        error_7 = _a.sent();
-                        console.log(error_7);
-                        throw error_7;
+                        error_8 = _a.sent();
+                        console.log(error_8);
+                        throw error_8;
                     case 3: return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -321,7 +384,7 @@ var MySqlDao = /** @class */ (function () {
     ;
     MySqlDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var productoToBeDelete, index, error_8;
+            var productoToBeDelete, index, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -334,9 +397,9 @@ var MySqlDao = /** @class */ (function () {
                         this.productos.splice(index, 1);
                         return [3 /*break*/, 4];
                     case 2:
-                        error_8 = _a.sent();
-                        console.log(error_8);
-                        throw error_8;
+                        error_9 = _a.sent();
+                        console.log(error_9);
+                        throw error_9;
                     case 3: return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -347,7 +410,7 @@ var MySqlDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////
     MySqlDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var newOrder, lastOrderInserted, _id, _i, order_1, cart, error_9;
+            var newOrder, lastOrderInserted, _id, _i, order_1, cart, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -382,9 +445,9 @@ var MySqlDao = /** @class */ (function () {
                         this.carrito = [];
                         return [3 /*break*/, 9];
                     case 7:
-                        error_9 = _a.sent();
-                        console.log(error_9);
-                        throw error_9;
+                        error_10 = _a.sent();
+                        console.log(error_10);
+                        throw error_10;
                     case 8:
                         console.log('Orden Agregada');
                         return [7 /*endfinally*/];
@@ -395,7 +458,7 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var lastCarritoId, _id, error_10;
+            var lastCarritoId, _id, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.createTableCarrito()];
@@ -425,9 +488,9 @@ var MySqlDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 7];
                     case 5:
-                        error_10 = _a.sent();
-                        console.log(error_10);
-                        throw error_10;
+                        error_11 = _a.sent();
+                        console.log(error_11);
+                        throw error_11;
                     case 6:
                         console.log('Producto agregado a carrito');
                         return [7 /*endfinally*/];
@@ -438,7 +501,7 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var productosEnCarrito, _i, productosEnCarrito_1, carrito, productoId, productoEnCarrito, producto, error_11;
+            var productosEnCarrito, _i, productosEnCarrito_1, carrito, productoId, productoEnCarrito, producto, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.createTableCarrito()];
@@ -475,9 +538,9 @@ var MySqlDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 7: return [3 /*break*/, 10];
                     case 8:
-                        error_11 = _a.sent();
-                        console.log(error_11);
-                        throw error_11;
+                        error_12 = _a.sent();
+                        console.log(error_12);
+                        throw error_12;
                     case 9: 
                     // await knex.destroy();
                     return [2 /*return*/, this.carrito];
@@ -491,7 +554,7 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
-            var newCarrito, index, error_12;
+            var newCarrito, index, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -504,9 +567,9 @@ var MySqlDao = /** @class */ (function () {
                         this.carrito[index] = newCarrito;
                         return [3 /*break*/, 4];
                     case 2:
-                        error_12 = _a.sent();
-                        console.log(error_12);
-                        throw error_12;
+                        error_13 = _a.sent();
+                        console.log(error_13);
+                        throw error_13;
                     case 3: return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -515,7 +578,7 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var productoToBeDelete, index, error_13;
+            var productoToBeDelete, index, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -528,9 +591,9 @@ var MySqlDao = /** @class */ (function () {
                         this.carrito.splice(index, 1);
                         return [3 /*break*/, 4];
                     case 2:
-                        error_13 = _a.sent();
-                        console.log(error_13);
-                        throw error_13;
+                        error_14 = _a.sent();
+                        console.log(error_14);
+                        throw error_14;
                     case 3: return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -540,7 +603,7 @@ var MySqlDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     MySqlDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var mensajesFromDB, _i, mensajesFromDB_1, mensaje, error_14;
+            var mensajesFromDB, _i, mensajesFromDB_1, mensaje, error_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -556,9 +619,9 @@ var MySqlDao = /** @class */ (function () {
                         }
                         return [3 /*break*/, 4];
                     case 2:
-                        error_14 = _a.sent();
-                        console.log(error_14);
-                        throw error_14;
+                        error_15 = _a.sent();
+                        console.log(error_15);
+                        throw error_15;
                     case 3: 
                     // await knex.destroy();
                     return [2 /*return*/, this.mensajes];
@@ -569,7 +632,7 @@ var MySqlDao = /** @class */ (function () {
     };
     MySqlDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_15;
+            var error_16;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -586,9 +649,9 @@ var MySqlDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        error_15 = _a.sent();
-                        console.log(error_15);
-                        throw error_15;
+                        error_16 = _a.sent();
+                        console.log(error_16);
+                        throw error_16;
                     case 3:
                         console.log('Mensaje Agregado');
                         return [7 /*endfinally*/];

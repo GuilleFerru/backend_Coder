@@ -55,13 +55,43 @@ var FileSystemDao = /** @class */ (function () {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
-    FileSystemDao.prototype.filterProducto = function (filtro) {
-        throw new Error("Method not implemented.");
-    };
     FileSystemDao.prototype.getNewId = function () {
         var maxId = Math.max.apply(Math, __spreadArray(__spreadArray([], this.productos.map(function (prd) { return Number(prd._id); }), false), [0], false));
         var newId = maxId + 1;
         return String(newId);
+    };
+    FileSystemDao.prototype.filterProducto = function (filtro, filterBy) {
+        var productos = [];
+        if (filterBy === 'nombre') {
+            var filtroCapitalized_1 = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
+            this.productos.forEach(function (producto) {
+                if (producto.title === filtro[0] || producto.title === filtroCapitalized_1) {
+                    productos.push(producto);
+                }
+            });
+        }
+        else if (filterBy === 'codigo') {
+            this.productos.forEach(function (producto) {
+                if (producto.code === filtro[0]) {
+                    productos.push(producto);
+                }
+            });
+        }
+        else if (filterBy === 'precio') {
+            this.productos.forEach(function (producto) {
+                if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
+                    productos.push(producto);
+                }
+            });
+        }
+        else if (filterBy === 'stock') {
+            this.productos.forEach(function (producto) {
+                if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
+                    productos.push(producto);
+                }
+            });
+        }
+        return productos;
     };
     FileSystemDao.prototype.insertProducto = function (producto) {
         producto._id = this.getNewId();

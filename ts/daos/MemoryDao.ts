@@ -23,26 +23,37 @@ export class MemoryDao implements IDao {
     this.countCarrito = 1;
     this.countOrder = 1;
   }
-  filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
-    console.log(filtro);
 
-    if(filtro[0] === ''){
-      return this.productos;
-    }else {
-      this.productos = [];
-      const productoFiltrado: any  = this.productos.find((element) => {
-        element.title === filtro[0] ||
-        element.code === filtro[0] 
-      
-      
-      } )
-      this.productos.push(productoFiltrado)
-      return this.productos
+  filterProducto(filtro: string[], filterBy: string): Array<Producto> {
+    const productos: Array<Producto> = [];
+    if (filterBy === 'nombre') {
+      const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
+      this.productos.forEach((producto: Producto) => {
+        if (producto.title === filtro[0] || producto.title === filtroCapitalized) {
+          productos.push(producto);
+        }
+      })
+    } else if (filterBy === 'codigo') {
+      this.productos.forEach((producto: Producto) => {
+        if (producto.code === filtro[0]) {
+          productos.push(producto);
+        }
+      })
+    } else if (filterBy === 'precio') {
+      this.productos.forEach((producto: Producto | any) => {
+        if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
+          productos.push(producto);
+        }
+      })
+    } else if (filterBy === 'stock') {
+      this.productos.forEach((producto: Producto | any) => {
+        if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
+          productos.push(producto);
+        }
+      })
     }
-
-    
-    
-}
+    return productos
+  }
 
 
 

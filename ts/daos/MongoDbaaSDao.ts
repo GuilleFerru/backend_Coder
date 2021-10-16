@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { IDao } from "../interfaces/IDao";
 import { Producto } from "../interfaces/IProducto";
 import { Cart } from "../interfaces/ICart";
-import { Order } from "../interfaces/IOrder";
 import { Mensaje } from "../interfaces/IMensaje";
 import { productoModel } from "../models/productos";
 import { mensajesModel } from "../models/mensajes";
@@ -29,7 +28,7 @@ export class MongoDbaaSDao implements IDao {
         this.countCarrito = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
-            console.log('Connected to MongoDB 1');
+            console.log("Base de datos MongoDBAaS conectada!");
         });
     }
 
@@ -43,7 +42,7 @@ export class MongoDbaaSDao implements IDao {
                     this.productos.push(producto);
                 })
             } else if (filterBy === 'codigo') {
-                const productosByCode = await productoModel.find({ $or: [{ 'code': String(filtro[0]) }, { 'title': String(filtro[0]) }] })
+                const productosByCode = await productoModel.find({ 'code': String(filtro[0]) })
                 productosByCode.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })

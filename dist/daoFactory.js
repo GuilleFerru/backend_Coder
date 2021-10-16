@@ -10,34 +10,34 @@ var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var FirebaseDao_1 = require("./daos/FirebaseDao");
 var DaoFactory = /** @class */ (function () {
     function DaoFactory() {
-        if (DaoFactory.instancia) {
-            return DaoFactory.instancia;
-        }
-        this.memoria = new MemoryDao_1.MemoryDao();
-        this.fileSystem = new FileSystemDao_1.FileSystemDao();
-        this.mysqlDao = new MySqlDao_1.MySqlDao();
-        this.sqliteDao = new SQLiteDao_1.SQLiteDao();
-        this.mongoDao = new MongoDbDao_1.MongoDbDao();
-        this.mongoDaoAsS = new MongoDbaaSDao_1.MongoDbaaSDao();
-        this.firebaseDao = new FirebaseDao_1.FirebaseDao();
-        DaoFactory.instancia = this;
+        // if (DaoFactory.instancia) {
+        //     return DaoFactory.instancia;
+        // }
+        // this.memoria = new MemoryDao();
+        // this.fileSystem = new FileSystemDao();
+        // this.mysqlDao = new MySqlDao();
+        // this.sqliteDao = new SQLiteDao();
+        // this.mongoDao = new MongoDbDao();
+        // this.mongoDaoAsS = new MongoDbaaSDao();
+        // this.firebaseDao = new FirebaseDao();
+        // DaoFactory.instancia = this;
     }
     DaoFactory.prototype.getDao = function (opcion) {
         switch (opcion) {
             case 0:
-                return this.memoria;
+                return new MemoryDao_1.MemoryDao();
             case 1:
-                return this.fileSystem;
+                return new FileSystemDao_1.FileSystemDao();
             case 2:
-                return this.mysqlDao;
+                return new MySqlDao_1.MySqlDao();
             case 3:
-                return this.sqliteDao;
+                return new SQLiteDao_1.SQLiteDao();
             case 4:
-                return this.mongoDao;
+                return new MongoDbDao_1.MongoDbDao();
             case 5:
-                return this.mongoDaoAsS;
+                return new MongoDbaaSDao_1.MongoDbaaSDao();
             case 6:
-                return this.firebaseDao;
+                return new FirebaseDao_1.FirebaseDao();
             default:
                 throw new Error("DAO no encontrado");
         }

@@ -1,24 +1,16 @@
-import mongoose from "mongoose";
 import { IDao } from "../interfaces/IDao";
 import { Producto } from "../interfaces/IProducto";
 import { Cart } from "../interfaces/ICart";
-// import { Order } from "../interfaces/IOrder";
 import { Mensaje } from "../interfaces/IMensaje";
-// import { productoModel } from "../models/productos";
-// import { mensajesModel } from "../models/mensajes";
-// import { carritoModel } from "../models/carrito";
-import { ordenModel } from "../models/order";
-
 import firebaseAdmin from "firebase-admin";
+
 
 firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert("./DB/Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json"),
     databaseURL: "https://backend-coder.firebaseio.com",
 });
 
-console.log("Base de datos conectada!");
-
-
+console.log("Base de datos Firebase conectada!");
 
 
 export class FirebaseDao implements IDao {
@@ -39,15 +31,60 @@ export class FirebaseDao implements IDao {
         this.countCarrito = 1;
         this.countOrder = 1;
     }
-    filterProducto(filtro: string[]): Producto[] | Promise<Producto[]> {
-        throw new Error("Method not implemented.");
-    }
-
 
     private Collection(collection: string) {
         return this.firestoreAdmin.collection(collection);
     }
 
+    private createProductoObject(producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>): Producto {
+        producto.data()._id = String(producto.id);
+        const newProducto: Producto = new Producto(
+            producto.data().title,
+            producto.data().description,
+            producto.data().code,
+            producto.data().thumbnail,
+            producto.data().price,
+            producto.data().stock
+        )
+        newProducto._id = String(producto.id);
+        return newProducto;
+    }
+
+    async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {
+        try {
+            this.productos = [];
+            if (filterBy === 'nombre') {
+                const productosByName = await this.Collection('productos').where('title', '==', filtro[0]).get();
+                productosByName.forEach(producto => {
+                    const filterProducto = this.createProductoObject(producto);
+                    this.productos.push(filterProducto);
+                })
+            } else if (filterBy === 'codigo') {
+                const productosByCode = await this.Collection('productos').where('code', '==', filtro[0]).get();
+                productosByCode.forEach(producto => {
+                    const filterProducto = this.createProductoObject(producto);
+                    this.productos.push(filterProducto);
+                })
+            } else if (filterBy === 'precio') {
+                const productosByPrecio = await this.Collection('productos').orderBy('price').startAt(filtro[0]).endAt(filtro[1]).get();
+                productosByPrecio.forEach(producto => {
+                    const filterProducto = this.createProductoObject(producto);
+                    this.productos.push(filterProducto);
+                })
+            } else if (filterBy === 'stock') {
+                const productosByStock = await this.Collection('productos').orderBy('stock').startAt(filtro[0]).endAt(filtro[1]).get();
+                productosByStock.forEach(producto => {
+                    const filterProducto = this.createProductoObject(producto);
+                    this.productos.push(filterProducto);
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            return this.productos
+        }
+    }
 
     async insertProducto(producto: Producto) {
         try {
@@ -57,7 +94,6 @@ export class FirebaseDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            // await mongoose.disconnect();
             console.log('Producto Agregado');
         }
     }
@@ -67,24 +103,13 @@ export class FirebaseDao implements IDao {
             this.productos = [];
             const savedProducts = await this.Collection('productos').get();
             savedProducts.docs.map((producto: string | any) => {
-                producto.data()._id = String(producto.id);
-
-                const newProducto: Producto = new Producto(
-                    producto.data().title,
-                    producto.data().description,
-                    producto.data().code,
-                    producto.data().thumbnail,
-                    producto.data().price,
-                    producto.data().stock
-                )
-                newProducto._id = String(producto.id);
+                const newProducto = this.createProductoObject(producto);
                 this.productos.push(newProducto);
             })
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            // await mongoose.disconnect();
             return this.productos;
         }
     };
@@ -110,7 +135,6 @@ export class FirebaseDao implements IDao {
             throw error;
         } finally {
             console.log('Producto modificado', productoToBeUpdate.title);
-            // await mongoose.disconnect();
         }
     };
 
@@ -124,7 +148,6 @@ export class FirebaseDao implements IDao {
             throw error;
         } finally {
             console.log('Producto Eliminado');
-            // await mongoose.disconnect();
         }
     };
 
@@ -136,7 +159,6 @@ export class FirebaseDao implements IDao {
             const orderTotal: any = order.pop();
             for (const carrito of order) {
                 this.Collection('carrito').doc(carrito._id).update({ cerrado: true });
-                // await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "cerrado": true } });
                 delete carrito.cerrado;
             }
             await this.Collection('ordenes').add({
@@ -193,7 +215,6 @@ export class FirebaseDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            // await mongoose.disconnect();
             return this.carrito;
         }
     }
@@ -213,7 +234,6 @@ export class FirebaseDao implements IDao {
             throw error;
         } finally {
             console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title)
-            // await mongoose.disconnect();
         }
     }
 
@@ -226,7 +246,6 @@ export class FirebaseDao implements IDao {
             throw error;
         } finally {
             console.log('Producto en carrito Eliminado');
-            // await mongoose.disconnect();
         }
     }
 
@@ -238,36 +257,25 @@ export class FirebaseDao implements IDao {
 
             const savedMessages = await this.Collection('mensajes').get();
             savedMessages.docs.map((mensaje: string | any) => {
-
-
                 const newMensaje: Mensaje = new Mensaje(
                     mensaje.data().author,
                     mensaje.data().date,
                     mensaje.data().text,
-
                 )
-
                 this.mensajes.push(newMensaje);
             })
 
-
-            // const savedMessages = await mensajesModel.find({}, { __v: 0, _id: 0 })
-            // savedMessages.forEach((msg: string | any) => {
-            //     this.mensajes.push(msg);
-            // })
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            // await mongoose.disconnect();
             return this.mensajes;
         }
     }
 
     async insertMensajes(mensaje: Mensaje) {
-
         try {
-            const {  ...mensajeModificado } = mensaje;
+            const { ...mensajeModificado } = mensaje;
             await this.Collection('mensajes').add(mensaje)
             this.mensajes.push(mensaje);
         } catch (error) {
@@ -275,7 +283,6 @@ export class FirebaseDao implements IDao {
             throw error;
         } finally {
             console.log('Mensaje Agregado');
-            // await mongoose.disconnect();
         }
     }
 }

@@ -86,7 +86,7 @@ var MongoDbDao = /** @class */ (function () {
                         return [3 /*break*/, 8];
                     case 2:
                         if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
-                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'code': String(filtro[0]) }, { 'title': String(filtro[0]) }] })];
+                        return [4 /*yield*/, productos_1.productoModel.find({ 'code': String(filtro[0]) })];
                     case 3:
                         productosByCode = _a.sent();
                         productosByCode.forEach(function (producto) {

@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { Producto } from "./interfaces/IProducto";
 import { app, io, isAdmin } from "./server"
-import { saveProductsToDB, loadProductsFromDB, loadProductByIdFromDB, deleteProductByIdFromDB, updateProductByIdFromDB } from "./productosDB";
 import { dao } from "./main";
 
 export const productoAPI = () => {
@@ -12,8 +11,11 @@ export const productoAPI = () => {
     const checkIdProduct = async (req: Request, res: Response, next: () => void) => {
         const id: string = (req.params.id);
         const productoById: Producto | undefined = await dao.getProductoById(id);
+        
         if (productoById) {
+            
             if (String(productoById._id) === id) {
+                
                 res.status(200).json(productoById);
             } else {
                 res.status(404).json({ error: "este producto no esta cargado" });

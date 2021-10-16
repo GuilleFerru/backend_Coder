@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
-import { app, io, cartLogic } from "./server";
-import { loadProductByIdFromDB } from "./productosDB";
+import { app, io } from "./server";
 import { Producto } from "./interfaces/IProducto";
 import { Cart } from "./interfaces/ICart";
 import { dao } from "./main";
-import { Order } from "./interfaces/IOrder";
+
 
 export const carritoAPI = () => {
 
@@ -63,7 +62,7 @@ export const carritoAPI = () => {
 
     carritoProducts.delete("/borrar/:id", async (req: Request, res: Response) => {
         const id: string = req.params.id;
-        const cartToBeDelete = await dao.getCarritoById(id);   
+        const cartToBeDelete = await dao.getCarritoById(id);
         if (cartToBeDelete) {
             res.status(200).json(await dao.deleteCarrito(cartToBeDelete._id));
             io.sockets.emit("carts", await dao.getCarrito());

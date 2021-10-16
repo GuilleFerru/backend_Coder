@@ -22,10 +22,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartLogic = exports.io = exports.isAdmin = exports.server = exports.app = void 0;
+exports.io = exports.isAdmin = exports.server = exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var SocketIO = __importStar(require("socket.io"));
-var Cart_1 = require("./Cart");
 /* SERVER */ /////////////////////////////////////////////////////////////////////////////
 exports.app = (0, express_1.default)();
 var port = 8080;
@@ -39,7 +38,6 @@ exports.server.on("error", function (error) {
 });
 exports.isAdmin = true;
 exports.io = new SocketIO.Server(exports.server);
-exports.cartLogic = new Cart_1.CartLogic();
 /* cliente */ /////////////////////////////////////////////////////////////////////////////////
 exports.app.use(express_1.default.static("./public"));
 exports.app.get("/", function (_, res) {

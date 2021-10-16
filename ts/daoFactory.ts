@@ -9,13 +9,6 @@ import { FirebaseDao } from "./daos/FirebaseDao";
 
 export class DaoFactory {
 
-    
-
-
-    constructor() {
-
-    }
-
     getDao(opcion: number): IDao {
         switch (opcion) {
             case 0:

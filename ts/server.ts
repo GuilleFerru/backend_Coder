@@ -1,7 +1,5 @@
 import express, { Request, Response } from "express";
 import * as SocketIO from "socket.io";
-import { CartLogic } from "./Cart";
-
 
 /* SERVER *//////////////////////////////////////////////////////////////////////////////
 export const app = express();
@@ -17,12 +15,9 @@ server.on("error", (error: string) => {
 
 export const isAdmin: boolean = true;
 export const io = new SocketIO.Server(server);
-export const cartLogic = new CartLogic();
-
 
 
 /* cliente */ /////////////////////////////////////////////////////////////////////////////////
-
 app.use(express.static("./public"));
 app.get("/", (_: Request, res: Response) => {
   return res.sendFile("index.html", { root: __dirname });

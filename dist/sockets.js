@@ -51,12 +51,10 @@ var sockets = function () {
                     return [4 /*yield*/, main_1.dao.getMensajes()];
                 case 1:
                     _b.apply(_a, _c.concat([_g.sent()]));
-                    // socket.emit("messages", await loadMessagesFromDB());
                     _e = (_d = socket).emit;
                     _f = ["products"];
                     return [4 /*yield*/, main_1.dao.getProductos()];
                 case 2:
-                    // socket.emit("messages", await loadMessagesFromDB());
                     _e.apply(_d, _f.concat([_g.sent(), server_1.isAdmin]));
                     socket.on("newMessage", function (message) { return __awaiter(void 0, void 0, void 0, function () {
                         var date, newMensaje, _a, _b, _c;

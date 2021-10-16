@@ -2,20 +2,33 @@ import express, { Request, Response } from "express";
 import { Producto } from "./interfaces/IProducto";
 import { app, io, isAdmin } from "./server"
 import { dao } from "./main";
+import { generateData } from "./productoTest"
 
 export const productoAPI = () => {
 
     const routerProducts = express.Router();
     app.use("/productos", routerProducts);
 
+    routerProducts.get("/vista-test/", (req: Request, res: Response) => {
+        const cant = Number(req.query.cant);
+        const cantidadAGenerar = isNaN(cant) ? 10 : cant;    
+        const fakeProductos = generateData(cantidadAGenerar);
+        if (fakeProductos.length > 0) {
+            res.status(200).json(fakeProductos);
+        } else {
+            res.status(200).json({ error: "no hay productos cargados" });
+        }
+    }
+    );
+
     const checkIdProduct = async (req: Request, res: Response, next: () => void) => {
         const id: string = (req.params.id);
         const productoById: Producto | undefined = await dao.getProductoById(id);
-        
+
         if (productoById) {
-            
+
             if (String(productoById._id) === id) {
-                
+
                 res.status(200).json(productoById);
             } else {
                 res.status(404).json({ error: "este producto no esta cargado" });
@@ -24,6 +37,8 @@ export const productoAPI = () => {
             next();
         }
     };
+
+
 
     routerProducts.get("/listar/:id?", checkIdProduct, async (_: Request, res: Response) => {
         const products = await dao.getProductos();
@@ -56,7 +71,7 @@ export const productoAPI = () => {
         }
     });
 
-    routerProducts.put("/actualizar/:id",async (req: Request, res: Response) => {
+    routerProducts.put("/actualizar/:id", async (req: Request, res: Response) => {
         if (isAdmin) {
             const id: string = (req.params.id);
             const newProducto: Producto = new Producto(
@@ -68,7 +83,7 @@ export const productoAPI = () => {
                 req.body.stock
             );
             if (newProducto) {
-                res.status(200).json(await dao.updateProducto(id,newProducto));
+                res.status(200).json(await dao.updateProducto(id, newProducto));
                 io.sockets.emit("products", await dao.getProductos());
             } else {
                 res.status(404).json({ error: "producto no encontrado" });
@@ -86,7 +101,7 @@ export const productoAPI = () => {
             const id: string = req.params.id;
             const productToBeDelete: Producto | undefined = await dao.getProductoById(id);
             if (productToBeDelete) {
-                res.status(200).json( await dao.deleteProducto(productToBeDelete._id));
+                res.status(200).json(await dao.deleteProducto(productToBeDelete._id));
                 io.sockets.emit("products", await dao.getProductos());
             } else {
                 res

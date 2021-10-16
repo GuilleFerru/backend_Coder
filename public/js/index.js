@@ -4,8 +4,12 @@ const socket = io();
 fromEvent(window, 'load').subscribe(() => {
     const navbar = navBarTemplate();
     document.getElementById('navbar').innerHTML = navbar;
+
     const filtros = filterProductoTemplate()
     document.getElementById('filterProductos').innerHTML = filtros;
+
+    const mockData = mockDataTemplate();
+    document.getElementById('mockDataTable').innerHTML = mockData;
 });
 
 
@@ -44,6 +48,31 @@ socket.on('products', (productos, isAdmin) => {
     }
     document.getElementById('productsCard').innerHTML = cardProducts;
 });
+
+const getQtyMocks = () => {
+    return document.getElementById('mocksQty').value;
+}
+
+const generateFakeProductos = () => {
+    const cant = getQtyMocks();
+    fetch(`http://localhost:8080/productos/vista-test/?cant=${cant}`, {
+        method: "GET",
+    }).then(response => response.json()).then(fakeProductos => {
+        if (fakeProductos.error) {
+            const errorTable = tableTemplate({
+                error: fakeProductos.error
+            });
+            document.getElementById('tableTemplate').innerHTML = errorTable;
+        } else {
+            const newTable = tableTemplate({
+                productos: fakeProductos,
+                productosKeys: ['Nombre', 'Precio', 'Imagen']
+            });
+            document.getElementById('tableTemplate').innerHTML = newTable;
+        }
+    });
+}
+
 
 
 const getInputValues = () => {
@@ -230,7 +259,7 @@ const limpiarFiltro = () => {
     document.getElementById('maxPrice').value = '';
     document.getElementById('minStock').value = '';
     document.getElementById('maxStock').value = '';
-    
+
     socket.emit('getAllProductos');
 }
 

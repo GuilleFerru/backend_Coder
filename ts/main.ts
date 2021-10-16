@@ -1,24 +1,15 @@
 import { server } from "./server";
 import { IDao } from "./interfaces/IDao";
-import { DaoFactory } from "./daoFactory";
+
 import { productoAPI } from "./productoAPI"
 import { carritoAPI } from "./carritoAPI";
 import { sockets } from "./sockets";
+import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const MEMORY: number = 0;
-const FILESYSTEM: number = 1;
-const MYSQL: number = 2;
-const SQLITE: number = 3; 
-const MONGO: number = 4;
-const MONGOAAS: number = 5;
-const FIREBASE: number = 6;
-///////////////////////////////////////////////////////////////////////////////////////////////////
-const OPCION = MEMORY ;
-////////////////////////////////////////////////////////////////////////////////////////////////////
-const daoFactory = new DaoFactory();
-export const dao: IDao = daoFactory.getDao(OPCION);
+
+export const dao: IDao = new MongoDbaaSDao();
 
 /* API y socket */ /////////////////////////////////////////////////////////////////////////////////
 sockets();

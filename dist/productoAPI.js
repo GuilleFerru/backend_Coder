@@ -44,9 +44,21 @@ var express_1 = __importDefault(require("express"));
 var IProducto_1 = require("./interfaces/IProducto");
 var server_1 = require("./server");
 var main_1 = require("./main");
+var productoTest_1 = require("./productoTest");
 var productoAPI = function () {
     var routerProducts = express_1.default.Router();
     server_1.app.use("/productos", routerProducts);
+    routerProducts.get("/vista-test/", function (req, res) {
+        var cant = Number(req.query.cant);
+        var cantidadAGenerar = isNaN(cant) ? 10 : cant;
+        var fakeProductos = (0, productoTest_1.generateData)(cantidadAGenerar);
+        if (fakeProductos.length > 0) {
+            res.status(200).json(fakeProductos);
+        }
+        else {
+            res.status(200).json({ error: "no hay productos cargados" });
+        }
+    });
     var checkIdProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
         var id, productoById;
         return __generator(this, function (_a) {

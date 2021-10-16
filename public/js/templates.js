@@ -258,9 +258,10 @@ const formTemplate = Handlebars.compile(`
     </div>    
 `)
 
-
-
 const tableTemplate = Handlebars.compile(`
+    {{#if error}}
+        {{error}}
+    {{/if}}
     {{#if productos}}
             <div class="card mt-3">
                 <div class="card-body">
@@ -276,7 +277,7 @@ const tableTemplate = Handlebars.compile(`
                             {{#each productos}}
                             <tr>
                                 <th scope="row">{{this.title}}</th>
-                                <td>{{this.price}}</td>
+                                <td>{{this.price}} $</td>
                                 <td><img src={{this.thumbnail}} atl={{this.title}}></td>
                             </tr>
                             {{/each}}
@@ -292,11 +293,27 @@ const tableTemplate = Handlebars.compile(`
             .table img {
                 display: block;
                 margin: auto;
-                width: 40px;
+                width: 200px;
                 height: auto;
             }
         </style>
     {{/if}}
+`)
+
+//  EL INPUT ES TIPO NUMBER, se coloco tipo text solo para forzar a enviar distinto a un numero y obtener 10 elementos.
+const mockDataTemplate = Handlebars.compile(`
+    <div class="card mt-3 mb-3">
+        <div class="card-body">
+            <h2 class="pt-1 pb-2">Generador de Mock Data</h2>
+            <div class="input-group mb-3 col-6">
+                <div class="input-group-prepend">
+                    <button class="btn btn-primary" id="mockData" onclick="generateFakeProductos()" > Generar MockData</button>
+                </div>
+                <input type="text" value="0" min="0" class="form-control"  id="mocksQty" onchange="getQtyMocks()">
+            </div>
+            <div class="modal-body" id="tableTemplate"></div>    
+        </div>
+    </div>    
 `);
 
 const cardsTemplate = Handlebars.compile(`

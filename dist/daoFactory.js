@@ -10,17 +10,6 @@ var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var FirebaseDao_1 = require("./daos/FirebaseDao");
 var DaoFactory = /** @class */ (function () {
     function DaoFactory() {
-        // if (DaoFactory.instancia) {
-        //     return DaoFactory.instancia;
-        // }
-        // this.memoria = new MemoryDao();
-        // this.fileSystem = new FileSystemDao();
-        // this.mysqlDao = new MySqlDao();
-        // this.sqliteDao = new SQLiteDao();
-        // this.mongoDao = new MongoDbDao();
-        // this.mongoDaoAsS = new MongoDbaaSDao();
-        // this.firebaseDao = new FirebaseDao();
-        // DaoFactory.instancia = this;
     }
     DaoFactory.prototype.getDao = function (opcion) {
         switch (opcion) {

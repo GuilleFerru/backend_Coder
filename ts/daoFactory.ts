@@ -9,28 +9,11 @@ import { FirebaseDao } from "./daos/FirebaseDao";
 
 export class DaoFactory {
 
-    memoria: any;
-    fileSystem: any;
-    mysqlDao: any;
-    sqliteDao: any;
-    mongoDao: any;
-    mongoDaoAsS: any;
-    firebaseDao: any;
-    static instancia: DaoFactory;
+    
 
 
     constructor() {
-        // if (DaoFactory.instancia) {
-        //     return DaoFactory.instancia;
-        // }
-        // this.memoria = new MemoryDao();
-        // this.fileSystem = new FileSystemDao();
-        // this.mysqlDao = new MySqlDao();
-        // this.sqliteDao = new SQLiteDao();
-        // this.mongoDao = new MongoDbDao();
-        // this.mongoDaoAsS = new MongoDbaaSDao();
-        // this.firebaseDao = new FirebaseDao();
-        // DaoFactory.instancia = this;
+
     }
 
     getDao(opcion: number): IDao {

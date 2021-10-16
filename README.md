@@ -1,10 +1,5 @@
-Consigna: Deberás entregar el estado de avance de tu aplicación eCommerce Backend, agregando 7 tipos de persistencia de datos:
-
-1) File System (fs)
-2) MySQL/MariaDB local
-3) MySQL/MariaDB DBaaS
-4) SQLite3
-5) MongoDB Local
-6) MongoDB DBaaS
-7) Firebase
-
+Consigna: 
+    1-Sobre el desafío entregable de la clase número 20, crear una ruta 'productos/vista-test' que permita mostrar productos generados al azar en forma de tabla (similar a lo realizado sobre la ruta 'productos/vista').
+    2-Los productos se generarán utilizando Faker.js como generador de información aleatoria de test (en lugar de tomarse desde la base de datos). Elegir       apropiadamente los temas para conformar el objeto ‘producto’: nombre, precio y foto.
+    3-Considerar pasar por query params la cantidad de productos a generar: Ej. 'productos/vista-test?cant=5'. De no pasar ningún valor, producirá 10 objetos.
+    4-Verificar la generación de productos aleatorios utilizando distintas cantidades. Comprobar que para cantidad 0 indique que no hay productos.

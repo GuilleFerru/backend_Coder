@@ -15,7 +15,7 @@ export class MongoDbaaSDao implements IDao {
     carrito: Array<Cart>;
     order: Array<Cart>;
     mensajes: Array<Mensaje>
-    countCarrito: number;
+    countMensaje: number;
     countOrder: number;
     dbConnection: any;
     MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -25,7 +25,7 @@ export class MongoDbaaSDao implements IDao {
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
         this.mensajes = new Array<Mensaje>();
-        this.countCarrito = 1;
+        this.countMensaje = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
             console.log("Base de datos MongoDBAaS conectada!");
@@ -232,14 +232,20 @@ export class MongoDbaaSDao implements IDao {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    getMensajeById(id: string): Mensaje | undefined {
+        return this.mensajes.find((element) => String(element.id) === id);
+    }
+
     async getMensajes(): Promise<Mensaje[]> {
         try {
             this.mensajes = [];
-
-            const savedMessages = await mensajesModel.find({}, { __v: 0, _id: 0 })
-            savedMessages.forEach((msg: string | any) => {
-                this.mensajes.push(msg);
+            const savedMensajes = await mensajesModel.find({}, { __v: 0, _id: 0 })
+            
+            
+            savedMensajes.forEach((mensaje: Mensaje | any) => {
+                this.mensajes.push(mensaje);
             })
+
         } catch (error) {
             console.log(error);
             throw error;
@@ -250,9 +256,7 @@ export class MongoDbaaSDao implements IDao {
     }
 
     async insertMensajes(mensaje: Mensaje) {
-
         try {
-
             await mensajesModel.insertMany(mensaje)
             this.mensajes.push(mensaje);
         } catch (error) {

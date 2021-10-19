@@ -63,7 +63,7 @@ var MongoDbaaSDao = /** @class */ (function () {
         this.carrito = new Array();
         this.order = new Array();
         this.mensajes = new Array();
-        this.countCarrito = 1;
+        this.countMensaje = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose_1.default.connect(this.MONGO_URL, function () {
             console.log("Base de datos MongoDBAaS conectada!");
@@ -405,9 +405,12 @@ var MongoDbaaSDao = /** @class */ (function () {
         });
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    MongoDbaaSDao.prototype.getMensajeById = function (id) {
+        return this.mensajes.find(function (element) { return String(element.id) === id; });
+    };
     MongoDbaaSDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedMessages, error_11;
+            var savedMensajes, error_11;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -416,9 +419,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         this.mensajes = [];
                         return [4 /*yield*/, mensajes_1.mensajesModel.find({}, { __v: 0, _id: 0 })];
                     case 1:
-                        savedMessages = _a.sent();
-                        savedMessages.forEach(function (msg) {
-                            _this.mensajes.push(msg);
+                        savedMensajes = _a.sent();
+                        savedMensajes.forEach(function (mensaje) {
+                            _this.mensajes.push(mensaje);
                         });
                         return [3 /*break*/, 4];
                     case 2:

@@ -605,7 +605,80 @@ const chatTemplate = Handlebars.compile(`
     <style>
         .isInvalid{
             border-color: #dc3545;
+        }
+    </style>  
+`)
 
+
+
+const chatNormalizaTemplate = Handlebars.compile(`
+    <div class="card mt-3">
+        <div class="card-body">
+            <h2 class="pt-1 pb-2">Centro de Mensajes</h2>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="emailChat" aria-describedby="emailHelp" placeholder="Ingrese su mail" name="emailChat" required>
+                    <small id="emailChat" class="form-text text-muted">No compartiremos su email con ninguna otra persona.</small>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="nombreChat" aria-describedby="nombreHelp" placeholder="Ingrese su Nombre" name="nombreChat" required>
+                    <small id="nombreChat" class="form-text text-muted">Ingrese su nombre.</small>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="apellidoChat" aria-describedby="apellidoHelp" placeholder="Ingrese su Apellido" name="apellidoChat" required>
+                    <small id="apellidoChat" class="form-text text-muted">Ingrese su apellido.</small>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="edadChat" aria-describedby="edadHelp" placeholder="Ingrese su edad" name="edadChat" required>
+                    <small id="edadChat" class="form-text text-muted">Ingrese su edad.</small>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="aliasChat" aria-describedby="aliasHelp" placeholder="Ingrese su alias" name="aliasHelp" required>
+                    <small id="aliasHelp" class="form-text text-muted">Ingrese su edad.</small>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="avatarChat" aria-describedby="aliasHelp" placeholder="Ingrese un thumbnail" name="avatarChat" required>
+                    <small id="avatarChat" class="form-text text-muted">Ingrese un thumbnail de su avatar.</small>
+                </div>
+
+                
+            <div id="chatData">
+                {{#each messages}}
+                    <div style="display:flex; align-items:center">
+                        <div class="chat_avatar_image">
+                            <img src="{{this.author.avatar}}" alt="{{this.author.avatar}}">
+                        </div>
+                        <div class="ml-2">
+                            <strong style="color:blue">{{this.author.alias}}</strong>
+                            <span style="color:brown">[{{this.date}}]: </span>
+                            <em>{{this.text}}</em>
+                        </div>
+                        
+                    </div>
+                {{/each}}
+            </div>
+            <form class="form " onsubmit="return addMessage()">
+                <div class="form-group mx-sm-0 mb-2 mt-3">
+                    <label for="chatText" class="sr-only">Ingrese un mensaje</label>
+                    <textarea  type="text" class="form-control" id="chatText" placeholder="Ingrese un mensaje" rows="3"></textarea>
+                    <button type="submit" class="btn btn-primary mx-sm-2 mb-2 mt-2" id="submitChat">Enviar</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>  
+    <style>
+        .isInvalid{
+            border-color: #dc3545;
+        }
+        .chat_avatar_image {
+            width: 66px;
+            height: 66px;
+            float: left
+            
+        }
+        
+        .chat_avatar_image img {
+            max-width: 100%
         }
     </style>  
 `)

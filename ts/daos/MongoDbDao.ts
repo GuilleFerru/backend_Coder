@@ -33,7 +33,7 @@ export class MongoDbDao implements IDao {
         try {
             this.productos = [];
             if (filterBy === 'nombre') {
-                const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);      
+                const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
                 const productosByName = await productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })
                 productosByName.forEach((producto: string | any) => {
                     this.productos.push(producto);
@@ -43,17 +43,17 @@ export class MongoDbDao implements IDao {
                 productosByCode.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })
-            } else if (filterBy === 'precio'){
-                const productosByPrecio = await productoModel.find({'price':{$gte:filtro[0], $lte:filtro[1]}})
+            } else if (filterBy === 'precio') {
+                const productosByPrecio = await productoModel.find({ 'price': { $gte: filtro[0], $lte: filtro[1] } })
                 productosByPrecio.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })
-            } else if (filterBy === 'stock'){
-                const productosByStock = await productoModel.find({'stock':{$gte:filtro[0], $lte:filtro[1]}})
+            } else if (filterBy === 'stock') {
+                const productosByStock = await productoModel.find({ 'stock': { $gte: filtro[0], $lte: filtro[1] } })
                 productosByStock.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })
-            } 
+            }
         } catch (error) {
             console.log(error);
             throw error;
@@ -123,7 +123,7 @@ export class MongoDbDao implements IDao {
         }
     };
 
-    
+
     async deleteProducto(id: string) {
         try {
             await mongoose.connect(MONGO_URL);
@@ -156,9 +156,9 @@ export class MongoDbDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            console.log('Orden Agregada',JSON.stringify(await ordenModel.find().sort({_id:-1}).limit(1)));
+            console.log('Orden Agregada', JSON.stringify(await ordenModel.find().sort({ _id: -1 }).limit(1)));
             await mongoose.disconnect();
-            
+
         }
     }
 
@@ -230,6 +230,9 @@ export class MongoDbDao implements IDao {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    getMensajeById(id: string): Mensaje | undefined {
+        return this.mensajes.find((element) => String(element.id) === id);
+    }
 
     async getMensajes(): Promise<Mensaje[]> {
         try {

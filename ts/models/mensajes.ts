@@ -1,21 +1,55 @@
 import mongoose from 'mongoose';
 
 const mensajeSchema = new mongoose.Schema({
-    author : {
+    id: {
         type: String,
         require: true,
         max: 100
     },
-    date : {
+    text: {
         type: String,
         require: true,
-        max: 50
+        max: 500
     },
-    text : {
+    date: {
         type: String,
         require: true,
-        max: 240
+        max: 200
     },
+    author: {
+        email: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        nombre: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        apellido: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        edad: {
+            type: Number,
+            require: true,
+            max: 150
+        },
+        alias: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        avatar: {
+            type: String,
+            require: true,
+            max: 200
+        },
+    },
+
+
 });
 
-export const mensajesModel = mongoose.model('mensajes', mensajeSchema);
+export const mensajesModel = mongoose.model('mensajesNormalizr', mensajeSchema);

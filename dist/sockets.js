@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,46 +54,96 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
 var server_1 = require("./server");
 var main_1 = require("./main");
 var IMensaje_1 = require("./interfaces/IMensaje");
+var util_1 = __importDefault(require("util"));
+var normalizr = __importStar(require("normalizr"));
+var normalizeMsj = function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+    var arrayOriginal, arrayToString, arrayParse, author, text, post, chat, originalData, normalizedMensajes, denormalizedMensajes;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, main_1.dao.getMensajes()];
+            case 1:
+                arrayOriginal = _a.sent();
+                arrayToString = JSON.stringify(arrayOriginal);
+                arrayParse = JSON.parse(arrayToString);
+                author = new normalizr.schema.Entity("author", undefined, {
+                    idAttribute: 'email',
+                });
+                text = new normalizr.schema.Entity("text", {
+                    author: author
+                });
+                post = new normalizr.schema.Entity("post", {
+                    author: author,
+                    text: text,
+                });
+                chat = new normalizr.schema.Entity('chat', {
+                    authors: [author],
+                    posts: [post]
+                });
+                originalData = {
+                    id: '1',
+                    posts: arrayParse
+                };
+                console.log('NORMALIZACION');
+                normalizedMensajes = normalizr.normalize(originalData, chat);
+                // console.log(JSON.stringify(normalizedMensajes).length);
+                console.log(util_1.default.inspect(normalizedMensajes, false, 12, true));
+                console.log('DESNORMALIZACION');
+                denormalizedMensajes = normalizr.denormalize(normalizedMensajes.result, chat, normalizedMensajes.entities);
+                // console.log(JSON.stringify(denormalizedMensajes).length);
+                console.log(util_1.default.inspect(denormalizedMensajes, false, 12, true));
+                socket.emit("messages", normalizedMensajes, chat);
+                socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
+                    var date, id, checkId, newAuthor, newMensaje, _a, _b, _c;
+                    return __generator(this, function (_d) {
+                        switch (_d.label) {
+                            case 0:
+                                date = new Date().toLocaleString('es-AR');
+                                id = generateMensajeId();
+                                checkId = main_1.dao.getMensajeById(id);
+                                while (checkId) {
+                                    id = generateMensajeId();
+                                }
+                                newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
+                                newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
+                                return [4 /*yield*/, main_1.dao.insertMensajes(newMensaje)];
+                            case 1:
+                                _d.sent();
+                                _b = (_a = server_1.io.sockets).emit;
+                                _c = ["messages"];
+                                return [4 /*yield*/, main_1.dao.getMensajes()];
+                            case 2:
+                                _b.apply(_a, _c.concat([_d.sent()]));
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                return [2 /*return*/];
+        }
+    });
+}); };
+var generateMensajeId = function () {
+    return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
+};
 var sockets = function () {
     server_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, _b, _c, _d, _e, _f;
-        return __generator(this, function (_g) {
-            switch (_g.label) {
+        var _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
+                    normalizeMsj(socket);
                     _b = (_a = socket).emit;
-                    _c = ["messages"];
-                    return [4 /*yield*/, main_1.dao.getMensajes()];
-                case 1:
-                    _b.apply(_a, _c.concat([_g.sent()]));
-                    _e = (_d = socket).emit;
-                    _f = ["products"];
+                    _c = ["products"];
                     return [4 /*yield*/, main_1.dao.getProductos()];
-                case 2:
-                    _e.apply(_d, _f.concat([_g.sent(), server_1.isAdmin]));
-                    socket.on("newMessage", function (message) { return __awaiter(void 0, void 0, void 0, function () {
-                        var date, newMensaje, _a, _b, _c;
-                        return __generator(this, function (_d) {
-                            switch (_d.label) {
-                                case 0:
-                                    date = new Date().toLocaleString('es-AR');
-                                    newMensaje = new IMensaje_1.Mensaje(message.author, date, message.text);
-                                    return [4 /*yield*/, main_1.dao.insertMensajes(newMensaje)];
-                                case 1:
-                                    _d.sent();
-                                    _b = (_a = server_1.io.sockets).emit;
-                                    _c = ["messages"];
-                                    return [4 /*yield*/, main_1.dao.getMensajes()];
-                                case 2:
-                                    _b.apply(_a, _c.concat([_d.sent()]));
-                                    return [2 /*return*/];
-                            }
-                        });
-                    }); });
+                case 1:
+                    _b.apply(_a, _c.concat([_d.sent(), server_1.isAdmin]));
                     socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
                         var _a, _b, _c;
                         return __generator(this, function (_d) {
@@ -109,3 +178,25 @@ var sockets = function () {
     }); });
 };
 exports.sockets = sockets;
+// export const sockets = () => {
+//     io.on("connection", async (socket) => {
+//         socket.emit("messages", await dao.getMensajes());
+//         socket.emit("products", await dao.getProductos(), isAdmin);
+//         socket.on("newMessage", async (message: Mensaje) => {
+//             const date = new Date().toLocaleString('es-AR');
+//             const newMensaje: Mensaje = new Mensaje(
+//                 message.author,
+//                 date,
+//                 message.text
+//             )
+//             await dao.insertMensajes(newMensaje);
+//             io.sockets.emit("messages", await dao.getMensajes());
+//         });
+//         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
+//             socket.emit("products", await dao.filterProducto(filter, filterBy), isAdmin);
+//         });
+//         socket.on("getAllProductos", async () => {
+//             socket.emit("products", await dao.getProductos());
+//         });
+//     });
+// }

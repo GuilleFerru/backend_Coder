@@ -20,6 +20,7 @@ export interface IDao {
   updateQtyInCarrito(carrito: Cart): void;
   deleteCarrito(id: string): void;
 
+  getMensajeById(id: string): Mensaje | undefined;
   insertMensajes(mensaje: Mensaje): void;
   getMensajes():Promise<Mensaje[]> | Mensaje[];
 

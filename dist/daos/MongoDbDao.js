@@ -444,6 +444,9 @@ var MongoDbDao = /** @class */ (function () {
         });
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    MongoDbDao.prototype.getMensajeById = function (id) {
+        return this.mensajes.find(function (element) { return String(element.id) === id; });
+    };
     MongoDbDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
             var savedMessages, error_11;

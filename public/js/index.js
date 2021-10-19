@@ -1,5 +1,7 @@
 const { fromEvent } = rxjs;
 const socket = io();
+const { denormalize, util } = normalizr;
+
 
 fromEvent(window, 'load').subscribe(() => {
     const navbar = navBarTemplate();
@@ -22,8 +24,14 @@ fromEvent(window, 'load').subscribe(() => {
 //     document.getElementById('productsTable').innerHTML = newTable;
 // });
 
-socket.on('messages', (messages) => {
-    const newChat = chatTemplate({ messages })
+socket.on('messages', (normalizedMensajes, chat) => {
+
+    console.log('DESNORMALIZACION');
+    const messages = denormalize(normalizedMensajes, chat, normalizedMensajes.entities);
+    // console.log(JSON.stringify(denormalizedMensajes).length);
+    // console.log(util.inspect(denormalizedMensajes, false, 12, true));
+
+    const newChat = chatNormalizaTemplate({ messages })
     document.getElementById('productsChat').innerHTML = newChat;
 });
 
@@ -72,8 +80,6 @@ const generateFakeProductos = () => {
         }
     });
 }
-
-
 
 const getInputValues = () => {
     const title = document.getElementById('title').value;
@@ -265,16 +271,29 @@ const limpiarFiltro = () => {
 
 
 const addMessage = () => {
-    const author = document.getElementById("emailChat").value;
+    const email = document.getElementById("emailChat").value;
+    const nombre = document.getElementById("nombreChat").value;
+    const apellido = document.getElementById("apellidoChat").value;
+    const edad = document.getElementById("edadChat").value;
+    const alias = document.getElementById("aliasChat").value;
     const text = document.getElementById("chatText").value;
-    if ((/$^|.+@.+..+/).test(author) && author !== "") {
-        const message = {
-            author: author,
+    const avatar = document.getElementById("avatarChat").value;
+    
+    if ((/$^|.+@.+..+/).test(email) && email !== "") {
+        const mensaje = {
             text: text,
+            author: {
+                email: email,
+                nombre: nombre,
+                apellido: apellido,
+                edad: edad,
+                alias: alias,
+                avatar: avatar
+            },
         }
-        socket.emit('newMessage', message)
+        socket.emit('newMessage', mensaje)
     } else {
-        document.getElementById("emailChat").classList.add('isInvalid')
+        document.getElementById("emailChat").classList.add('isInvalid');
     }
     return false;
 }

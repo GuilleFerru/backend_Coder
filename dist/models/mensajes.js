@@ -6,20 +6,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.mensajesModel = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var mensajeSchema = new mongoose_1.default.Schema({
-    author: {
+    id: {
         type: String,
         require: true,
         max: 100
     },
-    date: {
-        type: String,
-        require: true,
-        max: 50
-    },
     text: {
         type: String,
         require: true,
-        max: 240
+        max: 500
+    },
+    date: {
+        type: String,
+        require: true,
+        max: 200
+    },
+    author: {
+        email: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        nombre: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        apellido: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        edad: {
+            type: Number,
+            require: true,
+            max: 150
+        },
+        alias: {
+            type: String,
+            require: true,
+            max: 50
+        },
+        avatar: {
+            type: String,
+            require: true,
+            max: 200
+        },
     },
 });
-exports.mensajesModel = mongoose_1.default.model('mensajes', mensajeSchema);
+exports.mensajesModel = mongoose_1.default.model('mensajesNormalizr', mensajeSchema);

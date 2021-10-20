@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Mensaje = exports.Author = void 0;
+exports.MensajeWrap = exports.Mensaje = exports.Author = void 0;
 var Author = /** @class */ (function () {
     function Author(email, nombre, apellido, edad, alias, avatar) {
         this.email = email;
@@ -23,6 +23,14 @@ var Mensaje = /** @class */ (function () {
     return Mensaje;
 }());
 exports.Mensaje = Mensaje;
+var MensajeWrap = /** @class */ (function () {
+    function MensajeWrap(id, posts) {
+        this.id = id;
+        this.posts = posts;
+    }
+    return MensajeWrap;
+}());
+exports.MensajeWrap = MensajeWrap;
 // interface IMensaje {
 //     id: string;
 //     nombre: string;

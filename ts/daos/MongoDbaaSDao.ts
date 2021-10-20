@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { IDao } from "../interfaces/IDao";
 import { Producto } from "../interfaces/IProducto";
 import { Cart } from "../interfaces/ICart";
-import { Mensaje } from "../interfaces/IMensaje";
+import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
 import { productoModel } from "../models/productos";
 import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
@@ -14,7 +14,7 @@ export class MongoDbaaSDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
-    mensajes: Array<Mensaje>
+    mensajes: Array<Mensaje>;
     countMensaje: number;
     countOrder: number;
     dbConnection: any;
@@ -25,6 +25,7 @@ export class MongoDbaaSDao implements IDao {
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
         this.mensajes = new Array<Mensaje>();
+
         this.countMensaje = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
@@ -236,22 +237,19 @@ export class MongoDbaaSDao implements IDao {
         return this.mensajes.find((element) => String(element.id) === id);
     }
 
-    async getMensajes(): Promise<Mensaje[]> {
+    async getMensajes(): Promise<MensajeWrap> {
         try {
             this.mensajes = [];
             const savedMensajes = await mensajesModel.find({}, { __v: 0, _id: 0 })
-            
-            
             savedMensajes.forEach((mensaje: Mensaje | any) => {
                 this.mensajes.push(mensaje);
             })
-
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            // await mongoose.disconnect();
-            return this.mensajes;
+            const mensajes = new MensajeWrap('999', this.mensajes)
+            return mensajes;
         }
     }
 
@@ -264,7 +262,6 @@ export class MongoDbaaSDao implements IDao {
             throw error;
         } finally {
             console.log('Mensaje Agregado');
-            // await mongoose.disconnect();
         }
     }
 }

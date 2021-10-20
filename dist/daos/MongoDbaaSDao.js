@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDbaaSDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
+var IMensaje_1 = require("../interfaces/IMensaje");
 var productos_1 = require("../models/productos");
 var mensajes_1 = require("../models/mensajes");
 var carrito_1 = require("../models/carrito");
@@ -410,7 +411,7 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedMensajes, error_11;
+            var savedMensajes, error_11, mensajes;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -428,9 +429,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         error_11 = _a.sent();
                         console.log(error_11);
                         throw error_11;
-                    case 3: 
-                    // await mongoose.disconnect();
-                    return [2 /*return*/, this.mensajes];
+                    case 3:
+                        mensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+                        return [2 /*return*/, mensajes];
                     case 4: return [2 /*return*/];
                 }
             });

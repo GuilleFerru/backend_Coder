@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { IDao } from "../interfaces/IDao";
 import { Producto } from "../interfaces/IProducto";
 import { Cart } from "../interfaces/ICart";
-import { Mensaje } from "../interfaces/IMensaje";
+import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
 import { productoModel } from "../models/productos";
 import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
@@ -234,20 +234,19 @@ export class MongoDbDao implements IDao {
         return this.mensajes.find((element) => String(element.id) === id);
     }
 
-    async getMensajes(): Promise<Mensaje[]> {
+    async getMensajes(): Promise<MensajeWrap> {
         try {
             this.mensajes = [];
-            await mongoose.connect(MONGO_URL);
-            const savedMessages = await mensajesModel.find({}, { __v: 0, _id: 0 })
-            savedMessages.forEach((msg: string | any) => {
-                this.mensajes.push(msg);
+            const savedMensajes = await mensajesModel.find({}, { __v: 0, _id: 0 })
+            savedMensajes.forEach((mensaje: Mensaje | any) => {
+                this.mensajes.push(mensaje);
             })
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            await mongoose.disconnect();
-            return this.mensajes;
+            const mensajes = new MensajeWrap('999', this.mensajes)
+            return mensajes;
         }
     }
 

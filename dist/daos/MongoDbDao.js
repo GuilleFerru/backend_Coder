@@ -52,6 +52,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDbDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
+var IMensaje_1 = require("../interfaces/IMensaje");
 var productos_1 = require("../models/productos");
 var mensajes_1 = require("../models/mensajes");
 var carrito_1 = require("../models/carrito");
@@ -449,32 +450,28 @@ var MongoDbDao = /** @class */ (function () {
     };
     MongoDbDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedMessages, error_11;
+            var savedMensajes, error_11, mensajes;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, 4, 6]);
+                        _a.trys.push([0, 2, 3, 4]);
                         this.mensajes = [];
-                        return [4 /*yield*/, mongoose_1.default.connect(MONGO_URL)];
-                    case 1:
-                        _a.sent();
                         return [4 /*yield*/, mensajes_1.mensajesModel.find({}, { __v: 0, _id: 0 })];
-                    case 2:
-                        savedMessages = _a.sent();
-                        savedMessages.forEach(function (msg) {
-                            _this.mensajes.push(msg);
+                    case 1:
+                        savedMensajes = _a.sent();
+                        savedMensajes.forEach(function (mensaje) {
+                            _this.mensajes.push(mensaje);
                         });
-                        return [3 /*break*/, 6];
-                    case 3:
+                        return [3 /*break*/, 4];
+                    case 2:
                         error_11 = _a.sent();
                         console.log(error_11);
                         throw error_11;
-                    case 4: return [4 /*yield*/, mongoose_1.default.disconnect()];
-                    case 5:
-                        _a.sent();
-                        return [2 /*return*/, this.mensajes];
-                    case 6: return [2 /*return*/];
+                    case 3:
+                        mensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+                        return [2 /*return*/, mensajes];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

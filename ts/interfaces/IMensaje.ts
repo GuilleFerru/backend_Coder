@@ -49,6 +49,21 @@ export class Mensaje implements IMensaje {
     }
 }
 
+interface IMensajeWrap {
+    id: string;
+    posts: Mensaje[];
+}
+
+export class MensajeWrap implements IMensajeWrap {
+    public id: string;
+    public posts: Mensaje[];
+
+    constructor(id: string, posts: Mensaje[]) {
+        this.id = id;
+        this.posts = posts;
+
+    }
+}
 
 // interface IMensaje {
 //     id: string;

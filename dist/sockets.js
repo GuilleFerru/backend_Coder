@@ -54,78 +54,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
 var server_1 = require("./server");
 var main_1 = require("./main");
 var IMensaje_1 = require("./interfaces/IMensaje");
-var util_1 = __importDefault(require("util"));
 var normalizr = __importStar(require("normalizr"));
-var normalizeMsj = function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-    var arrayOriginal, arrayToString, arrayParse, author, text, post, chat, originalData, normalizedMensajes, denormalizedMensajes;
+var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, main_1.dao.getMensajes()];
             case 1:
-                arrayOriginal = _a.sent();
-                arrayToString = JSON.stringify(arrayOriginal);
-                arrayParse = JSON.parse(arrayToString);
+                mensajesOriginal = _a.sent();
+                mensajesOriginalToString = JSON.stringify(mensajesOriginal);
+                mensajeParse = JSON.parse(mensajesOriginalToString);
                 author = new normalizr.schema.Entity("author", undefined, {
                     idAttribute: 'email',
                 });
-                text = new normalizr.schema.Entity("text", {
-                    author: author
-                });
                 post = new normalizr.schema.Entity("post", {
                     author: author,
-                    text: text,
                 });
                 chat = new normalizr.schema.Entity('chat', {
                     authors: [author],
                     posts: [post]
                 });
-                originalData = {
-                    id: '1',
-                    posts: arrayParse
-                };
-                console.log('NORMALIZACION');
-                normalizedMensajes = normalizr.normalize(originalData, chat);
-                // console.log(JSON.stringify(normalizedMensajes).length);
-                console.log(util_1.default.inspect(normalizedMensajes, false, 12, true));
-                console.log('DESNORMALIZACION');
-                denormalizedMensajes = normalizr.denormalize(normalizedMensajes.result, chat, normalizedMensajes.entities);
-                // console.log(JSON.stringify(denormalizedMensajes).length);
-                console.log(util_1.default.inspect(denormalizedMensajes, false, 12, true));
-                socket.emit("messages", normalizedMensajes, chat);
-                socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
-                    var date, id, checkId, newAuthor, newMensaje, _a, _b, _c;
-                    return __generator(this, function (_d) {
-                        switch (_d.label) {
-                            case 0:
-                                date = new Date().toLocaleString('es-AR');
-                                id = generateMensajeId();
-                                checkId = main_1.dao.getMensajeById(id);
-                                while (checkId) {
-                                    id = generateMensajeId();
-                                }
-                                newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
-                                newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
-                                return [4 /*yield*/, main_1.dao.insertMensajes(newMensaje)];
-                            case 1:
-                                _d.sent();
-                                _b = (_a = server_1.io.sockets).emit;
-                                _c = ["messages"];
-                                return [4 /*yield*/, main_1.dao.getMensajes()];
-                            case 2:
-                                _b.apply(_a, _c.concat([_d.sent()]));
-                                return [2 /*return*/];
-                        }
-                    });
-                }); });
-                return [2 /*return*/];
+                normalizePost = normalizr.normalize(mensajeParse, chat);
+                return [2 /*return*/, normalizePost];
         }
     });
 }); };
@@ -134,16 +89,45 @@ var generateMensajeId = function () {
 };
 var sockets = function () {
     server_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, _b, _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var _a, _b, _c, _d, _e, _f;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
                 case 0:
-                    normalizeMsj(socket);
                     _b = (_a = socket).emit;
-                    _c = ["products"];
-                    return [4 /*yield*/, main_1.dao.getProductos()];
+                    _c = ["messages"];
+                    return [4 /*yield*/, getNormalizeMsj()];
                 case 1:
-                    _b.apply(_a, _c.concat([_d.sent(), server_1.isAdmin]));
+                    _b.apply(_a, _c.concat([_g.sent()]));
+                    socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
+                        var date, id, checkId, newAuthor, newMensaje, _a, _b, _c;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
+                                case 0:
+                                    date = new Date().toLocaleString('es-AR');
+                                    id = generateMensajeId();
+                                    checkId = main_1.dao.getMensajeById(id);
+                                    while (checkId) {
+                                        id = generateMensajeId();
+                                    }
+                                    newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
+                                    newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
+                                    return [4 /*yield*/, main_1.dao.insertMensajes(newMensaje)];
+                                case 1:
+                                    _d.sent();
+                                    _b = (_a = server_1.io.sockets).emit;
+                                    _c = ["messages"];
+                                    return [4 /*yield*/, getNormalizeMsj()];
+                                case 2:
+                                    _b.apply(_a, _c.concat([_d.sent()]));
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
+                    _e = (_d = socket).emit;
+                    _f = ["products"];
+                    return [4 /*yield*/, main_1.dao.getProductos()];
+                case 2:
+                    _e.apply(_d, _f.concat([_g.sent(), server_1.isAdmin]));
                     socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
                         var _a, _b, _c;
                         return __generator(this, function (_d) {

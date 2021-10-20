@@ -22,6 +22,6 @@ export interface IDao {
 
   getMensajeById(id: string): Mensaje | undefined;
   insertMensajes(mensaje: Mensaje): void;
-  getMensajes():Promise<Mensaje[]> | Mensaje[];
+  getMensajes():Promise<Mensaje[]> | Mensaje[] | any;
 
 }

@@ -614,7 +614,7 @@ const chatTemplate = Handlebars.compile(`
 const chatNormalizaTemplate = Handlebars.compile(`
     <div class="card mt-3">
         <div class="card-body">
-            <h2 class="pt-1 pb-2">Centro de Mensajes</h2>
+            <h2 class="pt-1 pb-2">Centro de Mensajes --- Compresión: {{compresion}}</h2>
                 <div class="form-group">
                     <input type="email" class="form-control" id="emailChat" aria-describedby="emailHelp" placeholder="Ingrese su mail" name="emailChat" required>
                     <small id="emailChat" class="form-text text-muted">No compartiremos su email con ninguna otra persona.</small>

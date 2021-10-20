@@ -1,7 +1,5 @@
 const { fromEvent } = rxjs;
 const socket = io();
-const { denormalize, util } = normalizr;
-
 
 fromEvent(window, 'load').subscribe(() => {
     const navbar = navBarTemplate();
@@ -15,23 +13,30 @@ fromEvent(window, 'load').subscribe(() => {
 });
 
 
-/* NO MUESTRO MAS LA TABLA */
-// socket.on('loadProducts', (productos) => {
-//     const newTable = tableTemplate({
-//         productos: productos,
-//         productosKeys: productosKeys
-//     });
-//     document.getElementById('productsTable').innerHTML = newTable;
-// });
+socket.on('messages', (normalizePost) => {
 
-socket.on('messages', (normalizedMensajes, chat) => {
+    const author = new normalizr.schema.Entity("author",
+        undefined,
+        {
+            idAttribute: 'email',
+        }
+    );
+    const post = new normalizr.schema.Entity("post", {
+        author: author,
 
-    console.log('DESNORMALIZACION');
-    const messages = denormalize(normalizedMensajes, chat, normalizedMensajes.entities);
-    // console.log(JSON.stringify(denormalizedMensajes).length);
-    // console.log(util.inspect(denormalizedMensajes, false, 12, true));
+    });
+    const chat = new normalizr.schema.Entity('chat', {
+        authors: [author],
+        posts: [post]
+    })
+    const denormalizePost = normalizr.denormalize(normalizePost.result, chat, normalizePost.entities);
+    const messages = denormalizePost.posts;
 
-    const newChat = chatNormalizaTemplate({ messages })
+    const normalizedLength = JSON.stringify(normalizePost).length;
+    const denormalizedLength = JSON.stringify(denormalizePost).length;
+    const compresion = `${Math.trunc((normalizedLength / denormalizedLength) * 100)}%`;
+
+    const newChat = chatNormalizaTemplate({ messages, compresion })
     document.getElementById('productsChat').innerHTML = newChat;
 });
 
@@ -278,7 +283,7 @@ const addMessage = () => {
     const alias = document.getElementById("aliasChat").value;
     const text = document.getElementById("chatText").value;
     const avatar = document.getElementById("avatarChat").value;
-    
+
     if ((/$^|.+@.+..+/).test(email) && email !== "") {
         const mensaje = {
             text: text,

@@ -7,6 +7,8 @@ import { productoModel } from "../models/productos";
 import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
+import { Usuario } from "../interfaces/IUsuario";
+import { usuarioModel } from "../models/usuarios";
 
 
 
@@ -19,18 +21,39 @@ export class MongoDbaaSDao implements IDao {
     countOrder: number;
     dbConnection: any;
     MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    usuarioOk: boolean;
 
     constructor() {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
         this.mensajes = new Array<Mensaje>();
+        this.usuarioOk = false;
+
 
         this.countMensaje = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
             console.log("Base de datos MongoDBAaS conectada!");
         });
+    }
+    async getUsuario(usuario: string): Promise<boolean> {
+        try {
+            const savedUsers = await usuarioModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 });
+            savedUsers.forEach((user: string | any) => {
+                if (user.userName === usuario) {
+                    this.usuarioOk = true;
+                } else {
+                    this.usuarioOk = false;
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            // await mongoose.disconnect();
+            return this.usuarioOk;
+        }
     }
 
     async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {

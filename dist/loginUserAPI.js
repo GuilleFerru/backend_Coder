@@ -39,76 +39,67 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartApi = void 0;
-var express_1 = __importDefault(require("express"));
+exports.loginAPI = void 0;
+var main_1 = require("./main");
 var server_1 = require("./server");
-var productosDB_1 = require("./productosDB");
-var cartApi = function () {
-    var carritoProducts = express_1.default.Router();
-    server_1.app.use("/carrito", carritoProducts);
-    carritoProducts.post("/agregar/:id_producto", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var id, productById, carts, cartToBeUpdate;
+var express_session_1 = __importDefault(require("express-session"));
+var sockets_1 = require("./sockets");
+var carritoAPI_1 = require("./carritoAPI");
+var productoAPI_1 = require("./productoAPI");
+server_1.app.use((0, express_session_1.default)({
+    secret: 'secretin',
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        maxAge: 60000
+    }
+}));
+var loginAPI = function () {
+    server_1.app.get('/login', function (req, res) {
+        if (req.session.nombre) {
+            res.status(200).json(req.session.nombre);
+        }
+        else {
+            res.redirect('/');
+        }
+    });
+    server_1.app.post('/home', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var userOk, userName;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    id = req.params.id_producto;
-                    return [4 /*yield*/, (0, productosDB_1.loadProductByIdFromDB)(id)];
+                case 0: return [4 /*yield*/, main_1.dao.getUsuario(String(req.body.userName))];
                 case 1:
-                    productById = _a.sent();
-                    if (productById) {
-                        carts = server_1.cartLogic.getCart();
-                        if (carts.length > 0) {
-                            cartToBeUpdate = carts.find(function (cart) { var _a; return ((_a = cart.product) === null || _a === void 0 ? void 0 : _a.id) === id; });
-                            if (cartToBeUpdate) {
-                                server_1.cartLogic.updateQtyInCart(cartToBeUpdate);
-                            }
-                            else {
-                                server_1.cartLogic.addProductToCart(productById);
-                            }
-                        }
-                        else {
-                            server_1.cartLogic.addProductToCart(productById);
-                        }
-                        res.status(200).json({ server: "Producto agregado al carrito" });
+                    userOk = _a.sent();
+                    if (userOk) {
+                        userName = req.body.userName;
+                        req.session.nombre = userName;
+                        (0, sockets_1.sockets)();
+                        (0, productoAPI_1.productoAPI)();
+                        (0, carritoAPI_1.carritoAPI)();
+                        res.sendFile(process.cwd() + '/public/home.html');
                     }
                     else {
-                        res.status(404).json({ error: "producto no encontrado" });
+                        req.session.nombre = undefined;
+                        res.redirect('/');
                     }
                     return [2 /*return*/];
             }
         });
     }); });
-    var checkIdProductInCarrito = function (req, res, next) {
-        var id = parseInt(req.params.id, 10);
-        var cart = server_1.cartLogic.getCartById(id);
-        if (id) {
-            if ((cart === null || cart === void 0 ? void 0 : cart.id) === id) {
-                res.status(200).json(cart.product);
-            }
-            else {
-                res
-                    .status(404)
-                    .json({ error: "este producto no esta cargado en el carrito" });
-            }
+    server_1.app.get('/logout', function (req, res) {
+        var nombre = req.session.nombre;
+        if (nombre) {
+            req.session.destroy(function (err) {
+                console.log('destroy');
+                if (!err) {
+                    res.sendFile(process.cwd() + ("/public/logout.html?nombre=" + nombre));
+                }
+            });
         }
         else {
-            next();
-        }
-    };
-    carritoProducts.get("/listar/:id?", checkIdProductInCarrito, function (_, res) {
-        var carritos = server_1.cartLogic.getCart();
-        res.status(200).json(carritos);
-    });
-    carritoProducts.delete("/borrar/:id", function (req, res) {
-        var id = parseInt(req.params.id, 10);
-        var cartToBeDelete = server_1.cartLogic.getCartById(id);
-        if (cartToBeDelete) {
-            res.status(200).json(server_1.cartLogic.deleteCart(cartToBeDelete));
-            server_1.io.sockets.emit("carts", server_1.cartLogic.getCart());
-        }
-        else {
-            res.status(404).json({ error: "carrito no existente, no se puede borrar" });
+            // res.redirect('/')
         }
     });
 };
-exports.cartApi = cartApi;
+exports.loginAPI = loginAPI;

@@ -56,15 +56,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
-var server_1 = require("./server");
 var main_1 = require("./main");
+var main_2 = require("./main");
 var IMensaje_1 = require("./interfaces/IMensaje");
 var normalizr = __importStar(require("normalizr"));
 var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, main_1.dao.getMensajes()];
+            case 0: return [4 /*yield*/, main_2.dao.getMensajes()];
             case 1:
                 mensajesOriginal = _a.sent();
                 mensajesOriginalToString = JSON.stringify(mensajesOriginal);
@@ -88,7 +88,7 @@ var generateMensajeId = function () {
     return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
 };
 var sockets = function () {
-    server_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+    main_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {
             switch (_g.label) {
@@ -105,16 +105,16 @@ var sockets = function () {
                                 case 0:
                                     date = new Date().toLocaleString('es-AR');
                                     id = generateMensajeId();
-                                    checkId = main_1.dao.getMensajeById(id);
+                                    checkId = main_2.dao.getMensajeById(id);
                                     while (checkId) {
                                         id = generateMensajeId();
                                     }
                                     newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
                                     newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
-                                    return [4 /*yield*/, main_1.dao.insertMensajes(newMensaje)];
+                                    return [4 /*yield*/, main_2.dao.insertMensajes(newMensaje)];
                                 case 1:
                                     _d.sent();
-                                    _b = (_a = server_1.io.sockets).emit;
+                                    _b = (_a = main_1.io.sockets).emit;
                                     _c = ["messages"];
                                     return [4 /*yield*/, getNormalizeMsj()];
                                 case 2:
@@ -125,9 +125,9 @@ var sockets = function () {
                     }); });
                     _e = (_d = socket).emit;
                     _f = ["products"];
-                    return [4 /*yield*/, main_1.dao.getProductos()];
+                    return [4 /*yield*/, main_2.dao.getProductos()];
                 case 2:
-                    _e.apply(_d, _f.concat([_g.sent(), server_1.isAdmin]));
+                    _e.apply(_d, _f.concat([_g.sent(), main_1.isAdmin]));
                     socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
                         var _a, _b, _c;
                         return __generator(this, function (_d) {
@@ -135,9 +135,9 @@ var sockets = function () {
                                 case 0:
                                     _b = (_a = socket).emit;
                                     _c = ["products"];
-                                    return [4 /*yield*/, main_1.dao.filterProducto(filter, filterBy)];
+                                    return [4 /*yield*/, main_2.dao.filterProducto(filter, filterBy)];
                                 case 1:
-                                    _b.apply(_a, _c.concat([_d.sent(), server_1.isAdmin]));
+                                    _b.apply(_a, _c.concat([_d.sent(), main_1.isAdmin]));
                                     return [2 /*return*/];
                             }
                         });
@@ -149,7 +149,7 @@ var sockets = function () {
                                 case 0:
                                     _b = (_a = socket).emit;
                                     _c = ["products"];
-                                    return [4 /*yield*/, main_1.dao.getProductos()];
+                                    return [4 /*yield*/, main_2.dao.getProductos()];
                                 case 1:
                                     _b.apply(_a, _c.concat([_d.sent()]));
                                     return [2 /*return*/];

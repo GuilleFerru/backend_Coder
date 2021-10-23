@@ -1,4 +1,4 @@
-import { isAdmin, io } from "./server"
+import { isAdmin, io } from "./main"
 import { dao } from "./main";
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
 import * as normalizr from 'normalizr';

@@ -1,6 +1,6 @@
+{{!-- index.hbs --}}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,28 +12,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.6.3/rxjs.umd.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </link>
-
     <script src="/socket.io/socket.io.js"></script>
-    <title>Carga de productos</title>
+    <title>Ecommerce Guille</title>
 </head>
 
 <body>
-    <header id="navbar" style="margin-bottom: 5rem;"></header>
-
-    <div class="container-fluid" style="display: flex;">
-        <div class="container"></div>
-        <div class="container col-lg-8">
-            <section id="mockDataTable"></section>
-        </div>
+    <div class="container mt-3">
+        {{{body}}}
     </div>
-
-
-
-    <script src="./js/templates.js"></script>
-    <script src="./js/templatesData.js"></script>
-    <script src="./js/index.js"></script>
-    <script src="./js/formValidation.js"></script>
+  
 </body>
 
 </html>

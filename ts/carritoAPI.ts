@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
-import { app, io } from "./server";
+import { io } from "./main"
+import { app } from "./server"
 import { Producto } from "./interfaces/IProducto";
 import { Cart } from "./interfaces/ICart";
 import { dao } from "./main";

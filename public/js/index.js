@@ -2,8 +2,8 @@ const { fromEvent } = rxjs;
 const socket = io();
 
 fromEvent(window, 'load').subscribe(() => {
-    const navbar = navBarTemplate();
-    document.getElementById('navbar').innerHTML = navbar;
+
+    navBar();
 
     const filtros = filterProductoTemplate()
     document.getElementById('filterProductos').innerHTML = filtros;
@@ -11,6 +11,15 @@ fromEvent(window, 'load').subscribe(() => {
     const mockData = mockDataTemplate();
     document.getElementById('mockDataTable').innerHTML = mockData;
 });
+
+const navBar = () => {
+    fetch("http://localhost:8080/login/", {
+        method: "GET",
+    }).then(response => response.json()).then(userName => {
+        const navbar = navBarTemplate({ userName });
+        document.getElementById('navbar').innerHTML = navbar;
+    });
+}
 
 
 socket.on('messages', (normalizePost) => {
@@ -48,7 +57,6 @@ socket.on('carts', (cart) => {
     document.getElementById('modalCart').innerHTML = modalCart;
 });
 
-
 socket.on('products', (productos, isAdmin) => {
     const cardProducts = cardsTemplate({
         isAdmin: isAdmin,
@@ -61,6 +69,10 @@ socket.on('products', (productos, isAdmin) => {
     }
     document.getElementById('productsCard').innerHTML = cardProducts;
 });
+
+const login = () => {
+
+}
 
 const getQtyMocks = () => {
     return document.getElementById('mocksQty').value;
@@ -284,7 +296,7 @@ const addMessage = () => {
     const text = document.getElementById("chatText").value;
     const avatar = document.getElementById("avatarChat").value;
 
-    if ((/$^|.+@.+..+/).test(email) && email !== "") {
+    if ((/$^|.+@.+..+/).test(email) && email !== "" && alias !== "") {
         const mensaje = {
             text: text,
             author: {
@@ -299,6 +311,7 @@ const addMessage = () => {
         socket.emit('newMessage', mensaje)
     } else {
         document.getElementById("emailChat").classList.add('isInvalid');
+        document.getElementById("aliasChat").classList.add('isInvalid');
     }
     return false;
 }

@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { Producto } from "./interfaces/IProducto";
-import { app, io, isAdmin } from "./server"
+import { io, isAdmin } from "./main"
+import { app } from "./server"
 import { dao } from "./main";
 import { generateData } from "./productoTest"
 
@@ -11,7 +12,7 @@ export const productoAPI = () => {
 
     routerProducts.get("/vista-test/", (req: Request, res: Response) => {
         const cant = Number(req.query.cant);
-        const cantidadAGenerar = isNaN(cant) ? 10 : cant;    
+        const cantidadAGenerar = isNaN(cant) ? 10 : cant;
         const fakeProductos = generateData(cantidadAGenerar);
         if (fakeProductos.length > 0) {
             res.status(200).json(fakeProductos);

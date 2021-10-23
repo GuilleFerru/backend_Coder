@@ -8,6 +8,8 @@ import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
 
+import { usuarioModel } from "../models/usuarios";
+
 const MONGO_URL = 'mongodb://localhost:27017/ecommerce';
 
 
@@ -18,6 +20,7 @@ export class MongoDbDao implements IDao {
     mensajes: Array<Mensaje>
     countCarrito: number;
     countOrder: number;
+    usuarioOk: boolean;
 
 
     constructor() {
@@ -27,6 +30,24 @@ export class MongoDbDao implements IDao {
         this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
+        this.usuarioOk = false;
+    }
+
+    async getUsuario(usuario: string): Promise<boolean> {
+        try {
+            const savedUsers = await usuarioModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 });
+            savedUsers.forEach((user: string | any) => {
+                if (user === usuario) {
+                    this.usuarioOk = true;
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            // await mongoose.disconnect();
+            return this.usuarioOk;
+        }
     }
 
     async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {

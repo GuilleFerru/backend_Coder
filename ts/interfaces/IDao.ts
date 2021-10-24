@@ -6,6 +6,8 @@ import { Usuario } from "./IUsuario";
 
 export interface IDao {
 
+  getSession(): Promise<any>;
+
   insertProducto(producto: Producto): void;
 
   filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> | Producto[];

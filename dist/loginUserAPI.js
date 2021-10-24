@@ -43,14 +43,13 @@ exports.loginAPI = void 0;
 var main_1 = require("./main");
 var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
-var sockets_1 = require("./sockets");
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
         //En Atlas connect App: Make sure to change the node version to 2.2.12:
-        mongoUrl: '',
+        mongoUrl: 'mongodb://ecommerce:3JUOQTzjfNkDKtnh@cluster0-shard-00-00.sl41s.mongodb.net:27017,cluster0-shard-00-01.sl41s.mongodb.net:27017,cluster0-shard-00-02.sl41s.mongodb.net:27017/ecommerce?ssl=true&replicaSet=atlas-o3g8d0-shard-0&authSource=admin&retryWrites=true&w=majority',
         //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 600
     }),
@@ -63,14 +62,17 @@ server_1.app.use((0, express_session_1.default)({
     }
 }));
 var loginAPI = function () {
-    server_1.app.get('/login', function (req, res) {
-        if (req.session.nombre) {
-            res.status(200).json({ userName: "" + req.session.nombre });
-        }
-        else {
-            res.status(200).json({ userName: undefined });
-        }
-    });
+    server_1.app.get('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (req.session.nombre) {
+                res.status(200).json({ userName: "" + req.session.nombre });
+            }
+            else {
+                res.status(200).json({ userName: undefined });
+            }
+            return [2 /*return*/];
+        });
+    }); });
     server_1.app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var userOk, userName;
         return __generator(this, function (_a) {
@@ -79,7 +81,6 @@ var loginAPI = function () {
                 case 1:
                     userOk = _a.sent();
                     if (userOk) {
-                        (0, sockets_1.sockets)();
                         userName = req.body.userName;
                         req.session.nombre = userName;
                         res.status(200).json({ userName: "" + req.session.nombre });

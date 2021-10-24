@@ -25,7 +25,7 @@ export const io = new SocketIO.Server(server);
 
 // console.log( loginOk());
 loginAPI();
-// sockets();
+sockets();
 productoAPI();
 carritoAPI();
 

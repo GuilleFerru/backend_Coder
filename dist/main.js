@@ -28,6 +28,7 @@ var SocketIO = __importStar(require("socket.io"));
 var server_1 = require("./server");
 var productoAPI_1 = require("./productoAPI");
 var carritoAPI_1 = require("./carritoAPI");
+var sockets_1 = require("./sockets");
 var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var loginUserAPI_1 = require("./loginUserAPI");
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -43,6 +44,6 @@ exports.isAdmin = true;
 exports.io = new SocketIO.Server(server_1.server);
 // console.log( loginOk());
 (0, loginUserAPI_1.loginAPI)();
-// sockets();
+(0, sockets_1.sockets)();
 (0, productoAPI_1.productoAPI)();
 (0, carritoAPI_1.carritoAPI)();

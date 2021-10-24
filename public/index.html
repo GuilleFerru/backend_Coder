@@ -17,12 +17,90 @@
 </head>
 
 <body id="body">
+    
+    <div id="login"></div>
+
+    <div id="ecommerce" style="display: none;">
+        <header id="navbar" style="margin-bottom: 5rem;"></header>
+        <div class="container-fluid" style="display: flex;">
+            <div class="container"></div>
+            <div class="container col-lg-8">
+                <section id="productsCard"></section>
+                <section id="productsForm"> </section>
+                <section id="productsTable"></section>
+                <section id="productsChat"></section>
+                <section id="mockDataTable"></section>
+            </div>
+            <div class="container col-lg-3">
+                <section id="filterProductos"></section>
+            </div>
+        </div>
+    </div>
 
 </body>
-    <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
-    <script src="./js/templates.js"></script>
-    <script src="./js/templatesData.js"></script>
-    <script src="./js/index.js"></script>
-    <script src="./js/formValidation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+<script src="./js/templates.js"></script>
+<script src="./js/templatesData.js"></script>
+<script src="./js/index.js"></script>
+<script src="./js/formValidation.js"></script>
 
 </html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>   
+    <title>Ecommerce Guille</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+                        <form method="post" autocomplete="off" action="/home">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="userName" name="userName"
+                                    placeholder="Ingrese su nombre">
+                                <label for="userName">Nombre</label>
+                            </div>
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign in</button>
+                            </div>
+                            <hr class="my-4">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .btn-login {
+            font-size: 0.9rem;
+            letter-spacing: 0.05rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .btn-google {
+            color: white !important;
+            background-color: #ea4335;
+        }
+
+        .btn-facebook {
+            color: white !important;
+            background-color: #3b5998;
+        }
+    </style>
+</body>
+
+</html> -->

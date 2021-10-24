@@ -7,9 +7,10 @@ fromEvent(window, 'load').subscribe(() => {
         method: "GET",
     }).then(response => response.json()).then(user => {
         checkUser = user.userName;
+        console.log('userName', checkUser);
         if (checkUser === undefined) {
             const login = simpleLoginTemplate();
-            document.getElementById('body').innerHTML = login;
+            document.getElementById('login').innerHTML = login;
         } else {
             defaultTemplates(checkUser);
         }
@@ -19,8 +20,9 @@ fromEvent(window, 'load').subscribe(() => {
 
 const defaultTemplates = async (userName) => {
 
-    const bodyProductos = bodyEcommerceTemplate();
-    document.getElementById('body').innerHTML = bodyProductos;
+    // const bodyProductos = bodyEcommerceTemplate();
+    document.getElementById('login').style.display = "none";
+    document.getElementById('ecommerce').style.display = "initial";
 
     const navbar = navBarTemplate({ userName });
     document.getElementById('navbar').innerHTML = navbar;
@@ -30,10 +32,23 @@ const defaultTemplates = async (userName) => {
 
     const mockData = mockDataTemplate();
     document.getElementById('mockDataTable').innerHTML = mockData;
-
-    console.log('defaultTemplates');
-
 }
+
+
+
+socket.on('products', (productos, isAdmin) => {
+    const cardProducts = cardsTemplate({
+        isAdmin: isAdmin,
+        productos: productos,
+        inputInfo: inputInfo,
+    })
+    if (isAdmin) {
+        newForm = formTemplate({ inputInfo });
+        document.getElementById('productsForm').innerHTML = newForm;
+    }
+    document.getElementById('productsCard').innerHTML = cardProducts;
+});
+
 
 
 socket.on('messages', (normalizePost) => {
@@ -58,29 +73,21 @@ socket.on('messages', (normalizePost) => {
     const compresion = `${Math.trunc((normalizedLength / denormalizedLength) * 100)}%`;
 
     const newChat = chatNormalizaTemplate({ messages, compresion })
+
     document.getElementById('productsChat').innerHTML = newChat;
 });
+
 
 socket.on('carts', (cart) => {
     const order = generateOrder(cart);
     const orderTotalObject = order.pop();
     const orderTotal = orderTotalObject.orderTotal;
+
     const modalCart = modalCartTemplate({ order, orderTotal })
     document.getElementById('modalCart').innerHTML = modalCart;
 });
 
-socket.on('products', (productos, isAdmin) => {
-    const cardProducts = cardsTemplate({
-        isAdmin: isAdmin,
-        productos: productos,
-        inputInfo: inputInfo,
-    })
-    if (isAdmin) {
-        const newForm = formTemplate({ inputInfo });
-        document.getElementById('productsForm').innerHTML = newForm;
-    }
-    document.getElementById('productsCard').innerHTML = cardProducts;
-});
+
 
 
 const logOut = () => {
@@ -88,12 +95,14 @@ const logOut = () => {
         method: "GET",
     }).then(response => response.json()).then(user => {
         const userName = user.userName;
+        document.getElementById('ecommerce').style.display = "none";
+        document.getElementById('login').style.display = "initial";
         const logOut = logOutTemplate({ userName })
-        document.getElementById('body').innerHTML = logOut;
+        document.getElementById('login').innerHTML = logOut;
     });
     setTimeout(() => {
         const login = simpleLoginTemplate();
-        document.getElementById('body').innerHTML = login;
+        document.getElementById('login').innerHTML = login;
     }, 2000)
 }
 
@@ -107,11 +116,7 @@ const logIn = () => {
         const checkUser = user.userName;
         if (checkUser) {
             defaultTemplates(checkUser);
-
-
-
         } else {
-
         }
     })
         .catch(error => console.log(error))

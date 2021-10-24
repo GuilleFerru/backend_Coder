@@ -58,6 +58,7 @@ var mensajes_1 = require("../models/mensajes");
 var carrito_1 = require("../models/carrito");
 var order_1 = require("../models/order");
 var usuarios_1 = require("../models/usuarios");
+var sessions_1 = require("../models/sessions");
 var MongoDbaaSDao = /** @class */ (function () {
     function MongoDbaaSDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -72,6 +73,26 @@ var MongoDbaaSDao = /** @class */ (function () {
             console.log("Base de datos MongoDBAaS conectada!");
         });
     }
+    MongoDbaaSDao.prototype.getSession = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var savedSession;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, sessions_1.sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 })];
+                    case 1:
+                        savedSession = _a.sent();
+                        console.log('mongoSavedSession', savedSession.length);
+                        if (savedSession.length > 0) {
+                            return [2 /*return*/, true];
+                        }
+                        else {
+                            return [2 /*return*/, false];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     MongoDbaaSDao.prototype.getUsuario = function (usuario) {
         return __awaiter(this, void 0, void 0, function () {
             var savedUsers, error_1;

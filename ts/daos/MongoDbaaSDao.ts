@@ -9,6 +9,7 @@ import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
 import { Usuario } from "../interfaces/IUsuario";
 import { usuarioModel } from "../models/usuarios";
+import { sessionModel } from "../models/sessions";
 
 
 
@@ -29,14 +30,27 @@ export class MongoDbaaSDao implements IDao {
         this.order = new Array<Cart>();
         this.mensajes = new Array<Mensaje>();
         this.usuarioOk = false;
-
-
         this.countMensaje = 1;
         this.countOrder = 1;
         this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
             console.log("Base de datos MongoDBAaS conectada!");
         });
     }
+
+
+    async getSession(): Promise<any> {
+        const savedSession = await sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 }); 
+        console.log('mongoSavedSession',savedSession.length);
+        
+        if (savedSession.length > 0) {
+            return true
+        } else {
+            return false
+        }
+
+
+    }
+
     async getUsuario(usuario: string): Promise<boolean> {
         try {
             const savedUsers = await usuarioModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 });

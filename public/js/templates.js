@@ -13,7 +13,8 @@ const bodyEcommerceTemplate = Handlebars.compile(`
             <section id="filterProductos"></section>
         </div>
     </div>
-`)
+`);
+
 
 const navBarTemplate = Handlebars.compile(`
     <nav class="navbar fixed-top navbar-dark bg-dark">
@@ -28,7 +29,7 @@ const navBarTemplate = Handlebars.compile(`
             <h4>Bienvenido {{userName}}</h4>
         </div>
         <div class="col-sm-4 ">
-            <button class="btn btn-warning float-right" onclick="location.href='/logout'">
+            <button class="btn btn-warning float-right" onclick="logOut()"">
                 Desloguear
             </button>
         </div>
@@ -103,47 +104,54 @@ const navBarTemplate = Handlebars.compile(`
 
 // `)
 
-// const simpleLoginTemplate = Handlebars.compile(`
-//     <div class="container">
-//             <div class="row">
-//                 <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-//                     <div class="card border-0 shadow rounded-3 my-5">
-//                         <div class="card-body p-4 p-sm-5">
-//                             <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-//                             <form method="post" autocomplete="off" action="/login" >
-//                                 <div class="form-floating mb-3">
-//                                     <input type="text" class="form-control" id="userName" name="userName" placeholder="Ingrese su nombre">
-//                                     <label for="userName">Nombre</label>
-//                                 </div>
-//                                 <div class="d-grid">
-//                                     <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">Sign in</button>
-//                                 </div>
-//                                 <hr class="my-4">
-//                             </form>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     <style>
-//         .btn-login {
-//             font-size: 0.9rem;
-//             letter-spacing: 0.05rem;
-//             padding: 0.75rem 1rem;
-//         }
+const simpleLoginTemplate = Handlebars.compile(`
+    <div class="container">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card border-0 shadow rounded-3 my-5">
+                        <div class="card-body p-4 p-sm-5">
+                            <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+                            <form  autocomplete="off" onsubmit="return false" >
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="userName" name="userName" placeholder="Ingrese su nombre">
+                                    <label for="userName">Nombre</label>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-login text-uppercase fw-bold" onclick="logIn()">Sign in</button>
+                                </div>
+                                <hr class="my-4">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <style>
+        .btn-login {
+            font-size: 0.9rem;
+            letter-spacing: 0.05rem;
+            padding: 0.75rem 1rem;
+        }
         
-//         .btn-google {
-//             color: white !important;
-//             background-color: #ea4335;
-//         }
+        .btn-google {
+            color: white !important;
+            background-color: #ea4335;
+        }
         
-//         .btn-facebook {
-//             color: white !important;
-//             background-color: #3b5998;
-//         }
-//     </style>
+        .btn-facebook {
+            color: white !important;
+            background-color: #3b5998;
+        }
+    </style>
 
-// `)
+`)
+
+const logOutTemplate = Handlebars.compile(`
+    <h4 class="alert alert-primary">
+        Hasta luego {{userName}}
+    </h4>
+
+`)
 
 const filterProductoTemplate = Handlebars.compile(`
 

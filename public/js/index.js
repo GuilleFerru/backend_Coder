@@ -2,28 +2,41 @@ const { fromEvent } = rxjs;
 const socket = io();
 
 fromEvent(window, 'load').subscribe(() => {
+    let checkUser;
+    fetch("http://localhost:8080/login/", {
+        method: "GET",
+    }).then(response => response.json()).then(user => {
+        checkUser = user.userName;
+        if (checkUser === undefined) {
+            const login = simpleLoginTemplate();
+            document.getElementById('body').innerHTML = login;
+        } else {
+            defaultTemplates(checkUser);
+        }
+    });
+});
 
-    navBar();
 
-    const filtros = filterProductoTemplate()
+const defaultTemplates = async (userName) => {
+
+    const bodyProductos = bodyEcommerceTemplate();
+    document.getElementById('body').innerHTML = bodyProductos;
+
+    const navbar = navBarTemplate({ userName });
+    document.getElementById('navbar').innerHTML = navbar;
+
+    const filtros = filterProductoTemplate();
     document.getElementById('filterProductos').innerHTML = filtros;
 
     const mockData = mockDataTemplate();
     document.getElementById('mockDataTable').innerHTML = mockData;
-});
 
-const navBar = () => {
-    fetch("http://localhost:8080/login/", {
-        method: "GET",
-    }).then(response => response.json()).then(userName => {
-        const navbar = navBarTemplate({ userName });
-        document.getElementById('navbar').innerHTML = navbar;
-    });
+    console.log('defaultTemplates');
+
 }
 
 
 socket.on('messages', (normalizePost) => {
-
     const author = new normalizr.schema.Entity("author",
         undefined,
         {
@@ -32,7 +45,6 @@ socket.on('messages', (normalizePost) => {
     );
     const post = new normalizr.schema.Entity("post", {
         author: author,
-
     });
     const chat = new normalizr.schema.Entity('chat', {
         authors: [author],
@@ -70,8 +82,39 @@ socket.on('products', (productos, isAdmin) => {
     document.getElementById('productsCard').innerHTML = cardProducts;
 });
 
-const login = () => {
 
+const logOut = () => {
+    fetch("http://localhost:8080/logout/", {
+        method: "GET",
+    }).then(response => response.json()).then(user => {
+        const userName = user.userName;
+        const logOut = logOutTemplate({ userName })
+        document.getElementById('body').innerHTML = logOut;
+    });
+    setTimeout(() => {
+        const login = simpleLoginTemplate();
+        document.getElementById('body').innerHTML = login;
+    }, 2000)
+}
+
+const logIn = () => {
+    const userName = document.getElementById('userName').value;
+    fetch('http://localhost:8080/login/', {
+        method: "POST",
+        body: JSON.stringify({ userName: userName }),
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    }).then(response => response.json()).then(user => {
+        const checkUser = user.userName;
+        if (checkUser) {
+            defaultTemplates(checkUser);
+
+
+
+        } else {
+
+        }
+    })
+        .catch(error => console.log(error))
 }
 
 const getQtyMocks = () => {

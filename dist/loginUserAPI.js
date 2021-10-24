@@ -44,8 +44,6 @@ var main_1 = require("./main");
 var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
 var sockets_1 = require("./sockets");
-var carritoAPI_1 = require("./carritoAPI");
-var productoAPI_1 = require("./productoAPI");
 server_1.app.use((0, express_session_1.default)({
     secret: 'secretin',
     resave: false,
@@ -58,13 +56,13 @@ server_1.app.use((0, express_session_1.default)({
 var loginAPI = function () {
     server_1.app.get('/login', function (req, res) {
         if (req.session.nombre) {
-            res.status(200).json(req.session.nombre);
+            res.status(200).json({ userName: "" + req.session.nombre });
         }
         else {
-            res.redirect('/');
+            res.status(200).json({ userName: undefined });
         }
     });
-    server_1.app.post('/home', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    server_1.app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var userOk, userName;
         return __generator(this, function (_a) {
             switch (_a.label) {
@@ -72,16 +70,14 @@ var loginAPI = function () {
                 case 1:
                     userOk = _a.sent();
                     if (userOk) {
+                        (0, sockets_1.sockets)();
                         userName = req.body.userName;
                         req.session.nombre = userName;
-                        (0, sockets_1.sockets)();
-                        (0, productoAPI_1.productoAPI)();
-                        (0, carritoAPI_1.carritoAPI)();
-                        res.sendFile(process.cwd() + '/public/home.html');
+                        res.status(200).json({ userName: "" + req.session.nombre });
                     }
                     else {
                         req.session.nombre = undefined;
-                        res.redirect('/');
+                        res.status(200).json({ userName: undefined });
                     }
                     return [2 /*return*/];
             }
@@ -93,12 +89,12 @@ var loginAPI = function () {
             req.session.destroy(function (err) {
                 console.log('destroy');
                 if (!err) {
-                    res.sendFile(process.cwd() + ("/public/logout.html?nombre=" + nombre));
+                    res.status(200).json({ userName: "" + nombre });
                 }
             });
         }
         else {
-            // res.redirect('/')
+            res.status(200).json({ userName: undefined });
         }
     });
 };

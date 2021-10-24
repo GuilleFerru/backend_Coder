@@ -3,8 +3,6 @@ import { dao } from "./main";
 import { app } from "./server"
 import session from "express-session";
 import { sockets } from "./sockets";
-import { carritoAPI } from "./carritoAPI";
-import { productoAPI } from "./productoAPI";
 
 declare module 'express-session' {
     export interface SessionData {
@@ -23,28 +21,30 @@ app.use(session({
 }));
 
 
+
 export const loginAPI = () => {
+
+
     app.get('/login', (req: Request, res: Response) => {
         if (req.session.nombre) {
-            res.status(200).json(req.session.nombre);
+            res.status(200).json({ userName: `${req.session.nombre}` });
         }
         else {
-            res.redirect('/')
+            res.status(200).json({ userName: undefined });
         }
     })
 
-    app.post('/home', async (req: Request, res: Response) => {
+
+    app.post('/login', async (req: Request, res: Response) => {
         const userOk = await dao.getUsuario(String(req.body.userName));
         if (userOk) {
+            sockets();
             let { userName } = req.body;
             req.session.nombre = userName;
-            sockets();
-            productoAPI();
-            carritoAPI();
-            res.sendFile(process.cwd() + '/public/home.html');
+            res.status(200).json({ userName: `${req.session.nombre}` });
         } else {
             req.session.nombre = undefined;
-            res.redirect('/')
+            res.status(200).json({ userName: undefined });
 
         }
     })
@@ -55,14 +55,14 @@ export const loginAPI = () => {
         if (nombre) {
             req.session.destroy(err => {
                 console.log('destroy');
-
                 if (!err) {
-                    res.sendFile (process.cwd() + `/public/logout.html?nombre=${nombre}`);
+                    res.status(200).json({ userName: `${nombre}` });
                 }
             })
         }
         else {
-            // res.redirect('/')
+            res.status(200).json({ userName: undefined });
         }
     })
+
 }

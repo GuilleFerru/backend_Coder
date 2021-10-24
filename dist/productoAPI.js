@@ -84,7 +84,7 @@ var productoAPI = function () {
             }
         });
     }); };
-    routerProducts.get("/listar/:id?", checkIdProduct, function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
+    routerProducts.get("/listar/:id?", checkIdProduct, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var products;
         return __generator(this, function (_a) {
             switch (_a.label) {

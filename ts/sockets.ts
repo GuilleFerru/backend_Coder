@@ -3,6 +3,10 @@ import { dao } from "./main";
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
 import * as normalizr from 'normalizr';
 
+
+
+
+
 const getNormalizeMsj = async () => {
 
     const mensajesOriginal: MensajeWrap = await dao.getMensajes();
@@ -32,6 +36,8 @@ const generateMensajeId = () => {
 }
 
 export const sockets = () => {
+
+    console.log('session');
     io.on("connection", async (socket) => {
 
         socket.emit("messages", await getNormalizeMsj());

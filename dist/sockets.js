@@ -88,6 +88,7 @@ var generateMensajeId = function () {
     return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
 };
 var sockets = function () {
+    console.log('session');
     main_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
         var _a, _b, _c, _d, _e, _f;
         return __generator(this, function (_g) {

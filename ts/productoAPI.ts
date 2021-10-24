@@ -39,9 +39,7 @@ export const productoAPI = () => {
         }
     };
 
-
-
-    routerProducts.get("/listar/:id?", checkIdProduct, async (_: Request, res: Response) => {
+    routerProducts.get("/listar/:id?", checkIdProduct, async (req: Request, res: Response) => {
         const products = await dao.getProductos();
         if (products.length > 0) {
             res.status(200).json(products);

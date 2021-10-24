@@ -44,13 +44,22 @@ var main_1 = require("./main");
 var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
 var sockets_1 = require("./sockets");
+var connect_mongo_1 = __importDefault(require("connect-mongo"));
+var cookie_parser_1 = __importDefault(require("cookie-parser"));
+server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
+    store: connect_mongo_1.default.create({
+        //En Atlas connect App: Make sure to change the node version to 2.2.12:
+        mongoUrl: '',
+        //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+        ttl: 600
+    }),
     secret: 'secretin',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: 60000
+        maxAge: 1000 * 600
     }
 }));
 var loginAPI = function () {

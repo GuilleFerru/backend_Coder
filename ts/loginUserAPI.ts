@@ -3,6 +3,8 @@ import { dao } from "./main";
 import { app } from "./server"
 import session from "express-session";
 import { sockets } from "./sockets";
+import MongoStore from "connect-mongo";
+import cookieParser from "cookie-parser";
 
 declare module 'express-session' {
     export interface SessionData {
@@ -10,13 +12,20 @@ declare module 'express-session' {
     }
 }
 
+app.use(cookieParser())
 app.use(session({
+    store: MongoStore.create({
+        //En Atlas connect App: Make sure to change the node version to 2.2.12:
+        mongoUrl: '',
+        //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+        ttl: 600
+    }),
     secret: 'secretin',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: 60000
+        maxAge: 1_000 * 600 
     }
 }));
 

@@ -34,6 +34,17 @@ app.use(session({
 
 export const loginAPI = () => {
 
+    app.get('/loadData', async (req: Request, res: Response) => {
+        if (req.session.nombre) {
+            await sockets();
+            res.status(200).json({ data: 'ok' });
+        }
+        else {
+            res.status(200).json({ data: undefined });
+        }
+    })
+
+
     app.get('/login', async (req: Request, res: Response) => {
         if (req.session.nombre) {
             res.status(200).json({ userName: `${req.session.nombre}` });
@@ -49,6 +60,7 @@ export const loginAPI = () => {
         if (userOk) {
             let { userName } = req.body;
             req.session.nombre = userName;
+
             res.status(200).json({ userName: `${req.session.nombre}` });
         } else {
             req.session.nombre = undefined;

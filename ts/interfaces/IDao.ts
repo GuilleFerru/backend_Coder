@@ -6,7 +6,7 @@ import { Usuario } from "./IUsuario";
 
 export interface IDao {
 
-  getSession(): Promise<any>;
+  getSession(): Promise<any> | any;
 
   insertProducto(producto: Producto): void;
 

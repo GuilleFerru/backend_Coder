@@ -40,8 +40,8 @@ export class MongoDbaaSDao implements IDao {
 
     async getSession(): Promise<any> {
         const savedSession = await sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 }); 
-        console.log('mongoSavedSession',savedSession.length);
-        
+        // console.log('mongoSavedSession',savedSession.length);
+
         if (savedSession.length > 0) {
             return true
         } else {

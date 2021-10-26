@@ -45,6 +45,7 @@ var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var sockets_1 = require("./sockets");
 server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
@@ -62,6 +63,23 @@ server_1.app.use((0, express_session_1.default)({
     }
 }));
 var loginAPI = function () {
+    server_1.app.get('/loadData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!req.session.nombre) return [3 /*break*/, 2];
+                    return [4 /*yield*/, (0, sockets_1.sockets)()];
+                case 1:
+                    _a.sent();
+                    res.status(200).json({ data: 'ok' });
+                    return [3 /*break*/, 3];
+                case 2:
+                    res.status(200).json({ data: undefined });
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); });
     server_1.app.get('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             if (req.session.nombre) {

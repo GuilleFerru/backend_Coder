@@ -81,7 +81,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 0: return [4 /*yield*/, sessions_1.sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 })];
                     case 1:
                         savedSession = _a.sent();
-                        console.log('mongoSavedSession', savedSession.length);
+                        // console.log('mongoSavedSession',savedSession.length);
                         if (savedSession.length > 0) {
                             return [2 /*return*/, true];
                         }

@@ -10,7 +10,7 @@ fromEvent(window, 'load').subscribe(() => {
         console.log('userName', checkUser);
         if (checkUser === undefined) {
             const login = simpleLoginTemplate();
-            document.getElementById('login').innerHTML = login;
+            document.getElementById('body').innerHTML = login;
         } else {
             defaultTemplates(checkUser);
         }
@@ -20,9 +20,8 @@ fromEvent(window, 'load').subscribe(() => {
 
 const defaultTemplates = async (userName) => {
 
-    // const bodyProductos = bodyEcommerceTemplate();
-    document.getElementById('login').style.display = "none";
-    document.getElementById('ecommerce').style.display = "initial";
+    const bodyProductos = bodyEcommerceTemplate();
+    document.getElementById('body').innerHTML = bodyProductos;
 
     const navbar = navBarTemplate({ userName });
     document.getElementById('navbar').innerHTML = navbar;
@@ -95,14 +94,14 @@ const logOut = () => {
         method: "GET",
     }).then(response => response.json()).then(user => {
         const userName = user.userName;
-        document.getElementById('ecommerce').style.display = "none";
-        document.getElementById('login').style.display = "initial";
+        // document.getElementById('ecommerce').style.display = "none";
+        // document.getElementById('login').style.display = "initial";
         const logOut = logOutTemplate({ userName })
-        document.getElementById('login').innerHTML = logOut;
+        document.getElementById('body').innerHTML = logOut;
     });
     setTimeout(() => {
         const login = simpleLoginTemplate();
-        document.getElementById('login').innerHTML = login;
+        document.getElementById('body').innerHTML = login;
     }, 2000)
 }
 
@@ -115,7 +114,14 @@ const logIn = () => {
     }).then(response => response.json()).then(user => {
         const checkUser = user.userName;
         if (checkUser) {
-            defaultTemplates(checkUser);
+
+            fetch("http://localhost:8080/loadData/", {
+                method: "GET",
+            }).then(response => response.json()).then(_ => {
+                defaultTemplates(checkUser);
+            });
+
+
         } else {
         }
     })

@@ -35,9 +35,21 @@ const generateMensajeId = () => {
     return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
 }
 
-export const sockets = () => {
+export const sockets = async () => {
 
-    console.log('session');
+    console.log('socket');
+
+    io.use(async (socket, next) => {
+        const checkSession = await dao.getSession();
+        if (checkSession) {
+            console.log('checkSession');
+            await next();
+        } else {
+            // next(new Error("invalid"));
+        }
+    });
+
+
     io.on("connection", async (socket) => {
 
         socket.emit("messages", await getNormalizeMsj());

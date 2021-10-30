@@ -42,23 +42,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginAPI = void 0;
 var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
-var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var main_1 = require("./main");
 server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
-    store: connect_mongo_1.default.create({
-        //En Atlas connect App: Make sure to change the node version to 2.2.12:
-        mongoUrl: 'mongodb://ecommerce:3JUOQTzjfNkDKtnh@cluster0-shard-00-00.sl41s.mongodb.net:27017,cluster0-shard-00-01.sl41s.mongodb.net:27017,cluster0-shard-00-02.sl41s.mongodb.net:27017/ecommerce?ssl=true&replicaSet=atlas-o3g8d0-shard-0&authSource=admin&retryWrites=true&w=majority',
-        //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 600
-    }),
     secret: 'secretin',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: 1000 * 600
+        maxAge: 60000
     }
 }));
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {

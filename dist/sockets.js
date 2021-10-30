@@ -89,23 +89,11 @@ var generateMensajeId = function () {
 };
 var sockets = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.log('socket');
-        // io.use(async (socket, next) => {
-        //     const checkSession = await dao.getSession();
-        //     console.log('ya chequee el checkSession');
-        //     if (checkSession) {
-        //         console.log('checkSession');
-        //         next();
-        //     } else {
-        //         // next(new Error("invalid"));
-        //     }
-        // });
         main_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
             var _a, _b, _c, _d, _e, _f;
             return __generator(this, function (_g) {
                 switch (_g.label) {
                     case 0:
-                        console.log('socket io connection');
                         _b = (_a = socket).emit;
                         _c = ["messages"];
                         return [4 /*yield*/, getNormalizeMsj()];

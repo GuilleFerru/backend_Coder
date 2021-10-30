@@ -32,39 +32,53 @@ app.use(session({
 }));
 
 
-export const loginAPI = () => {
+export const loginAPI = async () => {
 
-    app.get('/loadData', async (req: Request, res: Response) => {
-        if (req.session.nombre) {
-            await sockets();
-            res.status(200).json({ data: 'ok' });
-        }
-        else {
-            res.status(200).json({ data: undefined });
-        }
-    })
+    app.post('/loadData', (req: Request, res: Response) => {
 
-
-    app.get('/login', async (req: Request, res: Response) => {
-        if (req.session.nombre) {
-            res.status(200).json({ userName: `${req.session.nombre}` });
-        }
-        else {
-            res.status(200).json({ userName: undefined });
-        }
-    })
-
-
-    app.post('/login', async (req: Request, res: Response) => {
-        const userOk = await dao.getUsuario(String(req.body.userName));
-        if (userOk) {
-            let { userName } = req.body;
+        const { userName } = req.body;
+        if (userName) {
             req.session.nombre = userName;
+            console.log('loadData ok', req.session.nombre);
+            return res.status(200).json({ userName: userName, dataOk: true });
+        }
+        else {
+            return res.status(200).json({ data: undefined });
+        }
+    })
 
-            res.status(200).json({ userName: `${req.session.nombre}` });
-        } else {
-            req.session.nombre = undefined;
+    app.get('/sockets', async (req: Request, res: Response) => {
+        if (req.session.nombre) {
+            // await sockets();
+            console.log('hola');
+
+            return res.status(200).send('OK');
+        }
+        else {
             res.status(200).json({ userName: undefined });
+        }
+    })
+
+    app.get('/login', (req: Request, res: Response) => {
+        if (req.session.nombre) {
+            res.status(200).json({ userName: `${req.session.nombre}` });
+        }
+        else {
+            res.status(200).json({ userName: undefined });
+        }
+    })
+
+
+    app.post('/login', (req: Request, res: Response) => {
+        const userOk = req.body.userName;
+
+        if (userOk !== '') {
+            return res.redirect(307, '/loadData')
+            // res.status(200).json({ userName: `${req.session.nombre}` });
+        } else {
+            return res.redirect(302, '/');
+            // req.session.nombre = undefined;
+            // res.status(200).json({ userName: undefined });
 
         }
     })

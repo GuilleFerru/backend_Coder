@@ -12,13 +12,21 @@ fromEvent(window, 'load').subscribe(() => {
             const login = simpleLoginTemplate();
             document.getElementById('body').innerHTML = login;
         } else {
+
+            console.log('default template del get login');
             defaultTemplates(checkUser);
+
+
         }
     });
 });
 
+const bodyTemplate = () => {
+ 
+}
 
-const defaultTemplates = async (userName) => {
+
+const defaultTemplates = (userName) => {
 
     const bodyProductos = bodyEcommerceTemplate();
     document.getElementById('body').innerHTML = bodyProductos;
@@ -31,6 +39,8 @@ const defaultTemplates = async (userName) => {
 
     const mockData = mockDataTemplate();
     document.getElementById('mockDataTable').innerHTML = mockData;
+
+    bodyload = true;
 }
 
 
@@ -50,7 +60,7 @@ socket.on('products', (productos, isAdmin) => {
 
 
 
-socket.on('messages', (normalizePost) => {
+socket.on('messages', async (normalizePost) => {
     const author = new normalizr.schema.Entity("author",
         undefined,
         {
@@ -71,7 +81,7 @@ socket.on('messages', (normalizePost) => {
     const denormalizedLength = JSON.stringify(denormalizePost).length;
     const compresion = `${Math.trunc((normalizedLength / denormalizedLength) * 100)}%`;
 
-    const newChat = chatNormalizaTemplate({ messages, compresion })
+    const newChat = await chatNormalizaTemplate({ messages, compresion })
 
     document.getElementById('productsChat').innerHTML = newChat;
 });
@@ -105,28 +115,44 @@ const logOut = () => {
     }, 2000)
 }
 
+
 const logIn = () => {
     const userName = document.getElementById('userName').value;
     fetch('http://localhost:8080/login/', {
         method: "POST",
         body: JSON.stringify({ userName: userName }),
         headers: { "Content-type": "application/json; charset=UTF-8" }
-    }).then(response => response.json()).then(user => {
-        const checkUser = user.userName;
-        if (checkUser) {
+    }).then(response => response.json()).then(element => {
+        const { user, dataOk } = element;
+        if (dataOk) {
+            defaultTemplates(user);
 
-            fetch("http://localhost:8080/loadData/", {
-                method: "GET",
-            }).then(response => response.json()).then(_ => {
-                defaultTemplates(checkUser);
-            });
-
-
-        } else {
         }
     })
         .catch(error => console.log(error))
 }
+
+
+// const logIn = () => {
+//     const userName = document.getElementById('userName').value;
+//     fetch('http://localhost:8080/login/', {
+//         method: "POST",
+//         body: JSON.stringify({ userName: userName }),
+//         headers: { "Content-type": "application/json; charset=UTF-8" }
+//     }).then(response => response.json()).then(user => {
+//         const checkUser = user.userName;
+//         if (checkUser) {
+//                 fetch("http://localhost:8080/loadData/", {
+//                     method: "GET",
+//                 }).then(response => response.json()).then(_ => {
+//                     console.log('default template del post login');
+//                     defaultTemplates(checkUser);
+//                 });         
+//         } else {
+//         }
+//     })
+//         .catch(error => console.log(error))
+// }
 
 const getQtyMocks = () => {
     return document.getElementById('mocksQty').value;

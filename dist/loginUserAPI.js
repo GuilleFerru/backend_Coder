@@ -40,12 +40,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginAPI = void 0;
-var main_1 = require("./main");
 var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
-var sockets_1 = require("./sockets");
 server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
@@ -62,68 +60,67 @@ server_1.app.use((0, express_session_1.default)({
         maxAge: 1000 * 600
     }
 }));
-var loginAPI = function () {
-    server_1.app.get('/loadData', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!req.session.nombre) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, sockets_1.sockets)()];
-                case 1:
-                    _a.sent();
-                    res.status(200).json({ data: 'ok' });
-                    return [3 /*break*/, 3];
-                case 2:
-                    res.status(200).json({ data: undefined });
-                    _a.label = 3;
-                case 3: return [2 /*return*/];
+var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        server_1.app.post('/loadData', function (req, res) {
+            var userName = req.body.userName;
+            if (userName) {
+                req.session.nombre = userName;
+                console.log('loadData ok', req.session.nombre);
+                return res.status(200).json({ userName: userName, dataOk: true });
+            }
+            else {
+                return res.status(200).json({ data: undefined });
             }
         });
-    }); });
-    server_1.app.get('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
+        server_1.app.get('/sockets', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (req.session.nombre) {
+                    // await sockets();
+                    console.log('hola');
+                    return [2 /*return*/, res.status(200).send('OK')];
+                }
+                else {
+                    res.status(200).json({ userName: undefined });
+                }
+                return [2 /*return*/];
+            });
+        }); });
+        server_1.app.get('/login', function (req, res) {
             if (req.session.nombre) {
                 res.status(200).json({ userName: "" + req.session.nombre });
             }
             else {
                 res.status(200).json({ userName: undefined });
             }
-            return [2 /*return*/];
         });
-    }); });
-    server_1.app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var userOk, userName;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, main_1.dao.getUsuario(String(req.body.userName))];
-                case 1:
-                    userOk = _a.sent();
-                    if (userOk) {
-                        userName = req.body.userName;
-                        req.session.nombre = userName;
-                        res.status(200).json({ userName: "" + req.session.nombre });
-                    }
-                    else {
-                        req.session.nombre = undefined;
-                        res.status(200).json({ userName: undefined });
-                    }
-                    return [2 /*return*/];
+        server_1.app.post('/login', function (req, res) {
+            var userOk = req.body.userName;
+            if (userOk !== '') {
+                return res.redirect(307, '/loadData');
+                // res.status(200).json({ userName: `${req.session.nombre}` });
+            }
+            else {
+                return res.redirect(302, '/');
+                // req.session.nombre = undefined;
+                // res.status(200).json({ userName: undefined });
             }
         });
-    }); });
-    server_1.app.get('/logout', function (req, res) {
-        var nombre = req.session.nombre;
-        if (nombre) {
-            req.session.destroy(function (err) {
-                console.log('destroy');
-                if (!err) {
-                    res.status(200).json({ userName: "" + nombre });
-                }
-            });
-        }
-        else {
-            res.status(200).json({ userName: undefined });
-        }
+        server_1.app.get('/logout', function (req, res) {
+            var nombre = req.session.nombre;
+            if (nombre) {
+                req.session.destroy(function (err) {
+                    console.log('destroy');
+                    if (!err) {
+                        res.status(200).json({ userName: "" + nombre });
+                    }
+                });
+            }
+            else {
+                res.status(200).json({ userName: undefined });
+            }
+        });
+        return [2 /*return*/];
     });
-};
+}); };
 exports.loginAPI = loginAPI;

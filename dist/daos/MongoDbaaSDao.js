@@ -82,6 +82,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 1:
                         savedSession = _a.sent();
                         // console.log('mongoSavedSession',savedSession.length);
+                        console.log('estoy en getSession', savedSession);
                         if (savedSession.length > 0) {
                             return [2 /*return*/, true];
                         }

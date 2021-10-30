@@ -2,14 +2,14 @@ const bodyEcommerceTemplate = Handlebars.compile(`
     <header id="navbar" style="margin-bottom: 5rem;"></header>
     <div class="container-fluid" style="display: flex;">
         <div class="container"></div>
-        <div class="container col-lg-8">
+        <div class="container col-lg-8 col-9">
             <section id="productsCard"></section>
             <section id="productsForm"> </section>
             <section id="productsTable"></section>
             <section id="productsChat"></section>
             <section id="mockDataTable"></section>
         </div>
-        <div class="container col-lg-3">
+        <div class="container col-lg-3" col-3>
             <section id="filterProductos"></section>
         </div>
     </div>

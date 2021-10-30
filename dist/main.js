@@ -24,25 +24,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.io = exports.isAdmin = exports.dao = void 0;
 var express_1 = __importDefault(require("express"));
+var express_handlebars_1 = __importDefault(require("express-handlebars"));
 var SocketIO = __importStar(require("socket.io"));
 var server_1 = require("./server");
 var productoAPI_1 = require("./productoAPI");
 var carritoAPI_1 = require("./carritoAPI");
+var sockets_1 = require("./sockets");
 var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var loginUserAPI_1 = require("./loginUserAPI");
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 server_1.server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-/* cliente */ /////////////////////////////////////////////////////////////////////////////////
-server_1.app.use(express_1.default.static("./public"));
-// app.get("/login", (_: Request, res: Response) => {
-//     return res.sendFile("index.html", { root: __dirname });
-// });
+//Configuración de handlebars
+server_1.app.engine("hbs", (0, express_handlebars_1.default)({
+    extname: ".hbs",
+    defaultLayout: 'index.hbs',
+}));
+server_1.app.set("view engine", "hbs");
+server_1.app.set("views", "./views");
+server_1.app.use(express_1.default.static('public'));
 exports.dao = new MongoDbaaSDao_1.MongoDbaaSDao();
 exports.isAdmin = true;
 exports.io = new SocketIO.Server(server_1.server);
 // console.log( loginOk());
 (0, loginUserAPI_1.loginAPI)();
-// sockets();
+(0, sockets_1.sockets)();
 (0, productoAPI_1.productoAPI)();
 (0, carritoAPI_1.carritoAPI)();

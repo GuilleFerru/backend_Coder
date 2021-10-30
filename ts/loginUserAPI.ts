@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { dao } from "./main";
 import { app } from "./server"
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
-import { sockets } from "./sockets";
+import { dao } from "./main";
 
 declare module 'express-session' {
     export interface SessionData {
@@ -34,55 +33,27 @@ app.use(session({
 
 export const loginAPI = async () => {
 
-    app.post('/loadData', (req: Request, res: Response) => {
+    app.get('/login', (req, res) => {
+        if (req.session.nombre) {
+            res.render("home", {
+                nombre: req.session.nombre
+            })
+        }
+        else {
+            res.sendFile(process.cwd() + '/public/login.html')
+        }
+    })
 
-        const { userName } = req.body;
-        if (userName) {
+    app.post('/login', async (req: Request, res: Response) => {
+        const userOk = await dao.getUsuario(String(req.body.userName));
+        if (userOk) {
+            let { userName } = req.body;
             req.session.nombre = userName;
-            console.log('loadData ok', req.session.nombre);
-            return res.status(200).json({ userName: userName, dataOk: true });
-        }
-        else {
-            return res.status(200).json({ data: undefined });
-        }
-    })
-
-    app.get('/sockets', async (req: Request, res: Response) => {
-        if (req.session.nombre) {
-            // await sockets();
-            console.log('hola');
-
-            return res.status(200).send('OK');
-        }
-        else {
-            res.status(200).json({ userName: undefined });
-        }
-    })
-
-    app.get('/login', (req: Request, res: Response) => {
-        if (req.session.nombre) {
-            res.status(200).json({ userName: `${req.session.nombre}` });
-        }
-        else {
-            res.status(200).json({ userName: undefined });
-        }
-    })
-
-
-    app.post('/login', (req: Request, res: Response) => {
-        const userOk = req.body.userName;
-
-        if (userOk !== '') {
-            return res.redirect(307, '/loadData')
-            // res.status(200).json({ userName: `${req.session.nombre}` });
+            res.redirect('/')
         } else {
-            return res.redirect(302, '/');
-            // req.session.nombre = undefined;
-            // res.status(200).json({ userName: undefined });
-
+            res.redirect('/');
         }
     })
-
 
     app.get('/logout', (req: Request, res: Response) => {
         let nombre = req.session.nombre;
@@ -90,12 +61,14 @@ export const loginAPI = async () => {
             req.session.destroy(err => {
                 console.log('destroy');
                 if (!err) {
-                    res.status(200).json({ userName: `${nombre}` });
+                    res.render("logout", { nombre })
+                } else {
+                    res.redirect('/')
                 }
             })
         }
         else {
-            res.status(200).json({ userName: undefined });
+            res.redirect('/');
         }
     })
 

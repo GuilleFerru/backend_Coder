@@ -1,48 +1,11 @@
 const { fromEvent } = rxjs;
 const socket = io();
 
-fromEvent(window, 'load').subscribe(() => {
-    let checkUser;
-    fetch("http://localhost:8080/login/", {
-        method: "GET",
-    }).then(response => response.json()).then(user => {
-        checkUser = user.userName;
-        console.log('userName', checkUser);
-        if (checkUser === undefined) {
-            const login = simpleLoginTemplate();
-            document.getElementById('body').innerHTML = login;
-        } else {
+const filtros = filterProductoTemplate()
+document.getElementById('filterProductos').innerHTML = filtros;
 
-            console.log('default template del get login');
-            defaultTemplates(checkUser);
-
-
-        }
-    });
-});
-
-const bodyTemplate = () => {
- 
-}
-
-
-const defaultTemplates = (userName) => {
-
-    const bodyProductos = bodyEcommerceTemplate();
-    document.getElementById('body').innerHTML = bodyProductos;
-
-    const navbar = navBarTemplate({ userName });
-    document.getElementById('navbar').innerHTML = navbar;
-
-    const filtros = filterProductoTemplate();
-    document.getElementById('filterProductos').innerHTML = filtros;
-
-    const mockData = mockDataTemplate();
-    document.getElementById('mockDataTable').innerHTML = mockData;
-
-    bodyload = true;
-}
-
+const mockData = mockDataTemplate();
+document.getElementById('mockDataTable').innerHTML = mockData;
 
 
 socket.on('products', (productos, isAdmin) => {
@@ -57,8 +20,6 @@ socket.on('products', (productos, isAdmin) => {
     }
     document.getElementById('productsCard').innerHTML = cardProducts;
 });
-
-
 
 socket.on('messages', async (normalizePost) => {
     const author = new normalizr.schema.Entity("author",
@@ -96,63 +57,6 @@ socket.on('carts', (cart) => {
     document.getElementById('modalCart').innerHTML = modalCart;
 });
 
-
-
-
-const logOut = () => {
-    fetch("http://localhost:8080/logout/", {
-        method: "GET",
-    }).then(response => response.json()).then(user => {
-        const userName = user.userName;
-        // document.getElementById('ecommerce').style.display = "none";
-        // document.getElementById('login').style.display = "initial";
-        const logOut = logOutTemplate({ userName })
-        document.getElementById('body').innerHTML = logOut;
-    });
-    setTimeout(() => {
-        const login = simpleLoginTemplate();
-        document.getElementById('body').innerHTML = login;
-    }, 2000)
-}
-
-
-const logIn = () => {
-    const userName = document.getElementById('userName').value;
-    fetch('http://localhost:8080/login/', {
-        method: "POST",
-        body: JSON.stringify({ userName: userName }),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    }).then(response => response.json()).then(element => {
-        const { user, dataOk } = element;
-        if (dataOk) {
-            defaultTemplates(user);
-
-        }
-    })
-        .catch(error => console.log(error))
-}
-
-
-// const logIn = () => {
-//     const userName = document.getElementById('userName').value;
-//     fetch('http://localhost:8080/login/', {
-//         method: "POST",
-//         body: JSON.stringify({ userName: userName }),
-//         headers: { "Content-type": "application/json; charset=UTF-8" }
-//     }).then(response => response.json()).then(user => {
-//         const checkUser = user.userName;
-//         if (checkUser) {
-//                 fetch("http://localhost:8080/loadData/", {
-//                     method: "GET",
-//                 }).then(response => response.json()).then(_ => {
-//                     console.log('default template del post login');
-//                     defaultTemplates(checkUser);
-//                 });         
-//         } else {
-//         }
-//     })
-//         .catch(error => console.log(error))
-// }
 
 const getQtyMocks = () => {
     return document.getElementById('mocksQty').value;

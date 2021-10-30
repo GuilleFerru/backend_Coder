@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import handlebars from 'express-handlebars'
 import * as SocketIO from "socket.io";
 import { app, server } from "./server";
 import { IDao } from "./interfaces/IDao";
@@ -11,13 +12,22 @@ import { loginAPI } from "./loginUserAPI";
 server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+//Configuración de handlebars
+app.engine(
+    "hbs",
+    handlebars({
+        extname: ".hbs",
+        defaultLayout: 'index.hbs',
+    })
+);
+app.set("view engine", "hbs");
+app.set("views", "./views");
 
 
-/* cliente */ /////////////////////////////////////////////////////////////////////////////////
-app.use(express.static("./public"));
-// app.get("/login", (_: Request, res: Response) => {
-//     return res.sendFile("index.html", { root: __dirname });
-// });
+app.use(express.static('public'))
+
+
+
 
 export const dao: IDao = new MongoDbaaSDao();
 export const isAdmin: boolean = true;
@@ -25,7 +35,7 @@ export const io = new SocketIO.Server(server);
 
 // console.log( loginOk());
 loginAPI();
-// sockets();
+sockets();
 productoAPI();
 carritoAPI();
 

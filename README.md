@@ -1,10 +1,6 @@
 Consigna: 
+Implementar passport con estrategia local sobre el entregable que venimos realizando, creando un sistema de registro y login de usuario, ambos con username y password, persistiendo los datos sobre mongoDB. Podemos utilizar bcrypt como opción de encriptación de contraseñas guardadas en la base.
 
-Continuando con el desafío de la clase anterior, vamos a incorporar un mecanismo sencillo que permita loguear un cliente por su nombre, mediante un formulario de ingreso.
+Una vez logueado, se activará un espacio de sesión controlado por la sesión de passport. Esta estará activa por 10 minutos y en cada acceso se recargará este tiempo. 
 
-Luego de que el usuario esté logueado, se mostrará sobre el contenido del sitio un cartel con el mensaje “Bienvenido” y el nombre de usuario. Este cartel tendrá un botón de deslogueo a su derecha.
-
-Verificar que el cliente permanezca logueado en los reinicios de la página, mientras no expire el tiempo de inactividad de un minuto, que se recargará con cada request. En caso de alcanzarse ese tiempo, el próximo request de usuario nos llevará al formulario de login.
-
-Al desloguearse, se mostrará una vista con el mensaje de 'Hasta luego' más el nombre y se retornará automáticamente, luego de dos segundos, a la vista de login de usuario
-
+Implementar vistas de error para login (credenciales no válidas) y registro (usuario ya registrado).

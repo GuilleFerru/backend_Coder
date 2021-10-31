@@ -1,11 +1,14 @@
 interface IUsuario {
-    userName: string;
+    username: string;
+    password: string
 }
 
 export class Usuario implements IUsuario {
-    public userName: string;
+    public username: string;
+    public password: string;
 
-    constructor(userName: string) {
-        this.userName = userName;
+    constructor(username: string, password: string) {
+        this.username = username;
+        this.password = password;
     }
 }

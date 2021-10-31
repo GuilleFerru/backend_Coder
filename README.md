@@ -5,3 +5,8 @@ Implementar passport con estrategia local sobre el entregable que venimos realiz
 Una vez logueado, se activará un espacio de sesión controlado por la sesión de passport. Esta estará activa por 10 minutos y en cada acceso se recargará este tiempo.
 
 Implementar vistas de error para login (credenciales no válidas) y registro (usuario ya registrado).
+
+
+Accesso tutor:
+nombre: tutor
+contraseña tutor

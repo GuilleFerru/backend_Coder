@@ -44,7 +44,87 @@ var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
-var main_1 = require("./main");
+var passport_1 = __importDefault(require("passport"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var passport_local_1 = require("passport-local");
+var usuarios_1 = require("./models/usuarios");
+var loginStrategyName = 'login';
+var signUpStrategyName = 'signup';
+var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
+var isValidPassword = function (user, password) { return bcrypt_1.default.compareSync(password, user.password); };
+passport_1.default.use(loginStrategyName, new passport_local_1.Strategy({
+    passReqToCallback: true
+}, function (_, username, password, done) {
+    // check in mongo if a user with username exists or not
+    usuarios_1.usuarioModel.findOne({ 'username': username }, function (err, user) {
+        // In case of any error, return using the done method
+        if (err)
+            return done(err);
+        // Username does not exist, log error & redirect back
+        if (!user) {
+            console.log('User Not Found with username ' + username);
+            console.log('message', 'User Not found.');
+            return done(null, false);
+        }
+        // User exists but wrong password, log the error 
+        if (!isValidPassword(user, password)) {
+            console.log('Invalid Password');
+            console.log('message', 'Invalid Password');
+            return done(null, false);
+        }
+        // User and password both match, return user from 
+        // done method which will be treated like success
+        return done(null, user);
+    });
+}));
+passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
+    passReqToCallback: true
+}, function (_, username, password, done) {
+    var findOrCreateUser = function () {
+        // find a user in Mongo with provided username
+        usuarios_1.usuarioModel.findOne({ 'username': username }, function (err, user) {
+            // In case of any error return
+            if (err) {
+                console.log('Error in SignUp: ' + err);
+                return done(err);
+            }
+            // already exists
+            if (user) {
+                console.log('User already exists');
+                console.log('message', 'User Already Exists');
+                return done(null, false);
+            }
+            else {
+                // if there is no user with that email
+                // create the user
+                var newUser = new usuarios_1.usuarioModel();
+                // set the user's local credentials
+                newUser.username = username;
+                newUser.password = createHash(password);
+                // save the user
+                newUser.save(function (err) {
+                    if (err) {
+                        console.log('Error in Saving user: ' + err);
+                        throw err;
+                    }
+                    console.log('User Registration succesful');
+                    return done(null, newUser);
+                });
+            }
+        });
+    };
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+}));
+passport_1.default.serializeUser(function (user, done) {
+    done(null, user._id);
+});
+passport_1.default.deserializeUser(function (id, done) {
+    usuarios_1.usuarioModel.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
 server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
@@ -61,53 +141,60 @@ server_1.app.use((0, express_session_1.default)({
         maxAge: 1000 * 600
     }
 }));
+server_1.app.use(passport_1.default.initialize());
+server_1.app.use(passport_1.default.session());
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
-            if (req.session.nombre) {
+            if (req.isAuthenticated()) {
                 res.render("home", {
-                    nombre: req.session.nombre
+                    nombre: req.user.username
                 });
             }
             else {
-                res.sendFile(process.cwd() + '/public/login.html');
+                res.render("login", {
+                    formAction: "/login",
+                    title: 'Sign In',
+                    btnPrimaryTitle: 'SIGN IN',
+                    btnSecondaryTitle: 'SIGN UP',
+                    btnSecondaryAction: '/register'
+                });
             }
         });
-        server_1.app.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-            var userOk, userName;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, main_1.dao.getUsuario(String(req.body.userName))];
-                    case 1:
-                        userOk = _a.sent();
-                        if (userOk) {
-                            userName = req.body.userName;
-                            req.session.nombre = userName;
-                            res.redirect('/');
-                        }
-                        else {
-                            res.redirect('/');
-                        }
-                        return [2 /*return*/];
-                }
+        server_1.app.post('/login', passport_1.default.authenticate(loginStrategyName, { failureRedirect: '/faillogin' }), function (req, res) {
+            res.redirect('/');
+        });
+        server_1.app.get('/faillogin', function (_, res) {
+            res.render('error', {
+                btnAction: '/login',
+                errorText: 'Compruebe que el Usuario y/o la contraseña sean correctas.'
             });
-        }); });
+        });
+        server_1.app.get('/register', function (_, res) {
+            res.render("login", {
+                formAction: "/register",
+                title: 'Sign Up',
+                btnPrimaryTitle: 'SIGN UP',
+                btnSecondaryTitle: 'SIGN IN',
+                btnSecondaryAction: '/login'
+            });
+        });
+        server_1.app.post('/register', passport_1.default.authenticate(signUpStrategyName, { failureRedirect: '/failregister' }), function (req, res) {
+            res.redirect('/');
+        });
+        server_1.app.get('/failregister', function (_, res) {
+            res.render('error', {
+                btnAction: '/register',
+                errorText: 'El nombre de Usuario que intenta registrar ya ha sido utilizado, por favor seleccione un nombre distinto.'
+            });
+        });
         server_1.app.get('/logout', function (req, res) {
-            var nombre = req.session.nombre;
-            if (nombre) {
-                req.session.destroy(function (err) {
-                    console.log('destroy');
-                    if (!err) {
-                        res.render("logout", { nombre: nombre });
-                    }
-                    else {
-                        res.redirect('/');
-                    }
-                });
-            }
-            else {
-                res.redirect('/');
-            }
+            var nombre = req.user.username;
+            req.logout();
+            req.session.destroy(function () {
+                console.log('destroy');
+            });
+            res.render("logout", { nombre: nombre });
         });
         return [2 /*return*/];
     });

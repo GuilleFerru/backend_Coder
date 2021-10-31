@@ -7,7 +7,6 @@ import { productoModel } from "../models/productos";
 import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
-import { Usuario } from "../interfaces/IUsuario";
 import { usuarioModel } from "../models/usuarios";
 import { sessionModel } from "../models/sessions";
 

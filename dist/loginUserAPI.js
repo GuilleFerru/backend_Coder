@@ -102,7 +102,7 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
             failureRedirect: '/faillogin'
         }));
         server_1.app.get('/home', function (req, res) {
-            console.log(req.user);
+            // console.log(req.user)
             res.redirect('/');
         });
         server_1.app.get('/faillogin', function (_, res) {

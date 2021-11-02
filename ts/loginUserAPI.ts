@@ -79,7 +79,7 @@ export const loginAPI = async () => {
     ));
 
     app.get('/home', (req, res) => {
-        console.log(req.user)
+        // console.log(req.user)
         res.redirect('/')
     })
 

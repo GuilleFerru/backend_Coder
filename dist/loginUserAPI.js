@@ -112,12 +112,21 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
             });
         });
         server_1.app.get('/logout', function (req, res) {
-            var nombre = req.user.displayName;
-            req.logout();
-            req.session.destroy(function () {
-                console.log('destroy');
-            });
-            res.render("logout", { nombre: nombre });
+            try {
+                var nombre = req.user.displayName;
+                res.render("logout", { nombre: nombre });
+                req.session.destroy(function () {
+                    console.log('destroy');
+                });
+            }
+            catch (err) {
+                res.render("login", {
+                    title: 'Sign In'
+                });
+            }
+            finally {
+                req.logout();
+            }
         });
         return [2 /*return*/];
     });

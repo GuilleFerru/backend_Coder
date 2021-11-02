@@ -91,12 +91,19 @@ export const loginAPI = async () => {
     })
 
     app.get('/logout', (req: any, res) => {
-        let nombre = req.user.displayName
-        req.logout();
-        req.session.destroy(() => {
-            console.log('destroy');
-        })
-        res.render("logout", { nombre })
+        try {
+            let nombre = req.user.displayName;
+            res.render("logout", { nombre })
+            req.session.destroy(() => {
+                console.log('destroy');
+            })
+        } catch (err) {
+            res.render("login", {
+                title: 'Sign In'
+            })
+        } finally {
+            req.logout();
+        }
     })
 
 }

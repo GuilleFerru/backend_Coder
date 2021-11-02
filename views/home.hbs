@@ -18,11 +18,15 @@
                 </svg>
             </a>
         </div>
-        <div class="col-sm-4 text-white text-center">
-            <h4>Bienvenido {{nombre}}</h4>
+        <div class="col-sm-4 text-white text-center  d-inline-flex justify-content-center align-items-center">
+            <div class="mr-3 d-flex flex-column justify-content-center">
+                <h4 class="m-0">Bienvenido {{nombre}}</h4>
+                <p class="text-white-50 m-0">{{email}}</p>
+            </div>
+            <div class="cart_item_image mr-2 zoom"><img src="{{img}}" alt="{{nombre}}"></div>
         </div>
-        <div class="col-sm-4 ">
-            <button class="btn btn-warning float-right" onclick="location.href='/logout'">Desloguear</button>
+        <div class="col-sm-4  ">
+            <button class="btn btn-outline-light float-right" onclick="location.href='/logout'">Desloguear</button>
         </div>
     </nav>
     <div class=" col-sm-4 float-right">
@@ -49,3 +53,14 @@
 <script src="./js/templatesData.js"></script>
 <script src="./js/index.js"></script>
 <script src="./js/formValidation.js"></script>
+
+<style>
+    .zoom {
+        transition: transform .8s;
+        cursor: pointer;
+    }
+
+    .zoom:hover {
+        transform: scale(1.1);
+    }
+</style>

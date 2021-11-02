@@ -1,12 +1,9 @@
 Consigna: 
 
-Implementar passport con estrategia local sobre el entregable que venimos realizando, creando un sistema de registro y login de usuario, ambos con username y password, persistiendo los datos sobre mongoDB. Podemos utilizar bcrypt como opción de encriptación de contraseñas guardadas en la base.
+Modificar el último proyecto entregable, en el cual integramos passport al login y registro de usuarios, reemplazando la estrategia passport local a Facebook,incorporando todo lo necesario para poder loguear usuarios a través de dicha red social.
 
-Una vez logueado, se activará un espacio de sesión controlado por la sesión de passport. Esta estará activa por 10 minutos y en cada acceso se recargará este tiempo.
+Una vez logueado el usuario, se mostrará su nombre completo, email y foto de perfil. Dichos datos serán extraídos del perfil devuelto por la red social.
 
-Implementar vistas de error para login (credenciales no válidas) y registro (usuario ya registrado).
+No implementar el registro de usuario en forma local.
 
-
-Accesso tutor:
-nombre: tutor
-contraseña tutor
+El resto de la funciones, deben quedar tal cual estaban el proyecto original.

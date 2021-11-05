@@ -39,15 +39,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.processAPI = void 0;
 var server_1 = require("./server");
 var processAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var argsv, args, datos;
+    var argsv, args, memory, memoryArray, datos;
     return __generator(this, function (_a) {
         argsv = process.argv;
         args = argsv.splice(2, argsv.length).join(" - ");
+        memory = process.memoryUsage();
+        memoryArray = Object.entries(memory).join(" - ");
         datos = {
             argumentos: args,
             plataforma: process.platform,
             nodeVersion: process.version,
-            memoriaUso: process.memoryUsage(),
+            memoriaUso: memoryArray,
             path: process.argv[1],
             pid: process.pid,
             carpeta: process.cwd(),

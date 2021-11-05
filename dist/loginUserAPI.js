@@ -83,11 +83,11 @@ server_1.app.use(passport_1.default.session());
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
-            if (req.isAuthenticated()) {
+            if (!req.isAuthenticated()) {
                 res.render("home", {
-                    nombre: req.user.displayName,
-                    img: req.user.photos[0].value,
-                    email: req.user.emails[0].value
+                // nombre: req.user.displayName,
+                // img: req.user.photos[0].value,
+                // email: req.user.emails[0].value
                 });
             }
             else {

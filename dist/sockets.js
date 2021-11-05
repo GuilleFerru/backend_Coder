@@ -88,7 +88,9 @@ var generateMensajeId = function () {
     return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
 };
 var sockets = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var port;
     return __generator(this, function (_a) {
+        port = process.argv[2];
         main_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
             var _a, _b, _c, _d, _e, _f;
             return __generator(this, function (_g) {
@@ -99,6 +101,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                         return [4 /*yield*/, getNormalizeMsj()];
                     case 1:
                         _b.apply(_a, _c.concat([_g.sent()]));
+                        socket.emit('port', port);
                         socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
                             var date, id, checkId, newAuthor, newMensaje, _a, _b, _c;
                             return __generator(this, function (_d) {

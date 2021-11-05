@@ -36,10 +36,13 @@ const generateMensajeId = () => {
 }
 
 export const sockets = async () => {
+    const port: any = process.argv[2];
 
     io.on("connection", async (socket) => {
 
         socket.emit("messages", await getNormalizeMsj());
+
+        socket.emit('port', port)
 
         socket.on("newMessage", async (mensaje: Mensaje) => {
 

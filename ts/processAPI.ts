@@ -18,7 +18,12 @@ export const processAPI = async () => {
   };
 
   app.get("/info", (_request, res) =>
-    res.render("process", { datos, btnAction: "/home" })
+    res.render("process", { 
+        datos, 
+        btnAction: "/home",
+        
+    
+    })
   );
 };
 

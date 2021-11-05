@@ -56,7 +56,10 @@ var processAPI = function () { return __awaiter(void 0, void 0, void 0, function
             carpeta: process.cwd(),
         };
         server_1.app.get("/info", function (_request, res) {
-            return res.render("process", { datos: datos, btnAction: "/home" });
+            return res.render("process", {
+                datos: datos,
+                btnAction: "/home",
+            });
         });
         return [2 /*return*/];
     });

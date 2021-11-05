@@ -32,6 +32,7 @@ var carritoAPI_1 = require("./carritoAPI");
 var sockets_1 = require("./sockets");
 var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var loginUserAPI_1 = require("./loginUserAPI");
+var processAPI_1 = require("./processAPI");
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 server_1.server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,3 +52,5 @@ exports.io = new SocketIO.Server(server_1.server);
 (0, sockets_1.sockets)();
 (0, productoAPI_1.productoAPI)();
 (0, carritoAPI_1.carritoAPI)();
+(0, processAPI_1.processAPI)();
+process.on('exit', function (code) { return console.log("exit " + code); });

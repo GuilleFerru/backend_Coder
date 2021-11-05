@@ -103,6 +103,10 @@ const filterProductoTemplate = Handlebars.compile(`
                 <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="limpiarFiltro()">Limpiar Filtros</a>
             </div>
         </div>
+        <div class="flex mt-5">
+            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/info'">Process Info</button>
+            <button type="button" class="mt-1 highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href=''">Randoms</button>
+        </div>
     </div>
 </div>
 </div>

@@ -46,8 +46,8 @@ var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
-var FACEBOOK_CLIENT_ID = '1280074459156595';
-var FACEBOOK_CLIENT_SECRET = '27d2001ec573f933251c8d2d61b61434';
+var FACEBOOK_CLIENT_ID = process.argv[3] || '1280074459156595';
+var FACEBOOK_CLIENT_SECRET = process.argv[4] || '27d2001ec573f933251c8d2d61b61434';
 passport_1.default.use(new passport_facebook_1.Strategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret: FACEBOOK_CLIENT_SECRET,

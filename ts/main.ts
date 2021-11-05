@@ -8,6 +8,7 @@ import { carritoAPI } from "./carritoAPI";
 import { sockets } from "./sockets";
 import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
 import { loginAPI } from "./loginUserAPI";
+import { processAPI } from "./processAPI";
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,8 +28,6 @@ app.set("views", "./views");
 app.use(express.static('public'))
 
 
-
-
 export const dao: IDao = new MongoDbaaSDao();
 export const isAdmin: boolean = true;
 export const io = new SocketIO.Server(server);
@@ -38,6 +37,13 @@ loginAPI();
 sockets();
 productoAPI();
 carritoAPI();
+processAPI();
 
+
+process.on(
+    'exit',
+    (code) => console.log(`exit ${code}`)
+    ,
+);
 
 

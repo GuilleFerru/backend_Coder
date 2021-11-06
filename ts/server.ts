@@ -1,6 +1,8 @@
 import express from "express";
+import cluster from 'cluster'
 
 /* SERVER *//////////////////////////////////////////////////////////////////////////////
+
 export const app = express();
 
 const port: number = +process.argv[2] || 8080;
@@ -14,8 +16,6 @@ export const server = app.listen(port, () => {
 server.on("error", (error: string) => {
   console.error(error);
 });
-
-
 
 
 

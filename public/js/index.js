@@ -1,11 +1,14 @@
 const { fromEvent } = rxjs;
 const socket = io();
 
+let port = '';
+
 const filtros = filterProductoTemplate()
 document.getElementById('filterProductos').innerHTML = filtros;
 
 const mockData = mockDataTemplate();
 document.getElementById('mockDataTable').innerHTML = mockData;
+
 
 
 socket.on('products', (productos, isAdmin) => {
@@ -57,6 +60,20 @@ socket.on('carts', (cart) => {
     document.getElementById('modalCart').innerHTML = modalCart;
 });
 
+socket.on('port', (puerto) => {
+    port = puerto;
+});
+
+const getQtyRandom = () => {
+    return document.getElementById('randomQty').value;
+}
+
+const generateRandoms = () => {
+    const cant = getQtyRandom();
+    location.href = `/randoms?cant=${cant}`
+}
+
+
 
 const getQtyMocks = () => {
     return document.getElementById('mocksQty').value;
@@ -64,7 +81,7 @@ const getQtyMocks = () => {
 
 const generateFakeProductos = () => {
     const cant = getQtyMocks();
-    fetch(`http://localhost:8080/productos/vista-test/?cant=${cant}`, {
+    fetch(`http://localhost:${port}/productos/vista-test/?cant=${cant}`, {
         method: "GET",
     }).then(response => response.json()).then(fakeProductos => {
         if (fakeProductos.error) {
@@ -121,12 +138,12 @@ const generateOrder = (cart) => {
 }
 
 const saveCart = () => {
-    fetch("http://localhost:8080/carrito/listar/", {
+    fetch(`http://localhost:${port}/carrito/listar/`, {
         method: "GET",
     }).then(response => response.json()).then(cart => {
         const order = generateOrder(cart);
         if (order.length > 1) {
-            fetch("http://localhost:8080/carrito/agregar/", {
+            fetch(`http://localhost:${port}/carrito/agregar/`, {
                 method: "POST",
                 body: JSON.stringify(order),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -141,7 +158,7 @@ const saveCart = () => {
 }
 
 const deleteCart = (id) => {
-    const url = `http://localhost:8080/carrito/borrar/${id}`
+    const url = `http://localhost:${port}/carrito/borrar/${id}`
     fetch(url, {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -150,7 +167,7 @@ const deleteCart = (id) => {
 
 
 const showCart = () => {
-    fetch("http://localhost:8080/carrito/listar/", {
+    fetch(`http://localhost:${port}/carrito/listar/`, {
         method: "GET",
     }).then(response => response.json()).then(cart => {
         const order = generateOrder(cart);
@@ -162,7 +179,7 @@ const showCart = () => {
 }
 
 const addToCart = (id) => {
-    const url = `http://localhost:8080/carrito/agregar/${id}`;
+    const url = `http://localhost:${port}/carrito/agregar/${id}`;
     fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -176,7 +193,7 @@ const addToCart = (id) => {
 }
 
 const addProduct = () => {
-    fetch('http://localhost:8080/productos/agregar', {
+    fetch(`http://localhost:${port}/productos/agregar`, {
         method: "POST",
         body: JSON.stringify(getInputValues()),
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -189,7 +206,7 @@ const addProduct = () => {
 }
 
 const deleteProduct = (id) => {
-    const url = `http://localhost:8080/productos/borrar/${id}`
+    const url = `http://localhost:${port}/productos/borrar/${id}`
     fetch(url, {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -199,7 +216,7 @@ const deleteProduct = (id) => {
 }
 
 const updateProduct = (id) => {
-    const url = `http://localhost:8080/productos/actualizar/${id}`
+    const url = `http://localhost:${port}/productos/actualizar/${id}`
     fetch(url, {
         method: "PUT",
         body: JSON.stringify(getInputValues()),
@@ -210,7 +227,7 @@ const updateProduct = (id) => {
 }
 
 const passIdProductToModal = (id) => {
-    const url = `http://localhost:8080/productos/listar/${id}`
+    const url = `http://localhost:${port}/productos/listar/${id}`
     fetch(url, {
         method: "GET",
     }).then(response => response.json()).then(product => {

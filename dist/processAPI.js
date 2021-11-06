@@ -38,25 +38,55 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processAPI = void 0;
 var server_1 = require("./server");
+var child_process_1 = require("child_process");
 var processAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var argsv, args, memory, memoryArray, datos;
+    var argsv, args, memoria, memoAux, memoriaString, datos, childRandom, callbackReturn, sendParent;
     return __generator(this, function (_a) {
         argsv = process.argv;
         args = argsv.splice(2, argsv.length).join(" - ");
-        memory = process.memoryUsage();
-        memoryArray = Object.entries(memory).join(" - ");
+        memoria = Object.entries(process.memoryUsage());
+        memoAux = memoria.map(function (memo) { return memo[0] + ": " + memo[1]; });
+        memoriaString = memoAux.join("  -  ");
         datos = {
             argumentos: args,
             plataforma: process.platform,
             nodeVersion: process.version,
-            memoriaUso: memoryArray,
+            memoriaUso: memoriaString,
             path: process.argv[1],
             pid: process.pid,
             carpeta: process.cwd(),
         };
-        server_1.app.get('/info', function (_request, res) { return res.render("process", { datos: datos, btnAction: '/home' }); });
+        server_1.app.get("/info", function (_, res) {
+            return res.render("process", {
+                datos: datos,
+                btnAction: "/home",
+                info: true
+            });
+        });
+        childRandom = (0, child_process_1.fork)("./ts/randomGenerator.ts");
+        callbackReturn = {};
+        sendParent = function (data, callback) {
+            childRandom.send({ data: data });
+            callbackReturn = callback;
+        };
+        childRandom.on('message', function (randoms) {
+            callbackReturn(randoms);
+        });
+        server_1.app.get('/randoms', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+            var cant;
+            return __generator(this, function (_a) {
+                cant = req.query.cant;
+                sendParent(cant || 100000000, function (randoms) {
+                    res.render("process", {
+                        randoms: randoms,
+                        btnAction: "/home",
+                        info: false
+                    });
+                });
+                return [2 /*return*/];
+            });
+        }); });
         return [2 /*return*/];
     });
 }); };
 exports.processAPI = processAPI;
-// 

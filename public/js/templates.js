@@ -105,7 +105,10 @@ const filterProductoTemplate = Handlebars.compile(`
         </div>
         <div class="flex mt-5">
             <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/info'">Process Info</button>
-            <button type="button" class="mt-1 highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href=''">Randoms</button>
+        </div>
+        <div class="d-flex align-items-center mt-3">
+        <button type="button" class=" highlight-button btn btn-medium button xs-margin-bottom-five" onclick="generateRandoms()">Randoms</button>
+        <input type="number" class="form-control"  id="randomQty" onchange="getQtyRandom()">
         </div>
     </div>
 </div>

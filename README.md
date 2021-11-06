@@ -1,20 +1,16 @@
 Consigna:
 
-En base al último proyecto entregado, permitir ingresar por línea de comandos el puerto local de escucha del servidor, luego el FACEBOOK_CLIENT_ID y el FACEBOOK_CLIENT_SECRET.
+Tomando con base el proyecto que vamos realizando, agregar un parámetro más en la ruta de comando que permita ejecutar al servidor en modo fork o cluster. Dicho parámetro será 'FORK' en el primer caso y 'CLUSTER' en el segundo, y de no pasarlo, el servidor iniciará en modo fork.
 
-Si no se ingresan estos valores, se tomarán valores default presentes en el programa.
+Agregar en la vista info, el número de procesadores presentes en el servidor.
 
-El servidor imprimirá en consola el código de salida del proceso de node.js
+Ejecutar el servidor (modos FORK y CLUSTER) con nodemon verificando el número de procesos tomados por node.
 
-Asimismo, se dispondrá de una nueva ruta get '/info', que devolverá una vista con los siguientes datos:
-- Argumentos de entrada                                       
-- Path de ejecución
-- Nombre de la plataforma (sistema operativo)                  
-- Process id
-- Versión de node.js                                           
-- Carpeta corriente
-- Uso de memoria
+Ejecutar el servidor (con los parámetros adecuados) utilizando Forever, verificando su correcta operación. Listar los procesos por Forever y por sistema operativo.
 
-Se creará una ruta '/randoms' que permita calcular un cantidad de números aleatorios en el rango del 1 al 1000 especificada por query params, por ej. ..../randoms?cant=20000. Si dicho parámetro no se ingresa, calcular 100000000 números.
+Ejecutar el servidor (con los parámetros adecuados: modo FORK) utilizando PM2 en sus modos modo fork y cluster. Listar los procesos por PM2 y por sistema operativo.
+Tanto en Forever como en PM2 permitir el modo escucha, para que la actualización del código del servidor se vea reflejado inmediatamente en todos los procesos.
 
-El dato devuelto al frontend será un objeto que contendrá como claves los números random generados junto a la cantidad de veces que salió cada uno. Esta ruta no será bloqueante (utilizar el método fork de child process). Comprobar el no bloqueo con una cantidad de 500000000 de randoms
+Hacer pruebas de finalización de procesos fork y cluster en los casos que corresponda.
+
+NOTA:Es probable que en el caso de tener activo el child process fork (realizado en el entregable anterior) aparezcan más procesos de node activos que la cantidad esperada. Desactivar el código del fork y su endpoint '/randoms' y verificar que ahora la cantidad de procesos de node corresponda.

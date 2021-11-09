@@ -14,3 +14,7 @@ Tanto en Forever como en PM2 permitir el modo escucha, para que la actualizació
 Hacer pruebas de finalización de procesos fork y cluster en los casos que corresponda.
 
 NOTA:Es probable que en el caso de tener activo el child process fork (realizado en el entregable anterior) aparezcan más procesos de node activos que la cantidad esperada. Desactivar el código del fork y su endpoint '/randoms' y verificar que ahora la cantidad de procesos de node corresponda.
+
+
+
+NOTA: Ver en package.json los distintos scripts ejecutables.

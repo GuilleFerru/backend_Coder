@@ -76,7 +76,9 @@ var IMensaje_1 = require("./interfaces/IMensaje");
 var normalizr = __importStar(require("normalizr"));
 var modoCluster = process.argv[5] == 'CLUSTER';
 if (modoCluster && cluster_1.default.isMaster) {
+    console.log("PID MASTER " + process.pid);
     var numCPUs = os.cpus().length;
+    console.log("N\u00FAmero de procesadores: " + numCPUs);
     for (var i = 0; i < numCPUs; i++) {
         cluster_1.default.fork();
     }
@@ -85,6 +87,7 @@ if (modoCluster && cluster_1.default.isMaster) {
     });
 }
 else {
+    console.log("Worker " + process.pid + " is running");
     var app = (0, express_1.default)();
     var port_1 = +process.argv[2] || 8080;
     app.use(express_1.default.json());
@@ -107,8 +110,9 @@ else {
     var isAdmin_1 = true;
     var io_1 = new SocketIO.Server(server);
     process.on('exit', function (code) { return console.log("exit " + code); });
-    var FACEBOOK_CLIENT_ID = process.argv[3] || '1280074459156595';
-    var FACEBOOK_CLIENT_SECRET = process.argv[4] || '27d2001ec573f933251c8d2d61b61434';
+    /* LOGIN */ /////////////////////////////////////////////////////////////////////////////
+    var FACEBOOK_CLIENT_ID = process.argv[3] || '423519862624165';
+    var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'de42abdb2f8e3917e10682d189668d1f';
     passport_1.default.use(new passport_facebook_1.Strategy({
         clientID: FACEBOOK_CLIENT_ID,
         clientSecret: FACEBOOK_CLIENT_SECRET,
@@ -142,11 +146,11 @@ else {
     app.use(passport_1.default.initialize());
     app.use(passport_1.default.session());
     app.get('/login', function (req, res) {
-        if (!req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
             res.render("home", {
-            // nombre: req.user.displayName,
-            // img: req.user.photos[0].value,
-            // email: req.user.emails[0].value
+                nombre: req.user.displayName,
+                img: req.user.photos[0].value,
+                // email: req.user.emails[0].value
             });
         }
         else {
@@ -187,6 +191,7 @@ else {
             req.logout();
         }
     });
+    /* PROCESS INFO */ /////////////////////////////////////////////////////////////////////////////
     var argsv = process.argv;
     var args = argsv.splice(2, argsv.length).join(" - ");
     var memoria = Object.entries(process.memoryUsage());
@@ -233,6 +238,7 @@ else {
             return [2 /*return*/];
         });
     }); });
+    /* PRODUCTOS API */ /////////////////////////////////////////////////////////////////////////////
     var routerProducts = express_1.default.Router();
     app.use("/productos", routerProducts);
     routerProducts.get("/vista-test/", function (req, res) {
@@ -384,6 +390,7 @@ else {
             }
         });
     }); });
+    /* CARRITO API */ /////////////////////////////////////////////////////////////////////////////
     var carritoProducts = express_1.default.Router();
     app.use("/carrito", carritoProducts);
     carritoProducts.post("/agregar/:id_producto", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -505,6 +512,7 @@ else {
             }
         });
     }); });
+    /* SOCKETS CON MENSAJE API */ /////////////////////////////////////////////////////////////////////////////
     var getNormalizeMsj_1 = function () { return __awaiter(void 0, void 0, void 0, function () {
         var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost;
         return __generator(this, function (_a) {

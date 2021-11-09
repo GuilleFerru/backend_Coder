@@ -1,14 +1,8 @@
 import express, { Request, Response } from "express";
-
 import handlebars from 'express-handlebars'
 import * as SocketIO from "socket.io";
 import { IDao } from "./interfaces/IDao";
-import { productoAPI } from "./productoAPI"
-import { carritoAPI } from "./carritoAPI";
-import { sockets } from "./sockets";
 import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
-import { loginAPI } from "./loginUserAPI";
-import { processAPI } from "./processAPI";
 import cluster from 'cluster'
 import * as os from 'os';
 import session from "express-session";
@@ -20,8 +14,6 @@ import { fork } from 'child_process';
 import { ParsedQs } from "qs";
 import { Producto } from "./interfaces/IProducto";
 import { generateData } from "./productoTest"
-import { isAdmin, io } from "./main"
-import { dao } from "./main";
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
 import * as normalizr from 'normalizr';
 import { Cart } from "./interfaces/ICart";
@@ -39,7 +31,10 @@ declare module 'express-session' {
 const modoCluster = process.argv[5] == 'CLUSTER'
 
 if (modoCluster && cluster.isMaster) {
+    
+    console.log(`PID MASTER ${process.pid}`)
     const numCPUs = os.cpus().length;
+    console.log(`Número de procesadores: ${numCPUs}`)
 
     for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
@@ -47,8 +42,9 @@ if (modoCluster && cluster.isMaster) {
     cluster.on('exit', (worker, code, signal) => {
         console.log(`worker ${worker.process.pid} died`);
     })
-} else {
 
+} else {
+    console.log(`Worker ${process.pid} is running`);
     const app = express();
 
     const port: number = +process.argv[2] || 8080;
@@ -89,8 +85,18 @@ if (modoCluster && cluster.isMaster) {
         ,
     );
 
-    const FACEBOOK_CLIENT_ID = process.argv[3] || '1280074459156595';
-    const FACEBOOK_CLIENT_SECRET = process.argv[4] || '27d2001ec573f933251c8d2d61b61434';
+
+
+
+
+
+
+/* LOGIN *//////////////////////////////////////////////////////////////////////////////
+
+
+
+    const FACEBOOK_CLIENT_ID = process.argv[3] || '423519862624165';
+    const FACEBOOK_CLIENT_SECRET = process.argv[4] || 'de42abdb2f8e3917e10682d189668d1f';
 
     passport.use(new FacebookStrategy({
         clientID: FACEBOOK_CLIENT_ID,
@@ -127,13 +133,11 @@ if (modoCluster && cluster.isMaster) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-
-
     app.get('/login', (req: any, res) => {
-        if (!req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
             res.render("home", {
-                // nombre: req.user.displayName,
-                // img: req.user.photos[0].value,
+                nombre: req.user.displayName,
+                img: req.user.photos[0].value,
                 // email: req.user.emails[0].value
             })
         }
@@ -179,6 +183,14 @@ if (modoCluster && cluster.isMaster) {
             req.logout();
         }
     })
+
+
+
+
+
+/* PROCESS INFO *//////////////////////////////////////////////////////////////////////////////
+
+
 
     const argsv: any = process.argv;
     const args = argsv.splice(2, argsv.length).join(" - ");
@@ -229,6 +241,13 @@ if (modoCluster && cluster.isMaster) {
             })
         });
     });
+
+
+
+
+
+
+/* PRODUCTOS API *//////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -343,6 +362,14 @@ if (modoCluster && cluster.isMaster) {
 
 
 
+
+
+
+/* CARRITO API *//////////////////////////////////////////////////////////////////////////////
+
+
+
+
     const carritoProducts = express.Router();
     app.use("/carrito", carritoProducts);
 
@@ -406,6 +433,13 @@ if (modoCluster && cluster.isMaster) {
             res.status(404).json({ error: "carrito no existente, no se puede borrar" });
         }
     });
+
+
+
+
+/* SOCKETS CON MENSAJE API *//////////////////////////////////////////////////////////////////////////////
+
+
 
 
 

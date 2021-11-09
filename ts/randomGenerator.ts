@@ -4,7 +4,7 @@ const generateRandom = () => {
 }
 
 const calcularRandoms = (cant) => {
-    const randomObject  = {}
+    const randomObject = {}
 
     for (let i = 0; i < cant; i += 1) {
         let random = generateRandom();

@@ -46,8 +46,8 @@ var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
-var FACEBOOK_CLIENT_ID = process.argv[3] || '1280074459156595';
-var FACEBOOK_CLIENT_SECRET = process.argv[4] || '27d2001ec573f933251c8d2d61b61434';
+var FACEBOOK_CLIENT_ID = process.argv[3] || '423519862624165';
+var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'de42abdb2f8e3917e10682d189668d1f';
 passport_1.default.use(new passport_facebook_1.Strategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret: FACEBOOK_CLIENT_SECRET,
@@ -83,11 +83,12 @@ server_1.app.use(passport_1.default.session());
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
-            if (!req.isAuthenticated()) {
+            if (req.isAuthenticated()) {
+                console.log(req.user);
                 res.render("home", {
-                // nombre: req.user.displayName,
-                // img: req.user.photos[0].value,
-                // email: req.user.emails[0].value
+                    nombre: req.user.displayName,
+                    img: req.user.photos[0].value,
+                    // email: req.user.emails[0].value,
                 });
             }
             else {

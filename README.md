@@ -1,10 +1,14 @@
 Consigna:
 
-Arrancar dos instancias del servidor en el que venimos trabajando utilizando PM2 modo fork (sin -i max).
+Incorporar al proyecto de servidor de trabajo la compresión gzip.
 
-Las dos instancias estarán: una en el puerto 8081 modo fork (parámetro línea de comandos en FORK: cluster interno deshabilitado) y la otra en 8082 modo cluster (parámetro línea de comandos en CLUSTER: cluster interno habilitado). Ambas estarán en modo watch.
+Verificar sobre la ruta /info con y sin compresión, la diferencia de cantidad de bytes devueltos en un caso y otro.
 
-Configurar un servidor Nginx para que las rutas entrantes /info y /randoms por el puerto 80 de Nginx se deriven a esas dos instancias, recibiendo la del modo cluster cuatro veces más de tráfico que la instancia en modo fork.
+Utilizar como registro de la aplicación de backend eligiendo el logger que más les guste: log4js, winston o pino log4js. 
+Elegir un módulo del servidor para reemplazar los console.log por las funciones de logger, seleccionando el detalle de log entre 3 niveles:  info, warning y error
+utilizando el siguiente criterio:
 
-Verificar en la ruta de info, el puerto y el pid de atención y el correcto funcionamiento del balanceador de carga implementado en Nginx. Comprobar que la ruta randoms funcione adecuadamente.
+Loggear todos los niveles a consola (info, warning y error)
+Registrar sólo los logs de warning a un archivo llamada warn.log
+Enviar sólo los logs de error a un archivo llamada error.log
 

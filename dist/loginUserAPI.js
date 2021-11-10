@@ -84,7 +84,6 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
             if (req.isAuthenticated()) {
-                console.log(req.user);
                 res.render("home", {
                     nombre: req.user.displayName,
                     img: req.user.photos[0].value,

@@ -57,8 +57,6 @@ export const loginAPI = async () => {
 
     app.get('/login', (req: any, res) => {
         if (req.isAuthenticated()) {
-            console.log(req.user);
-            
             res.render("home", {
                 nombre: req.user.displayName,
                 img: req.user.photos[0].value,

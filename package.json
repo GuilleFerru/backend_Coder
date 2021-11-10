@@ -11,13 +11,14 @@
     "start": "nodemon ./dist/main.js",
     "nodefork": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
     "nodecluster":"nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER",
-    "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8080",
-    "pm2cluster": "pm2 start ./dist/main.js --name=cluster --watch -i max -- 8080",
+    "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8081",
+    "pm2cluster": "pm2 start ./dist/main.js --name=cluster --watch -i max -- 8082",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "foreverfork":"forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
     "forevercluster":"forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER"
   },
+  
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -42,6 +43,7 @@
     "socket.io": "^4.2.0",
     "sqlite3": "^5.0.2"
   },
+  
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"

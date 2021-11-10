@@ -85,7 +85,7 @@ var processAPI = function () { return __awaiter(void 0, void 0, void 0, function
                 info: true
             });
         });
-        childRandom = (0, child_process_1.fork)("./ts/randomGenerator.ts");
+        childRandom = (0, child_process_1.fork)("./ts/ranGenerator.ts");
         callbackReturn = {};
         sendParent = function (data, callback) {
             childRandom.send({ data: data });

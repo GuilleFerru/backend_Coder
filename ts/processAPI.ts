@@ -32,7 +32,7 @@ export const processAPI = async () => {
     );
 
 
-    const childRandom = fork("./ts/randomGenerator.ts");
+    const childRandom = fork("./ts/ranGenerator.ts");
     var callbackReturn: any = {};
 
     const sendParent = (data: string | number | ParsedQs | string[] | ParsedQs[], callback: (randoms: any) => void) => {

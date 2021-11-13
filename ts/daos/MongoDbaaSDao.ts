@@ -9,6 +9,7 @@ import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
 import { usuarioModel } from "../models/usuarios";
 import { sessionModel } from "../models/sessions";
+import { loggerError, loggerInfo } from "../loggers";
 
 
 
@@ -31,17 +32,23 @@ export class MongoDbaaSDao implements IDao {
         this.usuarioOk = false;
         this.countMensaje = 1;
         this.countOrder = 1;
-        this.dbConnection = mongoose.connect(this.MONGO_URL, () => {
-            console.log("Base de datos MongoDBAaS conectada!");
-        });
+        this.dbConnection = this.conectar()
+    }
+
+    async conectar() {
+        try {
+            loggerInfo.info('Base de datos MongoDBAaS conectada!')
+            return await mongoose.connect(this.MONGO_URL);
+        }
+        catch (err) {
+            loggerError.error(`MongoDB: Error en conectar: ${err}`)
+            throw err
+        }
     }
 
 
     async getSession(): Promise<any> {
-        const savedSession = await sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 }); 
-        // console.log('mongoSavedSession',savedSession.length);
-        console.log('estoy en getSession', savedSession);
-        
+        const savedSession = await sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 });
         if (savedSession.length > 0) {
             return true
         } else {
@@ -62,7 +69,8 @@ export class MongoDbaaSDao implements IDao {
                 }
             })
         } catch (error) {
-            console.log(error);
+
+            loggerError.error(error);
             throw error;
         } finally {
             // await mongoose.disconnect();
@@ -96,7 +104,7 @@ export class MongoDbaaSDao implements IDao {
                 })
             }
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
             return this.productos
@@ -109,11 +117,11 @@ export class MongoDbaaSDao implements IDao {
 
             await productoModel.insertMany(productoMoficado);
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
             // await mongoose.disconnect();
-            console.log('Producto Agregado');
+            loggerInfo.info('Producto Agregado');
         }
     }
 
@@ -126,7 +134,7 @@ export class MongoDbaaSDao implements IDao {
                 this.productos.push(producto);
             })
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
             // await mongoose.disconnect();
@@ -154,10 +162,10 @@ export class MongoDbaaSDao implements IDao {
             }, { multi: true });
             await this.getProductos();
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Producto modificado', productoToBeUpdate.title);
+            loggerInfo.info('Producto modificado', productoToBeUpdate.title);
             // await mongoose.disconnect();
         }
     };
@@ -169,10 +177,10 @@ export class MongoDbaaSDao implements IDao {
             await productoModel.deleteMany({ _id: id });
             await this.getProductos();
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Producto Eliminado');
+            loggerInfo.info('Producto Eliminado');
             // await mongoose.disconnect();
         }
     };
@@ -193,10 +201,10 @@ export class MongoDbaaSDao implements IDao {
             });
             await this.getCarrito();
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Orden Agregada', JSON.stringify(await ordenModel.find().sort({ _id: -1 }).limit(1)));
+            loggerInfo.info('Orden Agregada', JSON.stringify(await ordenModel.find().sort({ _id: -1 }).limit(1)));
             // await mongoose.disconnect();
         }
     }
@@ -209,10 +217,10 @@ export class MongoDbaaSDao implements IDao {
                 producto: producto
             });
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Producto agregado a carrito', producto.title);
+            loggerInfo.info('Producto agregado a carrito', producto.title);
             // await mongoose.disconnect();
         }
     }
@@ -226,7 +234,7 @@ export class MongoDbaaSDao implements IDao {
                 this.carrito.push(carrito);
             });
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
             // await mongoose.disconnect();
@@ -246,10 +254,10 @@ export class MongoDbaaSDao implements IDao {
             await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1 } });
             await this.getCarrito();
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title)
+            loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title)
             // await mongoose.disconnect();
         }
     }
@@ -260,10 +268,10 @@ export class MongoDbaaSDao implements IDao {
             await carritoModel.deleteMany({ _id: id });
             await this.getCarrito();
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Producto en carrito Eliminado');
+            loggerInfo.info('Producto en carrito Eliminado');
             // await mongoose.disconnect();
         }
     }
@@ -282,7 +290,7 @@ export class MongoDbaaSDao implements IDao {
                 this.mensajes.push(mensaje);
             })
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
             const mensajes = new MensajeWrap('999', this.mensajes)
@@ -295,10 +303,10 @@ export class MongoDbaaSDao implements IDao {
             await mensajesModel.insertMany(mensaje)
             this.mensajes.push(mensaje);
         } catch (error) {
-            console.log(error);
+            loggerError.error(error);
             throw error;
         } finally {
-            console.log('Mensaje Agregado');
+            loggerInfo.info('Mensaje Agregado');
         }
     }
 }

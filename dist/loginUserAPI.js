@@ -46,6 +46,7 @@ var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
+var loggers_1 = require("./loggers");
 var FACEBOOK_CLIENT_ID = process.argv[3] || '423519862624165';
 var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'de42abdb2f8e3917e10682d189668d1f';
 passport_1.default.use(new passport_facebook_1.Strategy({
@@ -55,9 +56,7 @@ passport_1.default.use(new passport_facebook_1.Strategy({
     profileFields: ['id', 'displayName', 'photos', 'emails'],
     // scope: ['email']
 }, function (accessToken, refreshToken, profile, done) {
-    //console.log(profile)
     var userProfile = profile;
-    //console.dir(userProfile, {depth: 4, colors: true})
     return done(null, userProfile);
 }));
 passport_1.default.serializeUser(function (user, done) { return done(null, user); });
@@ -84,6 +83,7 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
             if (req.isAuthenticated()) {
+                loggers_1.loggerWarn.warn(req.user.displayName, ' se ha logueado');
                 res.render("home", {
                     nombre: req.user.displayName,
                     img: req.user.photos[0].value,
@@ -102,7 +102,6 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
             failureRedirect: '/faillogin'
         }));
         server_1.app.get('/home', function (req, res) {
-            // console.log(req.user)
             res.redirect('/');
         });
         server_1.app.get('/faillogin', function (_, res) {
@@ -113,10 +112,10 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
         });
         server_1.app.get('/logout', function (req, res) {
             try {
-                var nombre = req.user.displayName;
-                res.render("logout", { nombre: nombre });
+                var nombre_1 = req.user.displayName;
+                res.render("logout", { nombre: nombre_1 });
                 req.session.destroy(function () {
-                    console.log('destroy');
+                    loggers_1.loggerWarn.warn(nombre_1, ' se ha deslogueado');
                 });
             }
             catch (err) {

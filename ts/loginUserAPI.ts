@@ -3,7 +3,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import passport from 'passport';
-import { Strategy as FacebookStrategy } from 'passport-facebook'
+import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { loggerError, loggerInfo, loggerWarn } from "./loggers";
 
 declare module 'express-session' {
     export interface SessionData {
@@ -21,9 +22,8 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'displayName', 'photos', 'emails'],
     // scope: ['email']
 }, function (accessToken: any, refreshToken: any, profile: any, done: any) {
-    //console.log(profile)
+    
     let userProfile = profile;
-    //console.dir(userProfile, {depth: 4, colors: true})
     return done(null, userProfile);
 }));
 
@@ -57,6 +57,7 @@ export const loginAPI = async () => {
 
     app.get('/login', (req: any, res) => {
         if (req.isAuthenticated()) {
+            loggerWarn.warn(req.user.displayName, ' se ha logueado');
             res.render("home", {
                 nombre: req.user.displayName,
                 img: req.user.photos[0].value,
@@ -79,7 +80,6 @@ export const loginAPI = async () => {
     ));
 
     app.get('/home', (req, res) => {
-        // console.log(req.user)
         res.redirect('/')
     })
 
@@ -95,7 +95,7 @@ export const loginAPI = async () => {
             let nombre = req.user.displayName;
             res.render("logout", { nombre })
             req.session.destroy(() => {
-                console.log('destroy');
+                loggerWarn.warn(nombre, ' se ha deslogueado');
             })
         } catch (err) {
             res.render("login", {

@@ -46,6 +46,7 @@ var main_1 = require("./main");
 var server_1 = require("./server");
 var main_2 = require("./main");
 var productoTest_1 = require("./productoTest");
+var loggers_1 = require("./loggers");
 var productoAPI = function () {
     var routerProducts = express_1.default.Router();
     server_1.app.use("/productos", routerProducts);
@@ -95,6 +96,7 @@ var productoAPI = function () {
                         res.status(200).json(products);
                     }
                     else {
+                        loggers_1.loggerError.error('No se encontraron productos en la base de datos');
                         res.status(404).json({ error: "no hay productos cargados" });
                     }
                     return [2 /*return*/];

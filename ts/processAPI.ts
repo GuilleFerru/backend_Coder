@@ -4,6 +4,32 @@ import { ParsedQs } from "qs";
 import * as os from 'os';
 
 
+
+
+const generateRandom = () => {
+    return Math.floor(Math.random() * 1000 + 1)
+}
+
+const calcularRandoms = (cant: number) => {
+    const randomObject: any = {}
+
+    for (let i = 0; i < cant; i += 1) {
+        let random = generateRandom();
+        if (randomObject[random]) {
+            randomObject[random]++
+        } else {
+            randomObject[random] = 1
+        }
+    }
+    return randomObject
+}
+
+
+process.on('message', (randomQty: any) => {
+    process.send!({ ...calcularRandoms(randomQty.data) })
+})
+
+
 export const processAPI = async () => {
     const argsv: any = process.argv;
     const args = argsv.splice(2, argsv.length).join(" - ");

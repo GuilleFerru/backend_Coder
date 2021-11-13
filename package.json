@@ -10,20 +10,20 @@
     "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
     "start": "nodemon ./dist/main.js",
     "nodefork": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
-    "nodecluster":"nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER",
+    "nodecluster": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER",
     "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8081",
     "pm2cluster": "pm2 start ./dist/main.js --name=cluster --watch -i max -- 8082",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "foreverfork":"forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
-    "forevercluster":"forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER"
+    "foreverfork": "forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
+    "forevercluster": "forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER"
   },
-  
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "bootstrap-icons": "^1.5.0",
+    "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
@@ -34,16 +34,18 @@
     "firebase": "^9.1.2",
     "firebase-admin": "^9.12.0",
     "knex": "^0.95.11",
+    "log4js": "^6.3.0",
     "mongoose": "^6.0.8",
     "mysql": "^2.18.1",
     "normalizr": "^3.6.1",
     "passport": "^0.5.0",
     "passport-facebook": "^3.0.0",
     "passport-local": "^1.0.0",
+    "pino": "^7.2.0",
     "socket.io": "^4.2.0",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "winston": "^3.3.3"
   },
-  
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
@@ -53,6 +55,7 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "@types/bcrypt": "^5.0.0",
+    "@types/compression": "^1.7.2",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.13",
     "@types/express-handlebars": "^5.3.1",

@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -59,6 +70,25 @@ exports.processAPI = void 0;
 var server_1 = require("./server");
 var child_process_1 = require("child_process");
 var os = __importStar(require("os"));
+var generateRandom = function () {
+    return Math.floor(Math.random() * 1000 + 1);
+};
+var calcularRandoms = function (cant) {
+    var randomObject = {};
+    for (var i = 0; i < cant; i += 1) {
+        var random = generateRandom();
+        if (randomObject[random]) {
+            randomObject[random]++;
+        }
+        else {
+            randomObject[random] = 1;
+        }
+    }
+    return randomObject;
+};
+process.on('message', function (randomQty) {
+    process.send(__assign({}, calcularRandoms(randomQty.data)));
+});
 var processAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
     var argsv, args, memoria, memoAux, memoriaString, numCPUs, datos, childRandom, callbackReturn, sendParent;
     return __generator(this, function (_a) {

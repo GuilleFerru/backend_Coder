@@ -9,10 +9,12 @@ import { sockets } from "./sockets";
 import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
 import { loginAPI } from "./loginUserAPI";
 import { processAPI } from "./processAPI";
+import { loggerInfo } from "./loggers";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 //Configuración de handlebars
@@ -34,7 +36,7 @@ export const dao: IDao = new MongoDbaaSDao();
 export const isAdmin: boolean = true;
 export const io = new SocketIO.Server(server);
 
-// console.log( loginOk());
+
 loginAPI();
 sockets();
 productoAPI();
@@ -44,7 +46,7 @@ processAPI();
 
 process.on(
     'exit',
-    (code) => console.log(`exit ${code}`)
+    (code) => loggerInfo.info(`exit ${code}`)
     ,
 );
 

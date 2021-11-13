@@ -90,7 +90,7 @@ var generateMensajeId = function () {
 var sockets = function () { return __awaiter(void 0, void 0, void 0, function () {
     var port;
     return __generator(this, function (_a) {
-        port = process.argv[2];
+        port = process.argv[2] || 8080;
         main_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
             var _a, _b, _c, _d, _e, _f;
             return __generator(this, function (_g) {

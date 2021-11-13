@@ -70,7 +70,8 @@ const getQtyRandom = () => {
 
 const generateRandoms = () => {
     const cant = getQtyRandom();
-    location.href = `http://localhost:80/randoms?cant=${cant}`
+    // location.href = `http://localhost:80/randoms?cant=${cant}`
+    location.href = `/randoms?cant=${cant}`
 }
 
 

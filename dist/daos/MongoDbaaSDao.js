@@ -59,6 +59,7 @@ var carrito_1 = require("../models/carrito");
 var order_1 = require("../models/order");
 var usuarios_1 = require("../models/usuarios");
 var sessions_1 = require("../models/sessions");
+var loggers_1 = require("../loggers");
 var MongoDbaaSDao = /** @class */ (function () {
     function MongoDbaaSDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -69,10 +70,27 @@ var MongoDbaaSDao = /** @class */ (function () {
         this.usuarioOk = false;
         this.countMensaje = 1;
         this.countOrder = 1;
-        this.dbConnection = mongoose_1.default.connect(this.MONGO_URL, function () {
-            console.log("Base de datos MongoDBAaS conectada!");
-        });
+        this.dbConnection = this.conectar();
     }
+    MongoDbaaSDao.prototype.conectar = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        loggers_1.loggerInfo.info('Base de datos MongoDBAaS conectada!');
+                        return [4 /*yield*/, mongoose_1.default.connect(this.MONGO_URL)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        err_1 = _a.sent();
+                        loggers_1.loggerError.error("MongoDB: Error en conectar: " + err_1);
+                        throw err_1;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     MongoDbaaSDao.prototype.getSession = function () {
         return __awaiter(this, void 0, void 0, function () {
             var savedSession;
@@ -81,8 +99,6 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 0: return [4 /*yield*/, sessions_1.sessionModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 })];
                     case 1:
                         savedSession = _a.sent();
-                        // console.log('mongoSavedSession',savedSession.length);
-                        console.log('estoy en getSession', savedSession);
                         if (savedSession.length > 0) {
                             return [2 /*return*/, true];
                         }
@@ -116,7 +132,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_1 = _a.sent();
-                        console.log(error_1);
+                        loggers_1.loggerError.error(error_1);
                         throw error_1;
                     case 3: 
                     // await mongoose.disconnect();
@@ -174,7 +190,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 8: return [3 /*break*/, 11];
                     case 9:
                         error_2 = _a.sent();
-                        console.log(error_2);
+                        loggers_1.loggerError.error(error_2);
                         throw error_2;
                     case 10: return [2 /*return*/, this.productos];
                     case 11: return [2 /*return*/];
@@ -196,11 +212,11 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_3 = _a.sent();
-                        console.log(error_3);
+                        loggers_1.loggerError.error(error_3);
                         throw error_3;
                     case 3:
                         // await mongoose.disconnect();
-                        console.log('Producto Agregado');
+                        loggers_1.loggerInfo.info('Producto Agregado');
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -225,7 +241,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_4 = _a.sent();
-                        console.log(error_4);
+                        loggers_1.loggerError.error(error_4);
                         throw error_4;
                     case 3: 
                     // await mongoose.disconnect();
@@ -265,10 +281,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 3:
                         error_5 = _a.sent();
-                        console.log(error_5);
+                        loggers_1.loggerError.error(error_5);
                         throw error_5;
                     case 4:
-                        console.log('Producto modificado', productoToBeUpdate.title);
+                        loggers_1.loggerInfo.info('Producto modificado', productoToBeUpdate.title);
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -292,10 +308,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 3:
                         error_6 = _a.sent();
-                        console.log(error_6);
+                        loggers_1.loggerError.error(error_6);
                         throw error_6;
                     case 4:
-                        console.log('Producto Eliminado');
+                        loggers_1.loggerInfo.info('Producto Eliminado');
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -337,10 +353,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 10];
                     case 7:
                         error_7 = _f.sent();
-                        console.log(error_7);
+                        loggers_1.loggerError.error(error_7);
                         throw error_7;
                     case 8:
-                        _b = (_a = console).log;
+                        _b = (_a = loggers_1.loggerInfo).info;
                         _c = ['Orden Agregada'];
                         _e = (_d = JSON).stringify;
                         return [4 /*yield*/, order_1.ordenModel.find().sort({ _id: -1 }).limit(1)];
@@ -368,10 +384,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_8 = _a.sent();
-                        console.log(error_8);
+                        loggers_1.loggerError.error(error_8);
                         throw error_8;
                     case 3:
-                        console.log('Producto agregado a carrito', producto.title);
+                        loggers_1.loggerInfo.info('Producto agregado a carrito', producto.title);
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -396,7 +412,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_9 = _a.sent();
-                        console.log(error_9);
+                        loggers_1.loggerError.error(error_9);
                         throw error_9;
                     case 3: 
                     // await mongoose.disconnect();
@@ -425,10 +441,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 3:
                         error_10 = _a.sent();
-                        console.log(error_10);
+                        loggers_1.loggerError.error(error_10);
                         throw error_10;
                     case 4:
-                        console.log('Se agrego un producto similar al mismo carrito', carrito.producto.title);
+                        loggers_1.loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -451,10 +467,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 3:
                         error_11 = _a.sent();
-                        console.log(error_11);
+                        loggers_1.loggerError.error(error_11);
                         throw error_11;
                     case 4:
-                        console.log('Producto en carrito Eliminado');
+                        loggers_1.loggerInfo.info('Producto en carrito Eliminado');
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -483,7 +499,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_12 = _a.sent();
-                        console.log(error_12);
+                        loggers_1.loggerError.error(error_12);
                         throw error_12;
                     case 3:
                         mensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
@@ -507,10 +523,10 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         error_13 = _a.sent();
-                        console.log(error_13);
+                        loggers_1.loggerError.error(error_13);
                         throw error_13;
                     case 3:
-                        console.log('Mensaje Agregado');
+                        loggers_1.loggerInfo.info('Mensaje Agregado');
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }

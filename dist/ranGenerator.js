@@ -1,4 +1,7 @@
 "use strict";
+// const generateRandom = () => {
+//     return Math.floor(Math.random() * 1000 + 1)
+// }
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,6 +13,21 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+// const calcularRandoms = (cant: number) => {
+//     const randomObject: any = {}
+//     for (let i = 0; i < cant; i += 1) {
+//         let random = generateRandom();
+//         if (randomObject[random]) {
+//             randomObject[random]++
+//         } else {
+//             randomObject[random] = 1
+//         }
+//     }
+//     return randomObject
+// }
+// process.on('message', (randomQty: any) => {
+//     process.send!({ ...calcularRandoms(randomQty.data) })
+// })
 var generateRandom = function () {
     return Math.floor(Math.random() * 1000 + 1);
 };

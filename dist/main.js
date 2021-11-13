@@ -33,6 +33,7 @@ var sockets_1 = require("./sockets");
 var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var loginUserAPI_1 = require("./loginUserAPI");
 var processAPI_1 = require("./processAPI");
+var loggers_1 = require("./loggers");
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 server_1.server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,10 +48,9 @@ server_1.app.use(express_1.default.static('public'));
 exports.dao = new MongoDbaaSDao_1.MongoDbaaSDao();
 exports.isAdmin = true;
 exports.io = new SocketIO.Server(server_1.server);
-// console.log( loginOk());
 (0, loginUserAPI_1.loginAPI)();
 (0, sockets_1.sockets)();
 (0, productoAPI_1.productoAPI)();
 (0, carritoAPI_1.carritoAPI)();
 (0, processAPI_1.processAPI)();
-process.on('exit', function (code) { return console.log("exit " + code); });
+process.on('exit', function (code) { return loggers_1.loggerInfo.info("exit " + code); });

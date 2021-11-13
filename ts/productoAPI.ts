@@ -4,6 +4,8 @@ import { io, isAdmin } from "./main"
 import { app } from "./server"
 import { dao } from "./main";
 import { generateData } from "./productoTest"
+import { loggerError, loggerInfo } from "./loggers";
+
 
 export const productoAPI = () => {
 
@@ -44,6 +46,7 @@ export const productoAPI = () => {
         if (products.length > 0) {
             res.status(200).json(products);
         } else {
+            loggerError.error('No se encontraron productos en la base de datos')
             res.status(404).json({ error: "no hay productos cargados" });
         }
     }

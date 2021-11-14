@@ -31,6 +31,7 @@ process.on('message', (randomQty: any) => {
 
 
 export const processAPI = async () => {
+    
     const argsv: any = process.argv;
     const args = argsv.splice(2, argsv.length).join(" - ");
     const memoria: any = Object.entries(process.memoryUsage());
@@ -49,13 +50,20 @@ export const processAPI = async () => {
         numCPUs: numCPUs
     };
 
-    app.get("/info", (_, res) =>
+    app.get("/info", (_, res) => {
+
+        //-------------------------
+        //MODIFIFCAR SEGUN TEST
+        //-------------------------
+        // console.log(datos);
+ 
+        //-------------------------
         res.render("process", {
             datos,
             btnAction: "/home",
             info: true
         })
-    );
+    });
 
 
     const childRandom = fork("./ts/ranGenerator.ts");

@@ -1,14 +1,20 @@
 Consigna:
+Realizar el análisis completo de performance del servidor con el que venimos trabajando.
 
-Incorporar al proyecto de servidor de trabajo la compresión gzip.
+Vamos a trabajar sobre la ruta './info', en modo fork, agregando ó extrayendo un console.log de la información colectada antes de devolverla al cliente. Además desactivaremos el child_process de la ruta '/randoms'.
 
-Verificar sobre la ruta /info con y sin compresión, la diferencia de cantidad de bytes devueltos en un caso y otro.
+Para ambas condiciones (con o sin console.log) en la ruta '/info' OBTENER:
 
-Utilizar como registro de la aplicación de backend eligiendo el logger que más les guste: log4js, winston o pino log4js. 
-Elegir un módulo del servidor para reemplazar los console.log por las funciones de logger, seleccionando el detalle de log entre 3 niveles:  info, warning y error
-utilizando el siguiente criterio:
+ 1 - El perfilamiento del servidor, realizando el test con --prof de node.js. Analizar los resultados obtenidos luego de procesarlos con --prof-process. 
+ Utilizaremos como test de carga Artillery en línea de comandos, emulando 50 conexiones concurrentes con 20 request por cada una. Extraer un reporte con los resultados
+ en archivo de texto.
 
-Loggear todos los niveles a consola (info, warning y error)
-Registrar sólo los logs de warning a un archivo llamada warn.log
-Enviar sólo los logs de error a un archivo llamada error.log
+Luego utilizaremos Autocannon en línea de comandos, emulando 100 conexiones concurrentes realizadas en un tiempo de 20 segundos. Extraer un reporte con los resultados (puede ser un print screen de la consola)
 
+
+2 - El perfilamiento del servidor con el modo inspector de node.js --inspect. Revisar el tiempo de los procesos menos performantes sobre el archivo fuente de inspección.
+
+3 - El diagrama de flama con 0x, emulando la carga con Autocannon con los mismos parámetros anteriores.
+
+
+Realizar un informe en formato pdf sobre las pruebas realizadas incluyendo los resultados de todos los test (texto e imágenes). 

@@ -109,7 +109,12 @@ var processAPI = function () { return __awaiter(void 0, void 0, void 0, function
             numCPUs: numCPUs
         };
         server_1.app.get("/info", function (_, res) {
-            return res.render("process", {
+            //-------------------------
+            //MODIFIFCAR SEGUN TEST
+            //-------------------------
+            // console.log(datos);
+            //-------------------------
+            res.render("process", {
                 datos: datos,
                 btnAction: "/home",
                 info: true

@@ -7,13 +7,13 @@ export const app = express();
 
 app.use(compression())
 
-const port: number = +process.argv[2] || 8080;
+const port: any = process.env.PORT || +process.argv[2] || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 export const server = app.listen(port, () => {
   loggerInfo.info(`Servidor listo en el puerto ${port}`)
-  
+
 });
 
 server.on("error", (error: string) => {

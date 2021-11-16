@@ -89,7 +89,7 @@ if (modoCluster && cluster_1.default.isMaster) {
 else {
     console.log("Worker " + process.pid + " is running");
     var app = (0, express_1.default)();
-    var port_1 = +process.argv[2] || 8080;
+    var port_1 = process.env.PORT || +process.argv[2] || 8080;
     app.use(express_1.default.json());
     app.use(express_1.default.urlencoded({ extended: true }));
     var server = app.listen(port_1, function () {
@@ -215,7 +215,7 @@ else {
             info: true
         });
     });
-    var childRandom_1 = (0, child_process_1.fork)("./ts/randomGenerator.ts");
+    var childRandom_1 = (0, child_process_1.fork)("randomGenerator.js");
     var callbackReturn = {};
     var sendParent_1 = function (data, callback) {
         childRandom_1.send({ data: data });

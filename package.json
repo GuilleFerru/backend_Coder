@@ -8,7 +8,7 @@
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
     "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
-    "start": "nodemon ./dist/main.js",
+    "start": "node main.js",
     "nodefork": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
     "nodecluster": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER",
     "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8081",

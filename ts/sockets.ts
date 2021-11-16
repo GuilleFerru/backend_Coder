@@ -36,7 +36,7 @@ const generateMensajeId = () => {
 }
 
 export const sockets = async () => {
-    const port: any = process.argv[2] || 8080;
+    const port: any = process.env.PORT || process.argv[2] || 8080;
 
     io.on("connection", async (socket) => {
 

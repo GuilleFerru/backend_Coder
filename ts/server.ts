@@ -8,7 +8,7 @@ export const app = express();
 app.use(compression())
 
 const port: any = process.env.PORT || +process.argv[2] || 8080;
-console.log(process.env.PORT);
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

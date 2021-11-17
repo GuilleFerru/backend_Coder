@@ -12,8 +12,12 @@ declare module 'express-session' {
     }
 }
 
-const FACEBOOK_CLIENT_ID = process.argv[3] || '423519862624165';
-const FACEBOOK_CLIENT_SECRET = process.argv[4] || 'de42abdb2f8e3917e10682d189668d1f';
+
+
+
+
+const FACEBOOK_CLIENT_ID = process.argv[3] || '858583158050258';
+const FACEBOOK_CLIENT_SECRET = process.argv[4] || 'fd7a0238ae2ad8102af47b97f8a22bea';
 
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_CLIENT_ID,

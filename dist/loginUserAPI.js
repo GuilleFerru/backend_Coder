@@ -47,8 +47,8 @@ var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
 var loggers_1 = require("./loggers");
-var FACEBOOK_CLIENT_ID = process.argv[3] || '423519862624165';
-var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'de42abdb2f8e3917e10682d189668d1f';
+var FACEBOOK_CLIENT_ID = process.argv[3] || '858583158050258';
+var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'fd7a0238ae2ad8102af47b97f8a22bea';
 passport_1.default.use(new passport_facebook_1.Strategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret: FACEBOOK_CLIENT_SECRET,

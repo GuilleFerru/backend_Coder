@@ -11,7 +11,6 @@ var loggers_1 = require("./loggers");
 exports.app = (0, express_1.default)();
 exports.app.use((0, compression_1.default)());
 var port = process.env.PORT || +process.argv[2] || 8080;
-console.log(process.env.PORT);
 exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.urlencoded({ extended: true }));
 exports.server = exports.app.listen(port, function () {

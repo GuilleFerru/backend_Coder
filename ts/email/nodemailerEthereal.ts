@@ -1,10 +1,5 @@
 import nodemailer from 'nodemailer'
 
-
-// Name	Donavon Sanford
-// Username	kr4zsiupbsndpjgc@ethereal.email (also works as a real inbound email address)
-// Password	VB9TCk2tnDp6pPAMV8
-
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,

@@ -47,6 +47,24 @@ var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
 var loggers_1 = require("./loggers");
+// const TWITTER_CLIENT_ID = '9g11tHPXHUAPh8M1wXIBdTQiF';
+// const TWITTER_CLIENT_SECRET = 'eWusj6Hm4UFbd4ZqhIPk1TKsXOCmDKBdcr4Pmf1F2P8uYrI6KV';
+// passport.use(
+//     new TwitterStrategy(
+//         {
+//             consumerKey: TWITTER_CLIENT_ID,
+//             consumerSecret: TWITTER_CLIENT_SECRET,
+//             callbackURL: '/auth/twitter/callback',
+//         },
+//         (_token, _tokenSecret, profile, done) => {
+//             console.log(profile);
+//             return done(
+//                 null,
+//                 profile,
+//             );
+//         },
+//     ),
+// );
 var FACEBOOK_CLIENT_ID = process.argv[3] || '858583158050258';
 var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'fd7a0238ae2ad8102af47b97f8a22bea';
 passport_1.default.use(new passport_facebook_1.Strategy({
@@ -77,6 +95,12 @@ server_1.app.use((0, express_session_1.default)({
         maxAge: 1000 * 600
     }
 }));
+// const sessionHandler = session({
+//     secret: 'secreto',
+//     resave: true,
+//     saveUninitialized: true,
+//   });
+//   app.use(sessionHandler);
 server_1.app.use(passport_1.default.initialize());
 server_1.app.use(passport_1.default.session());
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {

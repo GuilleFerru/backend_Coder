@@ -13,7 +13,26 @@ declare module 'express-session' {
 }
 
 
+// const TWITTER_CLIENT_ID = '9g11tHPXHUAPh8M1wXIBdTQiF';
+// const TWITTER_CLIENT_SECRET = 'eWusj6Hm4UFbd4ZqhIPk1TKsXOCmDKBdcr4Pmf1F2P8uYrI6KV';
 
+// passport.use(
+//     new TwitterStrategy(
+//         {
+//             consumerKey: TWITTER_CLIENT_ID,
+//             consumerSecret: TWITTER_CLIENT_SECRET,
+//             callbackURL: '/auth/twitter/callback',
+//         },
+//         (_token, _tokenSecret, profile, done) => {
+//             console.log(profile);
+
+//             return done(
+//                 null,
+//                 profile,
+//             );
+//         },
+//     ),
+// );
 
 
 const FACEBOOK_CLIENT_ID = process.argv[3] || '858583158050258';
@@ -26,7 +45,7 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'displayName', 'photos', 'emails'],
     // scope: ['email']
 }, function (accessToken: any, refreshToken: any, profile: any, done: any) {
-    
+
     let userProfile = profile;
     return done(null, userProfile);
 }));
@@ -52,8 +71,19 @@ app.use(session({
     }
 }));
 
+// const sessionHandler = session({
+//     secret: 'secreto',
+//     resave: true,
+//     saveUninitialized: true,
+//   });
+  
+//   app.use(sessionHandler);
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+
 
 
 export const loginAPI = async () => {

@@ -35,3 +35,11 @@
   address: '::',
   port: 8080
 }
+[2021-11-22T14:46:48.819] [ERROR] error - Error: self signed certificate in certificate chain
+    at TLSSocket.onConnectSecure (_tls_wrap.js:1497:34)
+    at TLSSocket.emit (events.js:315:20)
+    at TLSSocket._finishInit (_tls_wrap.js:932:8)
+    at TLSWrap.ssl.onhandshakedone (_tls_wrap.js:706:12) {
+  code: 'ESOCKET',
+  command: 'CONN'
+}

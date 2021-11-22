@@ -4,7 +4,7 @@
   "description": "Carpeta para proximos desafios",
   "main": "main2.js",
   "scripts": {
-    "start": "node ./dist/main.js 8081",
+    "start": "nodemon ./dist/main.js 8081",
     "ServerTStoJS5": "./node_modules/.bin/tsc",
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
@@ -64,6 +64,7 @@
     "@types/express-session": "^1.17.4",
     "@types/faker": "^5.5.9",
     "@types/node": "^16.7.11",
+    "@types/nodemailer": "^6.4.4",
     "@types/passport": "^1.0.7",
     "@types/passport-facebook": "^2.1.11",
     "@types/passport-local": "^1.0.34",

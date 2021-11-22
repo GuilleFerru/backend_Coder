@@ -1,7 +1,9 @@
 import { isAdmin, io } from "./main"
 import { dao } from "./main";
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
+import { loggerError, loggerInfo } from "./loggers";
 import * as normalizr from 'normalizr';
+import * as twilio from './sms/twilio.js'
 
 
 
@@ -67,6 +69,13 @@ export const sockets = async () => {
                 newAuthor,
             )
             await dao.insertMensajes(newMensaje);
+
+            if(mensaje.text.includes('administrador')) {
+                console.log('MENSAJE SMS AL ADMIN')
+                let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
+                let rta = await twilio.enviarSMS(msj, '+5493571.....')
+                loggerInfo.info(rta)
+            }
 
             io.sockets.emit("messages", await getNormalizeMsj());
         });

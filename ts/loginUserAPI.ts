@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { loggerError, loggerInfo, loggerWarn } from "./loggers";
+import * as ethereal from "./email/nodemailerEthereal"
+import * as gmail from "./email/nodemailerGmail"
 
 declare module 'express-session' {
     export interface SessionData {
@@ -76,7 +78,7 @@ app.use(session({
 //     resave: true,
 //     saveUninitialized: true,
 //   });
-  
+
 //   app.use(sessionHandler);
 
 app.use(passport.initialize());
@@ -91,9 +93,28 @@ export const loginAPI = async () => {
 
     app.get('/login', (req: any, res) => {
         if (req.isAuthenticated()) {
-            loggerWarn.warn(req.user.displayName, ' se ha logueado');
+
+            const nombre = req.user.displayName;
+            const userImg = req.user.photos[0].value;
+            const emailTo = 'guillelf@gmail.com';
+            const asunto = `Login ${nombre} - ${new Date().toLocaleString('es-AR')}`
+            const mensaje = `Se ha logeado en tu aplicacion el usuario ${nombre} el ${new Date().toLocaleString('es-AR')}`
+            loggerWarn.warn(nombre, ' se ha logueado');
+
+            ethereal.enviarMail(asunto, mensaje, (err: any, info: any) => {
+                if (err) loggerError.error(err)
+                else loggerInfo.info(info)
+
+                
+            })
+
+            gmail.enviarMail(asunto, mensaje, userImg, emailTo, (err: any, info: any) => {
+                if(err) loggerError.error(err)
+                else loggerInfo.info(info)
+            })
+
             res.render("home", {
-                nombre: req.user.displayName,
+                nombre: nombre,
                 img: req.user.photos[0].value,
                 // email: req.user.emails[0].value,
             })
@@ -126,7 +147,15 @@ export const loginAPI = async () => {
 
     app.get('/logout', (req: any, res) => {
         try {
-            let nombre = req.user.displayName;
+            const nombre = req.user.displayName;
+            const asunto = `Logout ${nombre} - ${new Date().toLocaleString('es-AR')}`
+            const mensaje = `Se ha deslogeado en tu aplicacion el usuario ${nombre} el ${new Date().toLocaleString('es-AR')}`
+
+            ethereal.enviarMail(asunto, mensaje, (err: any, info: any) => {
+                if (err) loggerError.error(err)
+                else loggerInfo.info(info)
+            })
+
             res.render("logout", { nombre })
             req.session.destroy(() => {
                 loggerWarn.warn(nombre, ' se ha deslogueado');

@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,6 +66,8 @@ var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
 var loggers_1 = require("./loggers");
+var ethereal = __importStar(require("./email/nodemailerEthereal"));
+var gmail = __importStar(require("./email/nodemailerGmail"));
 // const TWITTER_CLIENT_ID = '9g11tHPXHUAPh8M1wXIBdTQiF';
 // const TWITTER_CLIENT_SECRET = 'eWusj6Hm4UFbd4ZqhIPk1TKsXOCmDKBdcr4Pmf1F2P8uYrI6KV';
 // passport.use(
@@ -107,9 +128,26 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
             if (req.isAuthenticated()) {
-                loggers_1.loggerWarn.warn(req.user.displayName, ' se ha logueado');
+                var nombre = req.user.displayName;
+                var userImg = req.user.photos[0].value;
+                var emailTo = 'guillelf@gmail.com';
+                var asunto = "Login " + nombre + " - " + new Date().toLocaleString('es-AR');
+                var mensaje = "Se ha logeado en tu aplicacion el usuario " + nombre + " el " + new Date().toLocaleString('es-AR');
+                loggers_1.loggerWarn.warn(nombre, ' se ha logueado');
+                ethereal.enviarMail(asunto, mensaje, function (err, info) {
+                    if (err)
+                        loggers_1.loggerError.error(err);
+                    else
+                        loggers_1.loggerInfo.info(info);
+                });
+                gmail.enviarMail(asunto, mensaje, userImg, emailTo, function (err, info) {
+                    if (err)
+                        loggers_1.loggerError.error(err);
+                    else
+                        loggers_1.loggerInfo.info(info);
+                });
                 res.render("home", {
-                    nombre: req.user.displayName,
+                    nombre: nombre,
                     img: req.user.photos[0].value,
                     // email: req.user.emails[0].value,
                 });
@@ -137,6 +175,14 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
         server_1.app.get('/logout', function (req, res) {
             try {
                 var nombre_1 = req.user.displayName;
+                var asunto = "Logout " + nombre_1 + " - " + new Date().toLocaleString('es-AR');
+                var mensaje = "Se ha deslogeado en tu aplicacion el usuario " + nombre_1 + " el " + new Date().toLocaleString('es-AR');
+                ethereal.enviarMail(asunto, mensaje, function (err, info) {
+                    if (err)
+                        loggers_1.loggerError.error(err);
+                    else
+                        loggers_1.loggerInfo.info(info);
+                });
                 res.render("logout", { nombre: nombre_1 });
                 req.session.destroy(function () {
                     loggers_1.loggerWarn.warn(nombre_1, ' se ha deslogueado');

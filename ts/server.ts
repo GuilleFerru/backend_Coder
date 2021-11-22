@@ -9,6 +9,8 @@ app.use(compression())
 
 const port: any = process.env.PORT || +process.argv[2] || 8080;
 
+// para que funcione nodemailer
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

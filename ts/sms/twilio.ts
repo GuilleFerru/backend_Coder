@@ -1,4 +1,4 @@
-// Wilson%123654789
+
 const accountSid = '';
 const authToken = '';
 

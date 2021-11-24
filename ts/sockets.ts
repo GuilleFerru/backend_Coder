@@ -73,7 +73,7 @@ export const sockets = async () => {
             if(mensaje.text.includes('administrador')) {
                 console.log('MENSAJE SMS AL ADMIN')
                 let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
-                let rta = await twilio.enviarSMS(msj, '+5493571.....')
+                let rta = await twilio.enviarSMS(msj, '+5493571531154')
                 loggerInfo.info(rta)
             }
 

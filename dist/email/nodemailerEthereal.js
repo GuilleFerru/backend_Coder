@@ -12,8 +12,8 @@ var transporter = nodemailer_1.default.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: '@ethereal.email',
-        pass: ''
+        user: 'kr4zsiupbsndpjgc@ethereal.email',
+        pass: 'VB9TCk2tnDp6pPAMV8'
     }
 });
 var enviarMail = function (asunto, mensaje, cb) {

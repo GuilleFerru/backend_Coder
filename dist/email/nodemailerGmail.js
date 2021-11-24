@@ -8,7 +8,7 @@ var nodemailer_1 = __importDefault(require("nodemailer"));
 var transporter = nodemailer_1.default.createTransport({
     service: 'gmail',
     auth: {
-        user: '@gmail.com',
+        user: 'guillelf@gmail.com',
         pass: ''
     }
 });

@@ -1,23 +1,13 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+// import { app } from "./server"
+// import session from "express-session";
+// import MongoStore from "connect-mongo";
+// import cookieParser from "cookie-parser";
+// import passport from 'passport';
+// import { Strategy as FacebookStrategy } from 'passport-facebook';
+// import { loggerError, loggerInfo, loggerWarn } from "./loggers";
+// import * as ethereal from "./email/nodemailerEthereal"
+// import * as gmail from "./email/nodemailerGmail"
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -64,42 +54,94 @@ var express_session_1 = __importDefault(require("express-session"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
-var passport_facebook_1 = require("passport-facebook");
-var loggers_1 = require("./loggers");
-var ethereal = __importStar(require("./email/nodemailerEthereal"));
-var gmail = __importStar(require("./email/nodemailerGmail"));
-// const TWITTER_CLIENT_ID = '9g11tHPXHUAPh8M1wXIBdTQiF';
-// const TWITTER_CLIENT_SECRET = 'eWusj6Hm4UFbd4ZqhIPk1TKsXOCmDKBdcr4Pmf1F2P8uYrI6KV';
-// passport.use(
-//     new TwitterStrategy(
-//         {
-//             consumerKey: TWITTER_CLIENT_ID,
-//             consumerSecret: TWITTER_CLIENT_SECRET,
-//             callbackURL: '/auth/twitter/callback',
-//         },
-//         (_token, _tokenSecret, profile, done) => {
-//             console.log(profile);
-//             return done(
-//                 null,
-//                 profile,
-//             );
-//         },
-//     ),
-// );
-var FACEBOOK_CLIENT_ID = process.argv[3] || '858583158050258';
-var FACEBOOK_CLIENT_SECRET = process.argv[4] || 'fd7a0238ae2ad8102af47b97f8a22bea';
-passport_1.default.use(new passport_facebook_1.Strategy({
-    clientID: FACEBOOK_CLIENT_ID,
-    clientSecret: FACEBOOK_CLIENT_SECRET,
-    callbackURL: '/auth/facebook/callback',
-    profileFields: ['id', 'displayName', 'photos', 'emails'],
-    // scope: ['email']
-}, function (accessToken, refreshToken, profile, done) {
-    var userProfile = profile;
-    return done(null, userProfile);
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var passport_local_1 = require("passport-local");
+var usuarios_1 = require("./models/usuarios");
+var multer_1 = __importDefault(require("multer"));
+var loginStrategyName = 'login';
+var signUpStrategyName = 'signup';
+var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
+var isValidPassword = function (user, password) { return bcrypt_1.default.compareSync(password, user.password); };
+passport_1.default.use(loginStrategyName, new passport_local_1.Strategy({
+    passReqToCallback: true
+}, function (_, username, password, done) {
+    // check in mongo if a user with username exists or not
+    usuarios_1.usuarioModel.findOne({ 'username': username }, function (err, user) {
+        // In case of any error, return using the done method
+        if (err)
+            return done(err);
+        // Username does not exist, log error & redirect back
+        if (!user) {
+            console.log('User Not Found with email ' + username);
+            console.log('message', 'User Not found.');
+            return done(null, false);
+        }
+        // User exists but wrong password, log the error 
+        if (!isValidPassword(user, password)) {
+            console.log('Invalid Password');
+            console.log('message', 'Invalid Password');
+            return done(null, false);
+        }
+        // User and password both match, return user from 
+        // done method which will be treated like success
+        return done(null, user);
+    });
 }));
-passport_1.default.serializeUser(function (user, done) { return done(null, user); });
-passport_1.default.deserializeUser(function (user, done) { return done(null, user); });
+passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
+    passReqToCallback: true
+}, function (req, username, password, done) {
+    var findOrCreateUser = function () {
+        // find a user in Mongo with provided username
+        usuarios_1.usuarioModel.findOne({ 'username': username }, function (err, user) {
+            var _a;
+            // In case of any error return
+            if (err) {
+                console.log('Error in SignUp: ' + err);
+                return done(err);
+            }
+            // already exists
+            if (user) {
+                console.log('User already exists');
+                console.log('message', 'User Already Exists');
+                return done(null, false);
+            }
+            else {
+                // if there is no user with that email
+                // create the user
+                var newUser = new usuarios_1.usuarioModel();
+                // set the user's local credentials  
+                newUser.username = username;
+                newUser.name = req.body.name;
+                newUser.lastname = req.body.lastname;
+                newUser.address = req.body.address;
+                newUser.age = req.body.age;
+                newUser.phone = req.body.phone;
+                newUser.avatar = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path.replace('public', '');
+                newUser.password = createHash(password);
+                // save the user
+                newUser.save(function (err) {
+                    if (err) {
+                        console.log('Error in Saving user: ' + err);
+                        throw err;
+                    }
+                    console.log('User Registration succesful');
+                    return done(null, newUser);
+                });
+            }
+        });
+    };
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+}));
+passport_1.default.serializeUser(function (user, done) {
+    done(null, user._id);
+});
+passport_1.default.deserializeUser(function (id, done) {
+    usuarios_1.usuarioModel.findById(id, function (err, user) {
+        done(err, user);
+    });
+});
 server_1.app.use((0, cookie_parser_1.default)());
 server_1.app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
@@ -116,86 +158,76 @@ server_1.app.use((0, express_session_1.default)({
         maxAge: 1000 * 600
     }
 }));
-// const sessionHandler = session({
-//     secret: 'secreto',
-//     resave: true,
-//     saveUninitialized: true,
-//   });
-//   app.use(sessionHandler);
 server_1.app.use(passport_1.default.initialize());
 server_1.app.use(passport_1.default.session());
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var upload;
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
             if (req.isAuthenticated()) {
-                var nombre = req.user.displayName;
-                var userImg = req.user.photos[0].value;
-                var emailTo = 'guillelf@gmail.com';
-                var asunto = "Login " + nombre + " - " + new Date().toLocaleString('es-AR');
-                var mensaje = "Se ha logeado en tu aplicacion el usuario " + nombre + " el " + new Date().toLocaleString('es-AR');
-                loggers_1.loggerWarn.warn(nombre, ' se ha logueado');
-                ethereal.enviarMail(asunto, mensaje, function (err, info) {
-                    if (err)
-                        loggers_1.loggerError.error(err);
-                    else
-                        loggers_1.loggerInfo.info(info);
-                });
-                gmail.enviarMail(asunto, mensaje, userImg, emailTo, function (err, info) {
-                    if (err)
-                        loggers_1.loggerError.error(err);
-                    else
-                        loggers_1.loggerInfo.info(info);
-                });
                 res.render("home", {
-                    nombre: nombre,
-                    img: req.user.photos[0].value,
-                    // email: req.user.emails[0].value,
+                    email: req.user.username,
+                    nombre: req.user.name,
+                    img: req.user.avatar
                 });
             }
             else {
                 res.render("login", {
-                    title: 'Sign In'
+                    enctype: 'application/x-www-form-urlencoded',
+                    formAction: "/login",
+                    title: 'Sign In',
+                    btnPrimaryTitle: 'SIGN IN',
+                    btnSecondaryTitle: 'SIGN UP',
+                    btnSecondaryAction: '/register'
                 });
             }
         });
-        server_1.app.get('/auth/facebook', passport_1.default.authenticate('facebook'));
-        server_1.app.get('/auth/facebook/callback', passport_1.default.authenticate('facebook', {
-            successRedirect: '/home',
-            failureRedirect: '/faillogin'
-        }));
-        server_1.app.get('/home', function (req, res) {
+        server_1.app.post('/login', passport_1.default.authenticate(loginStrategyName, { failureRedirect: '/faillogin' }), function (req, res) {
             res.redirect('/');
         });
         server_1.app.get('/faillogin', function (_, res) {
             res.render('error', {
                 btnAction: '/login',
-                errorText: 'No se pudo loguear desde su cuenta de Facebook, revise sus credenciales.'
+                errorText: 'Compruebe que el Usuario y/o la contraseña sean correctas.'
+            });
+        });
+        server_1.app.get('/register', function (_, res) {
+            res.render("login", {
+                enctype: 'multipart/form-data',
+                signup: true,
+                formAction: "/register",
+                title: 'Sign Up',
+                btnPrimaryTitle: 'SIGN UP',
+                btnSecondaryTitle: 'SIGN IN',
+                btnSecondaryAction: '/login'
+            });
+        });
+        upload = (0, multer_1.default)({
+            storage: multer_1.default.diskStorage({
+                destination: function (request, file, callback) {
+                    callback(null, "./public/img/userAvatar");
+                },
+                filename: function (request, file, callback) {
+                    callback(null, Date.now() + "-" + file.originalname);
+                },
+            }),
+        });
+        server_1.app.post('/register', upload.single("avatar"), passport_1.default.authenticate(signUpStrategyName, { failureRedirect: '/failregister' }), function (req, res) {
+            res.redirect('/');
+        });
+        server_1.app.get('/failregister', function (_, res) {
+            res.render('error', {
+                btnAction: '/register',
+                errorText: 'El nombre de Usuario que intenta registrar ya ha sido utilizado, por favor seleccione un nombre distinto.'
             });
         });
         server_1.app.get('/logout', function (req, res) {
-            try {
-                var nombre_1 = req.user.displayName;
-                var asunto = "Logout " + nombre_1 + " - " + new Date().toLocaleString('es-AR');
-                var mensaje = "Se ha deslogeado en tu aplicacion el usuario " + nombre_1 + " el " + new Date().toLocaleString('es-AR');
-                ethereal.enviarMail(asunto, mensaje, function (err, info) {
-                    if (err)
-                        loggers_1.loggerError.error(err);
-                    else
-                        loggers_1.loggerInfo.info(info);
-                });
-                res.render("logout", { nombre: nombre_1 });
-                req.session.destroy(function () {
-                    loggers_1.loggerWarn.warn(nombre_1, ' se ha deslogueado');
-                });
-            }
-            catch (err) {
-                res.render("login", {
-                    title: 'Sign In'
-                });
-            }
-            finally {
-                req.logout();
-            }
+            var nombre = req.user.name;
+            req.logout();
+            req.session.destroy(function () {
+                console.log('destroy');
+            });
+            res.render("logout", { nombre: nombre });
         });
         return [2 /*return*/];
     });

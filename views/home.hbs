@@ -9,7 +9,7 @@
 
 <header id="navbar" style="margin-bottom: 5rem;">
     <nav class="navbar fixed-top navbar-dark bg-dark">
-        <div class="col-sm-4">
+        <div class="col-sm-4 ">
             <a href="#cartModal" data-toggle="modal" onclick="showCart()" style="text-decoration:none">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-cart"
                     viewBox="0 0 16 16" style="color:white">
@@ -18,12 +18,14 @@
                 </svg>
             </a>
         </div>
-        <div class="col-sm-4 text-white text-center  d-inline-flex justify-content-center align-items-center">
+        <div class="col-sm-4 text-white text-center d-inline-flex justify-content-center align-items-center">
             <div class="mr-3 d-flex flex-column justify-content-center">
                 <h4 class="m-0">Bienvenido {{nombre}}</h4>
                 <p class="text-white-50 m-0">{{email}}</p>
             </div>
-            <div class="cart_item_image mr-2 zoom"><img src="{{img}}" alt="{{nombre}}"></div>
+            <div class="cart_item_image mr-2 zoom user_data">
+                <img class="img-fluid user_avatar_image" src={{img}} alt="Avatar usuario">
+            </div>
         </div>
         <div class="col-sm-4  ">
             <button class="btn btn-outline-light float-right" onclick="location.href='/logout'">Desloguear</button>
@@ -62,5 +64,24 @@
 
     .zoom:hover {
         transform: scale(1.1);
+    }
+
+    .user_avatar_image {
+        width: 66px;
+        height: 66px;
+        float: left
+    }
+
+    .user_avatar_image img {
+        max-width: 100%
+    }
+
+    @media screen and (max-width: 700px) {
+        div.user_data {
+            display: none;
+        }
+        .navbar {
+            flex-wrap: nowrap;
+        }
     }
 </style>

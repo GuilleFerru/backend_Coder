@@ -41,8 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.enviarSMS = void 0;
 // Wilson%123654789
-var accountSid = '';
-var authToken = '';
+var accountSid = 'AC1471a99c86fe7bd44086726a5ae428eb';
+var authToken = '13f70dd6571006a22939e7802da9b0ba';
 var twilio_1 = __importDefault(require("twilio"));
 var client = (0, twilio_1.default)(accountSid, authToken);
 var enviarSMS = function (mensaje, numero) { return __awaiter(void 0, void 0, void 0, function () {

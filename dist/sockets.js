@@ -123,7 +123,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                         if (!mensaje.text.includes('administrador')) return [3 /*break*/, 3];
                                         console.log('MENSAJE SMS AL ADMIN');
                                         msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
-                                        return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571.....')];
+                                        return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571531154')];
                                     case 2:
                                         rta = _d.sent();
                                         loggers_1.loggerInfo.info(rta);

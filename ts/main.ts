@@ -33,6 +33,7 @@ app.set("views", "./views");
 app.use(express.static('public'))
 
 
+
 export const dao: IDao = new MongoDbaaSDao();
 export const isAdmin: boolean = true;
 export const io = new SocketIO.Server(server);

@@ -8,6 +8,19 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"
+        integrity="sha512-DNeDhsl+FWnx5B1EQzsayHMyP6Xl/Mg+vcnFPXGNjUZrW28hQaa1+A4qL9M+AiOMmkAhKAWYHh1a+t6qxthzUw=="
+        crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css"
+        integrity="sha512-yye/u0ehQsrVrfSd6biT17t39Rg9kNc+vENcCXZuMz2a+LWFGvXUnYuWUW6pbfYj1jcBb/C39UZw2ciQvwDDvg=="
+        crossorigin="anonymous" />
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        integrity="sha512-BNZ1x39RMH+UYylOW419beaGO0wqdSkO7pi1rYDYco9OL3uvXaC/GTqA5O4CVK2j4K9ZkoDNSSHVkEQKkgwdiw=="
+        crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -15,21 +28,141 @@
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                 <div class="card border-0 shadow rounded-3 my-5">
-                    <div class="card-body p-4 p-sm-5 ">
+                    <div class="card-body p-4 p-sm-5">
                         <h3 class="card-title text-center mb-5 fw-light fs-5">{{title}}</h3>
-                        <div class="mt-5 form-group">
-                            <!-- Button -->
-                            <div class="col-sm-12 controls text-center ">
-                                <a id="btn-fblogin" href="#" class="btn btn-primary"
-                                    onclick="location.href = '/auth/facebook'">Login with Facebook</a>
+                        <form class="form" action="{{formAction}}" method="post" role="form" enctype={{enctype}}
+                            autocomplete="off">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="username" name="username"
+                                    placeholder="Ingrese su email">
+                                <label for="username">Email</label>
                             </div>
+
+                            {{#if signup}}
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="name" name="name"
+                                    placeholder="Ingrese su nombre">
+                                <label for="name">Nombre</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                    placeholder="Ingrese su Apellido">
+                                <label for="lastname">Apellido</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="address" name="address"
+                                    placeholder="Ingrese su dirección">
+                                <label for="address">Dirección</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="age" name="age"
+                                    placeholder="Ingrese su Edad">
+                                <label for="age">Edad</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control inptFielsd" id="phone" name="phone" onfocus="addPrefix()">
+                                    <label for="phone">Telefono</label>
+                                
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <div class="form-group">
+                                    <input type="file" class="form-control-file" name="avatar" id="avatar">
+                                    <label for="avatar">Avatar</label>
+                                </div>
+                            </div>
+                            {{/if}}
+
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Ingrese su contraseña">
+                                <label for="password">Contraseña</label>
+                            </div>
+                            <div class="d-grid">
+                                <button
+                                    class="btn btn-primary btn-login text-uppercase fw-bold">{{btnPrimaryTitle}}</button>
+                            </div>
+
+                            <hr class="my-4">
+                        </form>
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-login text-uppercase fw-bold"
+                                onclick="location.href=`{{btnSecondaryAction}}`">{{btnSecondaryTitle}}</button>
                         </div>
-                        <hr class="my-4">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <style>
+        .btn-login {
+            font-size: 0.9rem;
+            letter-spacing: 0.05rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .btn-google {
+            color: white !important;
+            background-color: #ea4335;
+        }
+
+        .btn-facebook {
+            color: white !important;
+            background-color: #3b5998;
+        }
+
+        .custom-file-input~.custom-file-label::after {
+            content: "Buscar";
+
+        }
+
+        .custom-file-input:hover {
+            cursor: pointer;
+        }
+        .intl-tel-input {
+            display: table-cell;
+        }
+
+        .intl-tel-input .selected-flag {
+            z-index: 4;
+        }
+
+        .intl-tel-input .country-list {
+            z-index: 5;
+        }
+
+        .input-group .intl-tel-input .form-control {
+            border-top-left-radius: 4px;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 0;
+        }
+        .iti{
+            width: 100%;
+        }
+    </style>
+
+    <script>
+        var input = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(input, {
+            initialCountry: "AR",
+        utilsScript: "node_modules/intl-tel-input/build/js/utils.js?21",
+        
+        });
+        const prefix = () => phoneInput.getSelectedCountryData().dialCode;
+        input.value = prefix() + input.value;
+        const addPrefix = () => {
+            input.value = '';
+            input.value = prefix() + input.value;
+        }
+
+    </script>
+
 </body>
 
 </html>

@@ -1,13 +1,23 @@
 "use strict";
-// import { app } from "./server"
-// import session from "express-session";
-// import MongoStore from "connect-mongo";
-// import cookieParser from "cookie-parser";
-// import passport from 'passport';
-// import { Strategy as FacebookStrategy } from 'passport-facebook';
-// import { loggerError, loggerInfo, loggerWarn } from "./loggers";
-// import * as ethereal from "./email/nodemailerEthereal"
-// import * as gmail from "./email/nodemailerGmail"
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -58,6 +68,8 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var passport_local_1 = require("passport-local");
 var usuarios_1 = require("./models/usuarios");
 var multer_1 = __importDefault(require("multer"));
+var ethereal = __importStar(require("./email/nodemailerEthereal"));
+var loggers_1 = require("./loggers");
 var loginStrategyName = 'login';
 var signUpStrategyName = 'signup';
 var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
@@ -68,18 +80,20 @@ passport_1.default.use(loginStrategyName, new passport_local_1.Strategy({
     // check in mongo if a user with username exists or not
     usuarios_1.usuarioModel.findOne({ 'username': username }, function (err, user) {
         // In case of any error, return using the done method
-        if (err)
+        if (err) {
+            loggers_1.loggerError.info('Error in Login: ' + err);
             return done(err);
+        }
         // Username does not exist, log error & redirect back
         if (!user) {
-            console.log('User Not Found with email ' + username);
-            console.log('message', 'User Not found.');
+            loggers_1.loggerInfo.info('User Not Found with email ' + username);
+            loggers_1.loggerInfo.info('message', 'User Not found.');
             return done(null, false);
         }
         // User exists but wrong password, log the error 
         if (!isValidPassword(user, password)) {
-            console.log('Invalid Password');
-            console.log('message', 'Invalid Password');
+            loggers_1.loggerInfo.info('Invalid Password');
+            loggers_1.loggerInfo.info('message', 'Invalid Password');
             return done(null, false);
         }
         // User and password both match, return user from 
@@ -96,13 +110,13 @@ passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
             var _a;
             // In case of any error return
             if (err) {
-                console.log('Error in SignUp: ' + err);
+                loggers_1.loggerError.info('Error in SignUp: ' + err);
                 return done(err);
             }
             // already exists
             if (user) {
-                console.log('User already exists');
-                console.log('message', 'User Already Exists');
+                loggers_1.loggerInfo.info('User already exists');
+                loggers_1.loggerInfo.info('message', 'User Already Exists');
                 return done(null, false);
             }
             else {
@@ -121,10 +135,18 @@ passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
                 // save the user
                 newUser.save(function (err) {
                     if (err) {
-                        console.log('Error in Saving user: ' + err);
+                        loggers_1.loggerInfo.info('Error in Saving user: ' + err);
                         throw err;
                     }
-                    console.log('User Registration succesful');
+                    loggers_1.loggerInfo.info('User Registration succesful');
+                    var asunto = "nuevo registro";
+                    var mensaje = "Se ha creado el siguiente usuario: \n                    Nombre de Usuario: " + newUser.username + ", <br> \n                    Nombre: " + newUser.name + ", <br>\n                    Apellido: " + newUser.lastname + ", <br>\n                    Direcci\u00F3n: " + newUser.address + ", <br>\n                    Edad: " + newUser.age + ", <br>\n                    Telefono: " + newUser.phone + ", <br>\n                    URL del avatar: " + newUser.avatar + ",<br>\n                    Password encriptado: " + newUser.password + ". <br>\n                    ";
+                    ethereal.enviarMail(asunto, mensaje, function (err, info) {
+                        if (err)
+                            loggers_1.loggerError.error(err);
+                        else
+                            loggers_1.loggerWarn.warn(info);
+                    });
                     return done(null, newUser);
                 });
             }
@@ -222,12 +244,16 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
             });
         });
         server_1.app.get('/logout', function (req, res) {
-            var nombre = req.user.name;
-            req.logout();
-            req.session.destroy(function () {
-                console.log('destroy');
-            });
-            res.render("logout", { nombre: nombre });
+            try {
+                var nombre_1 = req.user.name;
+                req.logout();
+                req.session.destroy(function () {
+                    res.render("logout", { nombre: nombre_1 });
+                });
+            }
+            catch (err) {
+                res.render("logout", { nombre: '' });
+            }
         });
         return [2 /*return*/];
     });

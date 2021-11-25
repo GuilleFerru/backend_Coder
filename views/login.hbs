@@ -106,19 +106,8 @@
             padding: 0.75rem 1rem;
         }
 
-        .btn-google {
-            color: white !important;
-            background-color: #ea4335;
-        }
-
-        .btn-facebook {
-            color: white !important;
-            background-color: #3b5998;
-        }
-
         .custom-file-input~.custom-file-label::after {
             content: "Buscar";
-
         }
 
         .custom-file-input:hover {
@@ -146,23 +135,23 @@
             width: 100%;
         }
     </style>
-
-    <script>
-        var input = document.querySelector("#phone");
-        const phoneInput = window.intlTelInput(input, {
-            initialCountry: "AR",
-        utilsScript: "node_modules/intl-tel-input/build/js/utils.js?21",
-        
-        });
-        const prefix = () => phoneInput.getSelectedCountryData().dialCode;
-        input.value = prefix() + input.value;
-        const addPrefix = () => {
-            input.value = '';
+    {{#if signup}}
+        <script>
+            var input = document.querySelector("#phone");
+            const phoneInput = window.intlTelInput(input, {
+                initialCountry: "AR",
+            utilsScript: "node_modules/intl-tel-input/build/js/utils.js?21",
+            
+            });
+            const prefix = () => phoneInput.getSelectedCountryData().dialCode;
             input.value = prefix() + input.value;
-        }
+            const addPrefix = () => {
+                input.value = '';
+                input.value = prefix() + input.value;
+            }
 
-    </script>
-
+        </script>
+    {{/if}}
 </body>
 
 </html>

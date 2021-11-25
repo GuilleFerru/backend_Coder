@@ -116,7 +116,7 @@ var processAPI = function () { return __awaiter(void 0, void 0, void 0, function
             //-------------------------
             res.render("process", {
                 datos: datos,
-                btnAction: "/home",
+                btnAction: "/login",
                 info: true
             });
         });
@@ -136,7 +136,7 @@ var processAPI = function () { return __awaiter(void 0, void 0, void 0, function
                 sendParent(cant || 100000000, function (randoms) {
                     res.render("process", {
                         randoms: randoms,
-                        btnAction: "/home",
+                        btnAction: "/login",
                         info: false
                     });
                 });

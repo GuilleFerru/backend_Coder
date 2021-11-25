@@ -3,9 +3,6 @@ import { fork } from 'child_process';
 import { ParsedQs } from "qs";
 import * as os from 'os';
 
-
-
-
 const generateRandom = () => {
     return Math.floor(Math.random() * 1000 + 1)
 }
@@ -60,7 +57,7 @@ export const processAPI = async () => {
         //-------------------------
         res.render("process", {
             datos,
-            btnAction: "/home",
+            btnAction: "/login",
             info: true
         })
     });
@@ -83,7 +80,7 @@ export const processAPI = async () => {
         sendParent(cant || 100000000, randoms => {
             res.render("process", {
                 randoms: randoms,
-                btnAction: "/home",
+                btnAction: "/login",
                 info: false
             })
         });

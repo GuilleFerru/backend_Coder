@@ -53,7 +53,7 @@ var enviarSMS = function (mensaje, numero) { return __awaiter(void 0, void 0, vo
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
-                        from: '+14692948136',
+                        from: 'whatsapp:+14692948136',
                         to: numero
                     })];
             case 1:

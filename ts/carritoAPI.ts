@@ -2,8 +2,14 @@ import express, { Request, Response } from "express";
 import { io } from "./main"
 import { app } from "./server"
 import { Producto } from "./interfaces/IProducto";
+import { newSession } from "./loginUserAPI";
 import { Cart } from "./interfaces/ICart";
 import { dao } from "./main";
+import * as twilioWsp from './twilio/wsp.js';
+import * as twilioSms from './twilio/sms.js';
+import * as ethereal from "./email/nodemailerEthereal";
+
+import { loggerError, loggerInfo, loggerWarn } from "./loggers";
 
 
 export const carritoAPI = () => {
@@ -55,10 +61,54 @@ export const carritoAPI = () => {
     );
 
     carritoProducts.post("/agregar", async (req: Request, res: Response) => {
-        const order: Array<Cart> = req.body;
-        await dao.insertOrder(order)
-        // io.sockets.emit("products", await dao.getProductos());
-        res.status(200).json({ server: "Compra finalizada" });
+        const orderToProcess: Array<Cart> = req.body;
+        const orderProcessed: any = await dao.insertOrder(orderToProcess);
+        const orderProcessedId = orderProcessed[0]._id;
+        const orderProcessedTotal = orderProcessed[0].orderTotal;
+        const orderProcessedProductos = orderProcessed[0].productos;
+        const orderProcessedAdmin: { cantidad: number; producto: string; precioPorUnidad: number; codigo: string; precioTotal: number }[] = [];
+        const orderProcessedUser: { producto: string; cantidad: number; precioPorUnidad: number; precioTotal: number }[] = [];
+
+        orderProcessedProductos.map((order: any) => {
+            const producto = order.producto.title;
+            const codigo = order.producto.code;
+            const cantidad = order.quantity;
+            const precioPorUnidad = order.producto.price;
+            const precioTotal = order.total;
+
+            orderProcessedAdmin.push({
+                producto,
+                codigo,
+                cantidad,
+                precioPorUnidad,
+                precioTotal
+            });
+
+            orderProcessedUser.push({
+                producto,
+                cantidad,
+                precioPorUnidad,
+                precioTotal
+            });
+
+        });
+        const nombreAndEmail = `${newSession.getNombre()} - ${newSession.getEmail()}`
+        const mensajeWsp = `----  Nuevo pedido de: ${nombreAndEmail}  ---- Número de Orden: ${orderProcessedId}  --- Pedido: ${JSON.stringify(orderProcessedAdmin, null, '\t')}  ----  Precio Total $: ${orderProcessedTotal}  ---`;
+        const mensajeSms = `---- Número de Orden: ${orderProcessedId} ---- Orden solicitada: ${JSON.stringify(orderProcessedUser, null, '\t')} ----  Precio Total $: ${orderProcessedTotal}  ---`;
+        const mensajeMail = `---- Número de Orden: ${orderProcessedId} ---- Orden solicitada: <br> ${JSON.stringify(orderProcessedAdmin, null, '<br>')} <br> ----  Precio Total $: ${orderProcessedTotal}  ---`;
+        
+        try {
+            // console.log(req.session);
+            await twilioWsp.enviarWsp(mensajeWsp);
+            await twilioSms.enviarSMS(mensajeSms, newSession.getPhone());
+            ethereal.enviarMail(`Nuevo pedido de: ${nombreAndEmail}`, mensajeMail, (err: any, info: any) => {
+                if (err) loggerError.error(err)
+            })
+        }
+        catch (error) {
+            loggerError.error('ERROR enviarWapp', error)
+        }
+        res.status(200).json({ orderProcessedId });
     });
 
     carritoProducts.delete("/borrar/:id", async (req: Request, res: Response) => {

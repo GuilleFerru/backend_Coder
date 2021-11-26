@@ -1,0 +1,18 @@
+[2021-11-25T22:17:12.252] [ERROR] error - ERROR enviarWapp TypeError: twilioSms.enviarSms is not a function
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:174:52
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:33:53)
+    at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:24:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-11-25T22:18:00.668] [ERROR] error - ERROR enviarWapp TypeError: twilioSms.enviarSms is not a function
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:174:52
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:33:53)
+    at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:24:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-11-25T22:55:53.231] [ERROR] error - ERROR enviarWapp ReferenceError: usuarioTelefono is not defined
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:176:74
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:33:53)
+    at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:24:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)

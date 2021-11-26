@@ -1,5 +1,6 @@
 import { app } from "./server"
 import session from "express-session";
+import { Session } from "./interfaces/ISession";
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import passport from 'passport';
@@ -8,7 +9,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { usuarioModel as User } from './models/usuarios';
 import multer from "multer";
 import * as ethereal from "./email/nodemailerEthereal"
-import { loggerError, loggerInfo,loggerWarn } from "./loggers";
+import { loggerError, loggerInfo, loggerWarn } from "./loggers";
 
 declare module 'express-session' {
     export interface SessionData {
@@ -134,29 +135,37 @@ app.use(session({
         //En Atlas connect App: Make sure to change the node version to 2.2.12:
         mongoUrl: 'mongodb://ecommerce:3JUOQTzjfNkDKtnh@cluster0-shard-00-00.sl41s.mongodb.net:27017,cluster0-shard-00-01.sl41s.mongodb.net:27017,cluster0-shard-00-02.sl41s.mongodb.net:27017/ecommerce?ssl=true&replicaSet=atlas-o3g8d0-shard-0&authSource=admin&retryWrites=true&w=majority',
         //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 600
+        ttl: 3600
     }),
     secret: 'secretin',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: 1_000 * 600
+        maxAge: 1_000 * 3600
     }
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+export const newSession = new Session();
 export const loginAPI = async () => {
 
     app.get('/login', (req: any, res) => {
         if (req.isAuthenticated()) {
+            const { user } = req;
+            newSession.setNombre(`${user.name} ${user.lastname}`);
+            newSession.setEmail(`${user.username}`)
+            newSession.setPhone(`${user.phone}`)
+            
+            // req.session.nombre = `${user.name} ${user.lastname} - ${user.username} `;
+            // req.session.phone = `${user.phone}`;
+
             res.render("home", {
-                email: req.user.username,
-                nombre: req.user.name,
-                img: req.user.avatar
+                email: user.username,
+                nombre: user.name,
+                img: user.avatar
             })
         }
         else {
@@ -222,10 +231,10 @@ export const loginAPI = async () => {
 
     app.get('/logout', (req: any, res: any) => {
         try {
-            const nombre = req.user.name;
+            const nombre  = newSession.getNombre();
             req.logout();
             req.session.destroy(() => {
-                res.render("logout", { nombre })
+                res.render("logout", { nombre });
             })
         } catch (err) {
             res.render("logout", { nombre: '' })

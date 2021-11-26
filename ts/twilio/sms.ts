@@ -1,17 +1,15 @@
-// Wilson%123654789
-const accountSid = 'AC1471a99c86fe7bd44086726a5ae428eb';
-const authToken = '13f70dd6571006a22939e7802da9b0ba';
+import { accountSid, authToken } from './accountData';
 
-import twilio from 'twilio'
+import twilio from 'twilio';
 
 const client = twilio(accountSid, authToken)
 
-export const enviarSMS = async (mensaje: string, numero: string) => {
+export const enviarSMS = async (mensaje: string, phone: string) => {
     try {
         let rta = await client.messages.create({
             body: mensaje,
             from: '+14692948136',
-            to: numero
+            to: phone
         })
         return rta
     }

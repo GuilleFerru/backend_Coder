@@ -39,26 +39,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.enviarSMS = void 0;
-// Wilson%123456789
-var accountSid = 'AC1471a99c86fe7bd44086726a5ae428eb';
-var authToken = 'b66fcea06f733642f8ef38b9ec3b982e';
+exports.enviarWsp = void 0;
+var accountData_1 = require("./accountData");
 var twilio_1 = __importDefault(require("twilio"));
-var client = (0, twilio_1.default)(accountSid, authToken);
-var enviarSMS = function (mensaje, numero) { return __awaiter(void 0, void 0, void 0, function () {
-    var rta, error_1;
+var client = (0, twilio_1.default)(accountData_1.accountSid, accountData_1.authToken);
+var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
+    var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
-                        from: '+14692948136',
-                        to: numero
+                        from: 'whatsapp:+14155238886',
+                        to: 'whatsapp:+5493571531154'
                     })];
             case 1:
-                rta = _a.sent();
-                return [2 /*return*/, rta];
+                _a.sent();
+                return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
                 return [2 /*return*/, error_1];
@@ -66,4 +64,4 @@ var enviarSMS = function (mensaje, numero) { return __awaiter(void 0, void 0, vo
         }
     });
 }); };
-exports.enviarSMS = enviarSMS;
+exports.enviarWsp = enviarWsp;

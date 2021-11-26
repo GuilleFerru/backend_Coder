@@ -33,7 +33,7 @@
                         <form class="form" action="{{formAction}}" method="post" role="form" enctype={{enctype}}
                             autocomplete="off">
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="username" name="username"
+                                <input type="email" class="form-control" id="username" name="username" 
                                     placeholder="Ingrese su email">
                                 <label for="username">Email</label>
                             </div>
@@ -79,7 +79,7 @@
                             {{/if}}
 
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" name="password"
+                                <input type="password" class="form-control" id="password" name="password" 
                                     placeholder="Ingrese su contraseña">
                                 <label for="password">Contraseña</label>
                             </div>
@@ -147,7 +147,7 @@
             input.value = prefix() + input.value;
             const addPrefix = () => {
                 input.value = '';
-                input.value = prefix() + input.value;
+                input.value = '+' + prefix() + input.value;
             }
 
         </script>

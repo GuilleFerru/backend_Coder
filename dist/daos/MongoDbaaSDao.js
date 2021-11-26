@@ -322,22 +322,22 @@ var MongoDbaaSDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////
     MongoDbaaSDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_2, carrito, error_7, _a, _b, _c, _d, _e;
-            return __generator(this, function (_f) {
-                switch (_f.label) {
+            var orderTotal, _i, order_2, carrito, error_7, finalOrder;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _f.trys.push([0, 7, 8, 10]);
+                        _a.trys.push([0, 7, 8, 10]);
                         orderTotal = order.pop();
                         _i = 0, order_2 = order;
-                        _f.label = 1;
+                        _a.label = 1;
                     case 1:
                         if (!(_i < order_2.length)) return [3 /*break*/, 4];
                         carrito = order_2[_i];
                         return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "cerrado": true } })];
                     case 2:
-                        _f.sent();
+                        _a.sent();
                         delete carrito.cerrado;
-                        _f.label = 3;
+                        _a.label = 3;
                     case 3:
                         _i++;
                         return [3 /*break*/, 1];
@@ -346,23 +346,22 @@ var MongoDbaaSDao = /** @class */ (function () {
                             orderTotal: orderTotal.orderTotal
                         })];
                     case 5:
-                        _f.sent();
+                        _a.sent();
                         return [4 /*yield*/, this.getCarrito()];
                     case 6:
-                        _f.sent();
+                        _a.sent();
                         return [3 /*break*/, 10];
                     case 7:
-                        error_7 = _f.sent();
+                        error_7 = _a.sent();
                         loggers_1.loggerError.error(error_7);
                         throw error_7;
-                    case 8:
-                        _b = (_a = loggers_1.loggerInfo).info;
-                        _c = ['Orden Agregada'];
-                        _e = (_d = JSON).stringify;
-                        return [4 /*yield*/, order_1.ordenModel.find().sort({ _id: -1 }).limit(1)];
+                    case 8: return [4 /*yield*/, order_1.ordenModel.find({}, { productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)];
                     case 9:
-                        _b.apply(_a, _c.concat([_e.apply(_d, [_f.sent()])]));
-                        return [7 /*endfinally*/];
+                        finalOrder = _a.sent();
+                        loggers_1.loggerWarn.warn('Orden Agregada', JSON.stringify(finalOrder));
+                        return [2 /*return*/, finalOrder
+                            // await mongoose.disconnect();
+                        ];
                     case 10: return [2 /*return*/];
                 }
             });

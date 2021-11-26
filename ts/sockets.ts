@@ -3,7 +3,7 @@ import { dao } from "./main";
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
 import { loggerError, loggerInfo } from "./loggers";
 import * as normalizr from 'normalizr';
-import * as twilio from './sms/twilio.js'
+import * as twilio from './twilio/sms.js';
 
 
 
@@ -70,11 +70,14 @@ export const sockets = async () => {
             )
             await dao.insertMensajes(newMensaje);
 
-            if(mensaje.text.includes('administrador')) {
-                console.log('MENSAJE SMS AL ADMIN')
-                let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
-                let rta = await twilio.enviarSMS(msj, '+5493571531154')
-                loggerInfo.info(rta)
+            if (mensaje.text.includes('administrador')) {
+                try {
+                    let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
+                    await twilio.enviarSMS(msj, '+5493571531154')
+                }
+                catch (error) {
+                    loggerError.error('ERROR enviarWapp', error)
+                }
             }
 
             io.sockets.emit("messages", await getNormalizeMsj());

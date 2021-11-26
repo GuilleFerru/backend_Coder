@@ -9,7 +9,9 @@ import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
 import { usuarioModel } from "../models/usuarios";
 import { sessionModel } from "../models/sessions";
-import { loggerError, loggerInfo } from "../loggers";
+import { loggerError, loggerInfo, loggerWarn} from "../loggers";
+import { Order } from "../interfaces/IOrder";
+
 
 
 
@@ -189,7 +191,6 @@ export class MongoDbaaSDao implements IDao {
 
     async insertOrder(order: Array<Cart>) {
         try {
-
             const orderTotal: any = order.pop();
             for (const carrito of order) {
                 await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "cerrado": true } });
@@ -204,7 +205,10 @@ export class MongoDbaaSDao implements IDao {
             loggerError.error(error);
             throw error;
         } finally {
-            loggerInfo.info('Orden Agregada', JSON.stringify(await ordenModel.find().sort({ _id: -1 }).limit(1)));
+            // const finalOrder = JSON.stringify(await ordenModel.find({}, { _id: 0, productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1))
+            const finalOrder: any = await ordenModel.find({}, {productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)
+            loggerWarn.warn('Orden Agregada', JSON.stringify(finalOrder));
+            return finalOrder
             // await mongoose.disconnect();
         }
     }

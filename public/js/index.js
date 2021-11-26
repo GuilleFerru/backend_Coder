@@ -148,13 +148,10 @@ const saveCart = () => {
                 method: "POST",
                 body: JSON.stringify(order),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
-            }).then(res => {
-                alert('Compra Finalizada');
+            }).then(res => res.json()).then(res => {
+                alert(`Compra "${res.orderProcessedId}" finalizada, revise su celular.`);
             }).catch(error => console.log(error))
-        } else {
-
         }
-        // socket.emit('saveCart',cart);
     });
 }
 

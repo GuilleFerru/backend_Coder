@@ -58,9 +58,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginAPI = void 0;
+exports.loginAPI = exports.newSession = void 0;
 var server_1 = require("./server");
 var express_session_1 = __importDefault(require("express-session"));
+var ISession_1 = require("./interfaces/ISession");
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var passport_1 = __importDefault(require("passport"));
@@ -170,27 +171,34 @@ server_1.app.use((0, express_session_1.default)({
         //En Atlas connect App: Make sure to change the node version to 2.2.12:
         mongoUrl: 'mongodb://ecommerce:3JUOQTzjfNkDKtnh@cluster0-shard-00-00.sl41s.mongodb.net:27017,cluster0-shard-00-01.sl41s.mongodb.net:27017,cluster0-shard-00-02.sl41s.mongodb.net:27017/ecommerce?ssl=true&replicaSet=atlas-o3g8d0-shard-0&authSource=admin&retryWrites=true&w=majority',
         //mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 600
+        ttl: 3600
     }),
     secret: 'secretin',
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: {
-        maxAge: 1000 * 600
+        maxAge: 1000 * 3600
     }
 }));
 server_1.app.use(passport_1.default.initialize());
 server_1.app.use(passport_1.default.session());
+exports.newSession = new ISession_1.Session();
 var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function () {
     var upload;
     return __generator(this, function (_a) {
         server_1.app.get('/login', function (req, res) {
             if (req.isAuthenticated()) {
+                var user = req.user;
+                exports.newSession.setNombre(user.name + " " + user.lastname);
+                exports.newSession.setEmail("" + user.username);
+                exports.newSession.setPhone("" + user.phone);
+                // req.session.nombre = `${user.name} ${user.lastname} - ${user.username} `;
+                // req.session.phone = `${user.phone}`;
                 res.render("home", {
-                    email: req.user.username,
-                    nombre: req.user.name,
-                    img: req.user.avatar
+                    email: user.username,
+                    nombre: user.name,
+                    img: user.avatar
                 });
             }
             else {
@@ -245,7 +253,7 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
         });
         server_1.app.get('/logout', function (req, res) {
             try {
-                var nombre_1 = req.user.name;
+                var nombre_1 = exports.newSession.getNombre();
                 req.logout();
                 req.session.destroy(function () {
                     res.render("logout", { nombre: nombre_1 });

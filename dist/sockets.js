@@ -61,7 +61,7 @@ var main_2 = require("./main");
 var IMensaje_1 = require("./interfaces/IMensaje");
 var loggers_1 = require("./loggers");
 var normalizr = __importStar(require("normalizr"));
-var twilio = __importStar(require("./sms/twilio.js"));
+var twilio = __importStar(require("./twilio/sms.js"));
 var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost;
     return __generator(this, function (_a) {
@@ -105,7 +105,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                         _b.apply(_a, _c.concat([_g.sent()]));
                         socket.emit('port', port);
                         socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
-                            var date, id, checkId, newAuthor, newMensaje, msj, rta, _a, _b, _c;
+                            var date, id, checkId, newAuthor, newMensaje, msj, error_1, _a, _b, _c;
                             return __generator(this, function (_d) {
                                 switch (_d.label) {
                                     case 0:
@@ -120,19 +120,24 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                         return [4 /*yield*/, main_2.dao.insertMensajes(newMensaje)];
                                     case 1:
                                         _d.sent();
-                                        if (!mensaje.text.includes('administrador')) return [3 /*break*/, 3];
-                                        console.log('MENSAJE SMS AL ADMIN');
+                                        if (!mensaje.text.includes('administrador')) return [3 /*break*/, 5];
+                                        _d.label = 2;
+                                    case 2:
+                                        _d.trys.push([2, 4, , 5]);
                                         msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
                                         return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571531154')];
-                                    case 2:
-                                        rta = _d.sent();
-                                        loggers_1.loggerInfo.info(rta);
-                                        _d.label = 3;
                                     case 3:
+                                        _d.sent();
+                                        return [3 /*break*/, 5];
+                                    case 4:
+                                        error_1 = _d.sent();
+                                        loggers_1.loggerError.error('ERROR enviarWapp', error_1);
+                                        return [3 /*break*/, 5];
+                                    case 5:
                                         _b = (_a = main_1.io.sockets).emit;
                                         _c = ["messages"];
                                         return [4 /*yield*/, getNormalizeMsj()];
-                                    case 4:
+                                    case 6:
                                         _b.apply(_a, _c.concat([_d.sent()]));
                                         return [2 /*return*/];
                                 }

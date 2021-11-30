@@ -1,10 +1,9 @@
 import express, { Request, Response } from "express";
 import { Producto } from "./interfaces/IProducto";
-import { io, isAdmin } from "./main"
-import { app } from "./server"
-import { dao } from "./main";
+import { app, io, dao } from "./server"
 import { generateData } from "./productoTest"
-import { loggerError, loggerInfo } from "./loggers";
+import { loggerError } from "./loggers";
+import { newSession } from "./loginUserAPI";
 
 
 export const productoAPI = () => {
@@ -53,7 +52,7 @@ export const productoAPI = () => {
     );
 
     routerProducts.post("/agregar", async (req: Request, res: Response) => {
-        if (isAdmin) {
+        if (newSession.getIsAdmin()) {
             const newProducto: Producto = new Producto(
                 req.body.title,
                 req.body.description,
@@ -74,7 +73,7 @@ export const productoAPI = () => {
     });
 
     routerProducts.put("/actualizar/:id", async (req: Request, res: Response) => {
-        if (isAdmin) {
+        if (newSession.getIsAdmin()) {
             const id: string = (req.params.id);
             const newProducto: Producto = new Producto(
                 req.body.title,
@@ -99,7 +98,7 @@ export const productoAPI = () => {
     });
 
     routerProducts.delete("/borrar/:id", async (req: Request, res: Response) => {
-        if (isAdmin) {
+        if (newSession.getIsAdmin()) {
             const id: string = req.params.id;
             const productToBeDelete: Producto | undefined = await dao.getProductoById(id);
             if (productToBeDelete) {

@@ -6,6 +6,7 @@ var Session = /** @class */ (function () {
         this.nombre = '';
         this.email = '';
         this.phone = '';
+        this.isAdmin = true;
     }
     Session.prototype.setNombre = function (nombre) {
         this.nombre = nombre;
@@ -16,6 +17,9 @@ var Session = /** @class */ (function () {
     Session.prototype.setPhone = function (phone) {
         this.phone = phone;
     };
+    Session.prototype.setIsAdmin = function (isAdmin) {
+        this.isAdmin = isAdmin;
+    };
     Session.prototype.getNombre = function () {
         return this.nombre;
     };
@@ -24,6 +28,9 @@ var Session = /** @class */ (function () {
     };
     Session.prototype.getPhone = function () {
         return this.phone;
+    };
+    Session.prototype.getIsAdmin = function () {
+        return this.isAdmin;
     };
     return Session;
 }());

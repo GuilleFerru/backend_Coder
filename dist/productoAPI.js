@@ -42,11 +42,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.productoAPI = void 0;
 var express_1 = __importDefault(require("express"));
 var IProducto_1 = require("./interfaces/IProducto");
-var main_1 = require("./main");
 var server_1 = require("./server");
-var main_2 = require("./main");
 var productoTest_1 = require("./productoTest");
 var loggers_1 = require("./loggers");
+var loginUserAPI_1 = require("./loginUserAPI");
 var productoAPI = function () {
     var routerProducts = express_1.default.Router();
     server_1.app.use("/productos", routerProducts);
@@ -67,7 +66,7 @@ var productoAPI = function () {
             switch (_a.label) {
                 case 0:
                     id = (req.params.id);
-                    return [4 /*yield*/, main_2.dao.getProductoById(id)];
+                    return [4 /*yield*/, server_1.dao.getProductoById(id)];
                 case 1:
                     productoById = _a.sent();
                     if (productoById) {
@@ -89,7 +88,7 @@ var productoAPI = function () {
         var products;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, main_2.dao.getProductos()];
+                case 0: return [4 /*yield*/, server_1.dao.getProductos()];
                 case 1:
                     products = _a.sent();
                     if (products.length > 0) {
@@ -108,14 +107,14 @@ var productoAPI = function () {
         return __generator(this, function (_d) {
             switch (_d.label) {
                 case 0:
-                    if (!main_1.isAdmin) return [3 /*break*/, 3];
+                    if (!loginUserAPI_1.newSession.getIsAdmin()) return [3 /*break*/, 3];
                     newProducto = new IProducto_1.Producto(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
-                    return [4 /*yield*/, main_2.dao.insertProducto(newProducto)];
+                    return [4 /*yield*/, server_1.dao.insertProducto(newProducto)];
                 case 1:
                     _d.sent();
-                    _b = (_a = main_1.io.sockets).emit;
+                    _b = (_a = server_1.io.sockets).emit;
                     _c = ["products"];
-                    return [4 /*yield*/, main_2.dao.getProductos()];
+                    return [4 /*yield*/, server_1.dao.getProductos()];
                 case 2:
                     _b.apply(_a, _c.concat([_d.sent()]));
                     res.status(200).json({ server: "Producto creado" });
@@ -135,17 +134,17 @@ var productoAPI = function () {
         return __generator(this, function (_f) {
             switch (_f.label) {
                 case 0:
-                    if (!main_1.isAdmin) return [3 /*break*/, 5];
+                    if (!loginUserAPI_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
                     id = (req.params.id);
                     newProducto = new IProducto_1.Producto(req.body.title, req.body.description, req.body.code, req.body.thumbnail, req.body.price, req.body.stock);
                     if (!newProducto) return [3 /*break*/, 3];
                     _b = (_a = res.status(200)).json;
-                    return [4 /*yield*/, main_2.dao.updateProducto(id, newProducto)];
+                    return [4 /*yield*/, server_1.dao.updateProducto(id, newProducto)];
                 case 1:
                     _b.apply(_a, [_f.sent()]);
-                    _d = (_c = main_1.io.sockets).emit;
+                    _d = (_c = server_1.io.sockets).emit;
                     _e = ["products"];
-                    return [4 /*yield*/, main_2.dao.getProductos()];
+                    return [4 /*yield*/, server_1.dao.getProductos()];
                 case 2:
                     _d.apply(_c, _e.concat([_f.sent()]));
                     return [3 /*break*/, 4];
@@ -168,19 +167,19 @@ var productoAPI = function () {
         return __generator(this, function (_f) {
             switch (_f.label) {
                 case 0:
-                    if (!main_1.isAdmin) return [3 /*break*/, 6];
+                    if (!loginUserAPI_1.newSession.getIsAdmin()) return [3 /*break*/, 6];
                     id = req.params.id;
-                    return [4 /*yield*/, main_2.dao.getProductoById(id)];
+                    return [4 /*yield*/, server_1.dao.getProductoById(id)];
                 case 1:
                     productToBeDelete = _f.sent();
                     if (!productToBeDelete) return [3 /*break*/, 4];
                     _b = (_a = res.status(200)).json;
-                    return [4 /*yield*/, main_2.dao.deleteProducto(productToBeDelete._id)];
+                    return [4 /*yield*/, server_1.dao.deleteProducto(productToBeDelete._id)];
                 case 2:
                     _b.apply(_a, [_f.sent()]);
-                    _d = (_c = main_1.io.sockets).emit;
+                    _d = (_c = server_1.io.sockets).emit;
                     _e = ["products"];
-                    return [4 /*yield*/, main_2.dao.getProductos()];
+                    return [4 /*yield*/, server_1.dao.getProductos()];
                 case 3:
                     _d.apply(_c, _e.concat([_f.sent()]));
                     return [3 /*break*/, 5];

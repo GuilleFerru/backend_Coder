@@ -52,7 +52,7 @@ var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, fu
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
                         from: 'whatsapp:+14155238886',
-                        to: 'whatsapp:+5493571531154'
+                        to: 'whatsapp:+'
                     })];
             case 1:
                 _a.sent();

@@ -41,6 +41,10 @@ const usuarioSchema = new mongoose.Schema({
         require: true,
         max: 50
     },
+    isAdmin: {
+        type: Boolean,
+        require: true
+    }
 },
     {
         timestamps: true

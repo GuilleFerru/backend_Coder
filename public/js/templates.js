@@ -55,6 +55,7 @@ const filterProductoTemplate = Handlebars.compile(`
                         <h6 class="title">Precio</h6>
                     </a> 
                 </header>
+             
                 <div class="filter-content collapse" id="collapse_aside3">
                     <div class="card-body"> 
                         <div class="form-row">
@@ -70,6 +71,7 @@ const filterProductoTemplate = Handlebars.compile(`
                     <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="filterProductos()">Filtrar</a>
                     </div>
                 </div>
+           
             </article>
 
             <article class="filter-group">
@@ -103,6 +105,7 @@ const filterProductoTemplate = Handlebars.compile(`
                 <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="limpiarFiltro()">Limpiar Filtros</a>
             </div>
         </div>
+        {{#if isAdmin}}
         <div class="flex mt-5">
             <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/info'">Process Info</button>
         </div>
@@ -110,6 +113,7 @@ const filterProductoTemplate = Handlebars.compile(`
         <button type="button" class=" highlight-button btn btn-medium button xs-margin-bottom-five" onclick="generateRandoms()">Randoms</button>
         <input type="number" class="form-control"  id="randomQty" onchange="getQtyRandom()">
         </div>
+        {{/if}}
     </div>
 </div>
 </div>
@@ -347,7 +351,7 @@ const cardsTemplate = Handlebars.compile(`
                         <p class="card-text">{{this.description}}</p>
                         <a href="javascript:void(0)" data-toggle="modal" onclick="addToCart('{{this._id}}')" class="card-link">Agregar al Carrito</a>
                         <a href="#updateModal" data-toggle="modal" onclick="passIdProductToModal('{{this._id}}')" class="card-link">Actualizar</a>
-                        <a href="javascript:void(0)" onclick="deleteProduct('{{this._id}}')" class="card-link">Eliminar</a>             
+                        <a href="javascript:void(0)" onclick="deleteProduct('{{this._id}}')" class="card-link">Eliminar</a>      
                     </div>
                 </div>
             </div>
@@ -575,8 +579,8 @@ const modalTemplate = Handlebars.compile(`
 
 
 const chatTemplate = Handlebars.compile(`
-    <div class="card mt-3">
-        <div class="card-body">
+    <div class="card mt-3 mb-3">
+        <div class="card-body ">
             <h2 class="pt-1 pb-2">Centro de Mensajes</h2>
                 <div class="form-group">
                     <input type="email" class="form-control" id="emailChat" aria-describedby="emailHelp" placeholder="Ingrese su mail" name="emailChat" required>
@@ -610,7 +614,7 @@ const chatTemplate = Handlebars.compile(`
 
 
 const chatNormalizaTemplate = Handlebars.compile(`
-    <div class="card mt-3">
+    <div class="card mt-3 mb-3">
         <div class="card-body">
             <h2 class="pt-1 pb-2">Centro de Mensajes --- Compresión: {{compresion}}</h2>
                 <div class="form-group">
@@ -631,7 +635,7 @@ const chatNormalizaTemplate = Handlebars.compile(`
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="aliasChat" aria-describedby="aliasHelp" placeholder="Ingrese su alias" name="aliasHelp" required>
-                    <small id="aliasHelp" class="form-text text-muted">Ingrese su edad.</small>
+                    <small id="aliasHelp" class="form-text text-muted">Ingrese su alias.</small>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="avatarChat" aria-describedby="aliasHelp" placeholder="Ingrese un thumbnail" name="avatarChat" required>

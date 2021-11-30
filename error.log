@@ -16,3 +16,899 @@
     at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:33:53)
     at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\carritoAPI.js:24:58)
     at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-11-30T11:24:30.657] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:24:30.711] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:24:30.728] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:24:30.825] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:25:20.788] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:25:20.912] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:25:20.944] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:25:21.054] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:26:52.381] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:26:52.424] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:26:52.452] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:26:52.493] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:42:15.468] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:42:15.541] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:42:15.659] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:42:15.672] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:50:40.760] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:50:40.863] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:50:41.106] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T11:50:41.526] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:01:52.778] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:01:52.898] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:01:52.911] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:01:52.946] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:33.764] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:33.781] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:33.841] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:34.058] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:58.879] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:58.916] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:58.962] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:04:59.019] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:05:39.874] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:05:39.900] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:05:39.978] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:05:40.124] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:09:45.004] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:09:45.128] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:09:45.157] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:09:45.217] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:13:04.490] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:13:04.537] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:13:04.629] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:13:04.656] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:15:14.991] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:15:15.010] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:15:15.076] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:15:15.241] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:16:03.529] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:16:03.634] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:16:03.674] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:16:03.774] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:28.100] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:28.122] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:28.181] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:28.190] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:43.689] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:43.758] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:43.856] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:19:43.894] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:26:04.343] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:26:04.391] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:26:04.422] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}
+[2021-11-30T12:26:04.490] [ERROR] error - Error: bind EADDRINUSE null:8080
+    at listenOnMasterHandle (net.js:1385:18)
+    at shared (internal/cluster/child.js:132:3)
+    at Worker.<anonymous> (internal/cluster/child.js:103:7)
+    at process.onInternalMessage (internal/cluster/utils.js:48:5)
+    at process.emit (events.js:327:22)
+    at emit (internal/child_process.js:903:12)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21) {
+  errno: -4091,
+  code: 'EADDRINUSE',
+  syscall: 'bind',
+  address: null,
+  port: 8080
+}

@@ -60,10 +60,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.carritoAPI = void 0;
 var express_1 = __importDefault(require("express"));
-var main_1 = require("./main");
 var server_1 = require("./server");
 var loginUserAPI_1 = require("./loginUserAPI");
-var main_2 = require("./main");
 var twilioWsp = __importStar(require("./twilio/wsp.js"));
 var twilioSms = __importStar(require("./twilio/sms.js"));
 var ethereal = __importStar(require("./email/nodemailerEthereal"));
@@ -77,26 +75,26 @@ var carritoAPI = function () {
             switch (_a.label) {
                 case 0:
                     id = req.params.id_producto;
-                    return [4 /*yield*/, main_2.dao.getProductoById(id)];
+                    return [4 /*yield*/, server_1.dao.getProductoById(id)];
                 case 1:
                     productoById = _a.sent();
                     if (!productoById) return [3 /*break*/, 10];
-                    return [4 /*yield*/, main_2.dao.getCarrito()];
+                    return [4 /*yield*/, server_1.dao.getCarrito()];
                 case 2:
                     carrrito = _a.sent();
                     if (!(carrrito.length > 0)) return [3 /*break*/, 7];
                     cartToBeUpdate = carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
                     if (!cartToBeUpdate) return [3 /*break*/, 4];
-                    return [4 /*yield*/, main_2.dao.updateQtyInCarrito(cartToBeUpdate)];
+                    return [4 /*yield*/, server_1.dao.updateQtyInCarrito(cartToBeUpdate)];
                 case 3:
                     _a.sent();
                     return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, main_2.dao.insertProductToCarrito(productoById)];
+                case 4: return [4 /*yield*/, server_1.dao.insertProductToCarrito(productoById)];
                 case 5:
                     _a.sent();
                     _a.label = 6;
                 case 6: return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, main_2.dao.insertProductToCarrito(productoById)];
+                case 7: return [4 /*yield*/, server_1.dao.insertProductToCarrito(productoById)];
                 case 8:
                     _a.sent();
                     _a.label = 9;
@@ -116,7 +114,7 @@ var carritoAPI = function () {
             switch (_a.label) {
                 case 0:
                     id = req.params.id;
-                    return [4 /*yield*/, main_2.dao.getCarritoById(id)];
+                    return [4 /*yield*/, server_1.dao.getCarritoById(id)];
                 case 1:
                     carrito = _a.sent();
                     if (carrito) {
@@ -138,7 +136,7 @@ var carritoAPI = function () {
         var carritos;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, main_2.dao.getCarrito()];
+                case 0: return [4 /*yield*/, server_1.dao.getCarrito()];
                 case 1:
                     carritos = _a.sent();
                     res.status(200).json(carritos);
@@ -152,7 +150,7 @@ var carritoAPI = function () {
             switch (_a.label) {
                 case 0:
                     orderToProcess = req.body;
-                    return [4 /*yield*/, main_2.dao.insertOrder(orderToProcess)];
+                    return [4 /*yield*/, server_1.dao.insertOrder(orderToProcess)];
                 case 1:
                     orderProcessed = _a.sent();
                     orderProcessedId = orderProcessed[0]._id;
@@ -195,7 +193,7 @@ var carritoAPI = function () {
                     return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, loginUserAPI_1.newSession.getPhone())];
                 case 4:
                     _a.sent();
-                    ethereal.enviarMail("Nuevo pedido de: " + nombreAndEmail, mensajeMail, function (err, info) {
+                    ethereal.enviarMail("Nuevo pedido de: " + nombreAndEmail, mensajeMail, function (err, _info) {
                         if (err)
                             loggers_1.loggerError.error(err);
                     });
@@ -216,17 +214,17 @@ var carritoAPI = function () {
             switch (_f.label) {
                 case 0:
                     id = req.params.id;
-                    return [4 /*yield*/, main_2.dao.getCarritoById(id)];
+                    return [4 /*yield*/, server_1.dao.getCarritoById(id)];
                 case 1:
                     cartToBeDelete = _f.sent();
                     if (!cartToBeDelete) return [3 /*break*/, 4];
                     _b = (_a = res.status(200)).json;
-                    return [4 /*yield*/, main_2.dao.deleteCarrito(cartToBeDelete._id)];
+                    return [4 /*yield*/, server_1.dao.deleteCarrito(cartToBeDelete._id)];
                 case 2:
                     _b.apply(_a, [_f.sent()]);
-                    _d = (_c = main_1.io.sockets).emit;
+                    _d = (_c = server_1.io.sockets).emit;
                     _e = ["carts"];
-                    return [4 /*yield*/, main_2.dao.getCarrito()];
+                    return [4 /*yield*/, server_1.dao.getCarrito()];
                 case 3:
                     _d.apply(_c, _e.concat([_f.sent()]));
                     return [3 /*break*/, 5];

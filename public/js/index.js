@@ -3,12 +3,6 @@ const socket = io();
 
 let port = '';
 
-const filtros = filterProductoTemplate()
-document.getElementById('filterProductos').innerHTML = filtros;
-
-const mockData = mockDataTemplate();
-document.getElementById('mockDataTable').innerHTML = mockData;
-
 
 
 socket.on('products', (productos, isAdmin) => {
@@ -17,9 +11,16 @@ socket.on('products', (productos, isAdmin) => {
         productos: productos,
         inputInfo: inputInfo,
     })
+
+    const filtros = filterProductoTemplate({isAdmin})
+    document.getElementById('filterProductos').innerHTML = filtros;
+
     if (isAdmin) {
         newForm = formTemplate({ inputInfo });
         document.getElementById('productsForm').innerHTML = newForm;
+
+        const mockData = mockDataTemplate();
+        document.getElementById('mockDataTable').innerHTML = mockData;
     }
     document.getElementById('productsCard').innerHTML = cardProducts;
 });

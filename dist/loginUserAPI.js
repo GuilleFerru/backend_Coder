@@ -133,6 +133,7 @@ passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
                 newUser.phone = req.body.phone;
                 newUser.avatar = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path.replace('public', '');
                 newUser.password = createHash(password);
+                newUser.isAdmin = false;
                 // save the user
                 newUser.save(function (err) {
                     if (err) {
@@ -141,7 +142,7 @@ passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
                     }
                     loggers_1.loggerInfo.info('User Registration succesful');
                     var asunto = "nuevo registro";
-                    var mensaje = "Se ha creado el siguiente usuario: \n                    Nombre de Usuario: " + newUser.username + ", <br> \n                    Nombre: " + newUser.name + ", <br>\n                    Apellido: " + newUser.lastname + ", <br>\n                    Direcci\u00F3n: " + newUser.address + ", <br>\n                    Edad: " + newUser.age + ", <br>\n                    Telefono: " + newUser.phone + ", <br>\n                    URL del avatar: " + newUser.avatar + ",<br>\n                    Password encriptado: " + newUser.password + ". <br>\n                    ";
+                    var mensaje = "Se ha creado el siguiente usuario: \n                    Nombre de Usuario: " + newUser.username + ", <br> \n                    Nombre: " + newUser.name + ", <br>\n                    Apellido: " + newUser.lastname + ", <br>\n                    Direcci\u00F3n: " + newUser.address + ", <br>\n                    Edad: " + newUser.age + ", <br>\n                    Telefono: " + newUser.phone + ", <br>\n                    URL del avatar: " + newUser.avatar + ",<br>\n                    Password encriptado: " + newUser.password + ". <br>\n                    Es administrador: " + newUser.isAdmin + ". <br>\n                    ";
                     ethereal.enviarMail(asunto, mensaje, function (err, info) {
                         if (err)
                             loggers_1.loggerError.error(err);
@@ -193,6 +194,7 @@ var loginAPI = function () { return __awaiter(void 0, void 0, void 0, function (
                 exports.newSession.setNombre(user.name + " " + user.lastname);
                 exports.newSession.setEmail("" + user.username);
                 exports.newSession.setPhone("" + user.phone);
+                exports.newSession.setIsAdmin(user.isAdmin);
                 // req.session.nombre = `${user.name} ${user.lastname} - ${user.username} `;
                 // req.session.phone = `${user.phone}`;
                 res.render("home", {

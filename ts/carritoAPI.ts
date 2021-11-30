@@ -1,10 +1,8 @@
 import express, { Request, Response } from "express";
-import { io } from "./main"
-import { app } from "./server"
+import { app, io,dao } from "./server"
 import { Producto } from "./interfaces/IProducto";
 import { newSession } from "./loginUserAPI";
 import { Cart } from "./interfaces/ICart";
-import { dao } from "./main";
 import * as twilioWsp from './twilio/wsp.js';
 import * as twilioSms from './twilio/sms.js';
 import * as ethereal from "./email/nodemailerEthereal";
@@ -101,7 +99,7 @@ export const carritoAPI = () => {
             // console.log(req.session);
             await twilioWsp.enviarWsp(mensajeWsp);
             await twilioSms.enviarSMS(mensajeSms, newSession.getPhone());
-            ethereal.enviarMail(`Nuevo pedido de: ${nombreAndEmail}`, mensajeMail, (err: any, info: any) => {
+            ethereal.enviarMail(`Nuevo pedido de: ${nombreAndEmail}`, mensajeMail, (err: any, _info: any) => {
                 if (err) loggerError.error(err)
             })
         }

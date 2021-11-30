@@ -9,7 +9,7 @@ export const enviarWsp = async (mensaje: string) => {
         await client.messages.create({
             body: mensaje,
             from: 'whatsapp:+14155238886',
-            to: 'whatsapp:+5493571531154'
+            to: 'whatsapp:+'
         })
 
     }

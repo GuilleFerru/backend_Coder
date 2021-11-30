@@ -9,14 +9,11 @@
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
     "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
-    "nodefork": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
-    "nodecluster": "nodemon ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER",
+    "nodecluster": "nodemon ./dist/main.js CLUSTER",
     "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8081",
     "pm2cluster": "pm2 start ./dist/main.js --name=cluster --watch -i max -- 8082",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "foreverfork": "forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f",
-    "forevercluster": "forever start ./dist/main2.js 8080 423519862624165 de42abdb2f8e3917e10682d189668d1f CLUSTER"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",

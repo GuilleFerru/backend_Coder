@@ -1,9 +1,9 @@
-import { isAdmin, io } from "./main"
-import { dao } from "./main";
+import { io, dao } from "./server"
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
-import { loggerError, loggerInfo } from "./loggers";
+import { loggerError } from "./loggers";
 import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
+import { newSession } from "./loginUserAPI";
 
 
 
@@ -43,7 +43,6 @@ export const sockets = async () => {
     io.on("connection", async (socket) => {
 
         socket.emit("messages", await getNormalizeMsj());
-
         socket.emit('port', port)
 
         socket.on("newMessage", async (mensaje: Mensaje) => {
@@ -83,10 +82,10 @@ export const sockets = async () => {
             io.sockets.emit("messages", await getNormalizeMsj());
         });
 
-        socket.emit("products", await dao.getProductos(), isAdmin);
+        socket.emit("products", await dao.getProductos(), newSession.getIsAdmin());
 
         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
-            socket.emit("products", await dao.filterProducto(filter, filterBy), isAdmin);
+            socket.emit("products", await dao.filterProducto(filter, filterBy), newSession.getIsAdmin());
         });
 
         socket.on("getAllProductos", async () => {

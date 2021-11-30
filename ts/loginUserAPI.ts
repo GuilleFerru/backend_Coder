@@ -85,6 +85,7 @@ passport.use(signUpStrategyName, new LocalStrategy({
                 newUser.phone = req.body.phone;
                 newUser.avatar = req.file?.path.replace('public', '');
                 newUser.password = createHash(password);
+                newUser.isAdmin = false;
                 // save the user
                 newUser.save(function (err: string) {
                     if (err) {
@@ -102,6 +103,7 @@ passport.use(signUpStrategyName, new LocalStrategy({
                     Telefono: ${newUser.phone}, <br>
                     URL del avatar: ${newUser.avatar},<br>
                     Password encriptado: ${newUser.password}. <br>
+                    Es administrador: ${newUser.isAdmin}. <br>
                     `
                     ethereal.enviarMail(asunto, mensaje, (err: any, info: any) => {
                         if (err) loggerError.error(err)
@@ -158,7 +160,7 @@ export const loginAPI = async () => {
             newSession.setNombre(`${user.name} ${user.lastname}`);
             newSession.setEmail(`${user.username}`)
             newSession.setPhone(`${user.phone}`)
-            
+            newSession.setIsAdmin(user.isAdmin);
             // req.session.nombre = `${user.name} ${user.lastname} - ${user.username} `;
             // req.session.phone = `${user.phone}`;
 

@@ -22,35 +22,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.io = exports.isAdmin = exports.dao = void 0;
-var express_1 = __importDefault(require("express"));
-var express_handlebars_1 = __importDefault(require("express-handlebars"));
-var SocketIO = __importStar(require("socket.io"));
 var server_1 = require("./server");
 var productoAPI_1 = require("./productoAPI");
 var carritoAPI_1 = require("./carritoAPI");
 var sockets_1 = require("./sockets");
-var MongoDbaaSDao_1 = require("./daos/MongoDbaaSDao");
 var loginUserAPI_1 = require("./loginUserAPI");
 var processAPI_1 = require("./processAPI");
 var loggers_1 = require("./loggers");
+var cluster_1 = __importDefault(require("cluster"));
+var os = __importStar(require("os"));
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-server_1.server;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+var modoCluster = process.argv[2] == 'CLUSTER';
+if (modoCluster && cluster_1.default.isMaster) {
+    loggers_1.loggerInfo.info("PID MASTER " + process.pid);
+    var numCPUs = os.cpus().length;
+    loggers_1.loggerInfo.info("N\u00FAmero de procesadores: " + numCPUs);
+    for (var i = 0; i < numCPUs; i++) {
+        cluster_1.default.fork();
+    }
+    cluster_1.default.on('exit', function (worker, code, signal) {
+        loggers_1.loggerInfo.info("worker " + worker.process.pid + " died");
+    });
+}
+else {
+    server_1.server;
+    (0, loginUserAPI_1.loginAPI)();
+    (0, sockets_1.sockets)();
+    (0, productoAPI_1.productoAPI)();
+    (0, carritoAPI_1.carritoAPI)();
+    (0, processAPI_1.processAPI)();
+    process.on('exit', function (code) { return loggers_1.loggerInfo.info("exit " + code); });
+}
 //Configuración de handlebars
-server_1.app.engine("hbs", (0, express_handlebars_1.default)({
-    extname: ".hbs",
-    defaultLayout: 'index.hbs',
-}));
-server_1.app.set("view engine", "hbs");
-server_1.app.set("views", "./views");
-server_1.app.use(express_1.default.static('public'));
-exports.dao = new MongoDbaaSDao_1.MongoDbaaSDao();
-exports.isAdmin = true;
-exports.io = new SocketIO.Server(server_1.server);
-(0, loginUserAPI_1.loginAPI)();
-(0, sockets_1.sockets)();
-(0, productoAPI_1.productoAPI)();
-(0, carritoAPI_1.carritoAPI)();
-(0, processAPI_1.processAPI)();
-process.on('exit', function (code) { return loggers_1.loggerInfo.info("exit " + code); });
+// app.engine(
+//     "hbs",
+//     handlebars({
+//         extname: ".hbs",
+//         defaultLayout: 'index.hbs',
+//     })
+// );
+// app.set("view engine", "hbs");
+// app.set("views", "./views");
+// app.use(express.static('public'))
+// loginAPI();
+// sockets();
+// productoAPI();
+// carritoAPI();
+// processAPI();
+// process.on(
+//     'exit',
+//     (code) => loggerInfo.info(`exit ${code}`)
+//     ,
+// );

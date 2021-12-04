@@ -40,9 +40,10 @@ export const server = app.listen(port, () => {
 export const io = new SocketIO.Server(server);
 export const dao: IDao = new MongoDbaaSDao();
 
+// console.log(process.env.HOME);
 
 server.on("error", (error: string) => {
-  loggerError.error(error);
+  loggerError.error('Error SERVER',error);
 });
 
 

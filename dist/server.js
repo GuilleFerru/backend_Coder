@@ -49,6 +49,7 @@ exports.server = exports.app.listen(port, function () {
 });
 exports.io = new SocketIO.Server(exports.server);
 exports.dao = new MongoDbaaSDao_1.MongoDbaaSDao();
+// console.log(process.env.HOME);
 exports.server.on("error", function (error) {
-    loggers_1.loggerError.error(error);
+    loggers_1.loggerError.error('Error SERVER', error);
 });

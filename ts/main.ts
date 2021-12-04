@@ -1,4 +1,3 @@
-import express from "express";
 import { server } from "./server";
 import { productoAPI } from "./productoAPI"
 import { carritoAPI } from "./carritoAPI";
@@ -10,10 +9,11 @@ import cluster from 'cluster';
 import * as os from 'os';
 
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
+declare module 'express-session' {
+    export interface SessionData {
+        nombre: { [key: string]: any };
+    }
+}
 
 const modoCluster = process.argv[2] == 'CLUSTER';
 
@@ -31,6 +31,8 @@ if (modoCluster && cluster.isMaster) {
     })
 
 } else {
+
+    loggerInfo.info(`Worker ${process.pid} is running`);
 
     server;
     loginAPI();

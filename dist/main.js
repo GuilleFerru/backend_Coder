@@ -31,8 +31,6 @@ var processAPI_1 = require("./processAPI");
 var loggers_1 = require("./loggers");
 var cluster_1 = __importDefault(require("cluster"));
 var os = __importStar(require("os"));
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 var modoCluster = process.argv[2] == 'CLUSTER';
 if (modoCluster && cluster_1.default.isMaster) {
     loggers_1.loggerInfo.info("PID MASTER " + process.pid);
@@ -46,6 +44,7 @@ if (modoCluster && cluster_1.default.isMaster) {
     });
 }
 else {
+    loggers_1.loggerInfo.info("Worker " + process.pid + " is running");
     server_1.server;
     (0, loginUserAPI_1.loginAPI)();
     (0, sockets_1.sockets)();

@@ -6,6 +6,7 @@ var Session = /** @class */ (function () {
         this.nombre = '';
         this.email = '';
         this.phone = '';
+        this.avatar = '';
         this.isAdmin = true;
     }
     Session.prototype.setNombre = function (nombre) {
@@ -16,6 +17,9 @@ var Session = /** @class */ (function () {
     };
     Session.prototype.setPhone = function (phone) {
         this.phone = phone;
+    };
+    Session.prototype.setAvatar = function (avatar) {
+        this.avatar = avatar;
     };
     Session.prototype.setIsAdmin = function (isAdmin) {
         this.isAdmin = isAdmin;
@@ -28,6 +32,9 @@ var Session = /** @class */ (function () {
     };
     Session.prototype.getPhone = function () {
         return this.phone;
+    };
+    Session.prototype.getAvatar = function () {
+        return this.avatar;
     };
     Session.prototype.getIsAdmin = function () {
         return this.isAdmin;

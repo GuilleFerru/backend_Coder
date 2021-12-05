@@ -35,35 +35,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.enviarSMS = void 0;
-// Wilson%123456789
-var accountSid = 'AC1471a99c86fe7bd44086726a5ae428eb';
-var authToken = 'b66fcea06f733642f8ef38b9ec3b982e';
-var twilio_1 = __importDefault(require("twilio"));
-var client = (0, twilio_1.default)(accountSid, authToken);
-var enviarSMS = function (mensaje, numero) { return __awaiter(void 0, void 0, void 0, function () {
-    var rta, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.messages.create({
-                        body: mensaje,
-                        from: '+14692948136',
-                        to: numero
-                    })];
-            case 1:
-                rta = _a.sent();
-                return [2 /*return*/, rta];
-            case 2:
-                error_1 = _a.sent();
-                return [2 /*return*/, error_1];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.enviarSMS = enviarSMS;
+var loggers_1 = require("../loggers");
+var productos_1 = require("../models/productos");
+var productos = [];
+module.exports = {
+    getProductoById: function (id) {
+        return productos.find(function (element) { return String(element._id) === id; });
+    },
+    getProductos: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var savedProducts, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, 3, 4]);
+                        productos.splice(0, productos.length);
+                        return [4 /*yield*/, productos_1.productoModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 })];
+                    case 1:
+                        savedProducts = _a.sent();
+                        savedProducts.forEach(function (producto) {
+                            productos.push(producto);
+                        });
+                        return [3 /*break*/, 4];
+                    case 2:
+                        error_1 = _a.sent();
+                        loggers_1.loggerError.error(error_1);
+                        throw error_1;
+                    case 3: 
+                    // await mongoose.disconnect();
+                    return [2 /*return*/, productos];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    }
+};

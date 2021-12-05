@@ -3,12 +3,14 @@ export interface ISession {
     email: string;
     phone: string;
     isAdmin: boolean;
+    avatar: string;
 }
 
 export class Session implements ISession {
     public nombre: string = '';
     public email: string = '';
     public phone: string = '';
+    public avatar: string = '';
     public isAdmin: boolean = true;
 
     setNombre(nombre: string): void {
@@ -21,6 +23,10 @@ export class Session implements ISession {
 
     setPhone(phone: string): void {
         this.phone = phone;
+    }
+
+    setAvatar(avatar: string): void {
+        this.avatar = avatar;
     }
 
     setIsAdmin(isAdmin: boolean): void {
@@ -37,6 +43,10 @@ export class Session implements ISession {
 
     getPhone(): string {
         return this.phone;
+    }
+
+    getAvatar(): string {
+        return this.avatar;
     }
 
     getIsAdmin(): boolean {

@@ -39,31 +39,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.enviarSMS = void 0;
-// Wilson%123456789
-var accountSid = 'AC1471a99c86fe7bd44086726a5ae428eb';
-var authToken = 'b66fcea06f733642f8ef38b9ec3b982e';
-var twilio_1 = __importDefault(require("twilio"));
-var client = (0, twilio_1.default)(accountSid, authToken);
-var enviarSMS = function (mensaje, numero) { return __awaiter(void 0, void 0, void 0, function () {
-    var rta, error_1;
+var mongoose_1 = __importDefault(require("mongoose"));
+var loggers_1 = require("../loggers");
+var MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+var connectToMongo = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, client.messages.create({
-                        body: mensaje,
-                        from: 'whatsapp:+14692948136',
-                        to: numero
-                    })];
+                return [4 /*yield*/, mongoose_1.default.connect(MONGO_URL)];
             case 1:
-                rta = _a.sent();
-                return [2 /*return*/, rta];
+                _a.sent();
+                loggers_1.loggerInfo.info('Connected to MongoDB');
+                return [3 /*break*/, 3];
             case 2:
                 error_1 = _a.sent();
-                return [2 /*return*/, error_1];
+                loggers_1.loggerError.error(error_1);
+                return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-exports.enviarSMS = enviarSMS;
+module.exports = { connectToMongo: connectToMongo };

@@ -2,9 +2,9 @@
   "name": "desafiosgithub",
   "version": "1.0.0",
   "description": "Carpeta para proximos desafios",
-  "main": "main2.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon ./dist/main.js 8080",
+    "start": "nodemon ./dist/app.js 8080",
     "ServerTStoJS5": "./node_modules/.bin/tsc",
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",

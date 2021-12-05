@@ -1,5 +1,5 @@
 import express from "express";
-import handlebars from 'express-handlebars'
+import handlebars from 'express-handlebars';
 import { IDao } from "./interfaces/IDao";
 import { MongoDbaaSDao } from "./daos/MongoDbaaSDao";
 import compression from 'compression'

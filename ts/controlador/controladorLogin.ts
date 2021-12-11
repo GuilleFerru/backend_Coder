@@ -24,75 +24,6 @@ const signUpStrategyName = 'signup';
 
 const createHash = (password: any) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-
-
-
-
-
-passport.use(signUpStrategyName, new LocalStrategy({
-    passReqToCallback: true
-}, (req, username, password, done) => {
-    const findOrCreateUser = () => {
-        // find a user in Mongo with provided username
-        User.findOne({ 'username': username }, function (err: string, user: any) {
-            // In case of any error return
-            if (err) {
-                loggerError.info('Error in SignUp: ' + err);
-                return done(err);
-            }
-            // already exists
-            if (user) {
-                loggerInfo.info('User already exists');
-                loggerInfo.info('message', 'User Already Exists');
-                return done(null, false)
-            } else {
-                // if there is no user with that email
-                // create the user
-                var newUser: any = new User();
-                // set the user's local credentials  
-                newUser.username = username;
-                newUser.name = req.body.name;
-                newUser.lastname = req.body.lastname;
-                newUser.address = req.body.address;
-                newUser.age = req.body.age;
-                newUser.phone = req.body.phone;
-                newUser.avatar = req.file?.path.replace('public', '');
-                newUser.password = createHash(password);
-                newUser.isAdmin = false;
-                // save the user
-                newUser.save(function (err: string) {
-                    if (err) {
-                        loggerInfo.info('Error in Saving user: ' + err);
-                        throw err;
-                    }
-                    loggerInfo.info('User Registration succesful');
-                    const asunto = `nuevo registro`
-                    const mensaje = `Se ha creado el siguiente usuario: 
-                    Nombre de Usuario: ${newUser.username}, <br> 
-                    Nombre: ${newUser.name}, <br>
-                    Apellido: ${newUser.lastname}, <br>
-                    Dirección: ${newUser.address}, <br>
-                    Edad: ${newUser.age}, <br>
-                    Telefono: ${newUser.phone}, <br>
-                    URL del avatar: ${newUser.avatar},<br>
-                    Password encriptado: ${newUser.password}. <br>
-                    Es administrador: ${newUser.isAdmin}. <br>
-                    `
-                    ethereal.enviarMail(asunto, mensaje, (err: any, info: any) => {
-                        if (err) loggerError.error(err)
-                        else loggerWarn.warn(info)
-                    })
-
-                    return done(null, newUser);
-                });
-            }
-        });
-    }
-    // Delay the execution of findOrCreateUser and execute 
-    // the method in the next tick of the event loop
-    process.nextTick(findOrCreateUser);
-}))
-
 passport.serializeUser(function (user: any, done) {
     done(null, user._id);
 });
@@ -127,8 +58,9 @@ app.use(passport.session());
 let userSession: any;
 module.exports = {
 
+
+
     loginStrategyName: () => {
-        
         passport.use(loginStrategyName, new LocalStrategy({
             passReqToCallback: true
         }, (_, username, password, done) => {
@@ -137,6 +69,17 @@ module.exports = {
         ));
         return loginStrategyName;
     },
+
+    upload: multer({
+        storage: multer.diskStorage({
+            destination: (request, file, callback) => {
+                callback(null, "./public/img/userAvatar");
+            },
+            filename: (request, file, callback) => {
+                callback(null, `${Date.now()}-${file.originalname}`);
+            },
+        }),
+    }),
 
     getLogin: async (req: Request, res: Response) => {
         if (!req.isAuthenticated()) {
@@ -185,9 +128,30 @@ module.exports = {
         } catch (err) {
             res.render("logout", { nombre: '' })
         }
+    },
+
+    getRegister: async (req: Request, res: Response) => {
+        res.render("login", {
+            enctype: 'multipart/form-data',
+            signup: true,
+            formAction: "/register",
+            title: 'Sign Up',
+            btnPrimaryTitle: 'SIGN UP',
+            btnSecondaryTitle: 'SIGN IN',
+            btnSecondaryAction: '/login'
+        })
+    },
+
+    postRegister: async (req: Request, res: Response) => {
+        res.redirect('/')
+    },
+
+    getFailRegister: async (req: Request, res: Response) => {
+        res.render('error', {
+            btnAction: '/register',
+            errorText: 'El nombre de Usuario que intenta registrar ya ha sido utilizado, por favor seleccione un nombre distinto.'
+        })
 
     }
-
-
 
 }

@@ -35,38 +35,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var loggers_1 = require("../loggers");
-var productos_1 = require("../models/productos");
-var productos = [];
+var carrito_1 = require("../models/carrito");
+var order_1 = require("../models/order");
+var carrito = [];
 module.exports = {
-    getProductoById: function (id) {
-        return productos.find(function (element) { return String(element._id) === id; });
+    getCarritoById: function (id) {
+        return carrito.find(function (element) { return String(element._id) === id; });
     },
-    getProductos: function () {
+    getCarrito: function () {
         return __awaiter(this, void 0, void 0, function () {
-            var savedProducts, error_1;
+            var carritosEnDB, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        productos.splice(0, productos.length);
-                        return [4 /*yield*/, productos_1.productoModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 })];
+                        carrito.splice(0, carrito.length);
+                        return [4 /*yield*/, carrito_1.carritoModel.find({ "cerrado": false }, { __v: 0, createdAt: 0, updatedAt: 0 })];
                     case 1:
-                        savedProducts = _a.sent();
-                        savedProducts.forEach(function (producto) {
-                            productos.push(producto);
+                        carritosEnDB = _a.sent();
+                        carritosEnDB.forEach(function (cart) {
+                            carrito.push(cart);
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -75,77 +65,70 @@ module.exports = {
                         throw error_1;
                     case 3: 
                     // await mongoose.disconnect();
-                    return [2 /*return*/, productos];
+                    return [2 /*return*/, carrito];
                     case 4: return [2 /*return*/];
                 }
             });
         });
     },
-    filterProducto: function (filtro, filterBy) {
+    insertOrder: function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var filtroCapitalized, productosByName, productosByCode, productosByPrecio, productosByStock, error_2;
-            var _this = this;
+            var orderTotal, _i, order_2, carrito_2, error_2, finalOrder;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 9, 10, 11]);
-                        this.productos = [];
-                        if (!(filterBy === 'nombre')) return [3 /*break*/, 2];
-                        filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
-                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })];
+                        _a.trys.push([0, 7, 8, 10]);
+                        orderTotal = order.pop();
+                        _i = 0, order_2 = order;
+                        _a.label = 1;
                     case 1:
-                        productosByName = _a.sent();
-                        productosByName.forEach(function (producto) {
-                            _this.productos.push(producto);
-                        });
-                        return [3 /*break*/, 8];
+                        if (!(_i < order_2.length)) return [3 /*break*/, 4];
+                        carrito_2 = order_2[_i];
+                        return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito_2._id }] }, { $set: { "cerrado": true } })];
                     case 2:
-                        if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
-                        return [4 /*yield*/, productos_1.productoModel.find({ 'code': String(filtro[0]) })];
+                        _a.sent();
+                        delete carrito_2.cerrado;
+                        _a.label = 3;
                     case 3:
-                        productosByCode = _a.sent();
-                        productosByCode.forEach(function (producto) {
-                            _this.productos.push(producto);
-                        });
-                        return [3 /*break*/, 8];
-                    case 4:
-                        if (!(filterBy === 'precio')) return [3 /*break*/, 6];
-                        return [4 /*yield*/, productos_1.productoModel.find({ 'price': { $gte: filtro[0], $lte: filtro[1] } })];
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4: return [4 /*yield*/, order_1.ordenModel.insertMany({
+                            productos: order,
+                            orderTotal: orderTotal.orderTotal
+                        })];
                     case 5:
-                        productosByPrecio = _a.sent();
-                        productosByPrecio.forEach(function (producto) {
-                            _this.productos.push(producto);
-                        });
-                        return [3 /*break*/, 8];
+                        _a.sent();
+                        return [4 /*yield*/, this.getCarrito()];
                     case 6:
-                        if (!(filterBy === 'stock')) return [3 /*break*/, 8];
-                        return [4 /*yield*/, productos_1.productoModel.find({ 'stock': { $gte: filtro[0], $lte: filtro[1] } })];
+                        _a.sent();
+                        return [3 /*break*/, 10];
                     case 7:
-                        productosByStock = _a.sent();
-                        productosByStock.forEach(function (producto) {
-                            _this.productos.push(producto);
-                        });
-                        _a.label = 8;
-                    case 8: return [3 /*break*/, 11];
-                    case 9:
                         error_2 = _a.sent();
                         loggers_1.loggerError.error(error_2);
                         throw error_2;
-                    case 10: return [2 /*return*/, this.productos];
-                    case 11: return [2 /*return*/];
+                    case 8: return [4 /*yield*/, order_1.ordenModel.find({}, { productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)];
+                    case 9:
+                        finalOrder = _a.sent();
+                        loggers_1.loggerWarn.warn('Orden Agregada', JSON.stringify(finalOrder));
+                        return [2 /*return*/, finalOrder
+                            // await mongoose.disconnect();
+                        ];
+                    case 10: return [2 /*return*/];
                 }
             });
         });
     },
-    insertProducto: function (producto) {
+    insertProductToCarrito: function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var _id, timestamp, productoMoficado, error_3;
+            var error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        _id = producto._id, timestamp = producto.timestamp, productoMoficado = __rest(producto, ["_id", "timestamp"]);
-                        return [4 /*yield*/, productos_1.productoModel.insertMany(productoMoficado)];
+                        return [4 /*yield*/, carrito_1.carritoModel.insertMany({
+                                quantity: 1,
+                                producto: producto
+                            })];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -154,34 +137,24 @@ module.exports = {
                         loggers_1.loggerError.error(error_3);
                         throw error_3;
                     case 3:
-                        // await mongoose.disconnect();
-                        loggers_1.loggerInfo.info('Producto Agregado');
+                        loggers_1.loggerInfo.info('Producto agregado a carrito', producto.title);
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
             });
         });
     },
-    updateProducto: function (id, productoToBeUpdate) {
+    updateQtyInCarrito: function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
             var error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, productos_1.productoModel.updateOne({ _id: id }, {
-                                $set: {
-                                    title: productoToBeUpdate.title,
-                                    description: productoToBeUpdate.description,
-                                    code: productoToBeUpdate.code,
-                                    thumbnail: productoToBeUpdate.thumbnail,
-                                    price: productoToBeUpdate.price,
-                                    stock: productoToBeUpdate.stock
-                                }
-                            }, { multi: true })];
+                        return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1 } })];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.getProductos()];
+                        return [4 /*yield*/, this.getCarrito()];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 5];
@@ -190,24 +163,24 @@ module.exports = {
                         loggers_1.loggerError.error(error_4);
                         throw error_4;
                     case 4:
-                        loggers_1.loggerInfo.info('Producto modificado', productoToBeUpdate.title);
+                        loggers_1.loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
             });
         });
     },
-    deleteProducto: function (id) {
+    deleteCarrito: function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, productos_1.productoModel.deleteMany({ _id: id })];
+                        return [4 /*yield*/, carrito_1.carritoModel.deleteMany({ _id: id })];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.getProductos()];
+                        return [4 /*yield*/, this.getCarrito()];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 5];
@@ -216,7 +189,7 @@ module.exports = {
                         loggers_1.loggerError.error(error_5);
                         throw error_5;
                     case 4:
-                        loggers_1.loggerInfo.info('Producto Eliminado');
+                        loggers_1.loggerInfo.info('Producto en carrito Eliminado');
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }

@@ -1,10 +1,15 @@
 import express from "express";
 import compression from 'compression';
-
 import handlebars from 'express-handlebars';
+import {Singleton} from './utils/dbConnection';
 import { loggerInfo } from "./loggers";
+import { Session } from "./interfaces/ISession";
 import cluster from 'cluster';
 import * as os from 'os';
+import http from 'http'
+import * as SocketIO from "socket.io";
+import { sockets } from "./sockets";
+
 
 
 // const modoCluster = process.argv[2] == 'CLUSTER';
@@ -64,16 +69,27 @@ app.set("views", "./views");
 
 app.use(express.static('public'));
 
+export const server = app.listen(port, () => {
+    loggerInfo.info(`Servidor listo en el puerto ${port}`)
+});
+Singleton.getInstance();
+// const db = require('./utils/dbConnection');
+// dbInstance.connectToMongo();
+
+export const newSession = new Session();
+export const io = new SocketIO.Server(server);
+
 const rutasLogin = require('./rutas/rutasLogin');
 const rutasProductos = require('./rutas/rutasProductos');
+const rutasCarrito = require('./rutas/rutasCarrito');
+const rutasProcess = require('./rutas/rutasProcess');
+sockets();
 
 app.use('/', rutasLogin);
 app.use('/productos', rutasProductos);
+app.use('/carrito', rutasCarrito);
+app.use('/process', rutasProcess);
 
-
-app.listen(port, () => {
-    loggerInfo.info(`Servidor listo en el puerto ${port}`)
-});
 
 process.on(
     'exit',

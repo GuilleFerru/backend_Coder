@@ -54,103 +54,49 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.carritoAPI = void 0;
-var express_1 = __importDefault(require("express"));
-var server_1 = require("./server");
-var loginUserAPI_1 = require("./loginUserAPI");
-var twilioWsp = __importStar(require("./twilio/wsp.js"));
-var twilioSms = __importStar(require("./twilio/sms.js"));
-var ethereal = __importStar(require("./email/nodemailerEthereal"));
-var loggers_1 = require("./loggers");
-var carritoAPI = function () {
-    var carritoProducts = express_1.default.Router();
-    server_1.app.use("/carrito", carritoProducts);
-    carritoProducts.post("/agregar/:id_producto", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var id, productoById, carrrito, cartToBeUpdate;
+var app_1 = require("../app");
+var twilioWsp = __importStar(require("../twilio/wsp.js"));
+var twilioSms = __importStar(require("../twilio/sms.js"));
+var ethereal = __importStar(require("../email/nodemailerEthereal"));
+var loggers_1 = require("../loggers");
+var dalCarrito = require("../persistencia/dalCarrito");
+var dalProductos = require("../persistencia/dalProductos");
+module.exports = {
+    getCarrito: function (id) { return __awaiter(void 0, void 0, void 0, function () {
+        var carritoById, carrito;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    id = req.params.id_producto;
-                    return [4 /*yield*/, server_1.dao.getProductoById(id)];
+                case 0: return [4 /*yield*/, dalCarrito.getCarritoById(id)];
                 case 1:
-                    productoById = _a.sent();
-                    if (!productoById) return [3 /*break*/, 10];
-                    return [4 /*yield*/, server_1.dao.getCarrito()];
-                case 2:
-                    carrrito = _a.sent();
-                    if (!(carrrito.length > 0)) return [3 /*break*/, 7];
-                    cartToBeUpdate = carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
-                    if (!cartToBeUpdate) return [3 /*break*/, 4];
-                    return [4 /*yield*/, server_1.dao.updateQtyInCarrito(cartToBeUpdate)];
-                case 3:
-                    _a.sent();
-                    return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, server_1.dao.insertProductToCarrito(productoById)];
-                case 5:
-                    _a.sent();
-                    _a.label = 6;
-                case 6: return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, server_1.dao.insertProductToCarrito(productoById)];
-                case 8:
-                    _a.sent();
-                    _a.label = 9;
-                case 9:
-                    res.status(200).json({ server: "Producto agregado al carrito" });
-                    return [3 /*break*/, 11];
-                case 10:
-                    res.status(404).json({ error: "producto no encontrado" });
-                    _a.label = 11;
-                case 11: return [2 /*return*/];
-            }
-        });
-    }); });
-    var checkIdProductInCarrito = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var id, carrito;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    id = req.params.id;
-                    return [4 /*yield*/, server_1.dao.getCarritoById(id)];
-                case 1:
-                    carrito = _a.sent();
-                    if (carrito) {
-                        if ((carrito === null || carrito === void 0 ? void 0 : carrito._id) === id) {
-                            res.status(200).json(carrito.producto);
-                        }
-                        else {
-                            res.status(404).json({ error: "este producto no esta cargado en el carrito" });
-                        }
+                    carritoById = _a.sent();
+                    if (!carritoById) return [3 /*break*/, 2];
+                    if (String(carritoById._id) === id) {
+                        return [2 /*return*/, carritoById];
                     }
                     else {
-                        next();
+                        return [2 /*return*/, false];
                     }
-                    return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, dalCarrito.getCarrito()];
+                case 3:
+                    carrito = _a.sent();
+                    if (carrito.length > 0) {
+                        return [2 /*return*/, carrito];
+                    }
+                    else {
+                        return [2 /*return*/, ''];
+                    }
+                    _a.label = 4;
+                case 4: return [2 /*return*/];
             }
         });
-    }); };
-    carritoProducts.get("/listar/:id?", checkIdProductInCarrito, function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var carritos;
+    }); },
+    postCarrito: function (orderToProcess) { return __awaiter(void 0, void 0, void 0, function () {
+        var orderProcessed, orderProcessedId, orderProcessedTotal, orderProcessedProductos, orderProcessedAdmin, orderProcessedUser, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, server_1.dao.getCarrito()];
-                case 1:
-                    carritos = _a.sent();
-                    res.status(200).json(carritos);
-                    return [2 /*return*/];
-            }
-        });
-    }); });
-    carritoProducts.post("/agregar", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var orderToProcess, orderProcessed, orderProcessedId, orderProcessedTotal, orderProcessedProductos, orderProcessedAdmin, orderProcessedUser, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    orderToProcess = req.body;
-                    return [4 /*yield*/, server_1.dao.insertOrder(orderToProcess)];
+                case 0: return [4 /*yield*/, dalCarrito.insertOrder(orderToProcess)];
                 case 1:
                     orderProcessed = _a.sent();
                     orderProcessedId = orderProcessed[0]._id;
@@ -178,7 +124,7 @@ var carritoAPI = function () {
                             precioTotal: precioTotal
                         });
                     });
-                    nombreAndEmail = loginUserAPI_1.newSession.getNombre() + " - " + loginUserAPI_1.newSession.getEmail();
+                    nombreAndEmail = app_1.newSession.getNombre() + " - " + app_1.newSession.getEmail();
                     mensajeWsp = "----  Nuevo pedido de: " + nombreAndEmail + "  ---- N\u00FAmero de Orden: " + orderProcessedId + "  --- Pedido: " + JSON.stringify(orderProcessedAdmin, null, '\t') + "  ----  Precio Total $: " + orderProcessedTotal + "  ---";
                     mensajeSms = "---- N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: " + JSON.stringify(orderProcessedUser, null, '\t') + " ----  Precio Total $: " + orderProcessedTotal + "  ---";
                     mensajeMail = "---- N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: <br> " + JSON.stringify(orderProcessedAdmin, null, '<br>') + " <br> ----  Precio Total $: " + orderProcessedTotal + "  ---";
@@ -190,7 +136,7 @@ var carritoAPI = function () {
                 case 3:
                     // console.log(req.session);
                     _a.sent();
-                    return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, loginUserAPI_1.newSession.getPhone())];
+                    return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, app_1.newSession.getPhone())];
                 case 4:
                     _a.sent();
                     ethereal.enviarMail("Nuevo pedido de: " + nombreAndEmail, mensajeMail, function (err, _info) {
@@ -202,38 +148,61 @@ var carritoAPI = function () {
                     error_1 = _a.sent();
                     loggers_1.loggerError.error('ERROR enviarWapp', error_1);
                     return [3 /*break*/, 6];
-                case 6:
-                    res.status(200).json({ orderProcessedId: orderProcessedId });
-                    return [2 /*return*/];
+                case 6: return [2 /*return*/, orderProcessedId];
             }
         });
-    }); });
-    carritoProducts.delete("/borrar/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-        var id, cartToBeDelete, _a, _b, _c, _d, _e;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
-                case 0:
-                    id = req.params.id;
-                    return [4 /*yield*/, server_1.dao.getCarritoById(id)];
+    }); },
+    deleteCarrito: function (id) { return __awaiter(void 0, void 0, void 0, function () {
+        var cartToBeDelete, _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0: return [4 /*yield*/, dalCarrito.getCarritoById(id)];
                 case 1:
-                    cartToBeDelete = _f.sent();
+                    cartToBeDelete = _d.sent();
                     if (!cartToBeDelete) return [3 /*break*/, 4];
-                    _b = (_a = res.status(200)).json;
-                    return [4 /*yield*/, server_1.dao.deleteCarrito(cartToBeDelete._id)];
+                    return [4 /*yield*/, dalCarrito.deleteCarrito(cartToBeDelete._id)];
                 case 2:
-                    _b.apply(_a, [_f.sent()]);
-                    _d = (_c = server_1.io.sockets).emit;
-                    _e = ["carts"];
-                    return [4 /*yield*/, server_1.dao.getCarrito()];
+                    _d.sent();
+                    _b = (_a = app_1.io.sockets).emit;
+                    _c = ["carts"];
+                    return [4 /*yield*/, dalCarrito.getCarrito()];
                 case 3:
-                    _d.apply(_c, _e.concat([_f.sent()]));
-                    return [3 /*break*/, 5];
-                case 4:
-                    res.status(404).json({ error: "carrito no existente, no se puede borrar" });
-                    _f.label = 5;
-                case 5: return [2 /*return*/];
+                    _b.apply(_a, _c.concat([_d.sent()]));
+                    return [2 /*return*/, true];
+                case 4: return [2 /*return*/, false];
             }
         });
-    }); });
+    }); },
+    postProductoInCarrito: function (id) { return __awaiter(void 0, void 0, void 0, function () {
+        var productoById, carrrito, cartToBeUpdate;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, dalProductos.getProductoById(id)];
+                case 1:
+                    productoById = _a.sent();
+                    if (!productoById) return [3 /*break*/, 10];
+                    return [4 /*yield*/, dalCarrito.getCarrito()];
+                case 2:
+                    carrrito = _a.sent();
+                    if (!(carrrito.length > 0)) return [3 /*break*/, 7];
+                    cartToBeUpdate = carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
+                    if (!cartToBeUpdate) return [3 /*break*/, 4];
+                    return [4 /*yield*/, dalCarrito.updateQtyInCarrito(cartToBeUpdate)];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 6];
+                case 4: return [4 /*yield*/, dalCarrito.insertProductToCarrito(productoById)];
+                case 5:
+                    _a.sent();
+                    _a.label = 6;
+                case 6: return [3 /*break*/, 9];
+                case 7: return [4 /*yield*/, dalCarrito.insertProductToCarrito(productoById)];
+                case 8:
+                    _a.sent();
+                    _a.label = 9;
+                case 9: return [2 /*return*/, true];
+                case 10: return [2 /*return*/, false];
+            }
+        });
+    }); }
 };
-exports.carritoAPI = carritoAPI;

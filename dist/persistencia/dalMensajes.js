@@ -35,64 +35,64 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Singleton = void 0;
-var mongoose_1 = __importDefault(require("mongoose"));
+var IMensaje_1 = require("../interfaces/IMensaje");
 var loggers_1 = require("../loggers");
-var MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
-var instance = null;
-var Singleton = /** @class */ (function () {
-    function Singleton() {
-        var _this = this;
-        this.connectToMongo = function () { return __awaiter(_this, void 0, void 0, function () {
-            var error_1;
+var mensajes_1 = require("../models/mensajes");
+var mensajes = [];
+module.exports = {
+    getMensajeById: function (id) {
+        return mensajes.find(function (element) { return String(element.id) === id; });
+    },
+    getMensajes: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var savedMensajes, error_1, wrapMensajes;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, mongoose_1.default.connect(MONGO_URL)];
+                        _a.trys.push([0, 2, 3, 4]);
+                        mensajes.splice(0, mensajes.length);
+                        return [4 /*yield*/, mensajes_1.mensajesModel.find({}, { __v: 0, _id: 0 })];
                     case 1:
-                        _a.sent();
-                        loggers_1.loggerInfo.info('Connected to MongoDB');
-                        return [3 /*break*/, 3];
+                        savedMensajes = _a.sent();
+                        savedMensajes.forEach(function (mensaje) {
+                            mensajes.push(mensaje);
+                        });
+                        return [3 /*break*/, 4];
                     case 2:
                         error_1 = _a.sent();
                         loggers_1.loggerError.error(error_1);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        throw error_1;
+                    case 3:
+                        wrapMensajes = new IMensaje_1.MensajeWrap('999', mensajes);
+                        return [2 /*return*/, wrapMensajes];
+                    case 4: return [2 /*return*/];
                 }
             });
-        }); };
-        this.disconnectFromMongo = function () { return __awaiter(_this, void 0, void 0, function () {
+        });
+    },
+    insertMensajes: function (mensaje) {
+        return __awaiter(this, void 0, void 0, function () {
             var error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, mongoose_1.default.disconnect()];
+                        _a.trys.push([0, 2, 3, 4]);
+                        return [4 /*yield*/, mensajes_1.mensajesModel.insertMany(mensaje)];
                     case 1:
                         _a.sent();
-                        loggers_1.loggerInfo.info('Disconnected from MongoDB');
-                        return [3 /*break*/, 3];
+                        mensajes.push(mensaje);
+                        return [3 /*break*/, 4];
                     case 2:
                         error_2 = _a.sent();
                         loggers_1.loggerError.error(error_2);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        throw error_2;
+                    case 3:
+                        loggers_1.loggerInfo.info('Mensaje Agregado');
+                        return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
                 }
             });
-        }); };
-        this.connectToMongo();
+        });
     }
-    Singleton.getInstance = function () {
-        if (!instance) {
-            instance = new Singleton();
-        }
-        return instance;
-    };
-    return Singleton;
-}());
-exports.Singleton = Singleton;
+};

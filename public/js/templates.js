@@ -107,7 +107,7 @@ const filterProductoTemplate = Handlebars.compile(`
         </div>
         {{#if isAdmin}}
         <div class="flex mt-5">
-            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/info'">Process Info</button>
+            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/process/info'">Process Info</button>
         </div>
         <div class="d-flex align-items-center mt-3">
         <button type="button" class=" highlight-button btn btn-medium button xs-margin-bottom-five" onclick="generateRandoms()">Randoms</button>

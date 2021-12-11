@@ -1,52 +1,77 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.newSession = void 0;
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var ISession_1 = require("../interfaces/ISession");
-var loggers_1 = require("../loggers");
-var usuarios_1 = require("../models/usuarios");
-exports.newSession = new ISession_1.Session();
+var app_1 = require("../app");
 var isValidPassword = function (user, password) { return bcrypt_1.default.compareSync(password, user.password); };
-var db = require('../utils/dbConnection');
+var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
+var dalLogin = require("../persistencia/dalLogin");
 module.exports = {
-    findUser: function (_, username, password, done) {
-        db.connectToMongo();
-        usuarios_1.usuarioModel.findOne({ 'username': username }, function (err, user) {
-            // In case of any error, return using the done method
-            if (err) {
-                loggers_1.loggerError.info('Error in Login: ' + err);
-                return done(err);
+    findUser: function (_, username, password, done) { return __awaiter(void 0, void 0, void 0, function () {
+        var user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, dalLogin.findUser(username)];
+                case 1:
+                    user = _a.sent();
+                    if (!user) {
+                        return [2 /*return*/, done(null, false, { message: 'Usuario no encontrado' })];
+                    }
+                    if (!isValidPassword(user, password)) {
+                        return [2 /*return*/, done(null, false, { message: 'Contraseña incorrecta' })];
+                    }
+                    return [2 /*return*/, done(null, user)];
             }
-            // Username does not exist, log error & redirect back
-            if (!user) {
-                loggers_1.loggerInfo.info('User Not Found with email ' + username);
-                loggers_1.loggerInfo.info('message', 'User Not found.');
-                return done(null, false);
-            }
-            // User exists but wrong password, log the error 
-            if (!isValidPassword(user, password)) {
-                loggers_1.loggerInfo.info('Invalid Password');
-                loggers_1.loggerInfo.info('message', 'Invalid Password');
-                return done(null, false);
-            }
-            // User and password both match, return user from 
-            // done method which will be treated like success
-            return done(null, user);
         });
-    },
+    }); },
     getLogin: function (user) {
-        exports.newSession.setNombre(user.name + " " + user.lastname);
-        exports.newSession.setEmail("" + user.username);
-        exports.newSession.setPhone("" + user.phone);
-        exports.newSession.setAvatar("" + user.avatar);
-        exports.newSession.setIsAdmin(user.isAdmin);
+        app_1.newSession.setNombre(user.name + " " + user.lastname);
+        app_1.newSession.setEmail("" + user.username);
+        app_1.newSession.setPhone("" + user.phone);
+        app_1.newSession.setAvatar("" + user.avatar);
+        app_1.newSession.setIsAdmin(user.isAdmin);
         return {
-            nombre: exports.newSession.getNombre(),
-            email: exports.newSession.getEmail(),
-            avatar: exports.newSession.getAvatar(),
+            nombre: app_1.newSession.getNombre(),
+            email: app_1.newSession.getEmail(),
+            avatar: app_1.newSession.getAvatar(),
         };
     },
     isValidPassword: function (user, password) {

@@ -1,14 +1,14 @@
 <div class="container">
     {{#if info}}
         <ul class="list-group list-group-flush mt-5">
-            <li class="list-group-item">Argumentos de entrada: <span class="badge badge-primary text-wrap">{{datos.argumentos}}</span> </li>
-            <li class="list-group-item">Nombre de la plataforma: <span class="badge badge-primary text-wrap">{{datos.plataforma}}</span> </li>
-            <li class="list-group-item">Versión de Node: <span class="badge badge-primary text-wrap">{{datos.nodeVersion}}</span> </li>
-            <li class="list-group-item">Uso de memoria: <span class="badge badge-primary text-wrap">{{datos.memoriaUso}}</span> </li>
-            <li class="list-group-item">Path de ejecución: <span class="badge badge-primary text-wrap">{{datos.path}}</span></li>
-            <li class="list-group-item">Process id: <span class="badge badge-primary text-wrap">{{datos.pid}}</span> </li>
-            <li class="list-group-item">Carpeta corriente: <span class="badge badge-primary text-wrap">{{datos.carpeta}}</span></li>
-            <li class="list-group-item">Número de  CPU's: <span class="badge badge-primary text-wrap">{{datos.numCPUs}}</span></li>
+            <li class="list-group-item">Argumentos de entrada: <span class="badge badge-primary text-wrap">{{resultado.argumentos}}</span> </li>
+            <li class="list-group-item">Nombre de la plataforma: <span class="badge badge-primary text-wrap">{{resultado.plataforma}}</span> </li>
+            <li class="list-group-item">Versión de Node: <span class="badge badge-primary text-wrap">{{resultado.nodeVersion}}</span> </li>
+            <li class="list-group-item">Uso de memoria: <span class="badge badge-primary text-wrap">{{resultado.memoriaUso}}</span> </li>
+            <li class="list-group-item">Path de ejecución: <span class="badge badge-primary text-wrap">{{resultado.path}}</span></li>
+            <li class="list-group-item">Process id: <span class="badge badge-primary text-wrap">{{resultado.pid}}</span> </li>
+            <li class="list-group-item">Carpeta corriente: <span class="badge badge-primary text-wrap">{{resultado.carpeta}}</span></li>
+            <li class="list-group-item">Número de  CPU's: <span class="badge badge-primary text-wrap">{{resultado.numCPUs}}</span></li>
         </ul>
     {{else}}
         <div class="mt-2">

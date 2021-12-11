@@ -6,13 +6,14 @@ let port = '';
 
 
 socket.on('products', (productos, isAdmin) => {
+
     const cardProducts = cardsTemplate({
         isAdmin: isAdmin,
         productos: productos,
         inputInfo: inputInfo,
     })
 
-    const filtros = filterProductoTemplate({isAdmin})
+    const filtros = filterProductoTemplate({ isAdmin })
     document.getElementById('filterProductos').innerHTML = filtros;
 
     if (isAdmin) {
@@ -72,7 +73,7 @@ const getQtyRandom = () => {
 const generateRandoms = () => {
     const cant = getQtyRandom();
     // location.href = `http://localhost:80/randoms?cant=${cant}`
-    location.href = `/randoms?cant=${cant}`
+    location.href = `/process/randoms?cant=${cant}`
 }
 
 
@@ -131,12 +132,12 @@ const cleanInputValues = () => {
 
 const generateOrder = (cart) => {
     let orderTotal = 0;
-    cart.map(obj => {
-        obj['total'] = obj.quantity * obj.producto.price;
-        orderTotal += obj['total']
-    });
-    cart.push({ orderTotal: orderTotal });
-    return cart;
+        cart.map(obj => {
+            obj['total'] = obj.quantity * obj.producto.price;
+            orderTotal += obj['total']
+        });
+        cart.push({ orderTotal: orderTotal });
+        return cart; 
 }
 
 const saveCart = () => {
@@ -150,8 +151,8 @@ const saveCart = () => {
                 body: JSON.stringify(order),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             }).then(res => res.json()).then(res => {
-                alert(`Compra "${res.orderProcessedId}" finalizada, revise su celular.`);
-            }).catch(error => console.log(error))
+                alert(`Compra "${res.resultado}" finalizada, revise su celular.`);
+            }).catch(error => {})
         }
     });
 }
@@ -174,7 +175,7 @@ const showCart = () => {
         const orderTotal = orderTotalObject.orderTotal
         const modalCart = modalCartTemplate({ order, orderTotal })
         document.getElementById('modalCart').innerHTML = modalCart;
-    });
+    }).catch(error => {});
 }
 
 const addToCart = (id) => {

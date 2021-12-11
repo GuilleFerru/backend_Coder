@@ -123,3 +123,43 @@
   messageId: '<4971da4d-689d-c099-2e64-24522fda8898@GUILLE_PC>'
 }
 [2021-11-30T13:20:56.461] [WARN] warn - Orden Agregada [{"_id":"61a64f68576ddd2535ac449e","productos":[{"quantity":2,"producto":{"title":"Hamburguesa","code":"2ad3s487","price":645,"stock":100},"total":1290}],"orderTotal":1290}]
+[2021-12-08T20:39:00.713] [WARN] warn - Orden Agregada [{"_id":"61b142142757f2264ce19aeb","productos":[{"quantity":1,"producto":{"title":"Papas fritas","code":"a3268bff","price":200,"stock":50},"total":200},{"quantity":1,"producto":{"title":"Hamburguesas","code":"2ad3s487","price":640,"stock":95},"total":640},{"quantity":1,"producto":{"title":"Cafe negro","code":"kd34F$9z","price":80,"stock":150},"total":80},{"quantity":1,"producto":{"title":"Comida japonesa","code":"sjer356%","price":800,"stock":100},"total":800}],"orderTotal":1720}]
+[2021-12-08T20:40:42.560] [WARN] warn - Orden Agregada [{"_id":"61b1427a2757f2264ce19b0f","productos":[{"quantity":2,"producto":{"title":"Hamburguesas","code":"2ad3s487","price":640,"stock":95},"total":1280},{"quantity":3,"producto":{"title":"Birra","code":"456dfer","price":250,"stock":1000},"total":750}],"orderTotal":2030}]
+[2021-12-08T20:44:21.485] [WARN] warn - Orden Agregada [{"_id":"61b14355cda611afcd88c2c5","productos":[{"quantity":1,"producto":{"title":"Cafe negro","code":"kd34F$9z","price":80,"stock":150},"total":80},{"quantity":1,"producto":{"title":"Hamburguesas","code":"2ad3s487","price":640,"stock":95},"total":640},{"quantity":1,"producto":{"title":"Papas fritas","code":"a3268bff","price":200,"stock":50},"total":200},{"quantity":2,"producto":{"title":"Birra","code":"456dfer","price":250,"stock":1000},"total":500}],"orderTotal":1420}]
+[2021-12-08T20:45:15.078] [WARN] warn - Orden Agregada [{"_id":"61b1438a960aaff7b47d59d6","productos":[{"quantity":1,"producto":{"title":"Papas fritas","code":"a3268bff","price":200,"stock":50},"total":200}],"orderTotal":200}]
+[2021-12-08T20:45:56.277] [WARN] warn - Orden Agregada [{"_id":"61b143b4c190c707d2de24f4","productos":[{"quantity":1,"producto":{"title":"Hamburguesas","code":"2ad3s487","price":640,"stock":95},"total":640}],"orderTotal":640}]
+[2021-12-08T20:46:20.093] [WARN] warn - Orden Agregada [{"_id":"61b143cba653e61e64c43bf3","productos":[{"quantity":2,"producto":{"title":"Hamburguesas","code":"2ad3s487","price":640,"stock":95},"total":1280}],"orderTotal":1280}]
+[2021-12-08T20:47:25.577] [WARN] warn - Orden Agregada [{"_id":"61b1440d5e28d0023a46bed2","productos":[{"quantity":2,"producto":{"title":"Cafe negro","code":"kd34F$9z","price":80,"stock":150},"total":160},{"quantity":2,"producto":{"title":"Papas fritas","code":"a3268bff","price":200,"stock":50},"total":400}],"orderTotal":560}]
+[2021-12-08T20:51:30.855] [WARN] warn - Orden Agregada [{"_id":"61b145028e5f83953be8c431","productos":[{"quantity":4,"producto":{"title":"Hamburguesas","code":"2ad3s487","price":640,"stock":95},"total":2560},{"quantity":1,"producto":{"title":"Papas fritas","code":"a3268bff","price":200,"stock":50},"total":200},{"quantity":1,"producto":{"title":"Cafe negro","code":"kd34F$9z","price":80,"stock":150},"total":80}],"orderTotal":2840}]
+[2021-12-08T20:59:18.358] [WARN] warn - Orden Agregada [{"_id":"61b146d6a10cbbb6a9115f1b","productos":[{"quantity":1,"producto":{"title":"Fried chicken","code":"q763dfñ0","price":650,"stock":100},"total":650},{"quantity":1,"producto":{"title":"Cookie","code":"0303456%","price":120,"stock":100},"total":120}],"orderTotal":770}]
+[2021-12-08T21:02:24.407] [WARN] warn - Orden Agregada [{"_id":"61b147901b6cca20fa4c2bd6","productos":[{"quantity":1,"producto":{"title":"Papas fritas","code":"a3268bff","price":200,"stock":50},"total":200}],"orderTotal":200}]
+[2021-12-10T22:01:17.025] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 864,
+  messageTime: 313,
+  messageSize: 888,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYbP4ahR7NQio.yyKAAAAWQiD0WUY1p3RyznGjEsIJIM]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<2b17eabe-9bd9-833e-fa2d-b9589c44bccb@GUILLE_PC>'
+}
+[2021-12-10T22:09:33.388] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 851,
+  messageTime: 302,
+  messageSize: 905,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYbP6WqtKdgimBJoUAAAAWr0qiho8PYWg5f9ObXaSoMU]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<12bee183-8b28-c655-1024-89d1500fc0c5@GUILLE_PC>'
+}
+[2021-12-10T22:16:53.451] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 885,
+  messageTime: 316,
+  messageSize: 889,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYbP8EmjK3wi85rClAAAAW1wHqaOLfJUKYT.jJtdKIRE]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<a0b50c60-b041-68cb-4418-796d1174f38d@GUILLE_PC>'
+}

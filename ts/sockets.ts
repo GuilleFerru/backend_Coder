@@ -1,17 +1,19 @@
-import { io, dao } from "./server"
+import { io } from './app';
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
 import { loggerError } from "./loggers";
 import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
-import { newSession } from "./loginUserAPI";
+import { newSession } from "./app";
 
 
+const dalProductos = require("./persistencia/dalProductos");
+const dalMensajes = require("./persistencia/dalMensajes");
 
 
 
 const getNormalizeMsj = async () => {
 
-    const mensajesOriginal: MensajeWrap = await dao.getMensajes();
+    const mensajesOriginal: MensajeWrap = await dalMensajes.getMensajes();
     const mensajesOriginalToString = JSON.stringify(mensajesOriginal);
     const mensajeParse = JSON.parse(mensajesOriginalToString)
 
@@ -38,7 +40,9 @@ const generateMensajeId = () => {
 }
 
 export const sockets = async () => {
+
     const port: any = process.env.PORT || process.argv[2] || 8080;
+
 
     io.on("connection", async (socket) => {
 
@@ -49,7 +53,7 @@ export const sockets = async () => {
 
             const date = new Date().toLocaleString('es-AR');
             let id = generateMensajeId();
-            const checkId = dao.getMensajeById(id);
+            const checkId = dalMensajes.getMensajeById(id);
             while (checkId) {
                 id = generateMensajeId();
             }
@@ -67,7 +71,7 @@ export const sockets = async () => {
                 date,
                 newAuthor,
             )
-            await dao.insertMensajes(newMensaje);
+            await dalMensajes.insertMensajes(newMensaje);
 
             if (mensaje.text.includes('administrador')) {
                 try {
@@ -82,18 +86,23 @@ export const sockets = async () => {
             io.sockets.emit("messages", await getNormalizeMsj());
         });
 
-        socket.emit("products", await dao.getProductos(), newSession.getIsAdmin());
-
+        
+        socket.emit("products", await dalProductos.getProductos(), newSession.getIsAdmin());
         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
-            socket.emit("products", await dao.filterProducto(filter, filterBy), newSession.getIsAdmin());
+            socket.emit("products", await dalProductos.filterProducto(filter, filterBy), newSession.getIsAdmin());
         });
 
         socket.on("getAllProductos", async () => {
-            socket.emit("products", await dao.getProductos());
+            socket.emit("products", await dalProductos.getProductos());
         });
+    })
 
-    });
 }
+
+
+
+
+
 
 
 

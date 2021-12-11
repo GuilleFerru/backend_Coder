@@ -36,8 +36,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var app_1 = require("../app");
 var negocioProductos = require("../negocio/negocioProductos");
 module.exports = {
+    getVistaTest: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var cant, resultado;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    cant = Number(req.query.cant);
+                    return [4 /*yield*/, negocioProductos.getVistaTest(cant)];
+                case 1:
+                    resultado = _a.sent();
+                    if (!resultado) {
+                        res.status(404).json({ error: "este producto no esta cargado" });
+                    }
+                    else {
+                        return [2 /*return*/, res.status(200).json(resultado)];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    }); },
     getProductos: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
         var id, resultado;
         return __generator(this, function (_a) {
@@ -56,102 +76,103 @@ module.exports = {
                     return [2 /*return*/];
             }
         });
+    }); },
+    postProducto: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var producto, resultado, _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    if (!app_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
+                    producto = req.body;
+                    return [4 /*yield*/, negocioProductos.postProducto(producto)];
+                case 1:
+                    resultado = _d.sent();
+                    if (!!resultado) return [3 /*break*/, 2];
+                    res.status(404).json({ error: "este producto no se pudo guardar" });
+                    return [3 /*break*/, 4];
+                case 2:
+                    console.log("producto guardado");
+                    _b = (_a = app_1.io.sockets).emit;
+                    _c = ["products"];
+                    return [4 /*yield*/, negocioProductos.getProductos()];
+                case 3:
+                    _b.apply(_a, _c.concat([_d.sent()]));
+                    res.status(200).json({ server: "Producto creado" });
+                    _d.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    res.status(403).json({
+                        error: -1,
+                        descripcion: "ruta /productos/agregar metodo POST no autorizado",
+                    });
+                    _d.label = 6;
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); },
+    putProducto: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var id, producto, resultado, _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    if (!app_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
+                    id = (req.params.id);
+                    producto = req.body;
+                    return [4 /*yield*/, negocioProductos.putProducto(id, producto)];
+                case 1:
+                    resultado = _d.sent();
+                    if (!!resultado) return [3 /*break*/, 2];
+                    res.status(404).json({ error: "producto no encontrado" });
+                    return [3 /*break*/, 4];
+                case 2:
+                    res.status(200).json(resultado);
+                    _b = (_a = app_1.io.sockets).emit;
+                    _c = ["products"];
+                    return [4 /*yield*/, negocioProductos.getProductos()];
+                case 3:
+                    _b.apply(_a, _c.concat([_d.sent()]));
+                    _d.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    res.status(403).json({
+                        error: -1,
+                        descripcion: "ruta /productos/actualizar/" + req.params.id + " metodo PUT no autorizado",
+                    });
+                    _d.label = 6;
+                case 6: return [2 /*return*/];
+            }
+        });
+    }); },
+    deleteProducto: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+        var id, resultado, _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
+                case 0:
+                    if (!app_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
+                    id = req.params.id;
+                    return [4 /*yield*/, negocioProductos.deleteProducto(id)];
+                case 1:
+                    resultado = _d.sent();
+                    if (!!resultado) return [3 /*break*/, 2];
+                    res.status(404).json({ error: "producto no existente, no se puede borrar" });
+                    return [3 /*break*/, 4];
+                case 2:
+                    _b = (_a = app_1.io.sockets).emit;
+                    _c = ["products"];
+                    return [4 /*yield*/, negocioProductos.getProductos()];
+                case 3:
+                    _b.apply(_a, _c.concat([_d.sent()]));
+                    res.status(200).json({ server: "Producto creado" });
+                    _d.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    res.status(403).json({
+                        error: -1,
+                        descripcion: "ruta /productos/borrar/" + req.params.id + " metodo DELETE no autorizado",
+                    });
+                    _d.label = 6;
+                case 6: return [2 /*return*/];
+            }
+        });
     }); }
 };
-// routes.get("/vista-test/", (req: Request, res: Response) => {
-//     const cant = Number(req.query.cant);
-//     const cantidadAGenerar = isNaN(cant) ? 10 : cant;
-//     const fakeProductos = generateData(cantidadAGenerar);
-//     if (fakeProductos.length > 0) {
-//         res.status(200).json(fakeProductos);
-//     } else {
-//         res.status(200).json({ error: "no hay productos cargados" });
-//     }
-// }
-// );
-// const checkIdProduct = async (req: Request, res: Response, next: () => void) => {
-//     const id: string = (req.params.id);
-//     const productoById: Producto | undefined = await dao.getProductoById(id);
-//     if (productoById) {
-//         if (String(productoById._id) === id) {
-//             res.status(200).json(productoById);
-//         } else {
-//             res.status(404).json({ error: "este producto no esta cargado" });
-//         }
-//     } else {
-//         next();
-//     }
-// };
-// routes.get("/listar/:id?", checkIdProduct, async (req: Request, res: Response) => {
-//     const products = await dao.getProductos();
-//     if (products.length > 0) {
-//         res.status(200).json(products);
-//     } else {
-//         loggerError.error('No se encontraron productos en la base de datos')
-//         res.status(404).json({ error: "no hay productos cargados" });
-//     }
-// }
-// );
-// routes.post("/agregar", async (req: Request, res: Response) => {
-//     if (newSession.getIsAdmin()) {
-//         const newProducto: Producto = new Producto(
-//             req.body.title,
-//             req.body.description,
-//             req.body.code,
-//             req.body.thumbnail,
-//             req.body.price,
-//             req.body.stock
-//         );
-//         await dao.insertProducto(newProducto)
-//         io.sockets.emit("products", await dao.getProductos());
-//         res.status(200).json({ server: "Producto creado" });
-//     } else {
-//         res.status(403).json({
-//             error: -1,
-//             descripcion: "ruta /productos/agregar metodo POST no autorizado",
-//         });
-//     }
-// });
-// routes.put("/actualizar/:id", async (req: Request, res: Response) => {
-//     if (newSession.getIsAdmin()) {
-//         const id: string = (req.params.id);
-//         const newProducto: Producto = new Producto(
-//             req.body.title,
-//             req.body.description,
-//             req.body.code,
-//             req.body.thumbnail,
-//             req.body.price,
-//             req.body.stock
-//         );
-//         if (newProducto) {
-//             res.status(200).json(await dao.updateProducto(id, newProducto));
-//             io.sockets.emit("products", await dao.getProductos());
-//         } else {
-//             res.status(404).json({ error: "producto no encontrado" });
-//         }
-//     } else {
-//         res.status(403).json({
-//             error: -1,
-//             descripcion: `ruta /productos/actualizar/${req.params.id} metodo PUT no autorizado`,
-//         });
-//     }
-// });
-// routes.delete("/borrar/:id", async (req: Request, res: Response) => {
-//     if (newSession.getIsAdmin()) {
-//         const id: string = req.params.id;
-//         const productToBeDelete: Producto | undefined = await dao.getProductoById(id);
-//         if (productToBeDelete) {
-//             res.status(200).json(await dao.deleteProducto(productToBeDelete._id));
-//             io.sockets.emit("products", await dao.getProductos());
-//         } else {
-//             res
-//                 .status(404)
-//                 .json({ error: "producto no existente, no se puede borrar" });
-//         }
-//     } else {
-//         res.status(403).json({
-//             error: -1,
-//             descripcion: `ruta /productos/borrar/${req.params.id} metodo DELETE no autorizado`,
-//         });
-//     }
-// });

@@ -1,41 +1,32 @@
 import bcrypt from 'bcrypt';
-import { Session } from "../interfaces/ISession";
-import { loggerError, loggerInfo } from '../loggers';
+import { newSession } from '../app';
+import { loggerError, loggerInfo, loggerWarn } from '../loggers';
 import { usuarioModel as User } from '../models/usuarios';
+import multer from "multer";
+import * as ethereal from "../email/nodemailerEthereal"
 
-export const newSession = new Session();
+
+
 const isValidPassword = (user: { password: any; }, password: any) => bcrypt.compareSync(password, user.password);
-const db = require('../utils/dbConnection');
+const createHash = (password: any) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+
+
+const dalLogin = require("../persistencia/dalLogin");
 
 
 module.exports = {
 
-    findUser: (_:any, username: any, password: any, done: any) => {
-        db.connectToMongo();
-        User.findOne({ 'username': username },
-        (err: any, user: { password: any; }) => {
-            // In case of any error, return using the done method
-            if (err) {
-                loggerError.info('Error in Login: ' + err);
-                return done(err);
-            }
-            // Username does not exist, log error & redirect back
-            if (!user) {
-                loggerInfo.info('User Not Found with email ' + username);
-                loggerInfo.info('message', 'User Not found.');
-                return done(null, false)
-            }
-            // User exists but wrong password, log the error 
-            if (!isValidPassword(user, password)) {
-                loggerInfo.info('Invalid Password');
-                loggerInfo.info('message', 'Invalid Password');
-                return done(null, false)
-            }
-            // User and password both match, return user from 
-            // done method which will be treated like success
-            return done(null, user);
+    findUser: async (_: any, username: any, password: any, done: any) => {
+
+        const user: any = await dalLogin.findUser(username);
+        if (!user) {
+
+            return done(null, false, { message: 'Usuario no encontrado' });
         }
-    );
+        if (!isValidPassword(user, password)) {
+            return done(null, false, { message: 'Contraseña incorrecta' });
+        }
+        return done(null, user);
     },
 
     getLogin: (user: any) => {
@@ -51,8 +42,9 @@ module.exports = {
         };
     },
 
+
     isValidPassword(user: any, password: string): boolean {
         return bcrypt.compareSync(password, user.password);
     }
-
 }
+

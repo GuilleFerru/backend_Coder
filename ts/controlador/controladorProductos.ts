@@ -43,7 +43,7 @@ module.exports = {
             });
         }
     },
-    
+
     putProducto: async (req: Request, res: Response) => {
         if (newSession.getIsAdmin()) {
             const id: string = (req.params.id);
@@ -79,6 +79,6 @@ module.exports = {
                 descripcion: `ruta /productos/borrar/${req.params.id} metodo DELETE no autorizado`,
             });
         }
-    }
+    },
 
 }

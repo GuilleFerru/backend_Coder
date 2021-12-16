@@ -167,5 +167,5 @@ module.exports = {
                 case 4: return [2 /*return*/];
             }
         });
-    }); }
+    }); },
 };

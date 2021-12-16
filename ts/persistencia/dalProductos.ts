@@ -69,6 +69,8 @@ module.exports = {
         } finally {
             // await mongoose.disconnect();
             loggerInfo.info('Producto Agregado');
+            return producto;
+            
         }
     },
     async updateProducto(id: string, productoToBeUpdate: Producto) {

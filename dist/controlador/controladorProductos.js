@@ -174,5 +174,5 @@ module.exports = {
                 case 6: return [2 /*return*/];
             }
         });
-    }); }
+    }); },
 };

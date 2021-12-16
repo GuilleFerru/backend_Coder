@@ -1,5 +1,8 @@
 import { Producto } from "../interfaces/IProducto";
 import * as faker from 'faker';
+import { buildSchema } from "graphql";
+import { graphqlHTTP } from "express-graphql";
+
 
 const dalProductos = require("../persistencia/dalProductos");
 
@@ -22,7 +25,7 @@ export const generateData = (cantidadAGenerar: number) => {
 
 module.exports = {
 
-    getVistaTest: function (cant : number) {
+    getVistaTest: function (cant: number) {
         const cantidadAGenerar = isNaN(cant) ? 10 : cant;
         const fakeProductos = generateData(cantidadAGenerar);
         if (fakeProductos.length > 0) {
@@ -30,7 +33,7 @@ module.exports = {
         } else {
             return false
         }
-    
+
 
     },
 
@@ -97,6 +100,7 @@ module.exports = {
         } catch (error) {
             return false;
         }
-    }
+    },
+
 
 }

@@ -4,10 +4,9 @@ import handlebars from 'express-handlebars';
 import {Singleton} from './utils/dbConnection';
 import { loggerInfo } from "./loggers";
 import { Session } from "./interfaces/ISession";
-
 import * as SocketIO from "socket.io";
 import { sockets } from "./sockets";
-
+import { graphqlHTTP } from "express-graphql";
 
 const port: any = process.env.PORT || +process.argv[2] || 8080;
 
@@ -48,6 +47,12 @@ const rutasCarrito = require('./rutas/rutasCarrito');
 const rutasProcess = require('./rutas/rutasProcess');
 sockets();
 
+const graphql = require('./utils/graphql');
+app.use("/graphql", graphqlHTTP({
+    schema: graphql.schema,
+    rootValue: graphql.root,
+    graphiql: true
+}));
 app.use('/', rutasLogin);
 app.use('/productos', rutasProductos);
 app.use('/carrito', rutasCarrito);

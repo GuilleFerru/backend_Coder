@@ -156,7 +156,7 @@ module.exports = {
                     case 3:
                         // await mongoose.disconnect();
                         loggers_1.loggerInfo.info('Producto Agregado');
-                        return [7 /*endfinally*/];
+                        return [2 /*return*/, producto];
                     case 4: return [2 /*return*/];
                 }
             });

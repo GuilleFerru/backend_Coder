@@ -31,6 +31,7 @@ var loggers_1 = require("./loggers");
 var ISession_1 = require("./interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
 var sockets_1 = require("./sockets");
+var express_graphql_1 = require("express-graphql");
 var port = process.env.PORT || +process.argv[2] || 8080;
 // para que funcione nodemailer
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
@@ -56,6 +57,12 @@ var rutasProductos = require('./rutas/rutasProductos');
 var rutasCarrito = require('./rutas/rutasCarrito');
 var rutasProcess = require('./rutas/rutasProcess');
 (0, sockets_1.sockets)();
+var graphql = require('./utils/graphql');
+exports.app.use("/graphql", (0, express_graphql_1.graphqlHTTP)({
+    schema: graphql.schema,
+    rootValue: graphql.root,
+    graphiql: true
+}));
 exports.app.use('/', rutasLogin);
 exports.app.use('/productos', rutasProductos);
 exports.app.use('/carrito', rutasCarrito);

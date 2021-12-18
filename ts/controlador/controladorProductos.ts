@@ -34,7 +34,7 @@ module.exports = {
             } else {
                 console.log("producto guardado");
                 io.sockets.emit("products", await negocioProductos.getProductos());
-                res.status(200).json({ server: "Producto creado" });
+                res.status(201).json({ server: "Producto creado" });
             }
         } else {
             res.status(403).json({

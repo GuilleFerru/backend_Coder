@@ -97,7 +97,7 @@ module.exports = {
                     return [4 /*yield*/, negocioProductos.getProductos()];
                 case 3:
                     _b.apply(_a, _c.concat([_d.sent()]));
-                    res.status(200).json({ server: "Producto creado" });
+                    res.status(201).json({ server: "Producto creado" });
                     _d.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:

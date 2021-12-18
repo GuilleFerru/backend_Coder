@@ -71,7 +71,7 @@ module.exports = {
                         res.status(404).json({ error: "Hubo un problema con esta venta" });
                     }
                     else {
-                        return [2 /*return*/, res.status(200).json({ resultado: resultado })];
+                        return [2 /*return*/, res.status(201).json({ resultado: resultado })];
                     }
                     return [2 /*return*/];
             }

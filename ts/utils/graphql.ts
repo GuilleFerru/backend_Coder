@@ -1,6 +1,5 @@
 import { buildSchema } from "graphql";
 
-
 const dalProductos = require('../persistencia/dalProductos');
 
 const schema = buildSchema(`

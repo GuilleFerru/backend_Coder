@@ -24,7 +24,7 @@ module.exports = {
         if (!resultado) {
             res.status(404).json({ error: "Hubo un problema con esta venta" });
         } else {
-            return res.status(200).json({resultado});
+            return res.status(201).json({resultado});
         }
     },
     deleteCarrito: async (req: Request, res: Response) => {

@@ -91,7 +91,6 @@ module.exports = {
                     res.status(404).json({ error: "este producto no se pudo guardar" });
                     return [3 /*break*/, 4];
                 case 2:
-                    console.log("producto guardado");
                     _b = (_a = app_1.io.sockets).emit;
                     _c = ["products"];
                     return [4 /*yield*/, negocioProductos.getProductos()];
@@ -122,7 +121,7 @@ module.exports = {
                 case 1:
                     resultado = _d.sent();
                     if (!!resultado) return [3 /*break*/, 2];
-                    res.status(404).json({ error: "producto no encontrado" });
+                    res.status(204).json({ error: "producto no encontrado" });
                     return [3 /*break*/, 4];
                 case 2:
                     res.status(200).json(resultado);
@@ -162,7 +161,7 @@ module.exports = {
                     return [4 /*yield*/, negocioProductos.getProductos()];
                 case 3:
                     _b.apply(_a, _c.concat([_d.sent()]));
-                    res.status(200).json({ server: "Producto creado" });
+                    res.status(200).json({ server: "Producto borrado" });
                     _d.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:

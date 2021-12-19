@@ -32,7 +32,6 @@ module.exports = {
             if (!resultado) {
                 res.status(404).json({ error: "este producto no se pudo guardar" });
             } else {
-                console.log("producto guardado");
                 io.sockets.emit("products", await negocioProductos.getProductos());
                 res.status(201).json({ server: "Producto creado" });
             }
@@ -50,7 +49,7 @@ module.exports = {
             const producto = req.body;
             const resultado = await negocioProductos.putProducto(id, producto);
             if (!resultado) {
-                res.status(404).json({ error: "producto no encontrado" });
+                res.status(204).json({ error: "producto no encontrado" });
             } else {
                 res.status(200).json(resultado);
                 io.sockets.emit("products", await negocioProductos.getProductos());
@@ -71,7 +70,7 @@ module.exports = {
                 res.status(404).json({ error: "producto no existente, no se puede borrar" });
             } else {
                 io.sockets.emit("products", await negocioProductos.getProductos());
-                res.status(200).json({ server: "Producto creado" });
+                res.status(200).json({ server: "Producto borrado" });
             }
         } else {
             res.status(403).json({

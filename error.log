@@ -58,3 +58,871 @@
   },
   insertedDocs: []
 }
+[2021-12-18T15:53:21.343] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-18T15:54:31.210] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-18T16:02:35.742] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'axios' }
+}
+[2021-12-18T16:10:06.057] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'axios' }
+}
+[2021-12-18T16:11:13.108] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-18T16:16:12.216] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'axios' }
+}
+[2021-12-18T16:16:31.539] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'axios' }
+}
+[2021-12-18T16:18:39.357] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-18T16:18:39.393] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:19:15.617] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:20:59.908] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:22:02.323] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-18T16:22:02.352] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:23:42.406] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:24:41.722] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:24:49.537] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-18T16:25:15.286] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property 'length' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property 'length' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property 'length' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T13:26:56.391] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T13:35:52.550] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T13:36:24.368] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T13:36:45.610] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T13:37:00.322] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T13:42:16.547] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "kd34F$9z" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'kd34F$9z' }
+}
+[2021-12-19T13:42:58.201] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "kd34F$9z" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'kd34F$9z' }
+}
+[2021-12-19T13:44:16.403] [ERROR] error - MongoServerError: E11000 duplicate key error collection: 616459ffc7bb5e2916711e9a_ecommerce.productos index: code_1 dup key: { code: "kd34F$9z" }
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\update.js:80:33
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22) {
+  index: 0,
+  code: 11000,
+  keyPattern: { code: 1 },
+  keyValue: { code: 'kd34F$9z' }
+}
+[2021-12-19T13:57:58.532] [ERROR] error - CastError: Cast to ObjectId failed for value "ReferenceError: Cannot access 'id' before initialization" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"ReferenceError: Cannot access 'id' before initialization"`,
+  kind: 'ObjectId',
+  value: "ReferenceError: Cannot access 'id' before initialization",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T13:58:24.603] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property '_id' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property '_id' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property '_id' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T13:59:11.040] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property '_id' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property '_id' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property '_id' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T13:59:34.444] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property '_id' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property '_id' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property '_id' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T14:00:04.448] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property '_id' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property '_id' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property '_id' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T14:00:27.950] [ERROR] error - CastError: Cast to ObjectId failed for value "TypeError: Cannot read property '_id' of undefined" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: `"TypeError: Cannot read property '_id' of undefined"`,
+  kind: 'ObjectId',
+  value: "TypeError: Cannot read property '_id' of undefined",
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T14:31:19.506] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T14:33:34.727] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-19T14:40:20.724] [ERROR] error - CastError: Cast to ObjectId failed for value "async () => {\r\n    await getIdLastAddedProduct()\r\n}" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"async () => {\\r\\n    await getIdLastAddedProduct()\\r\\n}"',
+  kind: 'ObjectId',
+  value: 'async () => {\r\n    await getIdLastAddedProduct()\r\n}',
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T14:40:43.767] [ERROR] error - CastError: Cast to ObjectId failed for value "async () => {\r\n    await getIdLastAddedProduct()\r\n}" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"async () => {\\r\\n    await getIdLastAddedProduct()\\r\\n}"',
+  kind: 'ObjectId',
+  value: 'async () => {\r\n    await getIdLastAddedProduct()\r\n}',
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T14:42:19.844] [ERROR] error - CastError: Cast to ObjectId failed for value "[object Promise]" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"[object Promise]"',
+  kind: 'ObjectId',
+  value: '[object Promise]',
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}
+[2021-12-19T14:42:52.088] [ERROR] error - CastError: Cast to ObjectId failed for value "[object Promise]" (type string) at path "_id" for model "productos"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"[object Promise]"',
+  kind: 'ObjectId',
+  value: '[object Promise]',
+  path: '_id',
+  reason: TypeError: Argument passed in must be a Buffer or string of 12 bytes or a string of 24 hex characters
+      at new ObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\bson\lib\objectid.js:61:23)
+      at castObjectId (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\objectid.js:25:12)
+      at ObjectId.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\objectid.js:245:12)
+      at ObjectId.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at ObjectId.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at ObjectId.SchemaType.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1557:15)
+      at ObjectId.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast.js:337:32)
+      at model.Query.Query.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4963:12)
+      at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
+  valueType: 'string'
+}

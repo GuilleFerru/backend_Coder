@@ -36,6 +36,9 @@ var port = process.env.PORT || +process.argv[2] || 8080;
 // para que funcione nodemailer
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 exports.app = (0, express_1.default)();
+// module.exports = {
+//     app,
+// };
 exports.app.use((0, compression_1.default)());
 exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.urlencoded({ extended: true }));

@@ -926,3 +926,198 @@
       at model.Query.Query._castConditions (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:2055:10),
   valueType: 'string'
 }
+[2021-12-22T22:17:42.692] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22)
+    at TLSSocket.emit (events.js:315:20)
+    at addChunk (internal/streams/readable.js:309:12)
+    at readableAddChunk (internal/streams/readable.js:284:9)
+    at TLSSocket.Readable.push (internal/streams/readable.js:223:10)
+    at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-22T22:32:30.312] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22)
+    at TLSSocket.emit (events.js:315:20)
+    at addChunk (internal/streams/readable.js:309:12)
+    at readableAddChunk (internal/streams/readable.js:284:9)
+    at TLSSocket.Readable.push (internal/streams/readable.js:223:10)
+    at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-22T22:33:29.932] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22)
+    at TLSSocket.emit (events.js:315:20)
+    at addChunk (internal/streams/readable.js:309:12)
+    at readableAddChunk (internal/streams/readable.js:284:9)
+    at TLSSocket.Readable.push (internal/streams/readable.js:223:10)
+    at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-22T22:34:04.219] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22)
+    at TLSSocket.emit (events.js:315:20)
+    at addChunk (internal/streams/readable.js:309:12)
+    at readableAddChunk (internal/streams/readable.js:284:9)
+    at TLSSocket.Readable.push (internal/streams/readable.js:223:10)
+    at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}
+[2021-12-22T22:42:07.276] [ERROR] error - MongoBulkWriteError: E11000 duplicate key error collection: ecommerce.productos index: code_1 dup key: { code: "axios" }
+    at OrderedBulkOperation.handleWriteError (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:879:22)
+    at resultHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\bulk\common.js:397:27)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\utils.js:532:9
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:50:17
+    at callbackWithRetry (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\operations\execute_operation.js:81:20)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection_pool.js:272:25
+    at handleOperationResult (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\sdam\server.js:363:9)
+    at MessageStream.messageHandler (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\connection.js:479:9)
+    at MessageStream.emit (events.js:315:20)
+    at processIncomingData (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:108:16)
+    at MessageStream._write (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongodb\lib\cmap\message_stream.js:28:9)
+    at writeOrBuffer (internal/streams/writable.js:358:12)
+    at MessageStream.Writable.write (internal/streams/writable.js:303:10)
+    at TLSSocket.ondata (internal/streams/readable.js:719:22)
+    at TLSSocket.emit (events.js:315:20)
+    at addChunk (internal/streams/readable.js:309:12)
+    at readableAddChunk (internal/streams/readable.js:284:9)
+    at TLSSocket.Readable.push (internal/streams/readable.js:223:10)
+    at TLSWrap.onStreamRead (internal/stream_base_commons.js:188:23) {
+  code: 11000,
+  writeErrors: [ WriteError { err: [Object] } ],
+  result: BulkWriteResult {
+    result: {
+      ok: 1,
+      writeErrors: [Array],
+      writeConcernErrors: [],
+      insertedIds: [Array],
+      nInserted: 0,
+      nUpserted: 0,
+      nMatched: 0,
+      nModified: 0,
+      nRemoved: 0,
+      upserted: [],
+      opTime: [Object]
+    }
+  },
+  insertedDocs: []
+}

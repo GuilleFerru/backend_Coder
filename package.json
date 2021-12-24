@@ -13,7 +13,7 @@
     "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8081",
     "pm2cluster": "pm2 start ./dist/main.js --name=cluster --watch -i max -- 8082",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha ./dist/test/productos.test.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "bootstrap-icons": "^1.5.0",
+    "chai": "^4.3.4",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.5",
@@ -32,6 +33,7 @@
     "faker": "^5.5.3",
     "graphql": "^16.1.0",
     "log4js": "^6.3.0",
+    "mocha": "^9.1.3",
     "mongoose": "^6.0.8",
     "multer": "^1.4.3",
     "nodemailer": "^6.7.1",
@@ -39,6 +41,7 @@
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",
     "socket.io": "^4.2.0",
+    "supertest": "^6.1.6",
     "twilio": "^3.71.2"
   },
   "engines": {
@@ -50,18 +53,21 @@
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "@types/bcrypt": "^5.0.0",
+    "@types/chai": "^4.3.0",
     "@types/compression": "^1.7.2",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.13",
     "@types/express-handlebars": "^5.3.1",
     "@types/express-session": "^1.17.4",
     "@types/faker": "^5.5.9",
+    "@types/mocha": "^9.0.0",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.7.11",
     "@types/nodemailer": "^6.4.4",
     "@types/passport": "^1.0.7",
     "@types/passport-facebook": "^2.1.11",
     "@types/passport-local": "^1.0.34",
+    "@types/supertest": "^2.0.11",
     "jest": "^27.2.5",
     "typescript": "^4.4.2"
   }

@@ -1,7 +1,7 @@
 import express from "express";
 import compression from 'compression';
 import handlebars from 'express-handlebars';
-import {Singleton} from './utils/dbConnection';
+import { Singleton } from './utils/dbConnection';
 import { loggerInfo } from "./loggers";
 import { Session } from "./interfaces/ISession";
 import * as SocketIO from "socket.io";
@@ -14,6 +14,10 @@ const port: any = process.env.PORT || +process.argv[2] || 8080;
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 export const app = express();
+
+// module.exports = {
+//     app,
+// };
 
 app.use(compression());
 app.use(express.json());

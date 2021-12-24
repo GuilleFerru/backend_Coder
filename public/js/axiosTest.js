@@ -93,8 +93,8 @@ const DELETEPRODUCTO = 5;
 const DELETELASTADDEDPRODUCTO = 6;
 
 
-const OPCION = UPDATELASTADDEDPRODUCTO;
-const id = '';
+const OPCION = POSTPRODUCTO;
+const id = '61bf78bf9138e81aaf0f869e';
 
 const updatedProduct = {
     title: 'Updated prueba axios',

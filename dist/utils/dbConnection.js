@@ -56,7 +56,7 @@ var Singleton = /** @class */ (function () {
                         return [4 /*yield*/, mongoose_1.default.connect(MONGO_URL)];
                     case 1:
                         _a.sent();
-                        loggers_1.loggerInfo.info('Connected to MongoDB');
+                        loggers_1.loggerInfo.info('Connected to MongoDB', mongoose_1.default.connection.readyState);
                         return [3 /*break*/, 3];
                     case 2:
                         error_1 = _a.sent();

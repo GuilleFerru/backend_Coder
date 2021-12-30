@@ -66,7 +66,6 @@ module.exports = {
                     return [4 /*yield*/, negocioCarrito.postCarrito(orderToProcess)];
                 case 1:
                     resultado = _a.sent();
-                    console.log(resultado);
                     if (!resultado) {
                         res.status(404).json({ error: "Hubo un problema con esta venta" });
                     }

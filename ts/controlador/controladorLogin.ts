@@ -4,25 +4,13 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import { Strategy as LocalStrategy } from 'passport-local';
-import { loggerError, loggerInfo, loggerWarn } from "../loggers";
 import { usuarioModel as User } from '../models/usuarios';
-import bcrypt from 'bcrypt';
 import multer from "multer";
-import * as ethereal from "../email/nodemailerEthereal"
+import { app } from "../app";
 
 
 const negocioLogin = require("../negocio/negocioLogin");
-import { app } from "../app";
-// const loginStrategyName = 'login';
-
-
-
-
-
 const loginStrategyName = 'login';
-const signUpStrategyName = 'signup';
-
-const createHash = (password: any) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
 passport.serializeUser(function (user: any, done) {
     done(null, user._id);
@@ -57,8 +45,6 @@ app.use(passport.session());
 
 let userSession: any;
 module.exports = {
-
-
 
     loginStrategyName: () => {
         passport.use(loginStrategyName, new LocalStrategy({
@@ -107,11 +93,11 @@ module.exports = {
         }
     },
 
-    postLogin: async (req: Request, res: Response) => {
+    postLogin: async (_req: Request, res: Response) => {
         res.redirect('/')
     },
 
-    getFailLogin: async (req: Request, res: Response) => {
+    getFailLogin: async (_req: Request, res: Response) => {
         res.render('error', {
             btnAction: '/login',
             errorText: 'Compruebe que el Usuario y/o la contraseña sean correctas.'

@@ -1,24 +1,14 @@
 import bcrypt from 'bcrypt';
-import { newSession } from '../app';
-import { loggerError, loggerInfo, loggerWarn } from '../loggers';
-import { usuarioModel as User } from '../models/usuarios';
-import multer from "multer";
-import * as ethereal from "../email/nodemailerEthereal"
-
-
+import { dao, newSession } from '../app';
 
 const isValidPassword = (user: { password: any; }, password: any) => bcrypt.compareSync(password, user.password);
-const createHash = (password: any) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-
-
-const dalLogin = require("../persistencia/dalLogin");
 
 
 module.exports = {
 
     findUser: async (_: any, username: any, password: any, done: any) => {
 
-        const user: any = await dalLogin.findUser(username);
+        const user: any = await dao.findUser(username);
         if (!user) {
 
             return done(null, false, { message: 'Usuario no encontrado' });

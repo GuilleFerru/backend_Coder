@@ -20,7 +20,7 @@ module.exports = {
     postCarrito: async (req: Request, res: Response) => {
         const orderToProcess: Cart[] = req.body;
         const resultado = await negocioCarrito.postCarrito(orderToProcess);
-        console.log(resultado);
+        
         if (!resultado) {
             res.status(404).json({ error: "Hubo un problema con esta venta" });
         } else {

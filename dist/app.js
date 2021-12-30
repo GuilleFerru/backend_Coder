@@ -22,11 +22,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.io = exports.newSession = exports.server = exports.app = void 0;
+exports.io = exports.newSession = exports.dao = exports.server = exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var compression_1 = __importDefault(require("compression"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
-var dbConnection_1 = require("./utils/dbConnection");
+var daoFactory_1 = require("./daoFactory");
 var loggers_1 = require("./loggers");
 var ISession_1 = require("./interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
@@ -42,6 +42,7 @@ exports.app = (0, express_1.default)();
 exports.app.use((0, compression_1.default)());
 exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.urlencoded({ extended: true }));
+// console.log(process.argv[3])
 exports.app.engine("hbs", (0, express_handlebars_1.default)({
     extname: ".hbs",
     defaultLayout: 'index.hbs',
@@ -52,7 +53,25 @@ exports.app.use(express_1.default.static('public'));
 exports.server = exports.app.listen(port, function () {
     loggers_1.loggerInfo.info("Servidor listo en el puerto " + port);
 });
-dbConnection_1.Singleton.getInstance();
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// MEMORY = 0;
+// FILESYSTEM = 1;
+// MYSQL = 2;
+// SQLITE = 3;
+// MONGO = 4;
+// MONGOAAS = 5;
+// FIREBASE = 6;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+var OPCION = +process.argv[3] || 5;
+;
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// const daoFactory = new DaoFactory();
+// export const dao: IDao = daoFactory.getDao(OPCION);
+// console.log(dao)
+// DaoFactory.opcion = + process.argv[3] ;
+var daoInstance = daoFactory_1.DaoFactory.getInstance();
+exports.dao = daoInstance.getDao(OPCION);
+// Singleton.getInstance();
 exports.newSession = new ISession_1.Session();
 exports.io = new SocketIO.Server(exports.server);
 var rutasLogin = require('./rutas/rutasLogin');

@@ -62,13 +62,15 @@ var loggers_1 = require("./loggers");
 var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
-var dalProductos = require("./persistencia/dalProductos");
-var dalMensajes = require("./persistencia/dalMensajes");
+// const dalProductos = require("./persistencia/dalProductos");
+// const dalMensajes = require("./persistencia/dalMensajes");
 var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost;
+    var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, dalMensajes.getMensajes()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, app_1.dao.getMensajes()];
             case 1:
                 mensajesOriginal = _a.sent();
                 mensajesOriginalToString = JSON.stringify(mensajesOriginal);
@@ -85,6 +87,11 @@ var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, fun
                 });
                 normalizePost = normalizr.normalize(mensajeParse, chat);
                 return [2 /*return*/, normalizePost];
+            case 2:
+                error_1 = _a.sent();
+                loggers_1.loggerError.error(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -107,19 +114,19 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                         _b.apply(_a, _c.concat([_g.sent()]));
                         socket.emit('port', port);
                         socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
-                            var date, id, checkId, newAuthor, newMensaje, msj, error_1, _a, _b, _c;
+                            var date, id, checkId, newAuthor, newMensaje, msj, error_2, _a, _b, _c;
                             return __generator(this, function (_d) {
                                 switch (_d.label) {
                                     case 0:
                                         date = new Date().toLocaleString('es-AR');
                                         id = generateMensajeId();
-                                        checkId = dalMensajes.getMensajeById(id);
+                                        checkId = app_1.dao.getMensajeById(id);
                                         while (checkId) {
                                             id = generateMensajeId();
                                         }
                                         newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
                                         newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
-                                        return [4 /*yield*/, dalMensajes.insertMensajes(newMensaje)];
+                                        return [4 /*yield*/, app_1.dao.insertMensajes(newMensaje)];
                                     case 1:
                                         _d.sent();
                                         if (!mensaje.text.includes('administrador')) return [3 /*break*/, 5];
@@ -132,8 +139,8 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                         _d.sent();
                                         return [3 /*break*/, 5];
                                     case 4:
-                                        error_1 = _d.sent();
-                                        loggers_1.loggerError.error('ERROR enviarWapp', error_1);
+                                        error_2 = _d.sent();
+                                        loggers_1.loggerError.error('ERROR enviarWapp', error_2);
                                         return [3 /*break*/, 5];
                                     case 5:
                                         _b = (_a = app_1.io.sockets).emit;
@@ -147,7 +154,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                         }); });
                         _e = (_d = socket).emit;
                         _f = ["products"];
-                        return [4 /*yield*/, dalProductos.getProductos()];
+                        return [4 /*yield*/, app_1.dao.getProductos()];
                     case 2:
                         _e.apply(_d, _f.concat([_g.sent(), app_2.newSession.getIsAdmin()]));
                         socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
@@ -157,7 +164,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                     case 0:
                                         _b = (_a = socket).emit;
                                         _c = ["products"];
-                                        return [4 /*yield*/, dalProductos.filterProducto(filter, filterBy)];
+                                        return [4 /*yield*/, app_1.dao.filterProducto(filter, filterBy)];
                                     case 1:
                                         _b.apply(_a, _c.concat([_d.sent(), app_2.newSession.getIsAdmin()]));
                                         return [2 /*return*/];
@@ -171,7 +178,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                     case 0:
                                         _b = (_a = socket).emit;
                                         _c = ["products"];
-                                        return [4 /*yield*/, dalProductos.getProductos()];
+                                        return [4 /*yield*/, app_1.dao.getProductos()];
                                     case 1:
                                         _b.apply(_a, _c.concat([_d.sent()]));
                                         return [2 /*return*/];

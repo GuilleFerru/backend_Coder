@@ -56,18 +56,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("../app");
+var app_2 = require("../app");
 var twilioWsp = __importStar(require("../twilio/wsp.js"));
 var twilioSms = __importStar(require("../twilio/sms.js"));
 var ethereal = __importStar(require("../email/nodemailerEthereal"));
 var loggers_1 = require("../loggers");
-var dalCarrito = require("../persistencia/dalCarrito");
-var dalProductos = require("../persistencia/dalProductos");
+// const dalCarrito = require("../persistencia/dalCarrito");
+// const dalProductos = require("../persistencia/dalProductos");
 module.exports = {
     getCarrito: function (id) { return __awaiter(void 0, void 0, void 0, function () {
         var carritoById, carrito;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, dalCarrito.getCarritoById(id)];
+                case 0: return [4 /*yield*/, app_2.dao.getCarritoById(id)];
                 case 1:
                     carritoById = _a.sent();
                     if (!carritoById) return [3 /*break*/, 2];
@@ -78,7 +79,7 @@ module.exports = {
                         return [2 /*return*/, false];
                     }
                     return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, dalCarrito.getCarrito()];
+                case 2: return [4 /*yield*/, app_2.dao.getCarrito()];
                 case 3:
                     carrito = _a.sent();
                     if (carrito.length > 0) {
@@ -96,7 +97,7 @@ module.exports = {
         var orderProcessed, orderProcessedId, orderProcessedTotal, orderProcessedProductos, orderProcessedAdmin, orderProcessedUser, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, dalCarrito.insertOrder(orderToProcess)];
+                case 0: return [4 /*yield*/, app_2.dao.insertOrder(orderToProcess)];
                 case 1:
                     orderProcessed = _a.sent();
                     orderProcessedId = orderProcessed[0]._id;
@@ -156,16 +157,16 @@ module.exports = {
         var cartToBeDelete, _a, _b, _c;
         return __generator(this, function (_d) {
             switch (_d.label) {
-                case 0: return [4 /*yield*/, dalCarrito.getCarritoById(id)];
+                case 0: return [4 /*yield*/, app_2.dao.getCarritoById(id)];
                 case 1:
                     cartToBeDelete = _d.sent();
                     if (!cartToBeDelete) return [3 /*break*/, 4];
-                    return [4 /*yield*/, dalCarrito.deleteCarrito(cartToBeDelete._id)];
+                    return [4 /*yield*/, app_2.dao.deleteCarrito(cartToBeDelete._id)];
                 case 2:
                     _d.sent();
                     _b = (_a = app_1.io.sockets).emit;
                     _c = ["carts"];
-                    return [4 /*yield*/, dalCarrito.getCarrito()];
+                    return [4 /*yield*/, app_2.dao.getCarrito()];
                 case 3:
                     _b.apply(_a, _c.concat([_d.sent()]));
                     return [2 /*return*/, true];
@@ -177,26 +178,26 @@ module.exports = {
         var productoById, carrrito, cartToBeUpdate;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, dalProductos.getProductoById(id)];
+                case 0: return [4 /*yield*/, app_2.dao.getProductoById(id)];
                 case 1:
                     productoById = _a.sent();
                     if (!productoById) return [3 /*break*/, 10];
-                    return [4 /*yield*/, dalCarrito.getCarrito()];
+                    return [4 /*yield*/, app_2.dao.getCarrito()];
                 case 2:
                     carrrito = _a.sent();
                     if (!(carrrito.length > 0)) return [3 /*break*/, 7];
                     cartToBeUpdate = carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
                     if (!cartToBeUpdate) return [3 /*break*/, 4];
-                    return [4 /*yield*/, dalCarrito.updateQtyInCarrito(cartToBeUpdate)];
+                    return [4 /*yield*/, app_2.dao.updateQtyInCarrito(cartToBeUpdate)];
                 case 3:
                     _a.sent();
                     return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, dalCarrito.insertProductToCarrito(productoById)];
+                case 4: return [4 /*yield*/, app_2.dao.insertProductToCarrito(productoById)];
                 case 5:
                     _a.sent();
                     _a.label = 6;
                 case 6: return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, dalCarrito.insertProductToCarrito(productoById)];
+                case 7: return [4 /*yield*/, app_2.dao.insertProductToCarrito(productoById)];
                 case 8:
                     _a.sent();
                     _a.label = 9;

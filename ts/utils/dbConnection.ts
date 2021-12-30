@@ -22,7 +22,8 @@ export class Singleton {
     connectToMongo = async () => {
         try {
             await mongoose.connect(MONGO_URL);
-            loggerInfo.info('Connected to MongoDB');
+            loggerInfo.info('Connected to MongoDB', mongoose.connection.readyState);
+
         } catch (error) {
             loggerError.error(error);
         }

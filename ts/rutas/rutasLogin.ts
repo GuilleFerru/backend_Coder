@@ -8,7 +8,6 @@ import * as ethereal from "../email/nodemailerEthereal"
 
 
 const controladorLogin = require('../controlador/controladorLogin');
-const negocioLogin = require('../negocio/negocioLogin');
 const signUpStrategyName = 'signup';
 
 const createHash = (password: any) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));

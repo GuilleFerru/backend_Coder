@@ -27,6 +27,7 @@ socket.on('products', (productos, isAdmin) => {
 });
 
 socket.on('messages', async (normalizePost) => {
+
     const author = new normalizr.schema.Entity("author",
         undefined,
         {
@@ -41,6 +42,7 @@ socket.on('messages', async (normalizePost) => {
         posts: [post]
     })
     const denormalizePost = normalizr.denormalize(normalizePost.result, chat, normalizePost.entities);
+
     const messages = denormalizePost.posts;
 
     const normalizedLength = JSON.stringify(normalizePost).length;
@@ -50,6 +52,8 @@ socket.on('messages', async (normalizePost) => {
     const newChat = await chatNormalizaTemplate({ messages, compresion })
 
     document.getElementById('productsChat').innerHTML = newChat;
+
+
 });
 
 
@@ -132,12 +136,12 @@ const cleanInputValues = () => {
 
 const generateOrder = (cart) => {
     let orderTotal = 0;
-        cart.map(obj => {
-            obj['total'] = obj.quantity * obj.producto.price;
-            orderTotal += obj['total']
-        });
-        cart.push({ orderTotal: orderTotal });
-        return cart; 
+    cart.map(obj => {
+        obj['total'] = obj.quantity * obj.producto.price;
+        orderTotal += obj['total']
+    });
+    cart.push({ orderTotal: orderTotal });
+    return cart;
 }
 
 const saveCart = () => {
@@ -152,7 +156,7 @@ const saveCart = () => {
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             }).then(res => res.json()).then(res => {
                 alert(`Compra "${res.resultado}" finalizada, revise su celular.`);
-            }).catch(error => {})
+            }).catch(error => { })
         }
     });
 }
@@ -175,7 +179,7 @@ const showCart = () => {
         const orderTotal = orderTotalObject.orderTotal
         const modalCart = modalCartTemplate({ order, orderTotal })
         document.getElementById('modalCart').innerHTML = modalCart;
-    }).catch(error => {});
+    }).catch(error => { });
 }
 
 const addToCart = (id) => {

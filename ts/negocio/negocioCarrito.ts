@@ -1,19 +1,20 @@
 import { io, newSession } from "../app";
+import { dao } from "../app";
 import { Cart } from "../interfaces/ICart";
 import * as twilioWsp from '../twilio/wsp.js';
 import * as twilioSms from '../twilio/sms.js';
 import * as ethereal from "../email/nodemailerEthereal";
 import { loggerError } from "../loggers";
+import { Producto } from "../interfaces/IProducto";
 
-const dalCarrito = require("../persistencia/dalCarrito");
-const dalProductos = require("../persistencia/dalProductos");
+// const dalCarrito = require("../persistencia/dalCarrito");
+// const dalProductos = require("../persistencia/dalProductos");
 
 
 module.exports = {
 
     getCarrito: async (id: string) => {
-        const carritoById: Cart | undefined = await dalCarrito.getCarritoById(id);
-        
+        const carritoById: Cart | undefined = await dao.getCarritoById(id);
         
         if (carritoById) {
             if (String(carritoById._id) === id) {
@@ -22,8 +23,9 @@ module.exports = {
                 return false;
             }
         } else {
-            const carrito = await dalCarrito.getCarrito(); 
+            const carrito = await dao.getCarrito(); 
             if (carrito.length > 0) {
+                
                 return carrito;
             } else {
                 return '';
@@ -31,8 +33,8 @@ module.exports = {
         }
     },
 
-    postCarrito: async (orderToProcess: Cart) => {
-        const orderProcessed: any = await dalCarrito.insertOrder(orderToProcess);
+    postCarrito: async (orderToProcess: Cart []) => {
+        const orderProcessed: any = await dao.insertOrder(orderToProcess);        
         const orderProcessedId = orderProcessed[0]._id;
         const orderProcessedTotal = orderProcessed[0].orderTotal;
         const orderProcessedProductos = orderProcessed[0].productos;
@@ -83,10 +85,10 @@ module.exports = {
     },
 
     deleteCarrito: async (id: string) => {
-        const cartToBeDelete = await dalCarrito.getCarritoById(id);
+        const cartToBeDelete = await dao.getCarritoById(id);
         if (cartToBeDelete) {
-            await dalCarrito.deleteCarrito(cartToBeDelete._id);
-            io.sockets.emit("carts", await dalCarrito.getCarrito());
+            await dao.deleteCarrito(cartToBeDelete._id);
+            io.sockets.emit("carts", await dao.getCarrito());
             return true;
         } else {
             return false;
@@ -94,19 +96,19 @@ module.exports = {
     },
 
     postProductoInCarrito: async (id: string) => {
-        const productoById: Cart | undefined = await dalProductos.getProductoById(id);
+        const productoById: Producto  | undefined = await dao.getProductoById(id);
 
         if (productoById) {
-            const carrrito = await dalCarrito.getCarrito();
+            const carrrito = await dao.getCarrito();
             if (carrrito.length > 0) {
                 const cartToBeUpdate = carrrito.find((cart:any) => String(cart.producto?._id) === id);
                 if (cartToBeUpdate) {
-                    await dalCarrito.updateQtyInCarrito(cartToBeUpdate);
+                    await dao.updateQtyInCarrito(cartToBeUpdate);
                 } else {
-                    await dalCarrito.insertProductToCarrito(productoById);
+                    await dao.insertProductToCarrito(productoById);
                 }
             } else {
-                await dalCarrito.insertProductToCarrito(productoById);
+                await dao.insertProductToCarrito(productoById);
             }
             return true;
         } else {

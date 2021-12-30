@@ -45,14 +45,10 @@ var cookie_parser_1 = __importDefault(require("cookie-parser"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var passport_local_1 = require("passport-local");
 var usuarios_1 = require("../models/usuarios");
-var bcrypt_1 = __importDefault(require("bcrypt"));
 var multer_1 = __importDefault(require("multer"));
-var negocioLogin = require("../negocio/negocioLogin");
 var app_1 = require("../app");
-// const loginStrategyName = 'login';
+var negocioLogin = require("../negocio/negocioLogin");
 var loginStrategyName = 'login';
-var signUpStrategyName = 'signup';
-var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
 passport_1.default.serializeUser(function (user, done) {
     done(null, user._id);
 });
@@ -134,13 +130,13 @@ module.exports = {
             }
         });
     }); },
-    postLogin: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    postLogin: function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             res.redirect('/');
             return [2 /*return*/];
         });
     }); },
-    getFailLogin: function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    getFailLogin: function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             res.render('error', {
                 btnAction: '/login',

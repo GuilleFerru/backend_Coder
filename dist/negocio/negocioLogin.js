@@ -42,14 +42,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var app_1 = require("../app");
 var isValidPassword = function (user, password) { return bcrypt_1.default.compareSync(password, user.password); };
-var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
-var dalLogin = require("../persistencia/dalLogin");
 module.exports = {
     findUser: function (_, username, password, done) { return __awaiter(void 0, void 0, void 0, function () {
         var user;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, dalLogin.findUser(username)];
+                case 0: return [4 /*yield*/, app_1.dao.findUser(username)];
                 case 1:
                     user = _a.sent();
                     if (!user) {

@@ -1,10 +1,11 @@
 import { Producto } from "../interfaces/IProducto";
+import { dao } from "../app";
 import * as faker from 'faker';
 import { buildSchema } from "graphql";
 import { graphqlHTTP } from "express-graphql";
 
 
-const dalProductos = require("../persistencia/dalProductos");
+
 
 export const generateData = (cantidadAGenerar: number) => {
     const productoTest: Producto[] = [];
@@ -38,7 +39,7 @@ module.exports = {
     },
 
     getProductos: async (id: string) => {
-        const productoById: Producto | undefined = await dalProductos.getProductoById(id);
+        const productoById: Producto | undefined = await dao.getProductoById(id);
         if (productoById) {
             if (String(productoById._id) === id) {
                 return productoById;
@@ -46,7 +47,7 @@ module.exports = {
 
             }
         } else {
-            const products = await dalProductos.getProductos();
+            const products = await dao.getProductos();
             if (products.length > 0) {
                 return products;
             } else {
@@ -65,7 +66,7 @@ module.exports = {
             producto.stock
         );
         try {
-            await dalProductos.insertProducto(newProducto);
+            await dao.insertProducto(newProducto);
             return true;
         } catch (error) {
             return false;
@@ -82,7 +83,7 @@ module.exports = {
             producto.stock
         );
         try {
-            await dalProductos.updateProducto(id, newProducto);
+            await dao.updateProducto(id, newProducto);
             return true;
         } catch (error) {
             console.log(error);
@@ -91,9 +92,9 @@ module.exports = {
     },
     deleteProducto: async (id: string) => {
         try {
-            const productToBeDelete: Producto | undefined = dalProductos.getProductoById(id);
+            const productToBeDelete: Producto | undefined = await dao.getProductoById(id);
             if (productToBeDelete) {
-                await dalProductos.deleteProducto(productToBeDelete);
+                await dao.deleteProducto(productToBeDelete._id);
                 return true;
             }
             return false;

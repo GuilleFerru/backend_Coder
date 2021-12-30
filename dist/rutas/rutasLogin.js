@@ -30,7 +30,6 @@ var loggers_1 = require("../loggers");
 var usuarios_1 = require("../models/usuarios");
 var ethereal = __importStar(require("../email/nodemailerEthereal"));
 var controladorLogin = require('../controlador/controladorLogin');
-var negocioLogin = require('../negocio/negocioLogin');
 var signUpStrategyName = 'signup';
 var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
 passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({

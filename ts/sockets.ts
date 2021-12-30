@@ -1,4 +1,4 @@
-import { io } from './app';
+import { io, dao } from './app';
 import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
 import { loggerError } from "./loggers";
 import * as normalizr from 'normalizr';
@@ -6,33 +6,37 @@ import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 
 
-const dalProductos = require("./persistencia/dalProductos");
-const dalMensajes = require("./persistencia/dalMensajes");
+// const dalProductos = require("./persistencia/dalProductos");
+// const dalMensajes = require("./persistencia/dalMensajes");
 
 
 
 const getNormalizeMsj = async () => {
+    try {
+        const mensajesOriginal: MensajeWrap = await dao.getMensajes();
+        const mensajesOriginalToString = JSON.stringify(mensajesOriginal);
+        const mensajeParse = JSON.parse(mensajesOriginalToString)
 
-    const mensajesOriginal: MensajeWrap = await dalMensajes.getMensajes();
-    const mensajesOriginalToString = JSON.stringify(mensajesOriginal);
-    const mensajeParse = JSON.parse(mensajesOriginalToString)
+        const author = new normalizr.schema.Entity("author",
+            undefined,
+            {
+                idAttribute: 'email',
+            }
+        );
+        const post = new normalizr.schema.Entity("post", {
+            author: author,
 
-    const author = new normalizr.schema.Entity("author",
-        undefined,
-        {
-            idAttribute: 'email',
-        }
-    );
-    const post = new normalizr.schema.Entity("post", {
-        author: author,
+        });
+        const chat = new normalizr.schema.Entity('chat', {
+            authors: [author],
+            posts: [post]
+        })
+        const normalizePost = normalizr.normalize(mensajeParse, chat);
+        return normalizePost;
+    } catch (error) {
+        loggerError.error(error);
+    }
 
-    });
-    const chat = new normalizr.schema.Entity('chat', {
-        authors: [author],
-        posts: [post]
-    })
-    const normalizePost = normalizr.normalize(mensajeParse, chat);
-    return normalizePost;
 }
 
 const generateMensajeId = () => {
@@ -53,7 +57,7 @@ export const sockets = async () => {
 
             const date = new Date().toLocaleString('es-AR');
             let id = generateMensajeId();
-            const checkId = dalMensajes.getMensajeById(id);
+            const checkId = dao.getMensajeById(id);
             while (checkId) {
                 id = generateMensajeId();
             }
@@ -71,7 +75,7 @@ export const sockets = async () => {
                 date,
                 newAuthor,
             )
-            await dalMensajes.insertMensajes(newMensaje);
+            await dao.insertMensajes(newMensaje);
 
             if (mensaje.text.includes('administrador')) {
                 try {
@@ -86,14 +90,14 @@ export const sockets = async () => {
             io.sockets.emit("messages", await getNormalizeMsj());
         });
 
-        
-        socket.emit("products", await dalProductos.getProductos(), newSession.getIsAdmin());
+
+        socket.emit("products", await dao.getProductos(), newSession.getIsAdmin());
         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
-            socket.emit("products", await dalProductos.filterProducto(filter, filterBy), newSession.getIsAdmin());
+            socket.emit("products", await dao.filterProducto(filter, filterBy), newSession.getIsAdmin());
         });
 
         socket.on("getAllProductos", async () => {
-            socket.emit("products", await dalProductos.getProductos());
+            socket.emit("products", await dao.getProductos());
         });
     })
 

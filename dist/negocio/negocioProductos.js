@@ -57,8 +57,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateData = void 0;
 var IProducto_1 = require("../interfaces/IProducto");
+var app_1 = require("../app");
 var faker = __importStar(require("faker"));
-var dalProductos = require("../persistencia/dalProductos");
 var generateData = function (cantidadAGenerar) {
     var productoTest = [];
     for (var i = 0; i < cantidadAGenerar; i++) {
@@ -83,7 +83,7 @@ module.exports = {
         var productoById, products;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, dalProductos.getProductoById(id)];
+                case 0: return [4 /*yield*/, app_1.dao.getProductoById(id)];
                 case 1:
                     productoById = _a.sent();
                     if (!productoById) return [3 /*break*/, 2];
@@ -93,7 +93,7 @@ module.exports = {
                     else {
                     }
                     return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, dalProductos.getProductos()];
+                case 2: return [4 /*yield*/, app_1.dao.getProductos()];
                 case 3:
                     products = _a.sent();
                     if (products.length > 0) {
@@ -116,7 +116,7 @@ module.exports = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, dalProductos.insertProducto(newProducto)];
+                    return [4 /*yield*/, app_1.dao.insertProducto(newProducto)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/, true];
@@ -136,7 +136,7 @@ module.exports = {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, dalProductos.updateProducto(id, newProducto)];
+                    return [4 /*yield*/, app_1.dao.updateProducto(id, newProducto)];
                 case 2:
                     _a.sent();
                     return [2 /*return*/, true];
@@ -153,18 +153,20 @@ module.exports = {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    productToBeDelete = dalProductos.getProductoById(id);
-                    if (!productToBeDelete) return [3 /*break*/, 2];
-                    return [4 /*yield*/, dalProductos.deleteProducto(productToBeDelete)];
+                    _a.trys.push([0, 4, , 5]);
+                    return [4 /*yield*/, app_1.dao.getProductoById(id)];
                 case 1:
+                    productToBeDelete = _a.sent();
+                    if (!productToBeDelete) return [3 /*break*/, 3];
+                    return [4 /*yield*/, app_1.dao.deleteProducto(productToBeDelete._id)];
+                case 2:
                     _a.sent();
                     return [2 /*return*/, true];
-                case 2: return [2 /*return*/, false];
-                case 3:
+                case 3: return [2 /*return*/, false];
+                case 4:
                     error_3 = _a.sent();
                     return [2 /*return*/, false];
-                case 4: return [2 /*return*/];
+                case 5: return [2 /*return*/];
             }
         });
     }); },

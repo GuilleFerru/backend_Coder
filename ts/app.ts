@@ -1,6 +1,8 @@
 import express from "express";
 import compression from 'compression';
 import handlebars from 'express-handlebars';
+import { IDao } from "./interfaces/IDao";
+import { DaoFactory } from "./daoFactory";
 import { Singleton } from './utils/dbConnection';
 import { loggerInfo } from "./loggers";
 import { Session } from "./interfaces/ISession";
@@ -23,7 +25,7 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+// console.log(process.argv[3])
 
 app.engine(
     "hbs",
@@ -40,7 +42,30 @@ app.use(express.static('public'));
 export const server = app.listen(port, () => {
     loggerInfo.info(`Servidor listo en el puerto ${port}`)
 });
-Singleton.getInstance();
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// MEMORY = 0;
+// FILESYSTEM = 1;
+// MYSQL = 2;
+// SQLITE = 3;
+// MONGO = 4;
+// MONGOAAS = 5;
+// FIREBASE = 6;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+const OPCION =+process.argv[3] || 5;;
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// const daoFactory = new DaoFactory();
+// export const dao: IDao = daoFactory.getDao(OPCION);
+// console.log(dao)
+
+// DaoFactory.opcion = + process.argv[3] ;
+
+const daoInstance = DaoFactory.getInstance();
+export const dao: IDao = daoInstance.getDao(OPCION);
+
+
+// Singleton.getInstance();
 
 export const newSession = new Session();
 export const io = new SocketIO.Server(server);

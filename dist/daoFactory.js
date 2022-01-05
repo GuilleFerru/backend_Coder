@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DaoFactory = void 0;
 var MemoryDao_1 = require("./persistencia/MemoryDao");
+var FileSystemDao_1 = require("./persistencia/FileSystemDao");
+var MySqlDao_1 = require("./persistencia/MySqlDao");
 var MongoDbaaSDao_1 = require("./persistencia/MongoDbaaSDao");
 var loggers_1 = require("./loggers");
 // import { FirebaseDao } from "./daos/FirebaseDao";
@@ -24,9 +26,11 @@ var DaoFactory = /** @class */ (function () {
                 loggers_1.loggerInfo.info('Eligio la opción MemoryDao');
                 return new MemoryDao_1.MemoryDao();
             case 2:
-            // return new FileSystemDao();
+                loggers_1.loggerInfo.info('Eligio la opción FileSystemDao');
+                return new FileSystemDao_1.FileSystemDao();
             case 3:
-            // return new MySqlDao();
+                loggers_1.loggerInfo.info('Eligio la opción MySqlDao');
+                return new MySqlDao_1.MySqlDao();
             case 4:
             // return new SQLiteDao();
             case 5:

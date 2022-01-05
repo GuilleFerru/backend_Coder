@@ -52,12 +52,10 @@ socket.on('messages', async (normalizePost) => {
     const newChat = await chatNormalizaTemplate({ messages, compresion })
 
     document.getElementById('productsChat').innerHTML = newChat;
-
-
 });
 
-
 socket.on('carts', (cart) => {
+    console.log(cart);
     const order = generateOrder(cart);
     const orderTotalObject = order.pop();
     const orderTotal = orderTotalObject.orderTotal;
@@ -156,6 +154,7 @@ const saveCart = () => {
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             }).then(res => res.json()).then(res => {
                 alert(`Compra "${res.resultado}" finalizada, revise su celular.`);
+                location.reload();
             }).catch(error => { })
         }
     });
@@ -174,10 +173,12 @@ const showCart = () => {
     fetch(`http://localhost:${port}/carrito/listar/`, {
         method: "GET",
     }).then(response => response.json()).then(cart => {
+        modalCartTemplate({ })
         const order = generateOrder(cart);
         const orderTotalObject = order.pop();
         const orderTotal = orderTotalObject.orderTotal
         const modalCart = modalCartTemplate({ order, orderTotal })
+        
         document.getElementById('modalCart').innerHTML = modalCart;
     }).catch(error => { });
 }

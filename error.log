@@ -1151,3 +1151,33 @@
   },
   insertedDocs: []
 }
+[2022-01-04T21:22:06.548] [ERROR] error - TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'Connection'
+    |     property '_protocol' -> object with constructor 'Protocol'
+    --- property '_connection' closes the circle
+    at JSON.stringify (<anonymous>)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:74:49
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:33:53)
+    at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:24:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2022-01-04T21:22:15.631] [ERROR] error - TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'Connection'
+    |     property '_protocol' -> object with constructor 'Protocol'
+    --- property '_connection' closes the circle
+    at JSON.stringify (<anonymous>)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:74:49
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:33:53)
+    at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:24:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2022-01-04T21:23:10.548] [ERROR] error - TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'Connection'
+    |     property '_protocol' -> object with constructor 'Protocol'
+    --- property '_connection' closes the circle
+    at JSON.stringify (<anonymous>)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:74:49
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:33:53)
+    at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:24:58)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)

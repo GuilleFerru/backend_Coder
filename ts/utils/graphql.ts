@@ -1,6 +1,5 @@
 import { buildSchema } from "graphql";
-
-const dalProductos = require('../persistencia/dalProductos');
+import { dao } from "../app";
 
 const schema = buildSchema(`
 type Query {
@@ -20,8 +19,8 @@ type Producto {
 `);
 
 const root = {
-    productos: dalProductos.getProductos,
-    insertProducto: dalProductos.insertProducto
+    productos: dao.getProductos,
+    insertProducto: dao.insertProducto
 
 };
 

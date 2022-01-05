@@ -39,6 +39,7 @@ module.exports = {
     },
 
     getProductos: async (id: string) => {
+        
         const productoById: Producto | undefined = await dao.getProductoById(id);
         if (productoById) {
             if (String(productoById._id) === id) {

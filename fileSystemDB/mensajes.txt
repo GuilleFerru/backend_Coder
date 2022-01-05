@@ -1,0 +1,15 @@
+[
+	{
+		"id": "422508047",
+		"text": "prueba filesystem",
+		"date": "31/12/2021 18:39:37",
+		"author": {
+			"email": "guillelf@gmail.com",
+			"nombre": "Guillermo",
+			"apellido": "Ferrucci",
+			"edad": "35",
+			"alias": "GuilleFerru",
+			"avatar": "http://localhost:8080/img/userAvatar/1638288862699-avatar.png"
+		}
+	}
+]

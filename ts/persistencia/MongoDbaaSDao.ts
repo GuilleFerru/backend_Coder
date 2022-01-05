@@ -169,6 +169,7 @@ export class MongoDbaaSDao implements IDao {
             throw error;
         } finally {
             const wrapMensajes = new MensajeWrap('999', this.mensajes);
+            console.log(wrapMensajes);
             return wrapMensajes;
         }
     }

@@ -1,7 +1,7 @@
 
 import { MemoryDao } from "./persistencia/MemoryDao";
-// import { FileSystemDao } from "./daos/FileSystemDao";
-// import { MySqlDao } from "./daos/MySqlDao";
+import { FileSystemDao } from "./persistencia/FileSystemDao";
+import { MySqlDao } from "./persistencia/MySqlDao";
 // import { SQLiteDao } from "./daos/SQLiteDao";
 // import { MongoDbDao } from "./daos/MongoDbDao";
 import { IDao } from "./interfaces/IDao";
@@ -31,9 +31,11 @@ export class DaoFactory {
                 loggerInfo.info('Eligio la opción MemoryDao');
                 return new MemoryDao();
             case 2:
-            // return new FileSystemDao();
+                loggerInfo.info('Eligio la opción FileSystemDao');
+                return new FileSystemDao();
             case 3:
-            // return new MySqlDao();
+                loggerInfo.info('Eligio la opción MySqlDao');
+                return new MySqlDao();
             case 4:
             // return new SQLiteDao();
             case 5:

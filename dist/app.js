@@ -65,13 +65,8 @@ exports.server = exports.app.listen(port, function () {
 var OPCION = +process.argv[3] || 5;
 ;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// const daoFactory = new DaoFactory();
-// export const dao: IDao = daoFactory.getDao(OPCION);
-// console.log(dao)
-// DaoFactory.opcion = + process.argv[3] ;
 var daoInstance = daoFactory_1.DaoFactory.getInstance();
 exports.dao = daoInstance.getDao(OPCION);
-// Singleton.getInstance();
 exports.newSession = new ISession_1.Session();
 exports.io = new SocketIO.Server(exports.server);
 var rutasLogin = require('./rutas/rutasLogin');

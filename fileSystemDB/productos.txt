@@ -1,0 +1,12 @@
+[
+	{
+		"_id": "1",
+		"timestamp": 1640986844831,
+		"title": "Birras",
+		"description": "Birra rubia ricasa",
+		"code": "birra1",
+		"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
+		"price": "199",
+		"stock": "200"
+	}
+]

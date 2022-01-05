@@ -6,11 +6,6 @@ import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 
 
-// const dalProductos = require("./persistencia/dalProductos");
-// const dalMensajes = require("./persistencia/dalMensajes");
-
-
-
 const getNormalizeMsj = async () => {
     try {
         const mensajesOriginal: MensajeWrap = await dao.getMensajes();

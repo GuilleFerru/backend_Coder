@@ -62,8 +62,6 @@ var loggers_1 = require("./loggers");
 var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
-// const dalProductos = require("./persistencia/dalProductos");
-// const dalMensajes = require("./persistencia/dalMensajes");
 var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
     return __generator(this, function (_a) {

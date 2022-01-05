@@ -3,7 +3,6 @@ import compression from 'compression';
 import handlebars from 'express-handlebars';
 import { IDao } from "./interfaces/IDao";
 import { DaoFactory } from "./daoFactory";
-import { Singleton } from './utils/dbConnection';
 import { loggerInfo } from "./loggers";
 import { Session } from "./interfaces/ISession";
 import * as SocketIO from "socket.io";
@@ -55,17 +54,10 @@ export const server = app.listen(port, () => {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 const OPCION =+process.argv[3] || 5;;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// const daoFactory = new DaoFactory();
-// export const dao: IDao = daoFactory.getDao(OPCION);
-// console.log(dao)
-
-// DaoFactory.opcion = + process.argv[3] ;
 
 const daoInstance = DaoFactory.getInstance();
 export const dao: IDao = daoInstance.getDao(OPCION);
 
-
-// Singleton.getInstance();
 
 export const newSession = new Session();
 export const io = new SocketIO.Server(server);
@@ -86,7 +78,6 @@ app.use('/', rutasLogin);
 app.use('/productos', rutasProductos);
 app.use('/carrito', rutasCarrito);
 app.use('/process', rutasProcess);
-
 
 process.on(
     'exit',

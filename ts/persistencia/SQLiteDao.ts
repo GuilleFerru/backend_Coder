@@ -7,17 +7,16 @@ import { Order } from "../interfaces/IOrder";
 import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
 import { loggerError, loggerInfo } from "../loggers";
 
-const optionsMariaDB = {
-    client: "mysql",
+const optionsSQLite = {
+    client: 'sqlite3',
     connection: {
-        host: "127.0.0.1",
-        user: "root",
-        password: "",
-        database: "ecommerce",
+        filename: './SQLiteDB/ecommerce.sqlite'
     },
+    useNullAsDefault: true
 };
 
-export class MySqlDao implements IDao {
+
+export class SQLiteDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
@@ -34,7 +33,7 @@ export class MySqlDao implements IDao {
         this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
-        this.knex = require("knex")(optionsMariaDB);
+        this.knex = require("knex")(optionsSQLite);
         this.conectar();
     }
 
@@ -49,6 +48,23 @@ export class MySqlDao implements IDao {
             throw err
         }
     }
+
+    
+    private dropTables = async () => {
+        // const knex = require("knex")(optionsMariaDB);
+    
+            
+
+                console.log('mensajes Table create');
+                await this.knex.schema.dropTable("mensajes");
+                await this.knex.schema.dropTable("author");
+                await this.knex.schema.dropTable("ordenes");
+                await this.knex.schema.dropTable("productos");
+                await this.knex.schema.dropTable("carrito");
+
+    }
+
+    
 
 
 
@@ -251,6 +267,8 @@ export class MySqlDao implements IDao {
     }
 
     async getProductos(): Promise<Producto[]> {
+    //   await this.dropTables();
+
         await this.createTableProductos();
         await this.createTableOrdenes();
         await this.createTableAuthor();

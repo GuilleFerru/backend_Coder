@@ -50,25 +50,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MySqlDao = void 0;
+exports.SQLiteDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var usuarios_1 = require("../models/usuarios");
 var IOrder_1 = require("../interfaces/IOrder");
 var IMensaje_1 = require("../interfaces/IMensaje");
 var loggers_1 = require("../loggers");
-var optionsMariaDB = {
-    client: "mysql",
+var optionsSQLite = {
+    client: 'sqlite3',
     connection: {
-        host: "127.0.0.1",
-        user: "root",
-        password: "",
-        database: "ecommerce",
+        filename: './SQLiteDB/ecommerce.sqlite'
     },
+    useNullAsDefault: true
 };
-var MySqlDao = /** @class */ (function () {
-    function MySqlDao() {
+var SQLiteDao = /** @class */ (function () {
+    function SQLiteDao() {
         var _this = this;
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+        this.dropTables = function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        // const knex = require("knex")(optionsMariaDB);
+                        console.log('mensajes Table create');
+                        return [4 /*yield*/, this.knex.schema.dropTable("mensajes")];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, this.knex.schema.dropTable("author")];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, this.knex.schema.dropTable("ordenes")];
+                    case 3:
+                        _a.sent();
+                        return [4 /*yield*/, this.knex.schema.dropTable("productos")];
+                    case 4:
+                        _a.sent();
+                        return [4 /*yield*/, this.knex.schema.dropTable("carrito")];
+                    case 5:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); };
         this.createTableMensajes = function () { return __awaiter(_this, void 0, void 0, function () {
             var tableName, error_1;
             return __generator(this, function (_a) {
@@ -245,10 +268,10 @@ var MySqlDao = /** @class */ (function () {
         this.mensajes = new Array();
         this.countCarrito = 1;
         this.countOrder = 1;
-        this.knex = require("knex")(optionsMariaDB);
+        this.knex = require("knex")(optionsSQLite);
         this.conectar();
     }
-    MySqlDao.prototype.conectar = function () {
+    SQLiteDao.prototype.conectar = function () {
         return __awaiter(this, void 0, void 0, function () {
             var err_1;
             return __generator(this, function (_a) {
@@ -267,7 +290,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.findUser = function (username) {
+    SQLiteDao.prototype.findUser = function (username) {
         return __awaiter(this, void 0, void 0, function () {
             var user;
             return __generator(this, function (_a) {
@@ -280,7 +303,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.filterProducto = function (filtro, filterBy) {
+    SQLiteDao.prototype.filterProducto = function (filtro, filterBy) {
         return __awaiter(this, void 0, void 0, function () {
             var filtroCapitalized, productosByName, productosByCode, productosByPrecio, productosByStock, error_6;
             var _this = this;
@@ -336,7 +359,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.insertProducto = function (producto) {
+    SQLiteDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
             var error_7;
             return __generator(this, function (_a) {
@@ -369,13 +392,16 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.getProductos = function () {
+    SQLiteDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var productosFromDB, _i, productosFromDB_1, producto, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.createTableProductos()];
+                    case 0: 
+                    //   await this.dropTables();
+                    return [4 /*yield*/, this.createTableProductos()];
                     case 1:
+                        //   await this.dropTables();
                         _a.sent();
                         return [4 /*yield*/, this.createTableOrdenes()];
                     case 2:
@@ -412,7 +438,7 @@ var MySqlDao = /** @class */ (function () {
         });
     };
     ;
-    MySqlDao.prototype.getProductoById = function (id) {
+    SQLiteDao.prototype.getProductoById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var producto;
             return __generator(this, function (_a) {
@@ -429,7 +455,7 @@ var MySqlDao = /** @class */ (function () {
         });
     };
     ;
-    MySqlDao.prototype.updateProducto = function (id, productoToBeUpdate) {
+    SQLiteDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
             var error_9;
             var _this = this;
@@ -465,7 +491,7 @@ var MySqlDao = /** @class */ (function () {
         });
     };
     ;
-    MySqlDao.prototype.deleteProducto = function (id) {
+    SQLiteDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var productoToBeDelete, index, error_10;
             return __generator(this, function (_a) {
@@ -491,7 +517,7 @@ var MySqlDao = /** @class */ (function () {
     };
     ;
     ////////////////////////////////////////////////////////////////////////////////////////////
-    MySqlDao.prototype.insertOrder = function (order) {
+    SQLiteDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
             var respondeOrderTotal, newOrder, lastOrderInserted, _id, _i, order_1, cart, responseProductos, responseOrder, error_11;
             return __generator(this, function (_a) {
@@ -549,7 +575,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.insertProductToCarrito = function (producto) {
+    SQLiteDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
             var lastCarritoId, _id, error_12;
             return __generator(this, function (_a) {
@@ -592,7 +618,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.getCarrito = function () {
+    SQLiteDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
             var productosEnCarrito, _i, productosEnCarrito_1, carrito, productoId, productoEnCarrito, producto, error_13;
             return __generator(this, function (_a) {
@@ -642,10 +668,10 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.getCarritoById = function (id) {
+    SQLiteDao.prototype.getCarritoById = function (id) {
         return this.carrito.find(function (element) { return element._id === id; });
     };
-    MySqlDao.prototype.updateQtyInCarrito = function (carrito) {
+    SQLiteDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
             var newCarrito, index, error_14;
             return __generator(this, function (_a) {
@@ -669,7 +695,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.deleteCarrito = function (id) {
+    SQLiteDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var productoToBeDelete, index, error_15;
             return __generator(this, function (_a) {
@@ -694,7 +720,7 @@ var MySqlDao = /** @class */ (function () {
         });
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    MySqlDao.prototype.getMensajes = function () {
+    SQLiteDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
             var mensajesFromDB, _i, mensajesFromDB_1, mensaje, auhtorId, author, authorObject, msgComplete, error_16, wrapMensajes;
             return __generator(this, function (_a) {
@@ -747,7 +773,7 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.insertMensajes = function (mensaje) {
+    SQLiteDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
             var authorEmail, authorGuardado, error_17;
             return __generator(this, function (_a) {
@@ -795,9 +821,9 @@ var MySqlDao = /** @class */ (function () {
             });
         });
     };
-    MySqlDao.prototype.getMensajeById = function (id) {
+    SQLiteDao.prototype.getMensajeById = function (id) {
         return this.mensajes.find(function (element) { return String(element.id) === id; });
     };
-    return MySqlDao;
+    return SQLiteDao;
 }());
-exports.MySqlDao = MySqlDao;
+exports.SQLiteDao = SQLiteDao;

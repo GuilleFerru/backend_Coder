@@ -298,7 +298,6 @@ var MongoDbaaSDao = /** @class */ (function () {
                         throw error_6;
                     case 3:
                         wrapMensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
-                        console.log(wrapMensajes);
                         return [2 /*return*/, wrapMensajes];
                     case 4: return [2 /*return*/];
                 }

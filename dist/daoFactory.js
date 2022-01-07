@@ -5,6 +5,7 @@ var MemoryDao_1 = require("./persistencia/MemoryDao");
 var FileSystemDao_1 = require("./persistencia/FileSystemDao");
 var MySqlDao_1 = require("./persistencia/MySqlDao");
 var SQLiteDao_1 = require("./persistencia/SQLiteDao");
+var MongoDbDao_1 = require("./persistencia/MongoDbDao");
 var MongoDbaaSDao_1 = require("./persistencia/MongoDbaaSDao");
 var loggers_1 = require("./loggers");
 // import { FirebaseDao } from "./daos/FirebaseDao";
@@ -36,7 +37,8 @@ var DaoFactory = /** @class */ (function () {
                 loggers_1.loggerInfo.info('Eligio la opción SQLiteDao');
                 return new SQLiteDao_1.SQLiteDao();
             case 5:
-            // return new MongoDbDao();
+                loggers_1.loggerInfo.info('Eligio la opción MongoDbDao');
+                return new MongoDbDao_1.MongoDbDao();
             case 6:
                 return new MongoDbaaSDao_1.MongoDbaaSDao();
             case 7:

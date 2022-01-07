@@ -3,7 +3,7 @@ import { MemoryDao } from "./persistencia/MemoryDao";
 import { FileSystemDao } from "./persistencia/FileSystemDao";
 import { MySqlDao } from "./persistencia/MySqlDao";
 import { SQLiteDao } from "./persistencia/SQLiteDao";
-// import { MongoDbDao } from "./daos/MongoDbDao";
+import { MongoDbDao } from "./persistencia/MongoDbDao";
 import { IDao } from "./interfaces/IDao";
 import { MongoDbaaSDao } from "./persistencia/MongoDbaaSDao";
 import { loggerInfo } from "./loggers";
@@ -40,7 +40,8 @@ export class DaoFactory {
                 loggerInfo.info('Eligio la opción SQLiteDao');
             return new SQLiteDao();
             case 5:
-            // return new MongoDbDao();
+                loggerInfo.info('Eligio la opción MongoDbDao');
+            return new MongoDbDao();
             case 6:
                 return new MongoDbaaSDao();
             case 7:

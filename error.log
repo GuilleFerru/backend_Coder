@@ -1181,3 +1181,4 @@
     at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:33:53)
     at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:24:58)
     at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2022-01-06T21:23:06.054] [ERROR] error - MongoDB: Error en conectar: MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections

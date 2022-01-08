@@ -8,14 +8,11 @@ var SQLiteDao_1 = require("./persistencia/SQLiteDao");
 var MongoDbDao_1 = require("./persistencia/MongoDbDao");
 var MongoDbaaSDao_1 = require("./persistencia/MongoDbaaSDao");
 var loggers_1 = require("./loggers");
-// import { FirebaseDao } from "./daos/FirebaseDao";
+var FirebaseDao_1 = require("./persistencia/FirebaseDao");
 var instance = null;
 var DaoFactory = /** @class */ (function () {
     function DaoFactory() {
     }
-    // static opcion = 100;
-    // private constructor() {
-    // }
     DaoFactory.getInstance = function () {
         if (!instance) {
             instance = new DaoFactory();
@@ -40,9 +37,11 @@ var DaoFactory = /** @class */ (function () {
                 loggers_1.loggerInfo.info('Eligio la opción MongoDbDao');
                 return new MongoDbDao_1.MongoDbDao();
             case 6:
+                loggers_1.loggerInfo.info('Eligio la opción MongoDbassSDao');
                 return new MongoDbaaSDao_1.MongoDbaaSDao();
             case 7:
-            // return new FirebaseDao();
+                loggers_1.loggerInfo.info('Eligio la opción FirebaseDao');
+                return new FirebaseDao_1.FirebaseDao();
             default:
                 throw new Error("DAO no encontrado");
         }

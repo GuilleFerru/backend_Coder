@@ -7,16 +7,10 @@ import { MongoDbDao } from "./persistencia/MongoDbDao";
 import { IDao } from "./interfaces/IDao";
 import { MongoDbaaSDao } from "./persistencia/MongoDbaaSDao";
 import { loggerInfo } from "./loggers";
-// import { FirebaseDao } from "./daos/FirebaseDao";
+import { FirebaseDao } from "./persistencia/FirebaseDao";
 let instance: any = null;
 
 export class DaoFactory {
-
-    // static opcion = 100;
-
-    // private constructor() {
-
-    // }
 
     public static getInstance(): DaoFactory {
         if (!instance) {
@@ -38,14 +32,16 @@ export class DaoFactory {
                 return new MySqlDao();
             case 4:
                 loggerInfo.info('Eligio la opción SQLiteDao');
-            return new SQLiteDao();
+                return new SQLiteDao();
             case 5:
                 loggerInfo.info('Eligio la opción MongoDbDao');
-            return new MongoDbDao();
+                return new MongoDbDao();
             case 6:
+                loggerInfo.info('Eligio la opción MongoDbassSDao');
                 return new MongoDbaaSDao();
             case 7:
-            // return new FirebaseDao();
+                loggerInfo.info('Eligio la opción FirebaseDao');
+                return new FirebaseDao();
             default:
                 throw new Error("DAO no encontrado");
         }

@@ -34,7 +34,7 @@ module.exports = {
     },
 
     postCarrito: async (orderToProcess: Cart []) => {
-        const orderProcessed: any = await dao.insertOrder(orderToProcess);               
+        const orderProcessed: any = await dao.insertOrder(orderToProcess);       
         const orderProcessedId = orderProcessed[0]._id;    
         const orderProcessedTotal = orderProcessed[0].orderTotal;
         const orderProcessedProductos = orderProcessed[0].productos;

@@ -54,16 +54,15 @@ exports.server = exports.app.listen(port, function () {
     loggers_1.loggerInfo.info("Servidor listo en el puerto " + port);
 });
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// MEMORY = 0;
-// FILESYSTEM = 1;
-// MYSQL = 2;
-// SQLITE = 3;
-// MONGO = 4;
-// MONGOAAS = 5;
-// FIREBASE = 6;
+// MEMORY = 1;
+// FILESYSTEM = 2;
+// MYSQL = 3;
+// SQLITE = 4;
+// MONGO = 5
+// MONGOAAS = 6;
+// FIREBASE = 7;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-var OPCION = +process.argv[3] || 5;
-;
+var OPCION = +process.argv[3] || 6;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var daoInstance = daoFactory_1.DaoFactory.getInstance();
 exports.dao = daoInstance.getDao(OPCION);

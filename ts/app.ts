@@ -16,15 +16,9 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 export const app = express();
 
-// module.exports = {
-//     app,
-// };
-
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// console.log(process.argv[3])
 
 app.engine(
     "hbs",

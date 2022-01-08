@@ -3,10 +3,9 @@ import * as fs from "fs";
 import { IDao } from "../interfaces/IDao";
 import { Producto } from "../interfaces/IProducto";
 import { Cart } from "../interfaces/ICart";
-import { Order } from "../interfaces/IOrder";
 import { usuarioModel as User } from '../models/usuarios';
 import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
-import { loggerError, loggerInfo, loggerWarn } from "../loggers";
+import { loggerError, loggerInfo } from "../loggers";
 
 export class FileSystemDao implements IDao {
     productos: Array<Producto>;

@@ -1,11 +1,6 @@
 import { Producto } from "../interfaces/IProducto";
 import { dao } from "../app";
 import * as faker from 'faker';
-import { buildSchema } from "graphql";
-import { graphqlHTTP } from "express-graphql";
-
-
-
 
 export const generateData = (cantidadAGenerar: number) => {
     const productoTest: Producto[] = [];
@@ -34,29 +29,18 @@ module.exports = {
         } else {
             return false
         }
-
-
     },
-
     getProductos: async (id: string) => {
-        
-        const productoById: Producto | undefined = await dao.getProductoById(id);
-        if (productoById) {
-            if (String(productoById._id) === id) {
-                return productoById;
-            } else {
-
-            }
+        let response;
+        if (id) {
+            const productoById: Producto | undefined = await dao.getProductoById(id);
+            response = String(productoById?._id) === id ? productoById : false;
         } else {
             const products = await dao.getProductos();
-            if (products.length > 0) {
-                return products;
-            } else {
-                return '';
-            }
+            response = products.length > 0 ? products : false;
         }
+        return response;
     },
-
     postProducto: async (producto: Producto) => {
         const newProducto: Producto = new Producto(
             producto.title,
@@ -73,7 +57,6 @@ module.exports = {
             return false;
         }
     },
-
     putProducto: async (id: string, producto: Producto) => {
         const newProducto: Producto = new Producto(
             producto.title,
@@ -103,6 +86,21 @@ module.exports = {
             return false;
         }
     },
-
-
+    async updateStock(producto: Producto) {
+        if ((producto.stock - 1) >= 0) {
+            producto.stock = producto.stock - 1;
+            await dao.updateProducto(producto._id, producto);
+            const productoUpdated: Producto | undefined = await dao.getProductoById(producto._id);
+            return productoUpdated;
+        } else {
+            return false;
+        }
+    },
+    async restoreStock(producto: Producto, qty: number) {
+        producto.stock = producto.stock + qty;
+        await dao.updateProducto(producto._id, producto);
+        const productoUpdated: Producto | undefined = await dao.getProductoById(producto._id);
+        return productoUpdated;
+    }
 }
+

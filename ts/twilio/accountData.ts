@@ -1,3 +1,3 @@
 
-export const accountSid = 'AC1471a99c86fe7bd44086726a5ae428eb';
-export const authToken = '6a7bbe1a58e5df29a25b4124f0b1f1cc';
+export const accountSid = 'ACc126054f3e7f6d87a4fb4d509362baad';
+export const authToken = 'c9fde4976168f74830d6a620b68c7ab7';

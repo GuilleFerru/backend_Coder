@@ -37,3 +37,15 @@
   messageId: '<baf1f9de-e6f7-5ffb-3b32-5b016db0fddc@GUILLE_PC>'
 }
 [2022-01-06T21:38:58.989] [WARN] warn - Orden Agregada [{"_id":"61d78ba2e4782ebd88b8b6d3","productos":[{"quantity":1,"producto":{"title":"Pinta","code":"7as5Mdf3","price":210,"stock":450},"total":210},{"quantity":1,"producto":{"title":"Hamburguesa","code":"2ad3s487","price":385,"stock":150},"total":385}],"orderTotal":595}]
+[2022-01-10T22:14:13.084] [WARN] warn - Orden Agregada [{"_id":"1","productos":[{"_id":"1","timestamp":1641863647519,"quantity":2,"producto":{"_id":"1","title":"Birra","description":"Birra rubia ricasa","code":"bra001","thumbnail":"https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png","price":"350","stock":"39"},"total":700}],"orderTotal":700}]
+[2022-01-10T22:14:51.902] [WARN] warn - Orden Agregada [{"_id":"2","productos":[{"_id":"2","timestamp":1641863688292,"quantity":2,"producto":{"_id":"1","title":"Birra","description":"Birra rubia ricasa","code":"bra001","thumbnail":"https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png","price":"350","stock":"39"},"total":700}],"orderTotal":700}]
+[2022-01-12T21:21:24.026] [WARN] warn - Orden Agregada [{"_id":"1","productos":[{"_id":"1","timestamp":1642033277080,"quantity":1,"producto":{"_id":"1","title":"1","description":"1","code":"1","thumbnail":"https://cdn3.iconfinder.com/data/icons/education-209/64/globe-earth-geograhy-planet-school-256.png","price":"1","stock":"1"},"total":1}]}]
+[2022-01-16T16:51:13.017] [WARN] warn - [
+  {
+    _id: '1',
+    fyh: '16/1/2022 16:51:13',
+    orderTotal: '40 $',
+    adminOrder: [ [Object], [Object] ],
+    clientOrder: [ [Object], [Object] ]
+  }
+]

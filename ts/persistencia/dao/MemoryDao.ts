@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
-import { IDao } from "../interfaces/IDao";
-import { Producto } from "../interfaces/IProducto";
-import { Cart } from "../interfaces/ICart";
-import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
-import { usuarioModel as User } from '../models/usuarios';
-import { loggerError, loggerInfo, loggerWarn } from "../loggers";
+import { IDao } from "../../interfaces/IDao";
+import { Producto } from "../../interfaces/IProducto";
+import { Cart } from "../../interfaces/ICart";
+import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
+import { usuarioModel as User } from '../../models/usuarios';
+import { loggerError, loggerInfo, loggerWarn } from "../../loggers";
+import { productoDTOForMemory, insertUpdateProductoDTOForMemory } from "../dto/ProductoDto";
+import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
 
 export class MemoryDao implements IDao {
     productos: Array<Producto>;
@@ -51,25 +53,25 @@ export class MemoryDao implements IDao {
             const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
             this.productos.forEach((producto: Producto) => {
                 if (producto.title === filtro[0] || producto.title === filtroCapitalized) {
-                    productos.push(producto);
+                    productos.push(productoDTOForMemory(producto));
                 }
             })
         } else if (filterBy === 'codigo') {
             this.productos.forEach((producto: Producto) => {
                 if (producto.code === filtro[0]) {
-                    productos.push(producto);
+                    productos.push(productoDTOForMemory(producto));
                 }
             })
         } else if (filterBy === 'precio') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
-                    productos.push(producto);
+                    productos.push(productoDTOForMemory(producto));
                 }
             })
         } else if (filterBy === 'stock') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
-                    productos.push(producto);
+                    productos.push(productoDTOForMemory(producto));
                 }
             })
         }
@@ -77,13 +79,17 @@ export class MemoryDao implements IDao {
     }
 
     insertProducto(producto: Producto): void {
-        producto._id = String(this.countProducto);
-        this.productos.push(producto);
+        const productoDTO = insertUpdateProductoDTOForMemory(producto, String(this.countProducto))
+        this.productos.push(productoDTO);
         this.countProducto++;
     }
 
     getProductos(): Array<Producto> {
-        return this.productos
+        const productos: Array<Producto> = [];
+        this.productos.map((producto) => {
+            productos.push(productoDTOForMemory(producto))
+        })
+        return productos
     };
 
     getProductoById(id: string): Producto | undefined {
@@ -95,7 +101,7 @@ export class MemoryDao implements IDao {
         this.productos.map((thisProduct) => {
             if (thisProduct._id === productToBeUpdate._id) {
                 const index = this.productos.indexOf(thisProduct);
-                this.productos[index] = { ...producto, _id: id };
+                this.productos[index] = insertUpdateProductoDTOForMemory(producto, id);
             }
         })
     };
@@ -107,31 +113,41 @@ export class MemoryDao implements IDao {
     };
 
     insertOrder(order: Array<Cart>) {
-        this.carrito = [];
-        const finalOrder = [];
-        if (this.carrito.length === 0) {
-            const newOrder = {
-                _id: String(this.countOrder),
-                productos: [order[0]],
-                orderTotal: order[1].orderTotal
-            };
 
-            finalOrder.push(newOrder);
-            loggerWarn.warn('Orden Agregada', JSON.stringify(finalOrder));
+        try {
+            const orderToSend = [];
+            const adminOrder = [];
+            const clientOrder = [];
+
+            for (let i = 0; i < order.length - 1; i += 1) {
+                adminOrder.push(orderProductoAdminDTO(order[i]));
+                clientOrder.push(orderProductoClientDTO(order[i]));
+            }
+            const finalOrder = orderFinalDTO(String(this.countOrder), adminOrder, clientOrder, order[order.length - 1].orderTotal);
+            orderToSend.push(finalOrder);
+            this.carrito = [];
+            this.countOrder++;
+            loggerInfo.info('Orden insertada correctamente');
+            loggerWarn.warn(orderToSend);
+            return orderToSend;
+
+        } catch (error) {
+            loggerError.error(`MongoDB: Error en insertOrder: ${error}`)
+
         }
-        this.countOrder++;
-        return finalOrder;
     }
 
     insertProductToCarrito(producto: Producto): void {
+
         const _id = String(this.countCarrito);
-        this.carrito.push({
+        const productoDTO = productoDTOForMemory(producto);
+        const newCarrito = {
             _id: _id,
             timestamp: Date.now(),
             quantity: 1,
-            producto,
-        });
-        this.countCarrito++;
+            producto: productoDTO
+        }
+        this.carrito.push(newCarrito);
     }
 
     getCarrito(): Array<Cart> {
@@ -147,8 +163,16 @@ export class MemoryDao implements IDao {
             ...carrito,
             quantity: carrito.quantity + 1,
         };
-        const index = this.carrito.indexOf(carrito);
-        this.carrito[index] = newCarrito;
+
+        this.carrito.map((thisCarrito) => {
+            if (thisCarrito._id === newCarrito._id) {
+                const index = this.carrito.indexOf(thisCarrito);
+                this.carrito[index] = newCarrito;
+
+            }
+        })
+
+
     }
 
     deleteCarrito(id: string): void {

@@ -1,22 +1,39 @@
-{
-	"_id": "1",
-	"productos": [
-		{
-			"_id": "2",
-			"timestamp": 1640989934552,
-			"quantity": 3,
-			"producto": {
-				"_id": "1",
-				"timestamp": 1640986844831,
-				"title": "Birras",
-				"description": "Birra rubia ricasa",
-				"code": "birra1",
-				"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
-				"price": "199",
-				"stock": "200"
+[
+	{
+		"_id": "1",
+		"fyh": "16/1/2022 15:37:18",
+		"orderTotal": "2198 $",
+		"adminOrder": [
+			{
+				"Producto": "Hamburguesa",
+				"Codigo": "hmb001",
+				"Cantidad": 4,
+				"Stock restante": 186,
+				"Precio por unidad": "450 $",
+				"Precio total": "1800 $"
 			},
-			"total": 597
-		}
-	],
-	"orderTotal": 597
-}
+			{
+				"Producto": "Birras",
+				"Codigo": "birra1",
+				"Cantidad": 2,
+				"Stock restante": 0,
+				"Precio por unidad": "199 $",
+				"Precio total": "398 $"
+			}
+		],
+		"clientOrder": [
+			{
+				"Producto": "Hamburguesa",
+				"Cantidad": 4,
+				"Precio por unidad": "450 $",
+				"Precio total": "1800 $"
+			},
+			{
+				"Producto": "Birras",
+				"Cantidad": 2,
+				"Precio por unidad": "199 $",
+				"Precio total": "398 $"
+			}
+		]
+	}
+]

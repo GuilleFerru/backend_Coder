@@ -35,30 +35,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDbaaSDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
-var IMensaje_1 = require("../interfaces/IMensaje");
-var usuarios_1 = require("../models/usuarios");
-var productos_1 = require("../models/productos");
-var mensajes_1 = require("../models/mensajes");
-var carrito_1 = require("../models/carrito");
-var order_1 = require("../models/order");
-var loggers_1 = require("../loggers");
+var IMensaje_1 = require("../../interfaces/IMensaje");
+var usuarios_1 = require("../../models/usuarios");
+var productos_1 = require("../../models/productos");
+var mensajes_1 = require("../../models/mensajes");
+var carrito_1 = require("../../models/carrito");
+var order_1 = require("../../models/order");
+var loggers_1 = require("../../loggers");
+var ProductoDto_1 = require("../dto/ProductoDto");
+var OrdenDto_1 = require("../dto/OrdenDto");
+// const productoDTO = require("./dto/ProductoDto");
 var MongoDbaaSDao = /** @class */ (function () {
     function MongoDbaaSDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -101,7 +93,20 @@ var MongoDbaaSDao = /** @class */ (function () {
         });
     };
     MongoDbaaSDao.prototype.getProductoById = function (id) {
-        return this.productos.find(function (element) { return String(element._id) === id; });
+        return __awaiter(this, void 0, void 0, function () {
+            var producto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(id !== undefined)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, productos_1.productoModel.findById(id)];
+                    case 1:
+                        producto = _a.sent();
+                        return [2 /*return*/, (0, ProductoDto_1.productoDTOForMongo)(producto)];
+                    case 2: return [2 /*return*/, undefined];
+                }
+            });
+        });
     };
     MongoDbaaSDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -116,7 +121,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 1:
                         savedProducts = _a.sent();
                         savedProducts.forEach(function (producto) {
-                            _this.productos.push(producto);
+                            _this.productos.push((0, ProductoDto_1.productoDTOForMongo)(producto));
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -189,13 +194,12 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var _id, timestamp, productoMoficado, error_3;
+            var error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        _id = producto._id, timestamp = producto.timestamp, productoMoficado = __rest(producto, ["_id", "timestamp"]);
-                        return [4 /*yield*/, productos_1.productoModel.insertMany(productoMoficado)];
+                        return [4 /*yield*/, productos_1.productoModel.insertMany((0, ProductoDto_1.insertUpdateProductoDTOForMongo)(producto))];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -204,7 +208,6 @@ var MongoDbaaSDao = /** @class */ (function () {
                         loggers_1.loggerError.error(error_3);
                         throw error_3;
                     case 3:
-                        // await mongoose.disconnect();
                         loggers_1.loggerInfo.info('Producto Agregado');
                         return [2 /*return*/, producto];
                     case 4: return [2 /*return*/];
@@ -214,20 +217,14 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_4;
+            var producto, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
+                        producto = (0, ProductoDto_1.insertUpdateProductoDTOForMongo)(productoToBeUpdate);
                         return [4 /*yield*/, productos_1.productoModel.updateOne({ _id: id }, {
-                                $set: {
-                                    title: productoToBeUpdate.title,
-                                    description: productoToBeUpdate.description,
-                                    code: productoToBeUpdate.code,
-                                    thumbnail: productoToBeUpdate.thumbnail,
-                                    price: productoToBeUpdate.price,
-                                    stock: productoToBeUpdate.stock
-                                }
+                                $set: producto
                             }, { multi: true })];
                     case 1:
                         _a.sent();
@@ -361,11 +358,11 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_2, carrito, error_9, finalOrder;
+            var orderTotal, _i, order_2, carrito, orderToSend, adminOrder, clientOrder, i, lastOrderInserted, _id, finalOrder, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 7, 8, 10]);
+                        _a.trys.push([0, 8, 9, 10]);
                         orderTotal = order.pop();
                         _i = 0, order_2 = order;
                         _a.label = 1;
@@ -389,18 +386,26 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [4 /*yield*/, this.getCarrito()];
                     case 6:
                         _a.sent();
-                        return [3 /*break*/, 10];
+                        orderToSend = [];
+                        adminOrder = [];
+                        clientOrder = [];
+                        for (i = 0; i <= order.length - 1; i += 1) {
+                            adminOrder.push((0, OrdenDto_1.orderProductoAdminDTO)(order[i]));
+                            clientOrder.push((0, OrdenDto_1.orderProductoClientDTO)(order[i]));
+                        }
+                        return [4 /*yield*/, order_1.ordenModel.find({}, { productos: { producto: { description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)];
                     case 7:
+                        lastOrderInserted = _a.sent();
+                        _id = lastOrderInserted[0]._id;
+                        finalOrder = (0, OrdenDto_1.orderFinalDTO)(String(_id), adminOrder, clientOrder, orderTotal.orderTotal);
+                        // console.log(finalOrder)
+                        orderToSend.push(finalOrder);
+                        return [2 /*return*/, orderToSend];
+                    case 8:
                         error_9 = _a.sent();
                         loggers_1.loggerError.error(error_9);
                         throw error_9;
-                    case 8: return [4 /*yield*/, order_1.ordenModel.find({}, { productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)];
-                    case 9:
-                        finalOrder = _a.sent();
-                        loggers_1.loggerWarn.warn('Orden Agregada', JSON.stringify(finalOrder));
-                        return [2 /*return*/, finalOrder
-                            // await mongoose.disconnect();
-                        ];
+                    case 9: return [7 /*endfinally*/];
                     case 10: return [2 /*return*/];
                 }
             });
@@ -432,27 +437,27 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.updateQtyInCarrito = function (carrito) {
+    MongoDbaaSDao.prototype.updateQtyInCarrito = function (cart) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_11;
+            var carrito, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1 } })];
+                        carrito = cart._doc;
+                        return [4 /*yield*/, carrito_1.carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1, "producto": cart.producto } })];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.getCarrito()];
                     case 2:
                         _a.sent();
+                        loggers_1.loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [3 /*break*/, 5];
                     case 3:
                         error_11 = _a.sent();
                         loggers_1.loggerError.error(error_11);
                         throw error_11;
-                    case 4:
-                        loggers_1.loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);
-                        return [7 /*endfinally*/];
+                    case 4: return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
             });

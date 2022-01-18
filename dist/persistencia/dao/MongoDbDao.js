@@ -35,48 +35,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MongoDbaaSDao = void 0;
+exports.MongoDbDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
-var IMensaje_1 = require("../interfaces/IMensaje");
-var usuarios_1 = require("../models/usuarios");
-var productos_1 = require("../models/productos");
-var mensajes_1 = require("../models/mensajes");
-var carrito_1 = require("../models/carrito");
-var order_1 = require("../models/order");
-var loggers_1 = require("../loggers");
-var MongoDbaaSDao = /** @class */ (function () {
-    function MongoDbaaSDao() {
-        this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+var IMensaje_1 = require("../../interfaces/IMensaje");
+var usuarios_1 = require("../../models/usuarios");
+var productos_1 = require("../../models/productos");
+var mensajes_1 = require("../../models/mensajes");
+var carrito_1 = require("../../models/carrito");
+var order_1 = require("../../models/order");
+var loggers_1 = require("../../loggers");
+var productoDTO_1 = require("../dto/productoDTO");
+var MongoDbDao = /** @class */ (function () {
+    // private MONGODBAAS_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    function MongoDbDao() {
+        this.MONGODB_URL = 'mongodb://localhost:27017/ecommerce';
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
         this.mensajes = new Array();
         this.dbConnection = this.conectar();
     }
-    MongoDbaaSDao.prototype.conectar = function () {
+    MongoDbDao.prototype.conectar = function () {
         return __awaiter(this, void 0, void 0, function () {
             var err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        loggers_1.loggerInfo.info('Base de datos MongoDBAaS conectada!');
-                        return [4 /*yield*/, mongoose_1.default.connect(this.MONGO_URL)];
+                        loggers_1.loggerInfo.info('Base de datos MongoDB conectada!');
+                        return [4 /*yield*/, mongoose_1.default.connect(this.MONGODB_URL)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         err_1 = _a.sent();
@@ -87,7 +78,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.findUser = function (username) {
+    MongoDbDao.prototype.findUser = function (username) {
         return __awaiter(this, void 0, void 0, function () {
             var user;
             return __generator(this, function (_a) {
@@ -100,10 +91,10 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getProductoById = function (id) {
+    MongoDbDao.prototype.getProductoById = function (id) {
         return this.productos.find(function (element) { return String(element._id) === id; });
     };
-    MongoDbaaSDao.prototype.getProductos = function () {
+    MongoDbDao.prototype.getProductos = function () {
         return __awaiter(this, void 0, void 0, function () {
             var savedProducts, error_1;
             var _this = this;
@@ -116,7 +107,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                     case 1:
                         savedProducts = _a.sent();
                         savedProducts.forEach(function (producto) {
-                            _this.productos.push(producto);
+                            _this.productos.push((0, productoDTO_1.productoDTOForMongo)(producto));
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -131,7 +122,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.filterProducto = function (filtro, filterBy) {
+    MongoDbDao.prototype.filterProducto = function (filtro, filterBy) {
         return __awaiter(this, void 0, void 0, function () {
             var filtroCapitalized, productosByName, productosByCode, productosByPrecio, productosByStock, error_2;
             var _this = this;
@@ -187,15 +178,14 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.insertProducto = function (producto) {
+    MongoDbDao.prototype.insertProducto = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var _id, timestamp, productoMoficado, error_3;
+            var error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        _id = producto._id, timestamp = producto.timestamp, productoMoficado = __rest(producto, ["_id", "timestamp"]);
-                        return [4 /*yield*/, productos_1.productoModel.insertMany(productoMoficado)];
+                        return [4 /*yield*/, productos_1.productoModel.insertMany((0, productoDTO_1.insertUpdateProductoDTOForMongo)(producto))];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -212,22 +202,16 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.updateProducto = function (id, productoToBeUpdate) {
+    MongoDbDao.prototype.updateProducto = function (id, productoToBeUpdate) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_4;
+            var producto, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
+                        producto = (0, productoDTO_1.insertUpdateProductoDTOForMongo)(productoToBeUpdate);
                         return [4 /*yield*/, productos_1.productoModel.updateOne({ _id: id }, {
-                                $set: {
-                                    title: productoToBeUpdate.title,
-                                    description: productoToBeUpdate.description,
-                                    code: productoToBeUpdate.code,
-                                    thumbnail: productoToBeUpdate.thumbnail,
-                                    price: productoToBeUpdate.price,
-                                    stock: productoToBeUpdate.stock
-                                }
+                                $set: producto
                             }, { multi: true })];
                     case 1:
                         _a.sent();
@@ -247,7 +231,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.deleteProducto = function (id) {
+    MongoDbDao.prototype.deleteProducto = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var error_5;
             return __generator(this, function (_a) {
@@ -273,10 +257,10 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getMensajeById = function (id) {
+    MongoDbDao.prototype.getMensajeById = function (id) {
         return this.mensajes.find(function (element) { return String(element.id) === id; });
     };
-    MongoDbaaSDao.prototype.getMensajes = function () {
+    MongoDbDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
             var savedMensajes, error_6, wrapMensajes;
             var _this = this;
@@ -304,7 +288,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.insertMensajes = function (mensaje) {
+    MongoDbDao.prototype.insertMensajes = function (mensaje) {
         return __awaiter(this, void 0, void 0, function () {
             var error_7;
             return __generator(this, function (_a) {
@@ -328,10 +312,10 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getCarritoById = function (id) {
+    MongoDbDao.prototype.getCarritoById = function (id) {
         return this.carrito.find(function (element) { return String(element._id) === id; });
     };
-    MongoDbaaSDao.prototype.getCarrito = function () {
+    MongoDbDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
             var carritosEnDB, error_8;
             var _this = this;
@@ -359,7 +343,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.insertOrder = function (order) {
+    MongoDbDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
             var orderTotal, _i, order_2, carrito, error_9, finalOrder;
             return __generator(this, function (_a) {
@@ -406,7 +390,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.insertProductToCarrito = function (producto) {
+    MongoDbDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
             var error_10;
             return __generator(this, function (_a) {
@@ -432,7 +416,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.updateQtyInCarrito = function (carrito) {
+    MongoDbDao.prototype.updateQtyInCarrito = function (carrito) {
         return __awaiter(this, void 0, void 0, function () {
             var error_11;
             return __generator(this, function (_a) {
@@ -458,7 +442,7 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.deleteCarrito = function (id) {
+    MongoDbDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var error_12;
             return __generator(this, function (_a) {
@@ -484,6 +468,6 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    return MongoDbaaSDao;
+    return MongoDbDao;
 }());
-exports.MongoDbaaSDao = MongoDbaaSDao;
+exports.MongoDbDao = MongoDbDao;

@@ -1,13 +1,13 @@
 
-import { MemoryDao } from "./persistencia/MemoryDao";
-import { FileSystemDao } from "./persistencia/FileSystemDao";
-import { MySqlDao } from "./persistencia/MySqlDao";
-import { SQLiteDao } from "./persistencia/SQLiteDao";
-import { MongoDbDao } from "./persistencia/MongoDbDao";
+import { MemoryDao } from "./persistencia/dao/MemoryDao";
+import { FileSystemDao } from "./persistencia/dao/FileSystemDao";
+import { MySqlDao } from "./persistencia/dao/MySqlDao";
+import { SQLiteDao } from "./persistencia/dao/SQLiteDao";
+import { MongoDbDao } from "./persistencia/dao/MongoDbDao";
 import { IDao } from "./interfaces/IDao";
-import { MongoDbaaSDao } from "./persistencia/MongoDbaaSDao";
+import { MongoDbaaSDao } from "./persistencia/dao/MongoDbaaSDao";
 import { loggerInfo } from "./loggers";
-import { FirebaseDao } from "./persistencia/FirebaseDao";
+import { FirebaseDao } from "./persistencia/dao/FirebaseDao";
 let instance: any = null;
 
 export class DaoFactory {

@@ -80,30 +80,22 @@ module.exports = {
         }
     },
     getProductos: function (id) { return __awaiter(void 0, void 0, void 0, function () {
-        var productoById, products;
+        var response, productoById, products;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, app_1.dao.getProductoById(id)];
+                case 0:
+                    if (!id) return [3 /*break*/, 2];
+                    return [4 /*yield*/, app_1.dao.getProductoById(id)];
                 case 1:
                     productoById = _a.sent();
-                    if (!productoById) return [3 /*break*/, 2];
-                    if (String(productoById._id) === id) {
-                        return [2 /*return*/, productoById];
-                    }
-                    else {
-                    }
+                    response = String(productoById === null || productoById === void 0 ? void 0 : productoById._id) === id ? productoById : false;
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, app_1.dao.getProductos()];
                 case 3:
                     products = _a.sent();
-                    if (products.length > 0) {
-                        return [2 /*return*/, products];
-                    }
-                    else {
-                        return [2 /*return*/, ''];
-                    }
+                    response = products.length > 0 ? products : false;
                     _a.label = 4;
-                case 4: return [2 /*return*/];
+                case 4: return [2 /*return*/, response];
             }
         });
     }); },
@@ -170,4 +162,42 @@ module.exports = {
             }
         });
     }); },
+    updateStock: function (producto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var productoUpdated;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!((producto.stock - 1) >= 0)) return [3 /*break*/, 3];
+                        producto.stock = producto.stock - 1;
+                        return [4 /*yield*/, app_1.dao.updateProducto(producto._id, producto)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, app_1.dao.getProductoById(producto._id)];
+                    case 2:
+                        productoUpdated = _a.sent();
+                        return [2 /*return*/, productoUpdated];
+                    case 3: return [2 /*return*/, false];
+                }
+            });
+        });
+    },
+    restoreStock: function (producto, qty) {
+        return __awaiter(this, void 0, void 0, function () {
+            var productoUpdated;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        producto.stock = producto.stock + qty;
+                        return [4 /*yield*/, app_1.dao.updateProducto(producto._id, producto)];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, app_1.dao.getProductoById(producto._id)];
+                    case 2:
+                        productoUpdated = _a.sent();
+                        return [2 /*return*/, productoUpdated];
+                }
+            });
+        });
+    }
 };

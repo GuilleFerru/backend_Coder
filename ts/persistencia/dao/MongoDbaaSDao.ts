@@ -1,18 +1,21 @@
 import mongoose from "mongoose";
-import { IDao } from "../interfaces/IDao";
-import { Producto } from "../interfaces/IProducto";
-import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
-import { Cart } from "../interfaces/ICart";
-import { usuarioModel as User } from '../models/usuarios';
-import { productoModel } from "../models/productos";
-import { mensajesModel } from "../models/mensajes";
-import { carritoModel } from "../models/carrito";
-import { ordenModel } from "../models/order";
-import { loggerError, loggerInfo, loggerWarn } from "../loggers";
+import { IDao } from "../../interfaces/IDao";
+import { Producto } from "../../interfaces/IProducto";
+import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
+import { Cart } from "../../interfaces/ICart";
+import { usuarioModel as User } from '../../models/usuarios';
+import { productoModel } from "../../models/productos";
+import { mensajesModel } from "../../models/mensajes";
+import { carritoModel } from "../../models/carrito";
+import { ordenModel } from "../../models/order";
+import { loggerError, loggerInfo, loggerWarn } from "../../loggers";
+import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../dto/ProductoDto";
+import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
+// const productoDTO = require("./dto/ProductoDto");
 
 
 export class MongoDbaaSDao implements IDao {
-    
+
     productos: Producto[];
     carrito: Cart[];
     order: Cart[];
@@ -20,7 +23,7 @@ export class MongoDbaaSDao implements IDao {
     dbConnection: any;
     private MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
 
-  constructor() {
+    constructor() {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
@@ -41,21 +44,26 @@ export class MongoDbaaSDao implements IDao {
     }
 
 
-        async findUser(username: string): Promise<any> {
+    async findUser(username: string): Promise<any> {
         const user = await User.findOne({ username: username })
         return user;
     }
 
-    getProductoById(id: string): Producto | undefined {
-        return this.productos.find((element) => String(element._id) === id)
+    async getProductoById(id: string): Promise<any> {
+        if (id !== undefined) {
+            const producto = await productoModel.findById(id);
+            return productoDTOForMongo(producto);
+        } else {
+            return undefined;
+        }
     }
 
     async getProductos(): Promise<Producto[]> {
         try {
             this.productos = [];
             const savedProducts = await productoModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 });
-            savedProducts.forEach((producto: string | any) => {
-                this.productos.push(producto);
+            savedProducts.forEach((producto: Producto | any) => {
+                this.productos.push(productoDTOForMongo(producto));
             })
         } catch (error) {
             loggerError.error(error);
@@ -101,31 +109,21 @@ export class MongoDbaaSDao implements IDao {
 
     async insertProducto(producto: Producto) {
         try {
-            const { _id, timestamp, ...productoMoficado } = producto;
-            await productoModel.insertMany(productoMoficado);
+            await productoModel.insertMany(insertUpdateProductoDTOForMongo(producto));
         } catch (error) {
             loggerError.error(error);
             throw error;
         } finally {
-            // await mongoose.disconnect();
             loggerInfo.info('Producto Agregado');
             return producto;
-            
         }
     }
 
     async updateProducto(id: string, productoToBeUpdate: Producto) {
         try {
-
+            const producto = insertUpdateProductoDTOForMongo(productoToBeUpdate);
             await productoModel.updateOne({ _id: id }, {
-                $set: {
-                    title: productoToBeUpdate.title,
-                    description: productoToBeUpdate.description,
-                    code: productoToBeUpdate.code,
-                    thumbnail: productoToBeUpdate.thumbnail,
-                    price: productoToBeUpdate.price,
-                    stock: productoToBeUpdate.stock
-                }
+                $set: producto
             }, { multi: true });
             await this.getProductos();
         } catch (error) {
@@ -157,10 +155,10 @@ export class MongoDbaaSDao implements IDao {
 
     async getMensajes(): Promise<MensajeWrap> {
         try {
-            
+
             this.mensajes = [];
             const savedMensajes = await mensajesModel.find({}, { __v: 0, _id: 0 })
-            
+
             savedMensajes.forEach((mensaje: Mensaje | any) => {
                 this.mensajes.push(mensaje);
             })
@@ -169,7 +167,6 @@ export class MongoDbaaSDao implements IDao {
             throw error;
         } finally {
             const wrapMensajes = new MensajeWrap('999', this.mensajes);
-            
             return wrapMensajes;
         }
     }
@@ -197,6 +194,9 @@ export class MongoDbaaSDao implements IDao {
             carritosEnDB.forEach((cart: string | any) => {
                 this.carrito.push(cart);
             });
+
+
+
         } catch (error) {
             loggerError.error(error);
             throw error;
@@ -218,14 +218,31 @@ export class MongoDbaaSDao implements IDao {
                 orderTotal: orderTotal.orderTotal
             });
             await this.getCarrito();
+
+            const orderToSend = [];
+            const adminOrder = [];
+            const clientOrder = [];
+
+            for (let i = 0; i <= order.length - 1; i += 1) {
+                adminOrder.push(orderProductoAdminDTO(order[i]));
+                clientOrder.push(orderProductoClientDTO(order[i]));
+            }
+            const lastOrderInserted: any = await ordenModel.find({}, { productos: { producto: { description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)
+
+            const _id = lastOrderInserted[0]._id;
+            const finalOrder = orderFinalDTO(String(_id), adminOrder, clientOrder, orderTotal.orderTotal);
+            // console.log(finalOrder)
+            orderToSend.push(finalOrder);
+
+            return orderToSend
         } catch (error) {
             loggerError.error(error);
             throw error;
         } finally {
             // const finalOrder = JSON.stringify(await ordenModel.find({}, { _id: 0, productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1))
-            const finalOrder: any = await ordenModel.find({}, { productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)
-            loggerWarn.warn('Orden Agregada', JSON.stringify(finalOrder));
-            return finalOrder
+
+
+
             // await mongoose.disconnect();
         }
     }
@@ -246,15 +263,18 @@ export class MongoDbaaSDao implements IDao {
         }
     }
 
-    async updateQtyInCarrito(carrito: Cart) {
+    async updateQtyInCarrito(cart: Cart) {
         try {
-            await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1 } });
+
+            const carrito = cart._doc;         
+            await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1, "producto": cart.producto } });
             await this.getCarrito();
+            loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);
+
         } catch (error) {
             loggerError.error(error);
             throw error;
         } finally {
-            loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title)
             // await mongoose.disconnect();
         }
     }

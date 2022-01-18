@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DaoFactory = void 0;
-var MemoryDao_1 = require("./persistencia/MemoryDao");
-var FileSystemDao_1 = require("./persistencia/FileSystemDao");
-var MySqlDao_1 = require("./persistencia/MySqlDao");
-var SQLiteDao_1 = require("./persistencia/SQLiteDao");
-var MongoDbDao_1 = require("./persistencia/MongoDbDao");
-var MongoDbaaSDao_1 = require("./persistencia/MongoDbaaSDao");
+var MemoryDao_1 = require("./persistencia/dao/MemoryDao");
+var FileSystemDao_1 = require("./persistencia/dao/FileSystemDao");
+var MySqlDao_1 = require("./persistencia/dao/MySqlDao");
+var SQLiteDao_1 = require("./persistencia/dao/SQLiteDao");
+var MongoDbDao_1 = require("./persistencia/dao/MongoDbDao");
+var MongoDbaaSDao_1 = require("./persistencia/dao/MongoDbaaSDao");
 var loggers_1 = require("./loggers");
-var FirebaseDao_1 = require("./persistencia/FirebaseDao");
+var FirebaseDao_1 = require("./persistencia/dao/FirebaseDao");
 var instance = null;
 var DaoFactory = /** @class */ (function () {
     function DaoFactory() {

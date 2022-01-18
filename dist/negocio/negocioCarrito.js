@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -61,8 +72,7 @@ var twilioWsp = __importStar(require("../twilio/wsp.js"));
 var twilioSms = __importStar(require("../twilio/sms.js"));
 var ethereal = __importStar(require("../email/nodemailerEthereal"));
 var loggers_1 = require("../loggers");
-// const dalCarrito = require("../persistencia/dalCarrito");
-// const dalProductos = require("../persistencia/dalProductos");
+var negocioProductos = require("../negocio/negocioProductos");
 module.exports = {
     getCarrito: function (id) { return __awaiter(void 0, void 0, void 0, function () {
         var carritoById, carrito;
@@ -94,48 +104,26 @@ module.exports = {
         });
     }); },
     postCarrito: function (orderToProcess) { return __awaiter(void 0, void 0, void 0, function () {
-        var orderProcessed, orderProcessedId, orderProcessedTotal, orderProcessedProductos, orderProcessedAdmin, orderProcessedUser, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
+        var orderProcessed, orderProcessedId, orderProcessedDate, orderProcessedTotal, orderProcessedAdmin, orderProcessedClient, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, app_2.dao.insertOrder(orderToProcess)];
                 case 1:
                     orderProcessed = _a.sent();
                     orderProcessedId = orderProcessed[0]._id;
+                    orderProcessedDate = orderProcessed[0].fyh;
                     orderProcessedTotal = orderProcessed[0].orderTotal;
-                    orderProcessedProductos = orderProcessed[0].productos;
-                    orderProcessedAdmin = [];
-                    orderProcessedUser = [];
-                    orderProcessedProductos.map(function (order) {
-                        var producto = order.producto.title;
-                        var codigo = order.producto.code;
-                        var cantidad = order.quantity;
-                        var precioPorUnidad = order.producto.price;
-                        var precioTotal = order.total;
-                        orderProcessedAdmin.push({
-                            producto: producto,
-                            codigo: codigo,
-                            cantidad: cantidad,
-                            precioPorUnidad: precioPorUnidad,
-                            precioTotal: precioTotal
-                        });
-                        orderProcessedUser.push({
-                            producto: producto,
-                            cantidad: cantidad,
-                            precioPorUnidad: precioPorUnidad,
-                            precioTotal: precioTotal
-                        });
-                    });
+                    orderProcessedAdmin = orderProcessed[0].adminOrder;
+                    orderProcessedClient = orderProcessed[0].clientOrder;
                     nombreAndEmail = app_1.newSession.getNombre() + " - " + app_1.newSession.getEmail();
-                    mensajeWsp = "----  Nuevo pedido de: " + nombreAndEmail + "  ---- N\u00FAmero de Orden: " + orderProcessedId + "  --- Pedido: " + JSON.stringify(orderProcessedAdmin, null, '\t') + "  ----  Precio Total $: " + orderProcessedTotal + "  ---";
-                    mensajeSms = "---- N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: " + JSON.stringify(orderProcessedUser, null, '\t') + " ----  Precio Total $: " + orderProcessedTotal + "  ---";
-                    mensajeMail = "---- N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: <br> " + JSON.stringify(orderProcessedAdmin, null, '<br>') + " <br> ----  Precio Total $: " + orderProcessedTotal + "  ---";
+                    mensajeWsp = "---- " + orderProcessedDate + " Nuevo pedido de: " + nombreAndEmail + "  ---- N\u00FAmero de Orden: " + orderProcessedId + "  --- Pedido: " + JSON.stringify(orderProcessedAdmin, null, '\t') + "  ----  Precio Total $: " + orderProcessedTotal + "  ---";
+                    mensajeSms = "---- " + orderProcessedDate + " N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: " + JSON.stringify(orderProcessedClient, null, '\t') + " ----  Precio Total $: " + orderProcessedTotal + "  ---";
+                    mensajeMail = "---- " + orderProcessedDate + " N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: <br> " + JSON.stringify(orderProcessedAdmin, null, '<br>') + " <br> ----  Precio Total $: " + orderProcessedTotal + "  ---";
                     _a.label = 2;
                 case 2:
                     _a.trys.push([2, 5, , 6]);
-                    // console.log(req.session);
                     return [4 /*yield*/, twilioWsp.enviarWsp(mensajeWsp)];
                 case 3:
-                    // console.log(req.session);
                     _a.sent();
                     return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, app_1.newSession.getPhone())];
                 case 4:
@@ -160,49 +148,68 @@ module.exports = {
                 case 0: return [4 /*yield*/, app_2.dao.getCarritoById(id)];
                 case 1:
                     cartToBeDelete = _d.sent();
-                    if (!cartToBeDelete) return [3 /*break*/, 4];
+                    if (!cartToBeDelete) return [3 /*break*/, 5];
                     return [4 /*yield*/, app_2.dao.deleteCarrito(cartToBeDelete._id)];
                 case 2:
+                    _d.sent();
+                    return [4 /*yield*/, negocioProductos.restoreStock(cartToBeDelete.producto, cartToBeDelete.quantity)];
+                case 3:
                     _d.sent();
                     _b = (_a = app_1.io.sockets).emit;
                     _c = ["carts"];
                     return [4 /*yield*/, app_2.dao.getCarrito()];
-                case 3:
+                case 4:
                     _b.apply(_a, _c.concat([_d.sent()]));
                     return [2 /*return*/, true];
-                case 4: return [2 /*return*/, false];
+                case 5: return [2 /*return*/, false];
             }
         });
     }); },
     postProductoInCarrito: function (id) { return __awaiter(void 0, void 0, void 0, function () {
-        var productoById, carrrito, cartToBeUpdate;
+        var productoById, stock, carrrito, cartToBeUpdate, producto, carritoWithProductoStockUpdated, producto, producto;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, app_2.dao.getProductoById(id)];
                 case 1:
                     productoById = _a.sent();
-                    if (!productoById) return [3 /*break*/, 10];
+                    if (!productoById) return [3 /*break*/, 15];
+                    stock = productoById.stock;
+                    if (!(stock > 0)) return [3 /*break*/, 14];
                     return [4 /*yield*/, app_2.dao.getCarrito()];
                 case 2:
                     carrrito = _a.sent();
-                    if (!(carrrito.length > 0)) return [3 /*break*/, 7];
-                    cartToBeUpdate = carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; });
-                    if (!cartToBeUpdate) return [3 /*break*/, 4];
-                    return [4 /*yield*/, app_2.dao.updateQtyInCarrito(cartToBeUpdate)];
+                    if (!(carrrito.length > 0)) return [3 /*break*/, 10];
+                    return [4 /*yield*/, carrrito.find(function (cart) { var _a; return String((_a = cart.producto) === null || _a === void 0 ? void 0 : _a._id) === id; })];
                 case 3:
-                    _a.sent();
-                    return [3 /*break*/, 6];
-                case 4: return [4 /*yield*/, app_2.dao.insertProductToCarrito(productoById)];
+                    cartToBeUpdate = _a.sent();
+                    if (!cartToBeUpdate) return [3 /*break*/, 6];
+                    return [4 /*yield*/, negocioProductos.updateStock(productoById)];
+                case 4:
+                    producto = _a.sent();
+                    carritoWithProductoStockUpdated = __assign(__assign({}, cartToBeUpdate), { producto: producto });
+                    return [4 /*yield*/, app_2.dao.updateQtyInCarrito(carritoWithProductoStockUpdated)];
                 case 5:
                     _a.sent();
-                    _a.label = 6;
-                case 6: return [3 /*break*/, 9];
-                case 7: return [4 /*yield*/, app_2.dao.insertProductToCarrito(productoById)];
+                    return [3 /*break*/, 9];
+                case 6: return [4 /*yield*/, negocioProductos.updateStock(productoById)];
+                case 7:
+                    producto = _a.sent();
+                    return [4 /*yield*/, app_2.dao.insertProductToCarrito(producto)];
                 case 8:
                     _a.sent();
                     _a.label = 9;
-                case 9: return [2 /*return*/, true];
-                case 10: return [2 /*return*/, false];
+                case 9: return [3 /*break*/, 13];
+                case 10: return [4 /*yield*/, negocioProductos.updateStock(productoById)];
+                case 11:
+                    producto = _a.sent();
+                    return [4 /*yield*/, app_2.dao.insertProductToCarrito(producto)];
+                case 12:
+                    _a.sent();
+                    _a.label = 13;
+                case 13: return [2 /*return*/, true];
+                case 14: return [3 /*break*/, 16];
+                case 15: return [2 /*return*/, false];
+                case 16: return [2 /*return*/];
             }
         });
     }); }

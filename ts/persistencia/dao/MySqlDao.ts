@@ -1,22 +1,25 @@
 import mongoose from "mongoose";
-import { IDao } from "../interfaces/IDao";
-import { usuarioModel as User } from '../models/usuarios';
-import { Producto } from "../interfaces/IProducto";
-import { Cart } from "../interfaces/ICart";
-import { Order } from "../interfaces/IOrder";
-import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
-import { loggerError, loggerInfo } from "../loggers";
+import { IDao } from "../../interfaces/IDao";
+import { usuarioModel as User } from '../../models/usuarios';
+import { Producto } from "../../interfaces/IProducto";
+import { Cart } from "../../interfaces/ICart";
+import { Order } from "../../interfaces/IOrder";
+import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
+import { loggerError, loggerInfo } from "../../loggers";
+import { productoDTOForSQL, insertUpdateProductoDTOForSQL } from "../dto/ProductoDto";
+import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
 
-const optionsSQLite = {
-    client: 'sqlite3',
+const optionsMariaDB = {
+    client: "mysql",
     connection: {
-        filename: './SQLiteDB/ecommerce.sqlite'
+        host: "127.0.0.1",
+        user: "root",
+        password: "",
+        database: "ecommerce",
     },
-    useNullAsDefault: true
 };
 
-
-export class SQLiteDao implements IDao {
+export class MySqlDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
@@ -33,10 +36,9 @@ export class SQLiteDao implements IDao {
         this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
-        this.knex = require("knex")(optionsSQLite);
+        this.knex = require("knex")(optionsMariaDB);
         this.conectar();
     }
-
 
     async conectar() {
         try {
@@ -48,25 +50,6 @@ export class SQLiteDao implements IDao {
             throw err
         }
     }
-
-    
-    private dropTables = async () => {
-        // const knex = require("knex")(optionsMariaDB);
-    
-            
-
-                console.log('mensajes Table create');
-                await this.knex.schema.dropTable("mensajes");
-                await this.knex.schema.dropTable("author");
-                await this.knex.schema.dropTable("ordenes");
-                await this.knex.schema.dropTable("productos");
-                await this.knex.schema.dropTable("carrito");
-
-    }
-
-    
-
-
 
     private createTableMensajes = async () => {
         // const knex = require("knex")(optionsMariaDB);
@@ -202,8 +185,6 @@ export class SQLiteDao implements IDao {
         }
     }
 
-
-
     async findUser(username: string): Promise<any> {
         const user = await User.findOne({ username: username })
         return user;
@@ -245,17 +226,7 @@ export class SQLiteDao implements IDao {
     async insertProducto(producto: Producto) {
         // const knex = require("knex")(optionsMariaDB);
         try {
-            await this.knex("productos").insert([
-                {
-                    timestamp: Number(Date.now()),
-                    title: producto.title,
-                    description: producto.description,
-                    code: producto.code,
-                    thumbnail: producto.thumbnail,
-                    price: producto.price,
-                    stock: producto.stock,
-                },
-            ]);
+            await this.knex("productos").insert([insertUpdateProductoDTOForSQL(producto)]);
         } catch (error) {
             console.log(error);
             throw error;
@@ -267,28 +238,21 @@ export class SQLiteDao implements IDao {
     }
 
     async getProductos(): Promise<Producto[]> {
-    //   await this.dropTables();
-
         await this.createTableProductos();
         await this.createTableOrdenes();
         await this.createTableAuthor();
         await this.createTableMensajes();
 
-
-        // const knex = require("knex")(optionsMariaDB);
         try {
             const productosFromDB = await this.knex.from("productos").select("*");
             this.productos = [];
             for (const producto of productosFromDB) {
-                producto._id = String(producto._id)
-                this.productos.push(producto);
+                this.productos.push(productoDTOForSQL(producto));
             }
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            // await this.knex.destroy();
-
             return this.productos;
         }
     };
@@ -305,34 +269,24 @@ export class SQLiteDao implements IDao {
     async updateProducto(id: string, productoToBeUpdate: Producto) {
 
         try {
-            await this.knex.from("productos").where("_id", Number(id)).update({
-                title: productoToBeUpdate.title,
-                description: productoToBeUpdate.description,
-                code: productoToBeUpdate.code,
-                thumbnail: productoToBeUpdate.thumbnail,
-                price: productoToBeUpdate.price,
-                stock: productoToBeUpdate.stock
-            })
+            const producto = insertUpdateProductoDTOForSQL(productoToBeUpdate);
+            await this.knex.from("productos").where("_id", Number(id)).update(producto)
 
             this.productos.map((thisProduct) => {
                 if (thisProduct._id === id) {
                     const index = this.productos.indexOf(thisProduct);
                     this.productos[index] = { ...productoToBeUpdate, _id: id, price: Number(productoToBeUpdate.price), stock: Number(productoToBeUpdate.stock) };
-
                 }
             })
         } catch (error) {
             console.log(error);
             throw error;
         } finally {
-            // await this.knex.getProductos()
-            // knex.destroy();
+            console.log('Producto Actualizado');
         }
-
     };
 
     async deleteProducto(id: string) {
-        // const knex = require("knex")(optionsMariaDB);
         try {
             const productoToBeDelete: any = this.getProductoById(id);
             const index = this.productos.indexOf(productoToBeDelete);
@@ -342,7 +296,7 @@ export class SQLiteDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            // knex.destroy();
+            console.log('Producto Eliminado');
         }
     };
 
@@ -365,21 +319,24 @@ export class SQLiteDao implements IDao {
             order.pop();
             const lastOrderInserted = await this.knex('ordenes').max('_id as id').first();
             const _id = lastOrderInserted.id;
-
+            
             for (const cart of order) {
                 await this.knex.from("carrito").where("_id", Number(cart._id)).update({ orden_id: _id })
             }
-            
-            const responseProductos = [];
-            const responseOrder = {
-                _id: String(_id),
-                productos: order,
-                orderTotal: respondeOrderTotal
-            };
-            responseProductos.push(responseOrder);
-            
+
+            const orderToSend = [];
+            const adminOrder = [];
+            const clientOrder = [];
             this.carrito = [];
-            return responseProductos;
+            for (let i = 0; i <= order.length - 1; i += 1) {
+                adminOrder.push(orderProductoAdminDTO(order[i]));
+                clientOrder.push(orderProductoClientDTO(order[i]));
+            }
+    
+            const finalOrder = orderFinalDTO(_id, adminOrder, clientOrder,respondeOrderTotal);
+            orderToSend.push(finalOrder);
+            this.carrito = [];
+            return orderToSend;
         } catch (error) {
             console.log(error);
             throw error;
@@ -449,20 +406,24 @@ export class SQLiteDao implements IDao {
     }
 
     getCarritoById(id: string): Cart | undefined {
-
         return this.carrito.find((element) => element._id === id);
     }
 
     async updateQtyInCarrito(carrito: Cart) {
-        // const knex = require("knex")(optionsMariaDB);
         try {
             await this.knex.from("carrito").where("_id", Number(carrito._id)).update({ quantity: carrito.quantity + 1 })
             const newCarrito: Cart = {
                 ...carrito,
                 quantity: carrito.quantity + 1,
             };
-            const index = this.carrito.indexOf(carrito);
-            this.carrito[index] = newCarrito;
+
+            this.carrito.map((thisCarrito) => {
+                if (thisCarrito._id === newCarrito._id) {
+                    const index = this.carrito.indexOf(thisCarrito);
+                    this.carrito[index] = newCarrito;
+                    
+                }
+            })
         } catch (error) {
             console.log(error);
             throw error;

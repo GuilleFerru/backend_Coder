@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.enviarWsp = void 0;
 var accountData_1 = require("./accountData");
+//monalenachavo6969
 var twilio_1 = __importDefault(require("twilio"));
 var client = (0, twilio_1.default)(accountData_1.accountSid, accountData_1.authToken);
 var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {

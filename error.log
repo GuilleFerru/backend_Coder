@@ -1182,3 +1182,852 @@
     at fulfilled (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\sockets.js:24:58)
     at processTicksAndRejections (internal/process/task_queues.js:93:5)
 [2022-01-06T21:23:06.054] [ERROR] error - MongoDB: Error en conectar: MongooseError: Can't call `openUri()` on an active connection with different connection strings. Make sure you aren't calling `mongoose.connect()` multiple times. See: https://mongoosejs.com/docs/connections.html#multiple_connections
+[2022-01-09T16:04:58.719] [ERROR] error - TypeError: (0 , productoDTO_1.insertUpdateProductoDTOForMongo) is not a function
+    at MongoDbaaSDao.<anonymous> (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\persistencia\dao\MongoDbaaSDao.js:212:89)
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\persistencia\dao\MongoDbaaSDao.js:33:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\persistencia\dao\MongoDbaaSDao.js:14:53)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\persistencia\dao\MongoDbaaSDao.js:8:71
+    at new Promise (<anonymous>)
+    at __awaiter (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\persistencia\dao\MongoDbaaSDao.js:4:12)
+    at MongoDbaaSDao.updateProducto (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\persistencia\dao\MongoDbaaSDao.js:205:16)
+    at E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\negocio\negocioProductos.js:131:52
+    at step (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\negocio\negocioProductos.js:52:23)
+    at Object.next (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\dist\negocio\negocioProductos.js:33:53)
+[2022-01-16T19:56:19.619] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T19:57:11.651] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T19:57:32.672] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T19:57:55.395] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T19:58:56.902] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:00:28.014] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:02:49.981] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:03:36.839] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:04:31.651] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:04:37.990] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:05:29.645] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:05:51.983] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:06:19.577] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:09:34.143] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:09:39.245] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:09:40.139] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:11:23.224] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:11:23.229] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-16T20:11:37.452] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:42:02.524] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at runMicrotasks (<anonymous>)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:47:33.738] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:48:48.438] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:48:59.861] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:52:49.643] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:53:17.669] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:53:57.726] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}
+[2022-01-17T21:54:25.387] [ERROR] error - CastError: Cast to Number failed for value "NaN" (type number) at path "quantity"
+    at model.Query.exec (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4540:21)
+    at model.Query.Query.then (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4639:15)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5) {
+  messageFormat: undefined,
+  stringValue: '"NaN"',
+  kind: 'Number',
+  value: NaN,
+  path: 'quantity',
+  reason: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!isNaN(val))
+  
+      at castNumber (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\cast\number.js:28:10)
+      at SchemaNumber.cast (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:378:12)
+      at SchemaNumber.SchemaType.applySetters (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1135:12)
+      at SchemaNumber.SchemaType._castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1567:15)
+      at SchemaNumber.castForQuery (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schema\number.js:432:14)
+      at SchemaNumber.SchemaType.castForQueryWrapper (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\schematype.js:1534:20)
+      at castUpdateVal (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:523:19)
+      at walkUpdatePath (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:343:24)
+      at castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\helpers\query\castUpdate.js:95:7)
+      at model.Query._castUpdate (E:\CODERHOUSE\4_backend\desafiosGitHub\nodeServer\node_modules\mongoose\lib\query.js:4749:10) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  },
+  valueType: 'number'
+}

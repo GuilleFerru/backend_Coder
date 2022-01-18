@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import { IDao } from "../interfaces/IDao";
-import { Producto } from "../interfaces/IProducto";
-import { Cart } from "../interfaces/ICart";
-import { usuarioModel as User } from '../models/usuarios';
-import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
+import { IDao } from "../../interfaces/IDao";
+import { Producto } from "../../interfaces/IProducto";
+import { Cart } from "../../interfaces/ICart";
+import { usuarioModel as User } from '../../models/usuarios';
+import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
 import firebaseAdmin from "firebase-admin";
-import { loggerError, loggerInfo } from "../loggers";
+import { loggerError, loggerInfo } from "../../loggers";
+import {productoDTOForFirebase, insertUpdateProductoDTOForFirebase} from "../dto/productoDTO";
 
 
 firebaseAdmin.initializeApp({
@@ -59,19 +60,19 @@ export class FirebaseDao implements IDao {
         return this.firestoreAdmin.collection(collection);
     }
 
-    private createProductoObject(producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>): Producto {
-        producto.data()._id = String(producto.id);
-        const newProducto: Producto = new Producto(
-            producto.data().title,
-            producto.data().description,
-            producto.data().code,
-            producto.data().thumbnail,
-            producto.data().price,
-            producto.data().stock
-        )
-        newProducto._id = String(producto.id);
-        return newProducto;
-    }
+    // private createProductoObject(producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>): Producto {
+    //     producto.data()._id = String(producto.id);
+    //     const newProducto: Producto = new Producto(
+    //         producto.data().title,
+    //         producto.data().description,
+    //         producto.data().code,
+    //         producto.data().thumbnail,
+    //         producto.data().price,
+    //         producto.data().stock
+    //     )
+    //     newProducto._id = String(producto.id);
+    //     return productoDTO(newProducto);
+    // }
 
     async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {
         try {
@@ -79,25 +80,25 @@ export class FirebaseDao implements IDao {
             if (filterBy === 'nombre') {
                 const productosByName = await this.Collection('productos').where('title', '==', filtro[0]).get();
                 productosByName.forEach(producto => {
-                    const filterProducto = this.createProductoObject(producto);
+                    const filterProducto = productoDTOForFirebase(producto);
                     this.productos.push(filterProducto);
                 })
             } else if (filterBy === 'codigo') {
                 const productosByCode = await this.Collection('productos').where('code', '==', filtro[0]).get();
                 productosByCode.forEach(producto => {
-                    const filterProducto = this.createProductoObject(producto);
+                    const filterProducto = productoDTOForFirebase(producto);
                     this.productos.push(filterProducto);
                 })
             } else if (filterBy === 'precio') {
                 const productosByPrecio = await this.Collection('productos').orderBy('price').startAt(filtro[0]).endAt(filtro[1]).get();
                 productosByPrecio.forEach(producto => {
-                    const filterProducto = this.createProductoObject(producto);
+                    const filterProducto = productoDTOForFirebase(producto);
                     this.productos.push(filterProducto);
                 })
             } else if (filterBy === 'stock') {
                 const productosByStock = await this.Collection('productos').orderBy('stock').startAt(filtro[0]).endAt(filtro[1]).get();
                 productosByStock.forEach(producto => {
-                    const filterProducto = this.createProductoObject(producto);
+                    const filterProducto = productoDTOForFirebase(producto);
                     this.productos.push(filterProducto);
                 })
             }
@@ -111,8 +112,8 @@ export class FirebaseDao implements IDao {
 
     async insertProducto(producto: Producto) {
         try {
-            const { _id, timestamp, ...productoMoficado } = producto;
-            await this.Collection('productos').add(productoMoficado)
+            
+            await this.Collection('productos').add(insertUpdateProductoDTOForFirebase(producto));
         } catch (error) {
             console.log(error);
             throw error;
@@ -126,8 +127,8 @@ export class FirebaseDao implements IDao {
             this.productos = [];
             const savedProducts = await this.Collection('productos').get();
             savedProducts.docs.map((producto: string | any) => {
-                const newProducto = this.createProductoObject(producto);
-                this.productos.push(newProducto);
+                // const newProducto = this.createProductoObject(producto);
+                this.productos.push(productoDTOForFirebase(producto));
             })
         } catch (error) {
             console.log(error);
@@ -138,20 +139,13 @@ export class FirebaseDao implements IDao {
     };
 
     getProductoById(id: string): Producto | undefined {
-
         return this.productos.find((element) => String(element._id) === id)
     };
 
     async updateProducto(id: string, productoToBeUpdate: Producto) {
         try {
-            await this.Collection('productos').doc(id).update({
-                title: productoToBeUpdate.title,
-                description: productoToBeUpdate.description,
-                code: productoToBeUpdate.code,
-                thumbnail: productoToBeUpdate.thumbnail,
-                price: productoToBeUpdate.price,
-                stock: productoToBeUpdate.stock
-            });
+            const producto = insertUpdateProductoDTOForFirebase(productoToBeUpdate);
+            await this.Collection('productos').doc(id).update(producto);
             await this.getProductos();
         } catch (error) {
             console.log(error);

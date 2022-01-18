@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import * as fs from "fs";
-import { IDao } from "../interfaces/IDao";
-import { Producto } from "../interfaces/IProducto";
-import { Cart } from "../interfaces/ICart";
-import { usuarioModel as User } from '../models/usuarios';
-import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
-import { loggerError, loggerInfo } from "../loggers";
+import { IDao } from "../../interfaces/IDao";
+import { Producto } from "../../interfaces/IProducto";
+import { Cart } from "../../interfaces/ICart";
+import { usuarioModel as User } from '../../models/usuarios';
+import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
+import { loggerError, loggerInfo } from "../../loggers";
+import { productoDTOForFile, insertUpdateProductoDTOForFile } from "../dto/ProductoDto";
+import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
 
 export class FileSystemDao implements IDao {
     productos: Array<Producto>;
@@ -61,25 +63,25 @@ export class FileSystemDao implements IDao {
             const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
             this.productos.forEach((producto: Producto) => {
                 if (producto.title === filtro[0] || producto.title === filtroCapitalized) {
-                    productos.push(producto);
+                    productos.push(productoDTOForFile(producto));
                 }
             })
         } else if (filterBy === 'codigo') {
             this.productos.forEach((producto: Producto) => {
                 if (producto.code === filtro[0]) {
-                    productos.push(producto);
+                    productos.push(productoDTOForFile(producto));
                 }
             })
         } else if (filterBy === 'precio') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
-                    productos.push(producto);
+                    productos.push(productoDTOForFile(producto));
                 }
             })
         } else if (filterBy === 'stock') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
-                    productos.push(producto);
+                    productos.push(productoDTOForFile(producto));
                 }
             })
         }
@@ -91,11 +93,12 @@ export class FileSystemDao implements IDao {
 
     insertProducto(producto: Producto): void {
         producto._id = this.getNewId();
-        this.productos.push(producto)
+        this.productos.push(productoDTOForFile(producto))
         try {
             const productosFromTxt = fs.readFileSync(this.pathProducto, 'utf-8');
             const jsonProductosFromTxt = JSON.parse(productosFromTxt);
-            const productosNew = [...jsonProductosFromTxt, producto];
+            const productoDtoToSave = insertUpdateProductoDTOForFile(producto, producto._id);
+            const productosNew = [...jsonProductosFromTxt, productoDtoToSave];
             fs.writeFileSync(this.pathProducto, JSON.stringify(productosNew, null, "\t"))
         } catch (error) {
             fs.writeFileSync(this.pathProducto, JSON.stringify(this.productos, null, "\t"))
@@ -108,11 +111,10 @@ export class FileSystemDao implements IDao {
                 console.error("Hubo un error con fs.readFile de producto!");
             } else {
                 this.productos = [];
-                
-
                 const savedProducts = JSON.parse(content);
                 savedProducts.forEach((producto: Producto) => {
-                    this.productos.push(producto);
+                    this.productos.push(productoDTOForFile(producto));
+
                 });
             }
         });
@@ -128,7 +130,7 @@ export class FileSystemDao implements IDao {
         this.productos.map((thisProduct) => {
             if (thisProduct._id === productToBeUpdate._id) {
                 const index = this.productos.indexOf(thisProduct);
-                this.productos[index] = { ...producto, _id: id };
+                this.productos[index] = insertUpdateProductoDTOForFile(producto, id)
                 fs.writeFileSync(this.pathProducto, JSON.stringify(this.productos, null, "\t"))
             }
         })
@@ -141,31 +143,38 @@ export class FileSystemDao implements IDao {
         fs.writeFileSync(this.pathProducto, JSON.stringify(this.productos, null, "\t"));
     };
 
+    
+
     /////////////////////////////////////////////////////////////////////////////////////////////
 
     insertOrder(order: Array<Cart>) {
-        // console.log(order[0].producto,'en dao');
+
+        const orderToSend = [];
+        const adminOrder = [];
+        const clientOrder = [];
         this.carrito = [];
-        const finalOrder = [];
-        const newOrder = {
-            _id: String(this.countOrder),
-            productos: [order[0]],
-            orderTotal: order[1].orderTotal
-        };
-        finalOrder.push(newOrder);
-        fs.writeFileSync(this.pathOrder, JSON.stringify(newOrder, null, "\t"));
-        fs.unlinkSync(this.pathCarrito)
+        for (let i = 0; i < order.length - 1; i += 1) {
+            adminOrder.push(orderProductoAdminDTO(order[i]));
+            clientOrder.push(orderProductoClientDTO(order[i]));
+        }
+
+        const finalOrder = orderFinalDTO(String(this.countOrder), adminOrder, clientOrder,order[order.length - 1].orderTotal);
+        orderToSend.push(finalOrder);
+
+        fs.writeFileSync(this.pathOrder, JSON.stringify(orderToSend, null, "\t"));
+        fs.unlinkSync(this.pathCarrito);
         this.countOrder++;
-        return finalOrder;
+        return orderToSend;
     }
 
     insertProductToCarrito(producto: Producto): void {
         const _id = String(this.countCarrito);
+        const productoDTO = productoDTOForFile(producto);
         const newCarrito = {
             _id: _id,
             timestamp: Date.now(),
             quantity: 1,
-            producto,
+            producto: productoDTO
         }
         this.carrito.push(newCarrito);
         try {
@@ -200,13 +209,19 @@ export class FileSystemDao implements IDao {
     }
 
     updateQtyInCarrito(carrito: Cart): void {
+        
         const newCarrito: Cart = {
             ...carrito,
             quantity: carrito.quantity + 1,
         };
-        const index = this.carrito.indexOf(carrito);
-        this.carrito[index] = newCarrito;
-        fs.writeFileSync(this.pathCarrito, JSON.stringify(this.carrito, null, "\t"));
+        
+        this.carrito.map((thisCarrito) => {
+            if (thisCarrito._id === newCarrito._id) {
+                const index = this.carrito.indexOf(thisCarrito);
+                this.carrito[index] = newCarrito;
+                fs.writeFileSync(this.pathCarrito, JSON.stringify(this.carrito, null, "\t"));
+            }
+        })
     }
 
     deleteCarrito(id: string): void {

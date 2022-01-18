@@ -55,7 +55,7 @@ socket.on('messages', async (normalizePost) => {
 });
 
 socket.on('carts', (cart) => {
-    console.log(cart);
+    
     const order = generateOrder(cart);
     const orderTotalObject = order.pop();
     const orderTotal = orderTotalObject.orderTotal;
@@ -190,11 +190,23 @@ const addToCart = (id) => {
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
         .then(res => {
-            const cartAlert = alertTemplate({})
+            let cartAlert;
+            if (res.status !== 200) {
+                cartAlert = alertTemplate({
+                    alert: 'alert-danger',
+                    text: 'Producto Sin Stock',
+                })
+            }else{
+                cartAlert = alertTemplate({
+                    alert: 'alert-success',
+                    text: 'Producto Agregado al Carrito',
+                })
+            }
+            
             document.getElementById('alertContainer').innerHTML = cartAlert;
-            res.json();
+            // res.json();
         })
-        .catch(error => console.log(error))
+        .catch();
 }
 
 const addProduct = () => {

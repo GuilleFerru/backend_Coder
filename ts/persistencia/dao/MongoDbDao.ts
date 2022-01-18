@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
-import { IDao } from "../interfaces/IDao";
-import { Producto } from "../interfaces/IProducto";
-import { Mensaje, MensajeWrap } from "../interfaces/IMensaje";
-import { Cart } from "../interfaces/ICart";
-import { usuarioModel as User } from '../models/usuarios';
-import { productoModel } from "../models/productos";
-import { mensajesModel } from "../models/mensajes";
-import { carritoModel } from "../models/carrito";
-import { ordenModel } from "../models/order";
-import { loggerError, loggerInfo, loggerWarn } from "../loggers";
+import { IDao } from "../../interfaces/IDao";
+import { Producto } from "../../interfaces/IProducto";
+import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
+import { Cart } from "../../interfaces/ICart";
+import { usuarioModel as User } from '../../models/usuarios';
+import { productoModel } from "../../models/productos";
+import { mensajesModel } from "../../models/mensajes";
+import { carritoModel } from "../../models/carrito";
+import { ordenModel } from "../../models/order";
+import { loggerError, loggerInfo, loggerWarn } from "../../loggers";
+import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../dto/productoDTO";
 
 
 
@@ -59,7 +60,7 @@ export class MongoDbDao implements IDao {
             this.productos = [];
             const savedProducts = await productoModel.find({}, { __v: 0, createdAt: 0, updatedAt: 0 });
             savedProducts.forEach((producto: string | any) => {
-                this.productos.push(producto);
+                this.productos.push(productoDTOForMongo(producto));
             })
         } catch (error) {
             loggerError.error(error);
@@ -105,8 +106,7 @@ export class MongoDbDao implements IDao {
 
     async insertProducto(producto: Producto) {
         try {
-            const { _id, timestamp, ...productoMoficado } = producto;
-            await productoModel.insertMany(productoMoficado);
+            await productoModel.insertMany(insertUpdateProductoDTOForMongo(producto));
         } catch (error) {
             loggerError.error(error);
             throw error;
@@ -120,16 +120,9 @@ export class MongoDbDao implements IDao {
 
     async updateProducto(id: string, productoToBeUpdate: Producto) {
         try {
-
+            const producto = insertUpdateProductoDTOForMongo(productoToBeUpdate);
             await productoModel.updateOne({ _id: id }, {
-                $set: {
-                    title: productoToBeUpdate.title,
-                    description: productoToBeUpdate.description,
-                    code: productoToBeUpdate.code,
-                    thumbnail: productoToBeUpdate.thumbnail,
-                    price: productoToBeUpdate.price,
-                    stock: productoToBeUpdate.stock
-                }
+                $set: producto
             }, { multi: true });
             await this.getProductos();
         } catch (error) {

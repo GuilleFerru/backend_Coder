@@ -10,7 +10,6 @@ var Producto = /** @class */ (function () {
         this.code = code;
         this.thumbnail = thumbnail;
         this.price = price;
-        this.price = price;
         this.stock = stock;
     }
     return Producto;

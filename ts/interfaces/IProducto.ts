@@ -33,7 +33,6 @@ export class Producto implements IProducto {
         this.code = code;
         this.thumbnail = thumbnail;
         this.price = price;
-        this.price = price;
         this.stock = stock;
     }
 }

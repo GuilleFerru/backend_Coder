@@ -236,8 +236,8 @@ const filterProductoTemplate = Handlebars.compile(`
 
 
 const alertTemplate = Handlebars.compile(`
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Producto Agregado al Carrito</strong>
+    <div class="alert {{this.alert}} alert-dismissible fade show" role="alert">
+    <strong>{{this.text}}</strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>

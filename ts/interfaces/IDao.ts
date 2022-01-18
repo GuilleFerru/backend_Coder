@@ -18,7 +18,7 @@ export interface IDao {
   deleteProducto(id: string): void;
   // deleteProducto(producto: Producto): void;
 
-  insertOrder(order: Cart[]): void;
+  insertOrder(order: Cart[]): any;
   insertProductToCarrito(producto: Producto): void;
   getCarrito(): Promise<Cart[]> | Cart[];
   getCarritoById(id: string): Cart | undefined;

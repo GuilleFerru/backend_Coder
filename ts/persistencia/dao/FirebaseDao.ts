@@ -6,7 +6,9 @@ import { usuarioModel as User } from '../../models/usuarios';
 import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
 import firebaseAdmin from "firebase-admin";
 import { loggerError, loggerInfo } from "../../loggers";
-import {productoDTOForFirebase, insertUpdateProductoDTOForFirebase} from "../dto/productoDTO";
+import {productoDTOForFirebase, insertUpdateProductoDTOForFirebase} from "../dto/ProductoDto";
+import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
+import { MensajeDTO } from "../dto/MensajeDto";
 
 
 firebaseAdmin.initializeApp({
@@ -59,20 +61,6 @@ export class FirebaseDao implements IDao {
     private Collection(collection: string) {
         return this.firestoreAdmin.collection(collection);
     }
-
-    // private createProductoObject(producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>): Producto {
-    //     producto.data()._id = String(producto.id);
-    //     const newProducto: Producto = new Producto(
-    //         producto.data().title,
-    //         producto.data().description,
-    //         producto.data().code,
-    //         producto.data().thumbnail,
-    //         producto.data().price,
-    //         producto.data().stock
-    //     )
-    //     newProducto._id = String(producto.id);
-    //     return productoDTO(newProducto);
-    // }
 
     async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {
         try {
@@ -184,16 +172,21 @@ export class FirebaseDao implements IDao {
                 timestamp: Date.now()
             })
             await this.getCarrito();
-            const lastOrder = await this.Collection('ordenes').orderBy('timestamp', 'desc').limit(1).get();
-            let lastOrderId = lastOrder.docs[0].id;            
-            const responseProductos = [];
-            const responseOrder = {
-                _id: lastOrderId,
-                productos: order,
-                orderTotal: orderTotal.orderTotal
-            };
-            responseProductos.push(responseOrder);     
-            return responseProductos;
+
+            const orderToSend = [];
+            const adminOrder = [];
+            const clientOrder = [];
+
+            for (let i = 0; i <= order.length - 1; i += 1) {
+                adminOrder.push(orderProductoAdminDTO(order[i]));
+                clientOrder.push(orderProductoClientDTO(order[i]));
+            }
+            const lastOrderInserted = await this.Collection('ordenes').orderBy('timestamp', 'desc').limit(1).get();
+            const _id = lastOrderInserted.docs[0].id;            
+            const finalOrder = orderFinalDTO(String(_id), adminOrder, clientOrder, orderTotal.orderTotal);
+            orderToSend.push(finalOrder);
+            return orderToSend;
+
         } catch (error) {
             console.log(error);
             throw error;
@@ -254,7 +247,7 @@ export class FirebaseDao implements IDao {
 
     async updateQtyInCarrito(carrito: Cart) {
         try {
-            this.Collection('carrito').doc(carrito._id).update({ quantity: carrito.quantity + 1 });
+            this.Collection('carrito').doc(carrito._id).update({ quantity: carrito.quantity + 1, "producto": carrito.producto });
             await this.getCarrito();
         } catch (error) {
             console.log(error);
@@ -296,7 +289,7 @@ export class FirebaseDao implements IDao {
             console.log(error);
             throw error;
         } finally {
-            const wrapMensajes = new MensajeWrap('999', this.mensajes);
+            const wrapMensajes = MensajeDTO(this.mensajes);
             return wrapMensajes;
         }
     }

@@ -7,6 +7,7 @@ import { usuarioModel as User } from '../../models/usuarios';
 import { loggerError, loggerInfo, loggerWarn } from "../../loggers";
 import { productoDTOForMemory, insertUpdateProductoDTOForMemory } from "../dto/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
+import { MensajeDTO } from "../dto/MensajeDto";
 
 export class MemoryDao implements IDao {
     productos: Array<Producto>;
@@ -187,7 +188,7 @@ export class MemoryDao implements IDao {
 
     async getMensajes(): Promise<MensajeWrap> {
         try {
-            const wrapMensajes = new MensajeWrap('999', this.mensajes);
+            const wrapMensajes = MensajeDTO(this.mensajes);
             return wrapMensajes;
         } catch (error) {
             loggerError.error(error);

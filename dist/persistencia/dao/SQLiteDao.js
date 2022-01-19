@@ -54,10 +54,10 @@ exports.SQLiteDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var usuarios_1 = require("../../models/usuarios");
 var IOrder_1 = require("../../interfaces/IOrder");
-var IMensaje_1 = require("../../interfaces/IMensaje");
 var loggers_1 = require("../../loggers");
 var ProductoDto_1 = require("../dto/ProductoDto");
 var OrdenDto_1 = require("../dto/OrdenDto");
+var MensajeDto_1 = require("../dto/MensajeDto");
 var optionsSQLite = {
     client: 'sqlite3',
     connection: {
@@ -756,7 +756,7 @@ var SQLiteDao = /** @class */ (function () {
                         console.log(error_16);
                         throw error_16;
                     case 7:
-                        wrapMensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+                        wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
                         return [2 /*return*/, wrapMensajes];
                     case 8: return [2 /*return*/];
                 }

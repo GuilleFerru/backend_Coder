@@ -82,10 +82,10 @@ exports.FileSystemDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var fs = __importStar(require("fs"));
 var usuarios_1 = require("../../models/usuarios");
-var IMensaje_1 = require("../../interfaces/IMensaje");
 var loggers_1 = require("../../loggers");
 var ProductoDto_1 = require("../dto/ProductoDto");
 var OrdenDto_1 = require("../dto/OrdenDto");
+var MensajeDto_1 = require("../dto/MensajeDto");
 var FileSystemDao = /** @class */ (function () {
     function FileSystemDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -315,7 +315,7 @@ var FileSystemDao = /** @class */ (function () {
                 });
             }
         });
-        var wrapMensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+        var wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
         return wrapMensajes;
     };
     FileSystemDao.prototype.getMensajeById = function (id) {

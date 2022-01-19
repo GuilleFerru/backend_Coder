@@ -41,7 +41,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoDbaaSDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
-var IMensaje_1 = require("../../interfaces/IMensaje");
 var usuarios_1 = require("../../models/usuarios");
 var productos_1 = require("../../models/productos");
 var mensajes_1 = require("../../models/mensajes");
@@ -50,7 +49,7 @@ var order_1 = require("../../models/order");
 var loggers_1 = require("../../loggers");
 var ProductoDto_1 = require("../dto/ProductoDto");
 var OrdenDto_1 = require("../dto/OrdenDto");
-// const productoDTO = require("./dto/ProductoDto");
+var MensajeDto_1 = require("../dto/MensajeDto");
 var MongoDbaaSDao = /** @class */ (function () {
     function MongoDbaaSDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -271,7 +270,7 @@ var MongoDbaaSDao = /** @class */ (function () {
         });
     };
     MongoDbaaSDao.prototype.getMensajeById = function (id) {
-        return this.mensajes.find(function (element) { return String(element.id) === id; });
+        return 'this.mensajes.find((element) => String(element.id) === id)';
     };
     MongoDbaaSDao.prototype.getMensajes = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -294,7 +293,7 @@ var MongoDbaaSDao = /** @class */ (function () {
                         loggers_1.loggerError.error(error_6);
                         throw error_6;
                     case 3:
-                        wrapMensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+                        wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
                         return [2 /*return*/, wrapMensajes];
                     case 4: return [2 /*return*/];
                 }
@@ -398,14 +397,15 @@ var MongoDbaaSDao = /** @class */ (function () {
                         lastOrderInserted = _a.sent();
                         _id = lastOrderInserted[0]._id;
                         finalOrder = (0, OrdenDto_1.orderFinalDTO)(String(_id), adminOrder, clientOrder, orderTotal.orderTotal);
-                        // console.log(finalOrder)
                         orderToSend.push(finalOrder);
                         return [2 /*return*/, orderToSend];
                     case 8:
                         error_9 = _a.sent();
                         loggers_1.loggerError.error(error_9);
                         throw error_9;
-                    case 9: return [7 /*endfinally*/];
+                    case 9:
+                        console.log('Orden Agregada');
+                        return [7 /*endfinally*/];
                     case 10: return [2 /*return*/];
                 }
             });

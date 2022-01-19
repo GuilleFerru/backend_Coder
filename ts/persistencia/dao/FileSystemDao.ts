@@ -8,6 +8,7 @@ import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
 import { loggerError, loggerInfo } from "../../loggers";
 import { productoDTOForFile, insertUpdateProductoDTOForFile } from "../dto/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
+import { MensajeDTO } from "../dto/MensajeDto";
 
 export class FileSystemDao implements IDao {
     productos: Array<Producto>;
@@ -246,7 +247,7 @@ export class FileSystemDao implements IDao {
                 });
             }
         });
-        const wrapMensajes = new MensajeWrap('999', this.mensajes);
+        const wrapMensajes = MensajeDTO(this.mensajes);
         return wrapMensajes;
     }
 

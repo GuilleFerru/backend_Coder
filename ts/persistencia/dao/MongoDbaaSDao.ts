@@ -11,7 +11,8 @@ import { ordenModel } from "../../models/order";
 import { loggerError, loggerInfo, loggerWarn } from "../../loggers";
 import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../dto/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
-// const productoDTO = require("./dto/ProductoDto");
+import { MensajeDTO } from "../dto/MensajeDto";
+
 
 
 export class MongoDbaaSDao implements IDao {
@@ -149,8 +150,8 @@ export class MongoDbaaSDao implements IDao {
         }
     }
 
-    getMensajeById(id: string): Mensaje | undefined {
-        return this.mensajes.find((element) => String(element.id) === id);
+    getMensajeById(id: string): any | undefined {
+        return 'this.mensajes.find((element) => String(element.id) === id)';
     }
 
     async getMensajes(): Promise<MensajeWrap> {
@@ -166,7 +167,7 @@ export class MongoDbaaSDao implements IDao {
             loggerError.error(error);
             throw error;
         } finally {
-            const wrapMensajes = new MensajeWrap('999', this.mensajes);
+            const wrapMensajes = MensajeDTO(this.mensajes);
             return wrapMensajes;
         }
     }
@@ -194,9 +195,6 @@ export class MongoDbaaSDao implements IDao {
             carritosEnDB.forEach((cart: string | any) => {
                 this.carrito.push(cart);
             });
-
-
-
         } catch (error) {
             loggerError.error(error);
             throw error;
@@ -227,11 +225,10 @@ export class MongoDbaaSDao implements IDao {
                 adminOrder.push(orderProductoAdminDTO(order[i]));
                 clientOrder.push(orderProductoClientDTO(order[i]));
             }
-            const lastOrderInserted: any = await ordenModel.find({}, { productos: { producto: { description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)
 
+            const lastOrderInserted: any = await ordenModel.find({}, { productos: { producto: { description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1)
             const _id = lastOrderInserted[0]._id;
             const finalOrder = orderFinalDTO(String(_id), adminOrder, clientOrder, orderTotal.orderTotal);
-            // console.log(finalOrder)
             orderToSend.push(finalOrder);
 
             return orderToSend
@@ -239,11 +236,7 @@ export class MongoDbaaSDao implements IDao {
             loggerError.error(error);
             throw error;
         } finally {
-            // const finalOrder = JSON.stringify(await ordenModel.find({}, { _id: 0, productos: { _id: 0, producto: { _id: 0, description: 0, thumbnail: 0 } }, __v: 0, createdAt: 0, updatedAt: 0 }).sort({ _id: -1 }).limit(1))
-
-
-
-            // await mongoose.disconnect();
+            console.log('Orden Agregada');
         }
     }
 

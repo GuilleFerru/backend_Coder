@@ -54,24 +54,41 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
 var app_1 = require("./app");
+var mongodb_1 = require("mongodb");
+var MensajeRepository_1 = __importDefault(require("./repositories/MensajeRepository"));
 var IMensaje_1 = require("./interfaces/IMensaje");
 var loggers_1 = require("./loggers");
 var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
-var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var mensajesOriginal, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
+var MensajeDto_1 = require("./persistencia/dto/MensajeDto");
+var port = process.env.PORT || process.argv[2] || 8080;
+var getNormalizeMsj = function (mensajeRepository) { return __awaiter(void 0, void 0, void 0, function () {
+    var mensajesOriginal, mensajeDTO, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, app_1.dao.getMensajes()];
+                return [4 /*yield*/, (mensajeRepository === null || mensajeRepository === void 0 ? void 0 : mensajeRepository.find())];
             case 1:
                 mensajesOriginal = _a.sent();
-                mensajesOriginalToString = JSON.stringify(mensajesOriginal);
+                mensajeDTO = (0, MensajeDto_1.MensajeDTO)(mensajesOriginal);
+                mensajesOriginalToString = JSON.stringify(mensajeDTO);
                 mensajeParse = JSON.parse(mensajesOriginalToString);
                 author = new normalizr.schema.Entity("author", undefined, {
                     idAttribute: 'email',
@@ -94,122 +111,109 @@ var getNormalizeMsj = function () { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 var generateMensajeId = function () {
-    return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
+    var hexa = __spreadArray([], Array(24), true).map(function () { return Math.floor(Math.random() * 16).toString(16); }).join('');
+    return String(hexa);
 };
 var sockets = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var port;
+    var connection, mensajeRepository;
     return __generator(this, function (_a) {
-        port = process.env.PORT || process.argv[2] || 8080;
-        app_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-            var _a, _b, _c, _d, _e, _f;
-            return __generator(this, function (_g) {
-                switch (_g.label) {
-                    case 0:
-                        _b = (_a = socket).emit;
-                        _c = ["messages"];
-                        return [4 /*yield*/, getNormalizeMsj()];
-                    case 1:
-                        _b.apply(_a, _c.concat([_g.sent()]));
-                        socket.emit('port', port);
-                        socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
-                            var date, id, checkId, newAuthor, newMensaje, msj, error_2, _a, _b, _c;
-                            return __generator(this, function (_d) {
-                                switch (_d.label) {
-                                    case 0:
-                                        date = new Date().toLocaleString('es-AR');
-                                        id = generateMensajeId();
-                                        checkId = app_1.dao.getMensajeById(id);
-                                        while (checkId) {
-                                            id = generateMensajeId();
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority')];
+            case 1:
+                connection = _a.sent();
+                mensajeRepository = new MensajeRepository_1.default(connection.db("ecommerce"), "mensajesnormalizrs");
+                console.log("Cliente conectado para mensajes");
+                app_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+                    var _a, _b, _c, _d, _e, _f;
+                    return __generator(this, function (_g) {
+                        switch (_g.label) {
+                            case 0:
+                                _b = (_a = socket).emit;
+                                _c = ["messages"];
+                                return [4 /*yield*/, getNormalizeMsj(mensajeRepository)];
+                            case 1:
+                                _b.apply(_a, _c.concat([_g.sent()]));
+                                socket.emit('port', port);
+                                socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
+                                    var date, id, checkId, newAuthor, newMensaje, msj, error_2, _a, _b, _c;
+                                    return __generator(this, function (_d) {
+                                        switch (_d.label) {
+                                            case 0:
+                                                date = new Date().toLocaleString('es-AR');
+                                                id = generateMensajeId();
+                                                return [4 /*yield*/, mensajeRepository.findOne(id)];
+                                            case 1:
+                                                checkId = _d.sent();
+                                                while (checkId) {
+                                                    id = generateMensajeId();
+                                                }
+                                                newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
+                                                newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
+                                                return [4 /*yield*/, mensajeRepository.create(newMensaje)];
+                                            case 2:
+                                                _d.sent();
+                                                if (!mensaje.text.includes('administrador')) return [3 /*break*/, 6];
+                                                _d.label = 3;
+                                            case 3:
+                                                _d.trys.push([3, 5, , 6]);
+                                                msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
+                                                return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571531154')];
+                                            case 4:
+                                                _d.sent();
+                                                return [3 /*break*/, 6];
+                                            case 5:
+                                                error_2 = _d.sent();
+                                                loggers_1.loggerError.error('ERROR enviarWapp', error_2);
+                                                return [3 /*break*/, 6];
+                                            case 6:
+                                                _b = (_a = app_1.io.sockets).emit;
+                                                _c = ["messages"];
+                                                return [4 /*yield*/, getNormalizeMsj(mensajeRepository)];
+                                            case 7:
+                                                _b.apply(_a, _c.concat([_d.sent()]));
+                                                return [2 /*return*/];
                                         }
-                                        newAuthor = new IMensaje_1.Author(mensaje.author.email, mensaje.author.nombre, mensaje.author.apellido, mensaje.author.edad, mensaje.author.alias, mensaje.author.avatar);
-                                        newMensaje = new IMensaje_1.Mensaje(id, mensaje.text, date, newAuthor);
-                                        return [4 /*yield*/, app_1.dao.insertMensajes(newMensaje)];
-                                    case 1:
-                                        _d.sent();
-                                        if (!mensaje.text.includes('administrador')) return [3 /*break*/, 5];
-                                        _d.label = 2;
-                                    case 2:
-                                        _d.trys.push([2, 4, , 5]);
-                                        msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
-                                        return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571531154')];
-                                    case 3:
-                                        _d.sent();
-                                        return [3 /*break*/, 5];
-                                    case 4:
-                                        error_2 = _d.sent();
-                                        loggers_1.loggerError.error('ERROR enviarWapp', error_2);
-                                        return [3 /*break*/, 5];
-                                    case 5:
-                                        _b = (_a = app_1.io.sockets).emit;
-                                        _c = ["messages"];
-                                        return [4 /*yield*/, getNormalizeMsj()];
-                                    case 6:
-                                        _b.apply(_a, _c.concat([_d.sent()]));
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        _e = (_d = socket).emit;
-                        _f = ["products"];
-                        return [4 /*yield*/, app_1.dao.getProductos()];
-                    case 2:
-                        _e.apply(_d, _f.concat([_g.sent(), app_2.newSession.getIsAdmin()]));
-                        socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
-                            var _a, _b, _c;
-                            return __generator(this, function (_d) {
-                                switch (_d.label) {
-                                    case 0:
-                                        _b = (_a = socket).emit;
-                                        _c = ["products"];
-                                        return [4 /*yield*/, app_1.dao.filterProducto(filter, filterBy)];
-                                    case 1:
-                                        _b.apply(_a, _c.concat([_d.sent(), app_2.newSession.getIsAdmin()]));
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        socket.on("getAllProductos", function () { return __awaiter(void 0, void 0, void 0, function () {
-                            var _a, _b, _c;
-                            return __generator(this, function (_d) {
-                                switch (_d.label) {
-                                    case 0:
-                                        _b = (_a = socket).emit;
-                                        _c = ["products"];
-                                        return [4 /*yield*/, app_1.dao.getProductos()];
-                                    case 1:
-                                        _b.apply(_a, _c.concat([_d.sent()]));
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        return [2 /*return*/];
-                }
-            });
-        }); });
-        return [2 /*return*/];
+                                    });
+                                }); });
+                                _e = (_d = socket).emit;
+                                _f = ["products"];
+                                return [4 /*yield*/, app_1.dao.getProductos()];
+                            case 2:
+                                _e.apply(_d, _f.concat([_g.sent(), app_2.newSession.getIsAdmin()]));
+                                socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
+                                    var _a, _b, _c;
+                                    return __generator(this, function (_d) {
+                                        switch (_d.label) {
+                                            case 0:
+                                                _b = (_a = socket).emit;
+                                                _c = ["products"];
+                                                return [4 /*yield*/, app_1.dao.filterProducto(filter, filterBy)];
+                                            case 1:
+                                                _b.apply(_a, _c.concat([_d.sent(), app_2.newSession.getIsAdmin()]));
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); });
+                                socket.on("getAllProductos", function () { return __awaiter(void 0, void 0, void 0, function () {
+                                    var _a, _b, _c;
+                                    return __generator(this, function (_d) {
+                                        switch (_d.label) {
+                                            case 0:
+                                                _b = (_a = socket).emit;
+                                                _c = ["products"];
+                                                return [4 /*yield*/, app_1.dao.getProductos()];
+                                            case 1:
+                                                _b.apply(_a, _c.concat([_d.sent()]));
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); });
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                return [2 /*return*/];
+        }
     });
 }); };
 exports.sockets = sockets;
-// export const sockets = () => {
-//     io.on("connection", async (socket) => {
-//         socket.emit("messages", await dao.getMensajes());
-//         socket.emit("products", await dao.getProductos(), isAdmin);
-//         socket.on("newMessage", async (message: Mensaje) => {
-//             const date = new Date().toLocaleString('es-AR');
-//             const newMensaje: Mensaje = new Mensaje(
-//                 message.author,
-//                 date,
-//                 message.text
-//             )
-//             await dao.insertMensajes(newMensaje);
-//             io.sockets.emit("messages", await dao.getMensajes());
-//         });
-//         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
-//             socket.emit("products", await dao.filterProducto(filter, filterBy), isAdmin);
-//         });
-//         socket.on("getAllProductos", async () => {
-//             socket.emit("products", await dao.getProductos());
-//         });
-//     });
-// }

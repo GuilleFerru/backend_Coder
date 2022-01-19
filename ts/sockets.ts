@@ -1,15 +1,21 @@
 import { io, dao } from './app';
-import { Mensaje, Author, MensajeWrap } from "./interfaces/IMensaje";
+import { MongoClient } from "mongodb";
+import MensajeRepository from "./repositories/MensajeRepository";
+import { Mensaje, Author } from "./interfaces/IMensaje";
 import { loggerError } from "./loggers";
 import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
+import { MensajeDTO } from './persistencia/dto/MensajeDto';
 
 
-const getNormalizeMsj = async () => {
+const port: any = process.env.PORT || process.argv[2] || 8080;
+
+const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
     try {
-        const mensajesOriginal: MensajeWrap = await dao.getMensajes();
-        const mensajesOriginalToString = JSON.stringify(mensajesOriginal);
+        const mensajesOriginal: any = await mensajeRepository?.find();
+        const mensajeDTO = MensajeDTO(mensajesOriginal);
+        const mensajesOriginalToString = JSON.stringify(mensajeDTO);
         const mensajeParse = JSON.parse(mensajesOriginalToString)
 
         const author = new normalizr.schema.Entity("author",
@@ -20,13 +26,14 @@ const getNormalizeMsj = async () => {
         );
         const post = new normalizr.schema.Entity("post", {
             author: author,
-
         });
+
         const chat = new normalizr.schema.Entity('chat', {
             authors: [author],
             posts: [post]
         })
         const normalizePost = normalizr.normalize(mensajeParse, chat);
+
         return normalizePost;
     } catch (error) {
         loggerError.error(error);
@@ -35,27 +42,31 @@ const getNormalizeMsj = async () => {
 }
 
 const generateMensajeId = () => {
-    return Math.floor(Math.random() * 8 + 1) + Math.random().toString().slice(2, 10);
+    const hexa = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+    return String(hexa)
 }
 
 export const sockets = async () => {
 
-    const port: any = process.env.PORT || process.argv[2] || 8080;
-
+    const connection: MongoClient = await MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    const mensajeRepository: MensajeRepository = new MensajeRepository(connection.db("ecommerce"), "mensajesnormalizrs");
+    console.log("Cliente conectado para mensajes");
 
     io.on("connection", async (socket) => {
 
-        socket.emit("messages", await getNormalizeMsj());
+        socket.emit("messages", await getNormalizeMsj(mensajeRepository));
         socket.emit('port', port)
 
         socket.on("newMessage", async (mensaje: Mensaje) => {
 
             const date = new Date().toLocaleString('es-AR');
-            let id = generateMensajeId();
-            const checkId = dao.getMensajeById(id);
+            let id: string = generateMensajeId();
+            const checkId = await mensajeRepository.findOne(id);
+
             while (checkId) {
                 id = generateMensajeId();
             }
+
             const newAuthor: Author = new Author(
                 mensaje.author.email,
                 mensaje.author.nombre,
@@ -64,13 +75,15 @@ export const sockets = async () => {
                 mensaje.author.alias,
                 mensaje.author.avatar,
             )
+
             const newMensaje: Mensaje = new Mensaje(
                 id,
                 mensaje.text,
                 date,
                 newAuthor,
             )
-            await dao.insertMensajes(newMensaje);
+
+            await mensajeRepository.create(newMensaje);
 
             if (mensaje.text.includes('administrador')) {
                 try {
@@ -82,11 +95,11 @@ export const sockets = async () => {
                 }
             }
 
-            io.sockets.emit("messages", await getNormalizeMsj());
+            io.sockets.emit("messages", await getNormalizeMsj(mensajeRepository));
         });
 
-
         socket.emit("products", await dao.getProductos(), newSession.getIsAdmin());
+
         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
             socket.emit("products", await dao.filterProducto(filter, filterBy), newSession.getIsAdmin());
         });
@@ -94,41 +107,13 @@ export const sockets = async () => {
         socket.on("getAllProductos", async () => {
             socket.emit("products", await dao.getProductos());
         });
+
     })
 
 }
 
 
 
-
-
-
-
-
-// export const sockets = () => {
-//     io.on("connection", async (socket) => {
-//         socket.emit("messages", await dao.getMensajes());
-//         socket.emit("products", await dao.getProductos(), isAdmin);
-//         socket.on("newMessage", async (message: Mensaje) => {
-//             const date = new Date().toLocaleString('es-AR');
-//             const newMensaje: Mensaje = new Mensaje(
-//                 message.author,
-//                 date,
-//                 message.text
-//             )
-//             await dao.insertMensajes(newMensaje);
-//             io.sockets.emit("messages", await dao.getMensajes());
-//         });
-
-//         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
-//             socket.emit("products", await dao.filterProducto(filter, filterBy), isAdmin);
-//         });
-//         socket.on("getAllProductos", async () => {
-//             socket.emit("products", await dao.getProductos());
-//         });
-
-//     });
-// }
 
 
 

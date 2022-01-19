@@ -57,7 +57,9 @@ var usuarios_1 = require("../../models/usuarios");
 var IMensaje_1 = require("../../interfaces/IMensaje");
 var firebase_admin_1 = __importDefault(require("firebase-admin"));
 var loggers_1 = require("../../loggers");
-var productoDTO_1 = require("../dto/productoDTO");
+var ProductoDto_1 = require("../dto/ProductoDto");
+var OrdenDto_1 = require("../dto/OrdenDto");
+var MensajeDto_1 = require("../dto/MensajeDto");
 firebase_admin_1.default.initializeApp({
     credential: firebase_admin_1.default.credential.cert("./Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json"),
     databaseURL: "https://backend-coder.firebaseio.com",
@@ -110,19 +112,6 @@ var FirebaseDao = /** @class */ (function () {
     FirebaseDao.prototype.Collection = function (collection) {
         return this.firestoreAdmin.collection(collection);
     };
-    // private createProductoObject(producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>): Producto {
-    //     producto.data()._id = String(producto.id);
-    //     const newProducto: Producto = new Producto(
-    //         producto.data().title,
-    //         producto.data().description,
-    //         producto.data().code,
-    //         producto.data().thumbnail,
-    //         producto.data().price,
-    //         producto.data().stock
-    //     )
-    //     newProducto._id = String(producto.id);
-    //     return productoDTO(newProducto);
-    // }
     FirebaseDao.prototype.filterProducto = function (filtro, filterBy) {
         return __awaiter(this, void 0, void 0, function () {
             var productosByName, productosByCode, productosByPrecio, productosByStock, error_1;
@@ -137,7 +126,7 @@ var FirebaseDao = /** @class */ (function () {
                     case 1:
                         productosByName = _a.sent();
                         productosByName.forEach(function (producto) {
-                            var filterProducto = (0, productoDTO_1.productoDTOForFirebase)(producto);
+                            var filterProducto = (0, ProductoDto_1.productoDTOForFirebase)(producto);
                             _this.productos.push(filterProducto);
                         });
                         return [3 /*break*/, 8];
@@ -147,7 +136,7 @@ var FirebaseDao = /** @class */ (function () {
                     case 3:
                         productosByCode = _a.sent();
                         productosByCode.forEach(function (producto) {
-                            var filterProducto = (0, productoDTO_1.productoDTOForFirebase)(producto);
+                            var filterProducto = (0, ProductoDto_1.productoDTOForFirebase)(producto);
                             _this.productos.push(filterProducto);
                         });
                         return [3 /*break*/, 8];
@@ -157,7 +146,7 @@ var FirebaseDao = /** @class */ (function () {
                     case 5:
                         productosByPrecio = _a.sent();
                         productosByPrecio.forEach(function (producto) {
-                            var filterProducto = (0, productoDTO_1.productoDTOForFirebase)(producto);
+                            var filterProducto = (0, ProductoDto_1.productoDTOForFirebase)(producto);
                             _this.productos.push(filterProducto);
                         });
                         return [3 /*break*/, 8];
@@ -167,7 +156,7 @@ var FirebaseDao = /** @class */ (function () {
                     case 7:
                         productosByStock = _a.sent();
                         productosByStock.forEach(function (producto) {
-                            var filterProducto = (0, productoDTO_1.productoDTOForFirebase)(producto);
+                            var filterProducto = (0, ProductoDto_1.productoDTOForFirebase)(producto);
                             _this.productos.push(filterProducto);
                         });
                         _a.label = 8;
@@ -189,7 +178,7 @@ var FirebaseDao = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        return [4 /*yield*/, this.Collection('productos').add((0, productoDTO_1.insertUpdateProductoDTOForFirebase)(producto))];
+                        return [4 /*yield*/, this.Collection('productos').add((0, ProductoDto_1.insertUpdateProductoDTOForFirebase)(producto))];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 4];
@@ -219,7 +208,7 @@ var FirebaseDao = /** @class */ (function () {
                         savedProducts = _a.sent();
                         savedProducts.docs.map(function (producto) {
                             // const newProducto = this.createProductoObject(producto);
-                            _this.productos.push((0, productoDTO_1.productoDTOForFirebase)(producto));
+                            _this.productos.push((0, ProductoDto_1.productoDTOForFirebase)(producto));
                         });
                         return [3 /*break*/, 4];
                     case 2:
@@ -244,7 +233,7 @@ var FirebaseDao = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, 4, 5]);
-                        producto = (0, productoDTO_1.insertUpdateProductoDTOForFirebase)(productoToBeUpdate);
+                        producto = (0, ProductoDto_1.insertUpdateProductoDTOForFirebase)(productoToBeUpdate);
                         return [4 /*yield*/, this.Collection('productos').doc(id).update(producto)];
                     case 1:
                         _a.sent();
@@ -295,7 +284,7 @@ var FirebaseDao = /** @class */ (function () {
     ////////////////////////////////////////////////////////////////////////////////////////////
     FirebaseDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_1, carrito, lastOrder, lastOrderId, responseProductos, responseOrder, error_6;
+            var orderTotal, _i, order_1, carrito, orderToSend, adminOrder, clientOrder, i, lastOrderInserted, _id, finalOrder, error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -316,18 +305,20 @@ var FirebaseDao = /** @class */ (function () {
                         return [4 /*yield*/, this.getCarrito()];
                     case 2:
                         _a.sent();
+                        orderToSend = [];
+                        adminOrder = [];
+                        clientOrder = [];
+                        for (i = 0; i <= order.length - 1; i += 1) {
+                            adminOrder.push((0, OrdenDto_1.orderProductoAdminDTO)(order[i]));
+                            clientOrder.push((0, OrdenDto_1.orderProductoClientDTO)(order[i]));
+                        }
                         return [4 /*yield*/, this.Collection('ordenes').orderBy('timestamp', 'desc').limit(1).get()];
                     case 3:
-                        lastOrder = _a.sent();
-                        lastOrderId = lastOrder.docs[0].id;
-                        responseProductos = [];
-                        responseOrder = {
-                            _id: lastOrderId,
-                            productos: order,
-                            orderTotal: orderTotal.orderTotal
-                        };
-                        responseProductos.push(responseOrder);
-                        return [2 /*return*/, responseProductos];
+                        lastOrderInserted = _a.sent();
+                        _id = lastOrderInserted.docs[0].id;
+                        finalOrder = (0, OrdenDto_1.orderFinalDTO)(String(_id), adminOrder, clientOrder, orderTotal.orderTotal);
+                        orderToSend.push(finalOrder);
+                        return [2 /*return*/, orderToSend];
                     case 4:
                         error_6 = _a.sent();
                         console.log(error_6);
@@ -410,7 +401,7 @@ var FirebaseDao = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        this.Collection('carrito').doc(carrito._id).update({ quantity: carrito.quantity + 1 });
+                        this.Collection('carrito').doc(carrito._id).update({ quantity: carrito.quantity + 1, "producto": carrito.producto });
                         return [4 /*yield*/, this.getCarrito()];
                     case 1:
                         _a.sent();
@@ -476,7 +467,7 @@ var FirebaseDao = /** @class */ (function () {
                         console.log(error_11);
                         throw error_11;
                     case 3:
-                        wrapMensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+                        wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
                         return [2 /*return*/, wrapMensajes];
                     case 4: return [2 /*return*/];
                 }

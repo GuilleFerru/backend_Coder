@@ -52,11 +52,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MemoryDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
-var IMensaje_1 = require("../../interfaces/IMensaje");
 var usuarios_1 = require("../../models/usuarios");
 var loggers_1 = require("../../loggers");
 var ProductoDto_1 = require("../dto/ProductoDto");
 var OrdenDto_1 = require("../dto/OrdenDto");
+var MensajeDto_1 = require("../dto/MensajeDto");
 var MemoryDao = /** @class */ (function () {
     function MemoryDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -229,7 +229,7 @@ var MemoryDao = /** @class */ (function () {
             var wrapMensajes;
             return __generator(this, function (_a) {
                 try {
-                    wrapMensajes = new IMensaje_1.MensajeWrap('999', this.mensajes);
+                    wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
                     return [2 /*return*/, wrapMensajes];
                 }
                 catch (error) {

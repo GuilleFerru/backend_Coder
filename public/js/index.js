@@ -42,7 +42,6 @@ socket.on('messages', async (normalizePost) => {
         posts: [post]
     })
     const denormalizePost = normalizr.denormalize(normalizePost.result, chat, normalizePost.entities);
-
     const messages = denormalizePost.posts;
 
     const normalizedLength = JSON.stringify(normalizePost).length;

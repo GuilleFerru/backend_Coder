@@ -8,6 +8,7 @@ import { Mensaje, MensajeWrap } from "../../interfaces/IMensaje";
 import { loggerError, loggerInfo } from "../../loggers";
 import { productoDTOForSQL, insertUpdateProductoDTOForSQL } from "../dto/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../dto/OrdenDto";
+import { MensajeDTO } from "../dto/MensajeDto";
 
 const optionsSQLite = {
     client: 'sqlite3',
@@ -506,7 +507,7 @@ export class SQLiteDao implements IDao {
         } finally {
             // await knex.destroy();
 
-            const wrapMensajes = new MensajeWrap('999', this.mensajes);
+            const wrapMensajes = MensajeDTO(this.mensajes);
             return wrapMensajes;
         }
     }

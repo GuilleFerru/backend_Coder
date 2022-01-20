@@ -1,13 +1,14 @@
-Consigna: Sobre la base del proyecto entregable:
+Consigna: Sobre el proyecto del último desafío entregable: 
 
-Realizar un test de la funcionalidad hacia la API Rest de productos (testeada con postman), esta vez creando las pruebas a través un cliente de pruebas que utilice
-Axios para leer productos disponibles, incorporar nuevos productos, modificar y borrar.
+Modificar la capa de persistencia incorporando el concepto de DAO y DTO.
 
-Realizar el cliente en un módulo independiente y desde el código generar los requests correspondientes, revisando los resultados desde la base de datos y en la
-respuesta del servidor obtenida en el cliente HTTP.
+Crear un DAO por cada tipo de persistencia que exista en el proyecto (MongoDB, MySQL, Memory, File, etc).
 
-Luego, realizar las mismas pruebas, a través de un código de test apropiado, que utilice mocha, chai y Supertest, para probar cada uno de los métodos HTTP de la API
-Rest de productos.
+El DAO seleccionado (por un parámetro en línea de comandos como lo hicimos anteriormente)será devuelto por una Factory para que la capa de negocio opere con el.
 
-Escribir una suite de test para verificar si las respuestas a la lectura, incorporación, modificación y borrado de productos son las apropiadas. Generar un reporte con
-los resultados obtenidos de la salida del test.
+Al menos deben existir dos DAOs (Memory ó File para operaciones de debug y DB para base de datos en producción). En el caso de las operaciones de los DAOs en Memory ó File incorporar el ID y la FyH al objeto persistido con DTO.
+
+Los DAOs deben presentar la misma interface hacia la lógica de negocio de nuestro servidor.
+
+Utilizar el patrón Repository para gestionar la información que maneja el canal de chat con Websockets, para almacenar y recuperar los mensajes del sistema de almacenamiento utilizado.
+

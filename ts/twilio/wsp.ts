@@ -3,13 +3,14 @@ import { accountSid, authToken } from './accountData';
 import twilio from 'twilio';
 
 const client = twilio(accountSid, authToken)
+const config = require('../../config.js');
 
 export const enviarWsp = async (mensaje: string) => {
     try {
         await client.messages.create({
             body: mensaje,
-            from: 'whatsapp:+14155238886',
-            to: 'whatsapp:+5493571531154'
+            from:  `whatsapp:${config.TWILIO_WSP}`,
+            to: `whatsapp:${config.TWILIO_PHONE}` 
         })
 
     }

@@ -5,11 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.enviarMail = void 0;
 var nodemailer_1 = __importDefault(require("nodemailer"));
+var config = require('../../config.js');
 var transporter = nodemailer_1.default.createTransport({
     service: 'gmail',
     auth: {
-        user: 'guillelf@gmail.com',
-        pass: ''
+        user: config.NODEMAILER_GMAIL_USER,
+        pass: config.NODEMAILER_GMAIL_PASS
     }
 });
 var enviarMail = function (asunto, mensaje, adjunto, to, cb) {

@@ -77,7 +77,13 @@ var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
 var MensajeDto_1 = require("./persistencia/dto/MensajeDto");
-var port = process.env.PORT || process.argv[2] || 8080;
+var minimist_1 = __importDefault(require("minimist"));
+var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
+    default: {
+        port: 8080,
+    }
+});
+var port = minimistArgs.port;
 var getNormalizeMsj = function (mensajeRepository) { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajeDTO, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
     return __generator(this, function (_a) {
@@ -118,7 +124,10 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
     var connection, mensajeRepository;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority')];
+            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority', {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                })];
             case 1:
                 connection = _a.sent();
                 mensajeRepository = new MensajeRepository_1.default(connection.db("ecommerce"), "mensajesnormalizrs");

@@ -32,9 +32,14 @@ var ISession_1 = require("./interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
 var sockets_1 = require("./sockets");
 var express_graphql_1 = require("express-graphql");
-var port = process.env.PORT || +process.argv[2] || 8080;
-// para que funcione nodemailer
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+var minimist_1 = __importDefault(require("minimist"));
+var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
+    default: {
+        port: 8080,
+    }
+});
+var port = minimistArgs.port;
+var config = require('../config.js');
 exports.app = (0, express_1.default)();
 exports.app.use((0, compression_1.default)());
 exports.app.use(express_1.default.json());
@@ -58,7 +63,7 @@ exports.server = exports.app.listen(port, function () {
 // MONGOAAS = 6;
 // FIREBASE = 7;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-var OPCION = +process.argv[3] || 6;
+var OPCION = +config.PERSISTENCIA;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 var daoInstance = daoFactory_1.DaoFactory.getInstance();
 exports.dao = daoInstance.getDao(OPCION);

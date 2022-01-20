@@ -54,7 +54,7 @@ socket.on('messages', async (normalizePost) => {
 });
 
 socket.on('carts', (cart) => {
-    
+
     const order = generateOrder(cart);
     const orderTotalObject = order.pop();
     const orderTotal = orderTotalObject.orderTotal;
@@ -172,12 +172,12 @@ const showCart = () => {
     fetch(`http://localhost:${port}/carrito/listar/`, {
         method: "GET",
     }).then(response => response.json()).then(cart => {
-        modalCartTemplate({ })
+        modalCartTemplate({})
         const order = generateOrder(cart);
         const orderTotalObject = order.pop();
         const orderTotal = orderTotalObject.orderTotal
         const modalCart = modalCartTemplate({ order, orderTotal })
-        
+
         document.getElementById('modalCart').innerHTML = modalCart;
     }).catch(error => { });
 }
@@ -195,15 +195,18 @@ const addToCart = (id) => {
                     alert: 'alert-danger',
                     text: 'Producto Sin Stock',
                 })
-            }else{
+            } else {
                 cartAlert = alertTemplate({
                     alert: 'alert-success',
                     text: 'Producto Agregado al Carrito',
                 })
             }
-            
+
             document.getElementById('alertContainer').innerHTML = cartAlert;
-            // res.json();
+            setTimeout(() => {
+                document.getElementById('alertContainer').innerHTML = '';
+            }, 2500);
+
         })
         .catch();
 }

@@ -1,38 +1,38 @@
 [
 	{
 		"_id": "1",
-		"fyh": "16/1/2022 15:37:18",
-		"orderTotal": "2198 $",
+		"fyh": "20/1/2022 18:13:04",
+		"orderTotal": "1099 $",
 		"adminOrder": [
 			{
 				"Producto": "Hamburguesa",
 				"Codigo": "hmb001",
-				"Cantidad": 4,
-				"Stock restante": 186,
+				"Cantidad": 2,
+				"Stock restante": 43,
 				"Precio por unidad": "450 $",
-				"Precio total": "1800 $"
+				"Precio total": "900 $"
 			},
 			{
 				"Producto": "Birras",
 				"Codigo": "birra1",
-				"Cantidad": 2,
-				"Stock restante": 0,
+				"Cantidad": 1,
+				"Stock restante": 134,
 				"Precio por unidad": "199 $",
-				"Precio total": "398 $"
+				"Precio total": "199 $"
 			}
 		],
 		"clientOrder": [
 			{
 				"Producto": "Hamburguesa",
-				"Cantidad": 4,
+				"Cantidad": 2,
 				"Precio por unidad": "450 $",
-				"Precio total": "1800 $"
+				"Precio total": "900 $"
 			},
 			{
 				"Producto": "Birras",
-				"Cantidad": 2,
+				"Cantidad": 1,
 				"Precio por unidad": "199 $",
-				"Precio total": "398 $"
+				"Precio total": "199 $"
 			}
 		]
 	}

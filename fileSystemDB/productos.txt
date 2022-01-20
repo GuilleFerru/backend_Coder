@@ -1,21 +1,22 @@
 [
 	{
 		"_id": "1",
-		"fyh": 1642358256414,
+		"fyh": 1642713182420,
 		"title": "Birras",
 		"description": "Birra rubia ricasa",
 		"code": "birra1",
 		"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
 		"price": "199",
-		"stock": "150"
+		"stock": 134
 	},
 	{
 		"_id": "2",
+		"fyh": 1642713180677,
 		"title": "Hamburguesa",
 		"description": "Hamburguesa Triple con de todo!!",
 		"code": "hmb001",
 		"thumbnail": "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/hamburger-fast-food-patty-bread-512.png",
 		"price": "450",
-		"stock": "50"
+		"stock": 43
 	}
 ]

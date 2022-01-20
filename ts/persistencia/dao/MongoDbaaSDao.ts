@@ -32,7 +32,6 @@ export class MongoDbaaSDao implements IDao {
         this.dbConnection = this.conectar()
     }
 
-
     async conectar() {
         try {
             loggerInfo.info('Base de datos MongoDBAaS conectada!')

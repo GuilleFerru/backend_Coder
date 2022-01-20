@@ -1,14 +1,14 @@
 import { accountSid, authToken } from './accountData';
-
 import twilio from 'twilio';
 
 const client = twilio(accountSid, authToken)
+const config = require('../../config.js');
 
 export const enviarSMS = async (mensaje: string, phone: string) => {
     try {
         let rta = await client.messages.create({
             body: mensaje,
-            from: '+14692948136',
+            from: config.TWILIO_SMS_FROM,
             to: phone
         })
         return rta

@@ -1,5 +1,5 @@
-import { io, dao } from './app';
-import { MongoClient } from "mongodb";
+import { io, dao} from './app';
+import {MongoClient} from "mongodb";
 import MensajeRepository from "./repositories/MensajeRepository";
 import { Mensaje, Author } from "./interfaces/IMensaje";
 import { loggerError } from "./loggers";
@@ -7,9 +7,16 @@ import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 import { MensajeDTO } from './persistencia/dto/MensajeDto';
+import minimist from 'minimist';
 
 
-const port: any = process.env.PORT || process.argv[2] || 8080;
+const minimistArgs = minimist(process.argv.slice(2),{
+    default:{ 
+        port: 8080,
+    }
+});
+const port = minimistArgs.port ;
+
 
 const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
     try {
@@ -48,7 +55,13 @@ const generateMensajeId = () => {
 
 export const sockets = async () => {
 
-    const connection: MongoClient = await MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority');
+    const connection: MongoClient | any = await MongoClient.connect(
+        'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority',
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    );
     const mensajeRepository: MensajeRepository = new MensajeRepository(connection.db("ecommerce"), "mensajesnormalizrs");
     console.log("Cliente conectado para mensajes");
 

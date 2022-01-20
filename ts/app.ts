@@ -8,12 +8,16 @@ import { Session } from "./interfaces/ISession";
 import * as SocketIO from "socket.io";
 import { sockets } from "./sockets";
 import { graphqlHTTP } from "express-graphql";
+import minimist from 'minimist';
 
-const port: any = process.env.PORT || +process.argv[2] || 8080;
+const minimistArgs = minimist(process.argv.slice(2),{
+    default:{ 
+        port: 8080,
+    }
+});
 
-// para que funcione nodemailer
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-
+const port = minimistArgs.port ;
+const config = require('../config.js');
 export const app = express();
 
 app.use(compression());
@@ -37,6 +41,7 @@ export const server = app.listen(port, () => {
 });
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // MEMORY = 1;
 // FILESYSTEM = 2;
@@ -46,7 +51,7 @@ export const server = app.listen(port, () => {
 // MONGOAAS = 6;
 // FIREBASE = 7;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-const OPCION =+process.argv[3] || 6;
+const OPCION =+ config.PERSISTENCIA;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const daoInstance = DaoFactory.getInstance();

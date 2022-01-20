@@ -1,13 +1,11 @@
-Consigna: Sobre la base del proyecto entregable:
+Consigna: 
 
-Realizar un test de la funcionalidad hacia la API Rest de productos (testeada con postman), esta vez creando las pruebas a través un cliente de pruebas que utilice
-Axios para leer productos disponibles, incorporar nuevos productos, modificar y borrar.
+Sobre el proyecto del último desafío entregable, utilizar dotenv pasando todas las configuraciones realizadas por línea de comandos a dos archivos: development.env y production.env. Trabajar con un esquema de múltiples entornos.
 
-Realizar el cliente en un módulo independiente y desde el código generar los requests correspondientes, revisando los resultados desde la base de datos y en la
-respuesta del servidor obtenida en el cliente HTTP.
+Las configuraciones realizadas podrían ser: tipo de persistencia, credenciales para login con redes sociales, habilitación de modo cluster entre otras presentes en los proyectos de cada uno.
 
-Luego, realizar las mismas pruebas, a través de un código de test apropiado, que utilice mocha, chai y Supertest, para probar cada uno de los métodos HTTP de la API
-Rest de productos.
+En modo desarrollo, elegir el tipo de persistencia Memory ó File system.
 
-Escribir una suite de test para verificar si las respuestas a la lectura, incorporación, modificación y borrado de productos son las apropiadas. Generar un reporte con
-los resultados obtenidos de la salida del test.
+En modo producción, elegir el tipo de persistencia MongoDB ó MySQL/SQLite3.
+
+La única configuración que no va a ser manejada con dotenv va a ser el puerto de escucha del servidor. Utilizar minimist o yargs para realizar esta configuración. En el caso de no pasar este parámetro por línea de comandos, tomar como default el puerto 8080.

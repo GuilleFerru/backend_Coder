@@ -1,12 +1,12 @@
 import { io, dao} from './app';
 import {MongoClient} from "mongodb";
 import MensajeRepository from "./repositories/MensajeRepository";
-import { Mensaje, Author } from "./interfaces/IMensaje";
-import { loggerError } from "./loggers";
+import { Mensaje, Author } from "./model/DAOs/interfaces/IMensaje";
+import { loggerError,loggerInfo } from "./utils/loggers";
 import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
-import { MensajeDTO } from './persistencia/dto/MensajeDto';
+import { MensajeDTO } from './model/DTOs/MensajeDto';
 import minimist from 'minimist';
 
 
@@ -58,12 +58,14 @@ export const sockets = async () => {
     const connection: MongoClient | any = await MongoClient.connect(
         'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority',
         {
-            useNewUrlParser: true,
+            useNewUrlParser: true, 
             useUnifiedTopology: true,
         }
     );
+    
     const mensajeRepository: MensajeRepository = new MensajeRepository(connection.db("ecommerce"), "mensajesnormalizrs");
-    console.log("Cliente conectado para mensajes");
+    loggerInfo.info("Conectado a la base de datos de mensajes");
+    
 
     io.on("connection", async (socket) => {
 

@@ -26,13 +26,14 @@ exports.io = exports.newSession = exports.dao = exports.server = exports.app = v
 var express_1 = __importDefault(require("express"));
 var compression_1 = __importDefault(require("compression"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
-var daoFactory_1 = require("./daoFactory");
-var loggers_1 = require("./loggers");
-var ISession_1 = require("./interfaces/ISession");
+var daoFactory_1 = require("./model/DAOs/daoFactory");
+var loggers_1 = require("./utils/loggers");
+var ISession_1 = require("./model/DAOs/interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
 var sockets_1 = require("./sockets");
 var express_graphql_1 = require("express-graphql");
 var minimist_1 = __importDefault(require("minimist"));
+var cors_1 = __importDefault(require("cors"));
 var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
     default: {
         port: 8080,
@@ -41,6 +42,7 @@ var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
 var port = minimistArgs.port;
 var config = require('../config.js');
 exports.app = (0, express_1.default)();
+// #region Middlewares
 exports.app.use((0, compression_1.default)());
 exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.urlencoded({ extended: true }));
@@ -51,10 +53,14 @@ exports.app.engine("hbs", (0, express_handlebars_1.default)({
 exports.app.set("view engine", "hbs");
 exports.app.set("views", "./views");
 exports.app.use(express_1.default.static('public'));
+if (config.NODE_ENV === 'development') {
+    exports.app.use((0, cors_1.default)());
+}
+// //#endregion
 exports.server = exports.app.listen(port, function () {
     loggers_1.loggerInfo.info("Servidor listo en el puerto " + port);
 });
-///////////////////////////////////////////////////////////////////////////////////////////////////
+// #region Persistent
 // MEMORY = 1;
 // FILESYSTEM = 2;
 // MYSQL = 3;
@@ -62,17 +68,24 @@ exports.server = exports.app.listen(port, function () {
 // MONGO = 5
 // MONGOAAS = 6;
 // FIREBASE = 7;
-///////////////////////////////////////////////////////////////////////////////////////////////////
 var OPCION = +config.PERSISTENCIA;
-////////////////////////////////////////////////////////////////////////////////////////////////////
 var daoInstance = daoFactory_1.DaoFactory.getInstance();
 exports.dao = daoInstance.getDao(OPCION);
+// #endregion
 exports.newSession = new ISession_1.Session();
 exports.io = new SocketIO.Server(exports.server);
-var rutasLogin = require('./rutas/rutasLogin');
-var rutasProductos = require('./rutas/rutasProductos');
-var rutasCarrito = require('./rutas/rutasCarrito');
-var rutasProcess = require('./rutas/rutasProcess');
+// const rutasLogin = require('./rutas/rutasLogin');
+// const rutasProductos = require('./rutas/rutasProductos');
+var RouterLogin = require('./router/login');
+var routerLogin = new RouterLogin();
+var RouterProductos = require('./router/productos');
+var routerProductos = new RouterProductos();
+var RouterCarrito = require('./router/carrito');
+var routerCarrito = new RouterCarrito();
+var RouterProcess = require('./router/process');
+var routerProcess = new RouterProcess();
+// const rutasCarrito = require('./rutas/rutasCarrito');
+// const rutasProcess = require('./rutas/rutasProcess');
 (0, sockets_1.sockets)();
 var graphql = require('./utils/graphql');
 exports.app.use("/graphql", (0, express_graphql_1.graphqlHTTP)({
@@ -80,8 +93,8 @@ exports.app.use("/graphql", (0, express_graphql_1.graphqlHTTP)({
     rootValue: graphql.root,
     graphiql: true
 }));
-exports.app.use('/', rutasLogin);
-exports.app.use('/productos', rutasProductos);
-exports.app.use('/carrito', rutasCarrito);
-exports.app.use('/process', rutasProcess);
+exports.app.use('/', routerLogin.start());
+exports.app.use('/productos', routerProductos.start());
+exports.app.use('/carrito', routerCarrito.start());
+exports.app.use('/process', routerProcess.start());
 process.on('exit', function (code) { return loggers_1.loggerInfo.info("exit " + code); });

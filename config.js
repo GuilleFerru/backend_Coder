@@ -11,7 +11,7 @@ module.exports = {
     NODE_TLS_REJECT: process.env.NODE_TLS_REJECT_UNAUTHORIZED || '0',
     HOST: process.env.HOST || '127.0.0.1',
     PORT: process.env.PORT || 8080,
-    PERSISTENCIA: process.env.PERSISTENCIA || 2,
+    PERSISTENCIA: process.env.PERSISTENCIA || 1,
     ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
     TWILIO_SMS: process.env.TWILIO_SMS_FROM,

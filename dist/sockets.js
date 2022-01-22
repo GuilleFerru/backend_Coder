@@ -71,12 +71,12 @@ exports.sockets = void 0;
 var app_1 = require("./app");
 var mongodb_1 = require("mongodb");
 var MensajeRepository_1 = __importDefault(require("./repositories/MensajeRepository"));
-var IMensaje_1 = require("./interfaces/IMensaje");
-var loggers_1 = require("./loggers");
+var IMensaje_1 = require("./model/DAOs/interfaces/IMensaje");
+var loggers_1 = require("./utils/loggers");
 var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
-var MensajeDto_1 = require("./persistencia/dto/MensajeDto");
+var MensajeDto_1 = require("./model/DTOs/MensajeDto");
 var minimist_1 = __importDefault(require("minimist"));
 var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
     default: {
@@ -131,7 +131,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
             case 1:
                 connection = _a.sent();
                 mensajeRepository = new MensajeRepository_1.default(connection.db("ecommerce"), "mensajesnormalizrs");
-                console.log("Cliente conectado para mensajes");
+                loggers_1.loggerInfo.info("Conectado a la base de datos de mensajes");
                 app_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, _b, _c, _d, _e, _f;
                     return __generator(this, function (_g) {

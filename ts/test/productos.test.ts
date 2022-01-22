@@ -3,10 +3,6 @@ import { expect } from "chai";
 import { app } from "../app";
 
 
-
-
-
-
 describe("TEST API PRODUCTOS", () => {
     describe("GET", () => {
         it("deberia retornar un estado 200", async () => {

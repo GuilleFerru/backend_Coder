@@ -49,3 +49,53 @@
     clientOrder: [ [Object], [Object] ]
   }
 ]
+[2022-01-23T14:37:17.059] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 819,
+  messageTime: 302,
+  messageSize: 884,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYe2STQrgaBfSMzfpAAAA6QkbBFSy-t93u.5TqaC7yus]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<e84b5295-da28-8ee9-0b28-db45128f3609@GUILLE_PC>'
+}
+[2022-01-23T14:52:58.612] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 812,
+  messageTime: 320,
+  messageSize: 896,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYe2V-xq9DBfCnVxKAAAA6oJ1J3SFgSD.0Wbi5b4Y-UM]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<40607055-78f4-b057-1366-40ca94070f80@GUILLE_PC>'
+}
+[2022-01-23T14:54:03.493] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 834,
+  messageTime: 312,
+  messageSize: 873,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYe2WPK0J5BfFk4v2AAAA62.zRPAoMKJcN08-TPxK48c]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<319b4dd5-c95f-f63d-680c-e31a69e5222a@GUILLE_PC>'
+}
+[2022-01-23T14:55:42.201] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 805,
+  messageTime: 304,
+  messageSize: 867,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYe2WnkQ0ARfgu785AAAA7KMwDvYeX0QUsa.WfsDByok]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<ddc901e7-4a64-adf3-29f8-ea69b86cfb8e@GUILLE_PC>'
+}
+[2022-01-23T15:00:50.700] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 852,
+  messageTime: 315,
+  messageSize: 865,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYe2X0wrgaBfSM0IQAAAA7S3YDG8nWdGPI.1VLACLuH8]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<6fbe04ae-0152-acef-851f-8db8e5fcfbfa@GUILLE_PC>'
+}

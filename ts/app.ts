@@ -65,19 +65,16 @@ const OPCION = + config.PERSISTENCIA;
 const daoInstance = DaoFactory.getInstance();
 export const dao: IDao = daoInstance.getDao(OPCION);
 
-
 // #endregion
 
 
 export const newSession = new Session();
 export const io = new SocketIO.Server(server);
 
-// const rutasLogin = require('./rutas/rutasLogin');
-// const rutasProductos = require('./rutas/rutasProductos');
+
 
 const RouterLogin = require('./router/login');
 const routerLogin = new RouterLogin();
-
 
 const RouterProductos = require('./router/productos');
 const routerProductos = new RouterProductos();
@@ -88,8 +85,6 @@ const routerCarrito = new RouterCarrito();
 const RouterProcess = require('./router/process');
 const routerProcess = new RouterProcess();
 
-// const rutasCarrito = require('./rutas/rutasCarrito');
-// const rutasProcess = require('./rutas/rutasProcess');
 sockets();
 
 const graphql = require('./utils/graphql');

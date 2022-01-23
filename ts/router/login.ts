@@ -40,7 +40,7 @@ passport.use(signUpStrategyName, new LocalStrategy({
                 newUser.phone = req.body.phone;
                 newUser.avatar = req.file?.path.replace('public', '');
                 newUser.password = createHash(password);
-                newUser.isAdmin = true;
+                newUser.isAdmin = false;
                 // save the user
                 newUser.save(function (err: string) {
                     if (err) {

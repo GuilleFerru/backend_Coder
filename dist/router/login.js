@@ -62,7 +62,7 @@ passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
                 newUser.phone = req.body.phone;
                 newUser.avatar = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path.replace('public', '');
                 newUser.password = createHash(password);
-                newUser.isAdmin = true;
+                newUser.isAdmin = false;
                 // save the user
                 newUser.save(function (err) {
                     if (err) {

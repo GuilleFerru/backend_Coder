@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { newSession, io } from '../app';
+import { Producto } from "../model/DAOs/interfaces/IProducto";
 
 const ApiProductos = require('../api/productos');
 
@@ -30,6 +31,7 @@ class ControladorProductos {
         }
     };
 
+
     postProducto = async (req: Request, res: Response) => {
         if (newSession.getIsAdmin()) {
             const producto = req.body;
@@ -39,6 +41,7 @@ class ControladorProductos {
             } else {
                 io.sockets.emit("products", await this.apiProductos.getProductos());
                 res.status(201).json({ server: "Producto creado" });
+                return resultado;
             }
         } else {
             res.status(403).json({

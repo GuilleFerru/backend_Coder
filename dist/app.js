@@ -74,8 +74,6 @@ exports.dao = daoInstance.getDao(OPCION);
 // #endregion
 exports.newSession = new ISession_1.Session();
 exports.io = new SocketIO.Server(exports.server);
-// const rutasLogin = require('./rutas/rutasLogin');
-// const rutasProductos = require('./rutas/rutasProductos');
 var RouterLogin = require('./router/login');
 var routerLogin = new RouterLogin();
 var RouterProductos = require('./router/productos');
@@ -84,8 +82,6 @@ var RouterCarrito = require('./router/carrito');
 var routerCarrito = new RouterCarrito();
 var RouterProcess = require('./router/process');
 var routerProcess = new RouterProcess();
-// const rutasCarrito = require('./rutas/rutasCarrito');
-// const rutasProcess = require('./rutas/rutasProcess');
 (0, sockets_1.sockets)();
 var graphql = require('./utils/graphql');
 exports.app.use("/graphql", (0, express_graphql_1.graphqlHTTP)({

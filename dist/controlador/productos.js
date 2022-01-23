@@ -99,7 +99,7 @@ var ControladorProductos = /** @class */ (function () {
                     case 3:
                         _b.apply(_a, _c.concat([_d.sent()]));
                         res.status(201).json({ server: "Producto creado" });
-                        _d.label = 4;
+                        return [2 /*return*/, resultado];
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         res.status(403).json({

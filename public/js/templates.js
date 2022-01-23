@@ -106,10 +106,12 @@ const filterProductoTemplate = Handlebars.compile(`
             </div>
         </div>
 
+        {{#if isAdmin}}
+        
         <div class="flex mt-5">
             <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/graphql'">GraphQL</button>
         </div>
-        {{#if isAdmin}}
+
         <div class="flex mt-3">
             <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/process/info'">Process Info</button>
         </div>
@@ -252,7 +254,7 @@ const formTemplate = Handlebars.compile(`
                     {{#each inputInfo}}
                         <div class="form-group">
                             <label for={{this.tag}}>{{this.name}}</label>
-                            <input type={{this.type}} class="form-control" id={{this.tag}} placeholder="Ingresar titulo" name={{this.tag}} required>
+                            <input type={{this.type}} class="form-control" id={{this.tag}} placeholder="Ingresar {{this.name}}" name={{this.tag}} required>
                             <div class="valid-feedback">
                                 Genial!
                             </div>

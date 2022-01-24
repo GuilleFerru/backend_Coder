@@ -11,9 +11,9 @@
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
     "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
-    "nodecluster": "nodemon ./dist/main.js CLUSTER",
-    "pm2fork": "pm2 start ./dist/main.js --name=fork --watch -- 8081",
-    "pm2cluster": "pm2 start ./dist/main.js --name=cluster --watch -i max -- 8082",
+    "nodecluster": "nodemon ./dist/app.js CLUSTER",
+    "pm2fork": "pm2 start ./dist/app.js --name=fork --watch -- 8081",
+    "pm2cluster": "pm2 start ./dist/app.js --name=cluster --watch -i max -- 8082",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
     "test": "./node_modules/.bin/mocha ./dist/test/productos.test.js"
   },

@@ -1,34 +1,28 @@
 import mongoose from "mongoose";
 import { IDao } from "./interfaces/IDao";
 import { Producto } from "./interfaces/IProducto";
-import { Mensaje, MensajeWrap } from "./interfaces/IMensaje";
 import { Cart } from "./interfaces/ICart";
 import { usuarioModel as User } from '../models/usuarios';
 import { productoModel } from "../models/productos";
-import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import { MensajeDTO } from "../DTOs/MensajeDto";
-
-
+const config = require('../../../config.js');
 
 export class MongoDbaaSDao implements IDao {
 
     productos: Producto[];
     carrito: Cart[];
     order: Cart[];
-    mensajes: Mensaje[];
     dbConnection: Promise<typeof mongoose>;
-    private MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    private MONGO_URL = config.MONGO_URL;
 
     constructor() {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
-        this.mensajes = new Array<Mensaje>();
         this.dbConnection = this.conectar()
     }
 
@@ -149,40 +143,6 @@ export class MongoDbaaSDao implements IDao {
         } finally {
             loggerInfo.info('Producto Eliminado');
             // await mongoose.disconnect();
-        }
-    }
-
-    getMensajeById(id: string): any | undefined {
-        return 'this.mensajes.find((element) => String(element.id) === id)';
-    }
-
-    async getMensajes(): Promise<MensajeWrap> {
-        try {
-
-            this.mensajes = [];
-            const savedMensajes = await mensajesModel.find({}, { __v: 0, _id: 0 })
-
-            savedMensajes.forEach((mensaje: Mensaje | any) => {
-                this.mensajes.push(mensaje);
-            })
-        } catch (error) {
-            loggerError.error(error);
-            throw error;
-        } finally {
-            const wrapMensajes = MensajeDTO(this.mensajes);
-            return wrapMensajes;
-        }
-    }
-
-    async insertMensajes(mensaje: Mensaje) {
-        try {
-            await mensajesModel.insertMany(mensaje)
-            this.mensajes.push(mensaje);
-        } catch (error) {
-            loggerError.error(error);
-            throw error;
-        } finally {
-            loggerInfo.info('Mensaje Agregado');
         }
     }
 

@@ -1,20 +1,31 @@
 [
 	{
 		"_id": "1",
+		"fyh": 1643040502412,
 		"title": "Birras",
 		"description": "Birra rubia ricasa",
 		"code": "birra1",
 		"thumbnail": "https://cdn1.iconfinder.com/data/icons/Drinks_by_Miniartx/256/beer_.png",
-		"price": "199",
-		"stock": 130
+		"price": "200",
+		"stock": 129
 	},
 	{
 		"_id": "2",
+		"fyh": 1643040504272,
 		"title": "Hamburguesa",
 		"description": "Hamburguesa Triple con de todo!!",
 		"code": "hmb001",
 		"thumbnail": "https://cdn3.iconfinder.com/data/icons/street-food-and-food-trucker-1/64/hamburger-fast-food-patty-bread-512.png",
 		"price": "450",
-		"stock": 34
+		"stock": 33
+	},
+	{
+		"_id": "3",
+		"title": "Cookies",
+		"description": "Galletita con chips de chocolate, geniales para mojar en el cafe",
+		"code": "cke001",
+		"thumbnail": "https://cdn0.iconfinder.com/data/icons/bakery-10/512/Cookie-512.png",
+		"price": "120",
+		"stock": "200"
 	}
 ]

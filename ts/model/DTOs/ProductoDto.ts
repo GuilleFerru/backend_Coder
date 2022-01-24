@@ -1,7 +1,5 @@
 import { Producto } from "../DAOs/interfaces/IProducto";
 
-
-
 export const insertUpdateProductoDTOForMemory = (producto: Producto | any, id: string): any => ({
     _id: id,
     fyh: Number(Date.now()),
@@ -90,7 +88,7 @@ export const productoDTOForMongo = (producto: Producto | any): any => ({
 });
 
 
-export const insertUpdateProductoDTOForFirebase = (producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData> | any) => ({
+export const insertUpdateProductoDTOForFirebase = (producto:  any) => ({
     title: producto.title,
     description: producto.description,
     code: producto.code,
@@ -99,7 +97,7 @@ export const insertUpdateProductoDTOForFirebase = (producto: FirebaseFirestore.Q
     stock: producto.stock,
 });
 
-export const productoDTOForFirebase = (producto: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData> | any): any => ({
+export const productoDTOForFirebase = (producto: any): any => ({
     _id: String(producto.id),
     title: producto.data().title,
     description: producto.data().description,

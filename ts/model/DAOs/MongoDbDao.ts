@@ -1,33 +1,29 @@
 import mongoose from "mongoose";
 import { IDao } from "./interfaces/IDao";
 import { Producto } from "./interfaces/IProducto";
-import { Mensaje, MensajeWrap } from "./interfaces/IMensaje";
 import { Cart } from "./interfaces/ICart";
 import { usuarioModel as User } from '../models/usuarios';
 import { productoModel } from "../models/productos";
-import { mensajesModel } from "../models/mensajes";
 import { carritoModel } from "../models/carrito";
 import { ordenModel } from "../models/order";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import { MensajeDTO } from "../DTOs/MensajeDto";
+
+const config = require('../../../config.js');
 
 export class MongoDbDao implements IDao {
 
     productos: Producto[];
     carrito: Cart[];
     order: Cart[];
-    mensajes: Mensaje[];
     dbConnection: Promise<typeof mongoose>;
-    private MONGODB_URL = 'mongodb://localhost:27017/ecommerce';
-    // private MONGODBAAS_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    private MONGODB_URL = config.MONGO_URL_LOCAL || config.MONGO_URL;
 
     constructor() {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
-        this.mensajes = new Array<Mensaje>();
         this.dbConnection = this.conectar()
     }
 
@@ -36,8 +32,6 @@ export class MongoDbDao implements IDao {
         try {
             loggerInfo.info('Base de datos MongoDB conectada!')
             return await mongoose.connect(this.MONGODB_URL);
-            // loggerInfo.info('Base de datos MongoDB conectada!')
-            // // await mongoose.connect(this.MONGODBAAS_URL);
         }
         catch (err) {
             loggerError.error(`MongoDB: Error en conectar: ${err}`)
@@ -80,13 +74,16 @@ export class MongoDbDao implements IDao {
         try {
             this.productos = [];
             if (filterBy === 'nombre') {
-                const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
-                const productosByName = await productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })
+                const filtroCapitalized = new RegExp("^" + filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1));
+                const filtroReg = new RegExp("^" + filtro[0]);
+                const productosByName = await productoModel.find({ $or: [{ 'title': filtroReg }, { 'title': filtroCapitalized }] })
+
                 productosByName.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })
             } else if (filterBy === 'codigo') {
-                const productosByCode = await productoModel.find({ 'code': String(filtro[0]) })
+                const filtroReg = new RegExp("^" + filtro[0]);
+                const productosByCode = await productoModel.find({ 'code': filtroReg })
                 productosByCode.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })
@@ -151,39 +148,6 @@ export class MongoDbDao implements IDao {
         }
     }
 
-    getMensajeById(id: string): Mensaje | undefined {
-        return this.mensajes.find((element) => String(element.id) === id);
-    }
-
-    async getMensajes(): Promise<MensajeWrap> {
-        try {
-
-            this.mensajes = [];
-            const savedMensajes = await mensajesModel.find({}, { __v: 0, _id: 0 })
-
-            savedMensajes.forEach((mensaje: Mensaje | any) => {
-                this.mensajes.push(mensaje);
-            })
-        } catch (error) {
-            loggerError.error(error);
-            throw error;
-        } finally {
-            const wrapMensajes = MensajeDTO(this.mensajes);
-            return wrapMensajes;
-        }
-    }
-
-    async insertMensajes(mensaje: Mensaje) {
-        try {
-            await mensajesModel.insertMany(mensaje)
-            this.mensajes.push(mensaje);
-        } catch (error) {
-            loggerError.error(error);
-            throw error;
-        } finally {
-            loggerInfo.info('Mensaje Agregado');
-        }
-    }
 
     getCarritoById(id: string): Cart | undefined {
         return this.carrito.find((element) => String(element._id) === id);
@@ -261,7 +225,7 @@ export class MongoDbDao implements IDao {
     async updateQtyInCarrito(cart: Cart) {
         try {
 
-            const carrito = cart._doc;         
+            const carrito = cart._doc;
             await carritoModel.updateOne({ $and: [{ "cerrado": false }, { "_id": carrito._id }] }, { $set: { "quantity": carrito.quantity + 1, "producto": cart.producto } });
             await this.getCarrito();
             loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);

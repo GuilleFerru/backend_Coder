@@ -23,9 +23,6 @@ var orderProductoClientDTO = function (productoInCarrito) { return ({
     'Precio total': productoInCarrito.total + " $"
 }); };
 exports.orderProductoClientDTO = orderProductoClientDTO;
-// export const orderProcessedClientDTO = (productos: any): any => ({
-//     productos: productos,
-// });
 var orderFinalDTO = function (id, adminOrder, clientOrder, price) { return ({
     _id: id,
     fyh: new Date().toLocaleString(),

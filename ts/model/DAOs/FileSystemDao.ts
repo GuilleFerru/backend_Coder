@@ -4,36 +4,34 @@ import { IDao } from "./interfaces/IDao";
 import { Producto } from "./interfaces/IProducto";
 import { Cart } from "./interfaces/ICart";
 import { usuarioModel as User } from '../models/usuarios';
-import { Mensaje } from "./interfaces/IMensaje";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForFile, insertUpdateProductoDTOForFile } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import { MensajeDTO } from "../DTOs/MensajeDto";
+const config = require('../../../config.js');
 
 export class FileSystemDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
-    mensajes: Array<Mensaje>
     countCarrito: number;
     countOrder: number;
-    private MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    private MONGO_URL = config.MONGO_URL;
 
 
     constructor() {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
-        this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
         this.conectar();
     }
 
-    private pathProducto: string = "./fileSystemDB/productos.txt";
-    private pathCarrito: string = "./fileSystemDB/carrito.txt";
-    private pathOrder: string = "./fileSystemDB/order.txt";
-    private pathMensajes: string = "./fileSystemDB/mensajes.txt";
+
+    private pathProducto = config.FILE_PATH_PRODUCTOS;
+    private pathCarrito = config.FILE_PATH_CARRITO;
+    private pathOrder = config.FILE_PATH_ORDER;
+
 
     async conectar() {
         try {
@@ -63,33 +61,31 @@ export class FileSystemDao implements IDao {
         if (filterBy === 'nombre') {
             const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
             this.productos.forEach((producto: Producto) => {
-                if (producto.title === filtro[0] || producto.title === filtroCapitalized) {
+                if (producto.title.includes(filtroCapitalized)) {
                     productos.push(productoDTOForFile(producto));
                 }
-            })
+            });
         } else if (filterBy === 'codigo') {
             this.productos.forEach((producto: Producto) => {
-                if (producto.code === filtro[0]) {
+                if (producto.code.includes(filtro[0])) {
                     productos.push(productoDTOForFile(producto));
                 }
-            })
+            });
         } else if (filterBy === 'precio') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
                     productos.push(productoDTOForFile(producto));
                 }
-            })
+            });
         } else if (filterBy === 'stock') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
                     productos.push(productoDTOForFile(producto));
                 }
-            })
+            });
         }
         return productos
     }
-
-
 
 
     insertProducto(producto: Producto): void {
@@ -144,7 +140,7 @@ export class FileSystemDao implements IDao {
         fs.writeFileSync(this.pathProducto, JSON.stringify(this.productos, null, "\t"));
     };
 
-    
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -159,7 +155,7 @@ export class FileSystemDao implements IDao {
             clientOrder.push(orderProductoClientDTO(order[i]));
         }
 
-        const finalOrder = orderFinalDTO(String(this.countOrder), adminOrder, clientOrder,order[order.length - 1].orderTotal);
+        const finalOrder = orderFinalDTO(String(this.countOrder), adminOrder, clientOrder, order[order.length - 1].orderTotal);
         orderToSend.push(finalOrder);
 
         fs.writeFileSync(this.pathOrder, JSON.stringify(orderToSend, null, "\t"));
@@ -195,7 +191,6 @@ export class FileSystemDao implements IDao {
                 console.error("Hubo un error con fs.readFile de carrito!");
             } else {
                 this.carrito.splice(0, this.carrito.length);
-                // console.log(this.carrito, 'carrito', content,'content');
                 const savedCarrito = JSON.parse(content);
                 savedCarrito.forEach((carrito: Cart) => {
                     this.carrito.push(carrito);
@@ -210,12 +205,12 @@ export class FileSystemDao implements IDao {
     }
 
     updateQtyInCarrito(carrito: Cart): void {
-        
+
         const newCarrito: Cart = {
             ...carrito,
             quantity: carrito.quantity + 1,
         };
-        
+
         this.carrito.map((thisCarrito) => {
             if (thisCarrito._id === newCarrito._id) {
                 const index = this.carrito.indexOf(thisCarrito);
@@ -233,31 +228,5 @@ export class FileSystemDao implements IDao {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    getMensajes() {
-        fs.readFile(this.pathMensajes, "utf8", (error, content: string) => {
-            if (error) {
-                console.error("Hubo un error con fs.readFile de mensaje!");
-
-            } else {
-                this.mensajes = [];
-                const savedMensajes = JSON.parse(content);
-                savedMensajes.forEach((msj: Mensaje) => {
-                    this.mensajes.push(msj);
-                });
-            }
-        });
-        const wrapMensajes = MensajeDTO(this.mensajes);
-        return wrapMensajes;
-    }
-
-    getMensajeById(id: string): Mensaje | undefined {
-        return this.mensajes.find((element) => String(element.id) === id);
-    }
-
-    insertMensajes(mensaje: Mensaje): void {
-        this.mensajes.push(mensaje);
-        fs.writeFileSync(this.pathMensajes, JSON.stringify(this.mensajes, null, "\t"));
-    }
 
 }

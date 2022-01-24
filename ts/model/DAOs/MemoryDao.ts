@@ -2,20 +2,15 @@ import mongoose from "mongoose";
 import { IDao } from "./interfaces/IDao";
 import { Producto } from "./interfaces/IProducto";
 import { Cart } from "./interfaces/ICart";
-import { Mensaje, MensajeWrap } from "./interfaces/IMensaje";
 import { usuarioModel as User } from '../models/usuarios';
 import { loggerError, loggerInfo, loggerWarn } from "../../utils/loggers";
 import { productoDTOForMemory, insertUpdateProductoDTOForMemory } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import { MensajeDTO } from "../DTOs/MensajeDto";
-
-
 
 export class MemoryDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
-    mensajes: Array<Mensaje>
     countProducto: number;
     countCarrito: number;
     countOrder: number;
@@ -26,7 +21,6 @@ export class MemoryDao implements IDao {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
-        this.mensajes = new Array<Mensaje>();
         this.countProducto = 1;
         this.countCarrito = 1;
         this.countOrder = 1;
@@ -55,28 +49,28 @@ export class MemoryDao implements IDao {
         if (filterBy === 'nombre') {
             const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
             this.productos.forEach((producto: Producto) => {
-                if (producto.title === filtro[0] || producto.title === filtroCapitalized) {
+                if (producto.title.includes(filtroCapitalized)) {
                     productos.push(productoDTOForMemory(producto));
                 }
-            })
+            });
         } else if (filterBy === 'codigo') {
             this.productos.forEach((producto: Producto) => {
-                if (producto.code === filtro[0]) {
+                if (producto.code.includes(filtro[0])) {
                     productos.push(productoDTOForMemory(producto));
-                }
-            })
+                }                
+            });
         } else if (filterBy === 'precio') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.price) >= Number(filtro[0])) && (Number(producto.price) <= Number(filtro[1]))) {
                     productos.push(productoDTOForMemory(producto));
                 }
-            })
+            });
         } else if (filterBy === 'stock') {
             this.productos.forEach((producto: Producto | any) => {
                 if ((Number(producto.stock) >= Number(filtro[0])) && (Number(producto.stock) <= Number(filtro[1]))) {
                     productos.push(productoDTOForMemory(producto));
                 }
-            })
+            });
         }
         return productos
     }
@@ -116,7 +110,6 @@ export class MemoryDao implements IDao {
     };
 
     insertOrder(order: Array<Cart>) {
-
         try {
             const orderToSend = [];
             const adminOrder = [];
@@ -133,15 +126,12 @@ export class MemoryDao implements IDao {
             loggerInfo.info('Orden insertada correctamente');
             loggerWarn.warn(orderToSend);
             return orderToSend;
-
         } catch (error) {
             loggerError.error(`MongoDB: Error en insertOrder: ${error}`)
-
         }
     }
 
     insertProductToCarrito(producto: Producto): void {
-
         const _id = String(this.countCarrito);
         const productoDTO = productoDTOForMemory(producto);
         const newCarrito = {
@@ -166,16 +156,12 @@ export class MemoryDao implements IDao {
             ...carrito,
             quantity: carrito.quantity + 1,
         };
-
         this.carrito.map((thisCarrito) => {
             if (thisCarrito._id === newCarrito._id) {
                 const index = this.carrito.indexOf(thisCarrito);
                 this.carrito[index] = newCarrito;
-
             }
         })
-
-
     }
 
     deleteCarrito(id: string): void {
@@ -183,24 +169,5 @@ export class MemoryDao implements IDao {
         const index = this.carrito.indexOf(productoToBeDelete);
         this.carrito.splice(index, 1);
     }
-
-    getMensajeById(id: string): Mensaje | undefined {
-        return this.mensajes.find((element) => String(element.id) === id);
-    }
-
-    async getMensajes(): Promise<MensajeWrap> {
-        try {
-            const wrapMensajes = MensajeDTO(this.mensajes);
-            return wrapMensajes;
-        } catch (error) {
-            loggerError.error(error);
-            throw error;
-        }
-    }
-
-    insertMensajes(mensaje: Mensaje): void {
-        this.mensajes.push(mensaje);
-    }
-
 
 }

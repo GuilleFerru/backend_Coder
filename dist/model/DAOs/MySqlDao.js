@@ -57,11 +57,11 @@ var IOrder_1 = require("./interfaces/IOrder");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var MensajeDto_1 = require("../DTOs/MensajeDto");
+var config = require('../../../config.js');
 var MySqlDao = /** @class */ (function () {
     function MySqlDao() {
         var _this = this;
-        this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+        this.MONGO_URL = config.MONGO_URL;
         this.optionsMariaDB = {
             client: "mysql",
             connection: {
@@ -244,7 +244,6 @@ var MySqlDao = /** @class */ (function () {
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
-        this.mensajes = new Array();
         this.countCarrito = 1;
         this.countOrder = 1;
         this.knex = require("knex")(this.optionsMariaDB);
@@ -687,111 +686,6 @@ var MySqlDao = /** @class */ (function () {
                 }
             });
         });
-    };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    MySqlDao.prototype.getMensajes = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var mensajesFromDB, _i, mensajesFromDB_1, mensaje, auhtorId, author, authorObject, msgComplete, error_16, wrapMensajes;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 6, 7, 8]);
-                        return [4 /*yield*/, this.knex.from("mensajes").select("*")];
-                    case 1:
-                        mensajesFromDB = _a.sent();
-                        this.mensajes = [];
-                        _i = 0, mensajesFromDB_1 = mensajesFromDB;
-                        _a.label = 2;
-                    case 2:
-                        if (!(_i < mensajesFromDB_1.length)) return [3 /*break*/, 5];
-                        mensaje = mensajesFromDB_1[_i];
-                        auhtorId = String(mensaje.author_id);
-                        return [4 /*yield*/, this.knex.from("author").where("_id", Number(auhtorId))];
-                    case 3:
-                        author = _a.sent();
-                        authorObject = {
-                            _id: String(author[0]._id),
-                            email: author[0].email,
-                            nombre: author[0].nombre,
-                            apellido: author[0].apellido,
-                            edad: author[0].edad,
-                            alias: author[0].alias,
-                            avatar: author[0].avatar,
-                        };
-                        msgComplete = {
-                            id: mensaje._id,
-                            text: mensaje.text,
-                            date: mensaje.date,
-                            author: authorObject,
-                        };
-                        this.mensajes.push(msgComplete);
-                        _a.label = 4;
-                    case 4:
-                        _i++;
-                        return [3 /*break*/, 2];
-                    case 5: return [3 /*break*/, 8];
-                    case 6:
-                        error_16 = _a.sent();
-                        console.log(error_16);
-                        throw error_16;
-                    case 7:
-                        wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
-                        return [2 /*return*/, wrapMensajes];
-                    case 8: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MySqlDao.prototype.insertMensajes = function (mensaje) {
-        return __awaiter(this, void 0, void 0, function () {
-            var authorEmail, authorGuardado, error_17;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 5, 6, 7]);
-                        this.mensajes.push(mensaje);
-                        authorEmail = mensaje.author.email;
-                        return [4 /*yield*/, this.knex.from("author").select("*").where("email", "=", authorEmail)];
-                    case 1:
-                        authorGuardado = _a.sent();
-                        if (!(authorGuardado.length === 0)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.knex.from("author").insert([
-                                {
-                                    email: mensaje.author.email,
-                                    nombre: mensaje.author.nombre,
-                                    apellido: mensaje.author.apellido,
-                                    edad: mensaje.author.edad,
-                                    alias: mensaje.author.alias,
-                                    avatar: mensaje.author.avatar
-                                },
-                            ])];
-                    case 2:
-                        _a.sent();
-                        _a.label = 3;
-                    case 3: return [4 /*yield*/, this.knex("mensajes").insert([
-                            {
-                                date: mensaje.date,
-                                text: mensaje.text,
-                                author_id: authorGuardado[0]._id
-                            },
-                        ])];
-                    case 4:
-                        _a.sent();
-                        return [3 /*break*/, 7];
-                    case 5:
-                        error_17 = _a.sent();
-                        console.log(error_17);
-                        throw error_17;
-                    case 6:
-                        console.log('Mensaje Agregado');
-                        return [7 /*endfinally*/];
-                    case 7: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MySqlDao.prototype.getMensajeById = function (id) {
-        return this.mensajes.find(function (element) { return String(element.id) === id; });
     };
     return MySqlDao;
 }());

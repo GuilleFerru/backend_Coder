@@ -78,14 +78,14 @@ var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
 var MensajeDto_1 = require("./model/DTOs/MensajeDto");
 var minimist_1 = __importDefault(require("minimist"));
-var ControladorProductos = require('./controlador/productos');
-var controladorProductos = new ControladorProductos();
+var config = require('../config.js');
 var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
     default: {
         port: 8080,
     }
 });
 var port = minimistArgs.port;
+//normaliza el mensaje
 var getNormalizeMsj = function (mensajeRepository) { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajeDTO, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
     return __generator(this, function (_a) {
@@ -126,7 +126,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
     var connection, mensajeRepository;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority', {
+            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect(config.MONGO_URL, {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                 })];
@@ -139,12 +139,16 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                     return __generator(this, function (_g) {
                         switch (_g.label) {
                             case 0:
+                                //envia el mensaje normalizado al cliente
                                 _b = (_a = socket).emit;
                                 _c = ["messages"];
                                 return [4 /*yield*/, getNormalizeMsj(mensajeRepository)];
                             case 1:
+                                //envia el mensaje normalizado al cliente
                                 _b.apply(_a, _c.concat([_g.sent()]));
+                                //emito el puerto
                                 socket.emit('port', port);
+                                //recibo el mensaje, lo guardo y busco la palabra admin en el mensaje para enviar un sms al adminsitrador
                                 socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
                                     var date, id, checkId, newAuthor, newMensaje, msj, error_2, _a, _b, _c;
                                     return __generator(this, function (_d) {
@@ -168,7 +172,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                             case 3:
                                                 _d.trys.push([3, 5, , 6]);
                                                 msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
-                                                return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571531154')];
+                                                return [4 /*yield*/, twilio.enviarSMS(msj, config.TWILIO_PHONE_NUMBER)];
                                             case 4:
                                                 _d.sent();
                                                 return [3 /*break*/, 6];
@@ -186,11 +190,14 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                         }
                                     });
                                 }); });
+                                //devuelve todos los productos
                                 _e = (_d = socket).emit;
                                 _f = ["products"];
                                 return [4 /*yield*/, app_1.dao.getProductos()];
                             case 2:
+                                //devuelve todos los productos
                                 _e.apply(_d, _f.concat([_g.sent(), app_2.newSession.getIsAdmin()]));
+                                //recibe el string a buscar y el tipo de busqueda, devuelve un array con los productos que coinciden con la busqueda
                                 socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
                                     var _a, _b, _c;
                                     return __generator(this, function (_d) {
@@ -205,6 +212,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                         }
                                     });
                                 }); });
+                                //devuelve todos los productos solicitados por el cliente
                                 socket.on("getAllProductos", function () { return __awaiter(void 0, void 0, void 0, function () {
                                     var _a, _b, _c;
                                     return __generator(this, function (_d) {

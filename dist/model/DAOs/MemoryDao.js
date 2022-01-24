@@ -56,14 +56,12 @@ var usuarios_1 = require("../models/usuarios");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var MensajeDto_1 = require("../DTOs/MensajeDto");
 var MemoryDao = /** @class */ (function () {
     function MemoryDao() {
         this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
-        this.mensajes = new Array();
         this.countProducto = 1;
         this.countCarrito = 1;
         this.countOrder = 1;
@@ -106,14 +104,14 @@ var MemoryDao = /** @class */ (function () {
         if (filterBy === 'nombre') {
             var filtroCapitalized_1 = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
             this.productos.forEach(function (producto) {
-                if (producto.title === filtro[0] || producto.title === filtroCapitalized_1) {
+                if (producto.title.includes(filtroCapitalized_1)) {
                     productos.push((0, ProductoDto_1.productoDTOForMemory)(producto));
                 }
             });
         }
         else if (filterBy === 'codigo') {
             this.productos.forEach(function (producto) {
-                if (producto.code === filtro[0]) {
+                if (producto.code.includes(filtro[0])) {
                     productos.push((0, ProductoDto_1.productoDTOForMemory)(producto));
                 }
             });
@@ -220,28 +218,6 @@ var MemoryDao = /** @class */ (function () {
         var productoToBeDelete = this.getCarritoById(id);
         var index = this.carrito.indexOf(productoToBeDelete);
         this.carrito.splice(index, 1);
-    };
-    MemoryDao.prototype.getMensajeById = function (id) {
-        return this.mensajes.find(function (element) { return String(element.id) === id; });
-    };
-    MemoryDao.prototype.getMensajes = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var wrapMensajes;
-            return __generator(this, function (_a) {
-                try {
-                    wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
-                    return [2 /*return*/, wrapMensajes];
-                }
-                catch (error) {
-                    loggers_1.loggerError.error(error);
-                    throw error;
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    MemoryDao.prototype.insertMensajes = function (mensaje) {
-        this.mensajes.push(mensaje);
     };
     return MemoryDao;
 }());

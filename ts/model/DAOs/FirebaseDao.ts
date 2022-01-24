@@ -3,18 +3,17 @@ import { IDao } from "./interfaces/IDao";
 import { Producto } from "./interfaces/IProducto";
 import { Cart } from "./interfaces/ICart";
 import { usuarioModel as User } from '../models/usuarios';
-import { Mensaje, MensajeWrap } from "./interfaces/IMensaje";
 import firebaseAdmin from "firebase-admin";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForFirebase, insertUpdateProductoDTOForFirebase } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import { MensajeDTO } from "../DTOs/MensajeDto";
 const config = require('../../../config.js');
+
 
 if (config.PERSISTENCIA === '7') {
     firebaseAdmin.initializeApp({
-        credential: firebaseAdmin.credential.cert("./Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json"),
-        databaseURL: "https://backend-coder.firebaseio.com",
+        credential: firebaseAdmin.credential.cert(config.FIREBASE_CREDENTIAL),
+        databaseURL: config.FIREBASE_URL,
     });
 
     loggerInfo.info("Base de datos Firebase conectada!");
@@ -24,18 +23,16 @@ export class FirebaseDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
-    mensajes: Array<Mensaje>
     countCarrito: number;
     countOrder: number;
     firestoreAdmin = firebaseAdmin.firestore();
     dbConnection: any;
-    private MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    private MONGO_URL = config.MONGO_URL;
 
     constructor() {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
-        this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
         this.dbConnection = this.conectar();
@@ -60,8 +57,6 @@ export class FirebaseDao implements IDao {
     private Collection(collection: string) {
         return this.firestoreAdmin.collection(collection);
     }
-
- 
 
     async filterProducto(filtro: string[], filterBy: string): Promise<Producto[]> {
         try {
@@ -116,7 +111,6 @@ export class FirebaseDao implements IDao {
             this.productos = [];
             const savedProducts = await this.Collection('productos').get();
             savedProducts.docs.map((producto: string | any) => {
-                // const newProducto = this.createProductoObject(producto);
                 this.productos.push(productoDTOForFirebase(producto));
             })
         } catch (error) {
@@ -272,60 +266,5 @@ export class FirebaseDao implements IDao {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    async getMensajes(): Promise<MensajeWrap> {
-        try {
-            this.mensajes = [];
-            const savedMessages = await this.Collection('mensajes').get();
-            savedMessages.docs.map((mensaje: string | any) => {
-                const newMensaje: Mensaje = new Mensaje(
-                    mensaje.data().id,
-                    mensaje.data().text,
-                    mensaje.data().date,
-                    mensaje.data().author
-                )
-                this.mensajes.push(newMensaje);
-            })
-
-        } catch (error) {
-            console.log(error);
-            throw error;
-        } finally {
-            const wrapMensajes = MensajeDTO(this.mensajes);
-            return wrapMensajes;
-        }
-    }
-
-    getMensajeById(id: string): Mensaje | undefined {
-        return this.mensajes.find((element) => String(element.id) === id);
-    }
-
-
-    async insertMensajes(mensaje: Mensaje) {
-        try {
-            const { ...mensajeModificado } = mensaje;
-            const { ...authorModificado } = mensajeModificado.author;
-
-            const saveMensaje = {
-                id: mensajeModificado.id,
-                text: mensajeModificado.text,
-                date: mensajeModificado.date,
-                author: {
-                    email: authorModificado.email,
-                    nombre: authorModificado.nombre,
-                    apellido: authorModificado.apellido,
-                    edad: authorModificado.edad,
-                    alias: authorModificado.alias,
-                    avatar: authorModificado.avatar
-                }
-            }
-
-            await this.Collection('mensajes').add(saveMensaje)
-            this.mensajes.push(mensaje);
-        } catch (error) {
-            console.log(error);
-            throw error;
-        } finally {
-            console.log('Mensaje Agregado');
-        }
-    }
+    
 }

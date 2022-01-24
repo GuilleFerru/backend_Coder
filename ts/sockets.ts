@@ -8,8 +8,8 @@ import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 import { MensajeDTO } from './model/DTOs/MensajeDto';
 import minimist from 'minimist';
-const ControladorProductos = require('./controlador/productos');
-const controladorProductos = new ControladorProductos();
+const config = require('../config.js')
+
 
 
 const minimistArgs = minimist(process.argv.slice(2),{
@@ -19,7 +19,7 @@ const minimistArgs = minimist(process.argv.slice(2),{
 });
 const port = minimistArgs.port ;
 
-
+//normaliza el mensaje
 const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
     try {
         const mensajesOriginal: any = await mensajeRepository?.find();
@@ -57,8 +57,7 @@ const generateMensajeId = () => {
 
 export const sockets = async () => {
 
-    const connection: MongoClient | any = await MongoClient.connect(
-        'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority',
+    const connection: MongoClient | any = await MongoClient.connect(config.MONGO_URL,
         {
             useNewUrlParser: true, 
             useUnifiedTopology: true,
@@ -71,13 +70,14 @@ export const sockets = async () => {
 
     io.on("connection", async (socket) => {
 
- 
-
+        //envia el mensaje normalizado al cliente
         socket.emit("messages", await getNormalizeMsj(mensajeRepository));
+
+        //emito el puerto
         socket.emit('port', port)
 
+        //recibo el mensaje, lo guardo y busco la palabra admin en el mensaje para enviar un sms al adminsitrador
         socket.on("newMessage", async (mensaje: Mensaje) => {
-
             const date = new Date().toLocaleString('es-AR');
             let id: string = generateMensajeId();
             const checkId = await mensajeRepository.findOne(id);
@@ -107,7 +107,7 @@ export const sockets = async () => {
             if (mensaje.text.includes('administrador')) {
                 try {
                     let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
-                    await twilio.enviarSMS(msj, '+5493571531154')
+                    await twilio.enviarSMS(msj, config.TWILIO_PHONE_NUMBER);
                 }
                 catch (error) {
                     loggerError.error('ERROR enviarWapp', error)
@@ -117,15 +117,16 @@ export const sockets = async () => {
             io.sockets.emit("messages", await getNormalizeMsj(mensajeRepository));
         });
 
+        //devuelve todos los productos
         socket.emit("products", await dao.getProductos() , newSession.getIsAdmin());
 
+        //recibe el string a buscar y el tipo de busqueda, devuelve un array con los productos que coinciden con la busqueda
         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
-           
             socket.emit("products", await dao.filterProducto(filter, filterBy), newSession.getIsAdmin());
         });
 
+        //devuelve todos los productos solicitados por el cliente
         socket.on("getAllProductos", async () => {
-
             socket.emit("products", await dao.getProductos());
         });
 

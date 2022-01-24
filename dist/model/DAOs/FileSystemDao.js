@@ -85,18 +85,16 @@ var usuarios_1 = require("../models/usuarios");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var MensajeDto_1 = require("../DTOs/MensajeDto");
+var config = require('../../../config.js');
 var FileSystemDao = /** @class */ (function () {
     function FileSystemDao() {
-        this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
-        this.pathProducto = "./fileSystemDB/productos.txt";
-        this.pathCarrito = "./fileSystemDB/carrito.txt";
-        this.pathOrder = "./fileSystemDB/order.txt";
-        this.pathMensajes = "./fileSystemDB/mensajes.txt";
+        this.MONGO_URL = config.MONGO_URL;
+        this.pathProducto = config.FILE_PATH_PRODUCTOS;
+        this.pathCarrito = config.FILE_PATH_CARRITO;
+        this.pathOrder = config.FILE_PATH_ORDER;
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
-        this.mensajes = new Array();
         this.countCarrito = 1;
         this.countOrder = 1;
         this.conectar();
@@ -143,14 +141,14 @@ var FileSystemDao = /** @class */ (function () {
         if (filterBy === 'nombre') {
             var filtroCapitalized_1 = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
             this.productos.forEach(function (producto) {
-                if (producto.title === filtro[0] || producto.title === filtroCapitalized_1) {
+                if (producto.title.includes(filtroCapitalized_1)) {
                     productos.push((0, ProductoDto_1.productoDTOForFile)(producto));
                 }
             });
         }
         else if (filterBy === 'codigo') {
             this.productos.forEach(function (producto) {
-                if (producto.code === filtro[0]) {
+                if (producto.code.includes(filtro[0])) {
                     productos.push((0, ProductoDto_1.productoDTOForFile)(producto));
                 }
             });
@@ -271,7 +269,6 @@ var FileSystemDao = /** @class */ (function () {
             }
             else {
                 _this.carrito.splice(0, _this.carrito.length);
-                // console.log(this.carrito, 'carrito', content,'content');
                 var savedCarrito = JSON.parse(content);
                 savedCarrito.forEach(function (carrito) {
                     _this.carrito.push(carrito);
@@ -299,31 +296,6 @@ var FileSystemDao = /** @class */ (function () {
         var index = this.carrito.indexOf(productoToBeDelete);
         this.carrito.splice(index, 1);
         fs.writeFileSync(this.pathCarrito, JSON.stringify(this.carrito, null, "\t"));
-    };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    FileSystemDao.prototype.getMensajes = function () {
-        var _this = this;
-        fs.readFile(this.pathMensajes, "utf8", function (error, content) {
-            if (error) {
-                console.error("Hubo un error con fs.readFile de mensaje!");
-            }
-            else {
-                _this.mensajes = [];
-                var savedMensajes = JSON.parse(content);
-                savedMensajes.forEach(function (msj) {
-                    _this.mensajes.push(msj);
-                });
-            }
-        });
-        var wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
-        return wrapMensajes;
-    };
-    FileSystemDao.prototype.getMensajeById = function (id) {
-        return this.mensajes.find(function (element) { return String(element.id) === id; });
-    };
-    FileSystemDao.prototype.insertMensajes = function (mensaje) {
-        this.mensajes.push(mensaje);
-        fs.writeFileSync(this.pathMensajes, JSON.stringify(this.mensajes, null, "\t"));
     };
     return FileSystemDao;
 }());

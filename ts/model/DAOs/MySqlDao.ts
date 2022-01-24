@@ -4,23 +4,20 @@ import { usuarioModel as User } from '../models/usuarios';
 import { Producto } from "./interfaces/IProducto";
 import { Cart } from "./interfaces/ICart";
 import { Order } from "./interfaces/IOrder";
-import { Mensaje, MensajeWrap } from "./interfaces/IMensaje";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForSQL, insertUpdateProductoDTOForSQL } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import { MensajeDTO } from "../DTOs/MensajeDto";
-
+const config = require('../../../config.js');
 
 
 export class MySqlDao implements IDao {
     productos: Array<Producto>;
     carrito: Array<Cart>;
     order: Array<Cart>;
-    mensajes: Array<Mensaje>
     countCarrito: number;
     countOrder: number;
     knex: any;
-    private MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    private MONGO_URL = config.MONGO_URL;
     private optionsMariaDB = {
         client: "mysql",
         connection: {
@@ -35,10 +32,9 @@ export class MySqlDao implements IDao {
         this.productos = new Array<Producto>();
         this.carrito = new Array<Cart>();
         this.order = new Array<Cart>();
-        this.mensajes = new Array<Mensaje>();
         this.countCarrito = 1;
         this.countOrder = 1;
-        this.knex = require("knex")(this.optionsMariaDB);
+        this.knex = require("knex")( this.optionsMariaDB) ;
         this.conectar();
     }
 
@@ -450,84 +446,4 @@ export class MySqlDao implements IDao {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    async getMensajes(): Promise<MensajeWrap> {
-
-        // const knex = require("knex")(optionsMariaDB);
-        try {
-            const mensajesFromDB = await this.knex.from("mensajes").select("*");
-
-            this.mensajes = [];
-            for (const mensaje of mensajesFromDB) {
-                const auhtorId = String(mensaje.author_id);
-
-                const author = await this.knex.from("author").where("_id", Number(auhtorId));
-                const authorObject = {
-                    _id: String(author[0]._id),
-                    email: author[0].email,
-                    nombre: author[0].nombre,
-                    apellido: author[0].apellido,
-                    edad: author[0].edad,
-                    alias: author[0].alias,
-                    avatar: author[0].avatar,
-                }
-
-                const msgComplete = {
-                    id: mensaje._id,
-                    text: mensaje.text,
-                    date: mensaje.date,
-                    author: authorObject,
-                }
-
-                this.mensajes.push(msgComplete);
-            }
-
-        } catch (error) {
-            console.log(error);
-            throw error;
-        } finally {
-            // await knex.destroy();
-
-            const wrapMensajes = MensajeDTO(this.mensajes);
-            return wrapMensajes;
-        }
-    }
-
-    async insertMensajes(mensaje: Mensaje) {
-        // const knex = require("knex")(optionsMariaDB);
-        try {
-            this.mensajes.push(mensaje);
-            const authorEmail = mensaje.author.email;
-            const authorGuardado = await this.knex.from("author").select("*").where("email", "=", authorEmail);
-            if (authorGuardado.length === 0) {
-                await this.knex.from("author").insert([
-                    {
-                        email: mensaje.author.email,
-                        nombre: mensaje.author.nombre,
-                        apellido: mensaje.author.apellido,
-                        edad: mensaje.author.edad,
-                        alias: mensaje.author.alias,
-                        avatar: mensaje.author.avatar
-                    },
-                ]);
-            }
-            await this.knex("mensajes").insert([
-                {
-                    date: mensaje.date,
-                    text: mensaje.text,
-                    author_id: authorGuardado[0]._id
-                },
-            ]);
-        } catch (error) {
-            console.log(error);
-            throw error;
-        } finally {
-            console.log('Mensaje Agregado');
-            // await knex.destroy();
-        }
-    }
-
-    getMensajeById(id: string): Mensaje | undefined {
-        return this.mensajes.find((element) => String(element.id) === id);
-    }
 }

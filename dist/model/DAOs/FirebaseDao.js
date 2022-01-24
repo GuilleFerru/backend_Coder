@@ -54,28 +54,25 @@ exports.FirebaseDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var ICart_1 = require("./interfaces/ICart");
 var usuarios_1 = require("../models/usuarios");
-var IMensaje_1 = require("./interfaces/IMensaje");
 var firebase_admin_1 = __importDefault(require("firebase-admin"));
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var MensajeDto_1 = require("../DTOs/MensajeDto");
 var config = require('../../../config.js');
 if (config.PERSISTENCIA === '7') {
     firebase_admin_1.default.initializeApp({
-        credential: firebase_admin_1.default.credential.cert("./Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json"),
-        databaseURL: "https://backend-coder.firebaseio.com",
+        credential: firebase_admin_1.default.credential.cert(config.FIREBASE_CREDENTIAL),
+        databaseURL: config.FIREBASE_URL,
     });
     loggers_1.loggerInfo.info("Base de datos Firebase conectada!");
 }
 var FirebaseDao = /** @class */ (function () {
     function FirebaseDao() {
         this.firestoreAdmin = firebase_admin_1.default.firestore();
-        this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+        this.MONGO_URL = config.MONGO_URL;
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
-        this.mensajes = new Array();
         this.countCarrito = 1;
         this.countOrder = 1;
         this.dbConnection = this.conectar();
@@ -210,7 +207,6 @@ var FirebaseDao = /** @class */ (function () {
                     case 1:
                         savedProducts = _a.sent();
                         savedProducts.docs.map(function (producto) {
-                            // const newProducto = this.createProductoObject(producto);
                             _this.productos.push((0, ProductoDto_1.productoDTOForFirebase)(producto));
                         });
                         return [3 /*break*/, 4];
@@ -443,78 +439,6 @@ var FirebaseDao = /** @class */ (function () {
                         console.log('Producto en carrito Eliminado');
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    FirebaseDao.prototype.getMensajes = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var savedMessages, error_11, wrapMensajes;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, 3, 4]);
-                        this.mensajes = [];
-                        return [4 /*yield*/, this.Collection('mensajes').get()];
-                    case 1:
-                        savedMessages = _a.sent();
-                        savedMessages.docs.map(function (mensaje) {
-                            var newMensaje = new IMensaje_1.Mensaje(mensaje.data().id, mensaje.data().text, mensaje.data().date, mensaje.data().author);
-                            _this.mensajes.push(newMensaje);
-                        });
-                        return [3 /*break*/, 4];
-                    case 2:
-                        error_11 = _a.sent();
-                        console.log(error_11);
-                        throw error_11;
-                    case 3:
-                        wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
-                        return [2 /*return*/, wrapMensajes];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    FirebaseDao.prototype.getMensajeById = function (id) {
-        return this.mensajes.find(function (element) { return String(element.id) === id; });
-    };
-    FirebaseDao.prototype.insertMensajes = function (mensaje) {
-        return __awaiter(this, void 0, void 0, function () {
-            var mensajeModificado, authorModificado, saveMensaje, error_12;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, 3, 4]);
-                        mensajeModificado = __rest(mensaje, []);
-                        authorModificado = __rest(mensajeModificado.author, []);
-                        saveMensaje = {
-                            id: mensajeModificado.id,
-                            text: mensajeModificado.text,
-                            date: mensajeModificado.date,
-                            author: {
-                                email: authorModificado.email,
-                                nombre: authorModificado.nombre,
-                                apellido: authorModificado.apellido,
-                                edad: authorModificado.edad,
-                                alias: authorModificado.alias,
-                                avatar: authorModificado.avatar
-                            }
-                        };
-                        return [4 /*yield*/, this.Collection('mensajes').add(saveMensaje)];
-                    case 1:
-                        _a.sent();
-                        this.mensajes.push(mensaje);
-                        return [3 /*break*/, 4];
-                    case 2:
-                        error_12 = _a.sent();
-                        console.log(error_12);
-                        throw error_12;
-                    case 3:
-                        console.log('Mensaje Agregado');
-                        return [7 /*endfinally*/];
-                    case 4: return [2 /*return*/];
                 }
             });
         });

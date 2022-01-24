@@ -43,20 +43,18 @@ exports.MongoDbaaSDao = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var usuarios_1 = require("../models/usuarios");
 var productos_1 = require("../models/productos");
-var mensajes_1 = require("../models/mensajes");
 var carrito_1 = require("../models/carrito");
 var order_1 = require("../models/order");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var MensajeDto_1 = require("../DTOs/MensajeDto");
+var config = require('../../../config.js');
 var MongoDbaaSDao = /** @class */ (function () {
     function MongoDbaaSDao() {
-        this.MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+        this.MONGO_URL = config.MONGO_URL;
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
-        this.mensajes = new Array();
         this.dbConnection = this.conectar();
     }
     MongoDbaaSDao.prototype.conectar = function () {
@@ -271,67 +269,12 @@ var MongoDbaaSDao = /** @class */ (function () {
             });
         });
     };
-    MongoDbaaSDao.prototype.getMensajeById = function (id) {
-        return 'this.mensajes.find((element) => String(element.id) === id)';
-    };
-    MongoDbaaSDao.prototype.getMensajes = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var savedMensajes, error_6, wrapMensajes;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, 3, 4]);
-                        this.mensajes = [];
-                        return [4 /*yield*/, mensajes_1.mensajesModel.find({}, { __v: 0, _id: 0 })];
-                    case 1:
-                        savedMensajes = _a.sent();
-                        savedMensajes.forEach(function (mensaje) {
-                            _this.mensajes.push(mensaje);
-                        });
-                        return [3 /*break*/, 4];
-                    case 2:
-                        error_6 = _a.sent();
-                        loggers_1.loggerError.error(error_6);
-                        throw error_6;
-                    case 3:
-                        wrapMensajes = (0, MensajeDto_1.MensajeDTO)(this.mensajes);
-                        return [2 /*return*/, wrapMensajes];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    MongoDbaaSDao.prototype.insertMensajes = function (mensaje) {
-        return __awaiter(this, void 0, void 0, function () {
-            var error_7;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, 3, 4]);
-                        return [4 /*yield*/, mensajes_1.mensajesModel.insertMany(mensaje)];
-                    case 1:
-                        _a.sent();
-                        this.mensajes.push(mensaje);
-                        return [3 /*break*/, 4];
-                    case 2:
-                        error_7 = _a.sent();
-                        loggers_1.loggerError.error(error_7);
-                        throw error_7;
-                    case 3:
-                        loggers_1.loggerInfo.info('Mensaje Agregado');
-                        return [7 /*endfinally*/];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
     MongoDbaaSDao.prototype.getCarritoById = function (id) {
         return this.carrito.find(function (element) { return String(element._id) === id; });
     };
     MongoDbaaSDao.prototype.getCarrito = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var carritosEnDB, error_8;
+            var carritosEnDB, error_6;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -346,9 +289,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         });
                         return [3 /*break*/, 4];
                     case 2:
-                        error_8 = _a.sent();
-                        loggers_1.loggerError.error(error_8);
-                        throw error_8;
+                        error_6 = _a.sent();
+                        loggers_1.loggerError.error(error_6);
+                        throw error_6;
                     case 3: 
                     // await mongoose.disconnect();
                     return [2 /*return*/, this.carrito];
@@ -359,7 +302,7 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.insertOrder = function (order) {
         return __awaiter(this, void 0, void 0, function () {
-            var orderTotal, _i, order_2, carrito, orderToSend, adminOrder, clientOrder, i, lastOrderInserted, _id, finalOrder, error_9;
+            var orderTotal, _i, order_2, carrito, orderToSend, adminOrder, clientOrder, i, lastOrderInserted, _id, finalOrder, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -402,9 +345,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         orderToSend.push(finalOrder);
                         return [2 /*return*/, orderToSend];
                     case 8:
-                        error_9 = _a.sent();
-                        loggers_1.loggerError.error(error_9);
-                        throw error_9;
+                        error_7 = _a.sent();
+                        loggers_1.loggerError.error(error_7);
+                        throw error_7;
                     case 9:
                         console.log('Orden Agregada');
                         return [7 /*endfinally*/];
@@ -415,7 +358,7 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.insertProductToCarrito = function (producto) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_10;
+            var error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -428,9 +371,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 2:
-                        error_10 = _a.sent();
-                        loggers_1.loggerError.error(error_10);
-                        throw error_10;
+                        error_8 = _a.sent();
+                        loggers_1.loggerError.error(error_8);
+                        throw error_8;
                     case 3:
                         loggers_1.loggerInfo.info('Producto agregado a carrito', producto.title);
                         return [7 /*endfinally*/];
@@ -441,7 +384,7 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.updateQtyInCarrito = function (cart) {
         return __awaiter(this, void 0, void 0, function () {
-            var carrito, error_11;
+            var carrito, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -456,9 +399,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         loggers_1.loggerInfo.info('Se agrego un producto similar al mismo carrito', carrito.producto.title);
                         return [3 /*break*/, 5];
                     case 3:
-                        error_11 = _a.sent();
-                        loggers_1.loggerError.error(error_11);
-                        throw error_11;
+                        error_9 = _a.sent();
+                        loggers_1.loggerError.error(error_9);
+                        throw error_9;
                     case 4: return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -467,7 +410,7 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.deleteCarrito = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_12;
+            var error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -480,9 +423,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 5];
                     case 3:
-                        error_12 = _a.sent();
-                        loggers_1.loggerError.error(error_12);
-                        throw error_12;
+                        error_10 = _a.sent();
+                        loggers_1.loggerError.error(error_10);
+                        throw error_10;
                     case 4:
                         loggers_1.loggerInfo.info('Producto en carrito Eliminado');
                         return [7 /*endfinally*/];

@@ -15,7 +15,6 @@ export const orderProductoAdminDTO = (productoInCarrito: Cart) => ({
     'Stock restante': productoInCarrito.producto.stock,
     'Precio por unidad': `${productoInCarrito.producto.price} $`,
     'Precio total': `${productoInCarrito.total} $`
-
 });
 
 
@@ -24,13 +23,8 @@ export const orderProductoClientDTO = (productoInCarrito: Cart) => ({
     Cantidad: productoInCarrito.quantity,
     'Precio por unidad': `${productoInCarrito.producto.price} $`,
     'Precio total': `${productoInCarrito.total} $`
-
 });
 
-// export const orderProcessedClientDTO = (productos: any): any => ({
-//     productos: productos,
-    
-// });
 
 export const orderFinalDTO = (id: string, adminOrder: any, clientOrder: any, price: number): any => ({
     _id: id,
@@ -38,6 +32,4 @@ export const orderFinalDTO = (id: string, adminOrder: any, clientOrder: any, pri
     orderTotal: `${price} $`,
     adminOrder: adminOrder,
     clientOrder: clientOrder,
-    
-
 });

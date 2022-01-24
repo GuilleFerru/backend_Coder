@@ -137,7 +137,7 @@ var MongoDbaaSDao = /** @class */ (function () {
     };
     MongoDbaaSDao.prototype.filterProducto = function (filtro, filterBy) {
         return __awaiter(this, void 0, void 0, function () {
-            var filtroCapitalized, productosByName, productosByCode, productosByPrecio, productosByStock, error_2;
+            var filtroCapitalized, filtroReg, productosByName, filtroReg, productosByCode, productosByPrecio, productosByStock, error_2;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -145,8 +145,9 @@ var MongoDbaaSDao = /** @class */ (function () {
                         _a.trys.push([0, 9, 10, 11]);
                         this.productos = [];
                         if (!(filterBy === 'nombre')) return [3 /*break*/, 2];
-                        filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
-                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })];
+                        filtroCapitalized = new RegExp("^" + filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1));
+                        filtroReg = new RegExp("^" + filtro[0]);
+                        return [4 /*yield*/, productos_1.productoModel.find({ $or: [{ 'title': filtroReg }, { 'title': filtroCapitalized }] })];
                     case 1:
                         productosByName = _a.sent();
                         productosByName.forEach(function (producto) {
@@ -155,7 +156,8 @@ var MongoDbaaSDao = /** @class */ (function () {
                         return [3 /*break*/, 8];
                     case 2:
                         if (!(filterBy === 'codigo')) return [3 /*break*/, 4];
-                        return [4 /*yield*/, productos_1.productoModel.find({ 'code': String(filtro[0]) })];
+                        filtroReg = new RegExp("^" + filtro[0]);
+                        return [4 /*yield*/, productos_1.productoModel.find({ 'code': filtroReg })];
                     case 3:
                         productosByCode = _a.sent();
                         productosByCode.forEach(function (producto) {

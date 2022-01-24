@@ -61,11 +61,12 @@ var ControladorProductos = /** @class */ (function () {
             });
         }); };
         this.getProductos = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id, resultado;
+            var id, resultado, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = (req.params.id);
+                        _a.trys.push([0, 2, , 3]);
+                        id = req === null || req === void 0 ? void 0 : req.params.id;
                         return [4 /*yield*/, this.apiProductos.getProductos(id)];
                     case 1:
                         resultado = _a.sent();
@@ -75,7 +76,12 @@ var ControladorProductos = /** @class */ (function () {
                         else {
                             return [2 /*return*/, res.status(200).json(resultado)];
                         }
-                        return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.log(error_1);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); };

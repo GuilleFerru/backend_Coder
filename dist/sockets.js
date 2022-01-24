@@ -78,6 +78,8 @@ var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
 var MensajeDto_1 = require("./model/DTOs/MensajeDto");
 var minimist_1 = __importDefault(require("minimist"));
+var ControladorProductos = require('./controlador/productos');
+var controladorProductos = new ControladorProductos();
 var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
     default: {
         port: 8080,

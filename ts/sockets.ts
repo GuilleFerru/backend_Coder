@@ -8,6 +8,8 @@ import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 import { MensajeDTO } from './model/DTOs/MensajeDto';
 import minimist from 'minimist';
+const ControladorProductos = require('./controlador/productos');
+const controladorProductos = new ControladorProductos();
 
 
 const minimistArgs = minimist(process.argv.slice(2),{
@@ -69,6 +71,8 @@ export const sockets = async () => {
 
     io.on("connection", async (socket) => {
 
+ 
+
         socket.emit("messages", await getNormalizeMsj(mensajeRepository));
         socket.emit('port', port)
 
@@ -113,13 +117,15 @@ export const sockets = async () => {
             io.sockets.emit("messages", await getNormalizeMsj(mensajeRepository));
         });
 
-        socket.emit("products", await dao.getProductos(), newSession.getIsAdmin());
+        socket.emit("products", await dao.getProductos() , newSession.getIsAdmin());
 
         socket.on("filterProducto", async (filter: string[], filterBy: string) => {
+           
             socket.emit("products", await dao.filterProducto(filter, filterBy), newSession.getIsAdmin());
         });
 
         socket.on("getAllProductos", async () => {
+
             socket.emit("products", await dao.getProductos());
         });
 

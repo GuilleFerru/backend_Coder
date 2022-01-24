@@ -3,7 +3,8 @@ const socket = io();
 
 let port = '';
 
-
+const filtros = filterProductoTemplate()
+document.getElementById('filterProductos').innerHTML = filtros;
 
 socket.on('products', (productos, isAdmin) => {
 
@@ -13,8 +14,8 @@ socket.on('products', (productos, isAdmin) => {
         inputInfo: inputInfo,
     })
 
-    const filtros = filterProductoTemplate({ isAdmin })
-    document.getElementById('filterProductos').innerHTML = filtros;
+    const adminOptions = adminButtons({isAdmin})
+    document.getElementById('adminButtons').innerHTML = adminOptions;
 
     if (isAdmin) {
         newForm = formTemplate({ inputInfo });
@@ -111,25 +112,49 @@ const getInputValues = () => {
     const price = document.getElementById('price').value;
     const stock = document.getElementById('stock').value;
 
-    const _data = {
-        title: title,
-        description: description,
-        code: code,
-        thumbnail: thumbnail,
-        price: price,
-        stock: stock
+    if (!title || !description || !code || !thumbnail || !price || !stock) {
+        document.getElementById('title').classList.add('isInvalid');
+        document.getElementById('description').classList.add('isInvalid');
+        document.getElementById('code').classList.add('isInvalid');
+        document.getElementById('thumbnail').classList.add('isInvalid');
+        document.getElementById('price').classList.add('isInvalid');
+        document.getElementById('stock').classList.add('isInvalid');
+        return false;
+    } else {
+        const _data = {
+            title: title,
+            description: description,
+            code: code,
+            thumbnail: thumbnail,
+            price: price,
+            stock: stock
+        }
+        return _data;
     }
-    return _data;
 }
 
 const cleanInputValues = () => {
-    document.getElementById('title').value = '';
-    document.getElementById('description').value = '';
-    document.getElementById('code').value = '';
-    document.getElementById('thumbnail').value = '';
-    document.getElementById('price').value = '';
-    document.getElementById('stock').value = '';
+    let title = document.getElementById('title');
+    title.value = '';
+    title.classList.remove('isInvalid');
+    let description = document.getElementById('description');
+    description.value = '';
+    description.classList.remove('isInvalid');
+    let code = document.getElementById('code');
+    code.value = '';
+    code.classList.remove('isInvalid');
+    let thumbnail = document.getElementById('thumbnail');
+    thumbnail.value = '';
+    thumbnail.classList.remove('isInvalid');
+    let price = document.getElementById('price');
+    price.value = '';
+    price.classList.remove('isInvalid');
+    let stock = document.getElementById('stock');
+    stock.value = '';
+    stock.classList.remove('isInvalid');
 }
+
+
 
 const generateOrder = (cart) => {
     let orderTotal = 0;
@@ -152,9 +177,23 @@ const saveCart = () => {
                 body: JSON.stringify(order),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             }).then(res => res.json()).then(res => {
-                alert(`Compra "${res.resultado}" finalizada, revise su celular.`);
-                location.reload();
-            }).catch(error => { })
+
+                $.sweetModal({
+                    content: `Compra "${res.resultado}" finalizada, revise su celular.`,
+                    title: 'Felicitaciones!!!',
+                    icon: $.sweetModal.ICON_SUCCESS,
+                    theme: $.sweetModal.THEME_MIXED,
+                    buttons: [
+                        {
+                            label: 'Confirmar',
+                            classes: 'secondaryB'
+                        }
+                    ],
+                    onClose	: function() {
+                        location.reload();
+                    }                   
+                })
+            }).catch(error => {console.log(error) })
         }
     });
 }
@@ -212,16 +251,20 @@ const addToCart = (id) => {
 }
 
 const addProduct = () => {
-    fetch(`http://localhost:${port}/productos/agregar`, {
-        method: "POST",
-        body: JSON.stringify(getInputValues()),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    })
-        .then(res => {
-            // console.log(res.json());
-            cleanInputValues();
+    const data = getInputValues();
+    if (data) {
+        fetch(`http://localhost:${port}/productos/agregar`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
         })
-        .catch(error => console.log(error))
+            .then(res => {
+                console.log(res.json());
+                cleanInputValues();
+            })
+            .catch(error => console.log(error))
+    }
+
 }
 
 const deleteProduct = (id) => {
@@ -235,14 +278,24 @@ const deleteProduct = (id) => {
 }
 
 const updateProduct = (id) => {
-    const url = `http://localhost:${port}/productos/actualizar/${id}`
-    fetch(url, {
-        method: "PUT",
-        body: JSON.stringify(getInputValues()),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    })
-        .then(_ => { })
-        .catch(error => console.log(error))
+    const data = getInputValues();
+
+    if (data) {
+        const url = `http://localhost:${port}/productos/actualizar/${id}`
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        })
+            .then(_ => { })
+            .catch(error => console.log(error))
+    } else {
+        $.sweetModal({
+            content: 'Producto no actualizado',
+            icon: $.sweetModal.ICON_WARNING
+        });
+    }
+
 }
 
 const passIdProductToModal = (id) => {
@@ -286,6 +339,7 @@ const filterProductos = () => {
         const max = document.getElementById('maxStock').value;
         filter.push(min, max);
     };
+    
     socket.emit('filterProducto', filter, filterBy);
 
 }
@@ -316,7 +370,7 @@ const addMessage = () => {
     const text = document.getElementById("chatText").value;
     const avatar = document.getElementById("avatarChat").value;
 
-    if ((/$^|.+@.+..+/).test(email) && email !== "" && alias !== "") {
+    if ((/$^|.+@.+..+/).test(email) && nombre !== "" && apellido !== "" && edad !== "" && alias !== "" && text !== "" && avatar !== "") {
         const mensaje = {
             text: text,
             author: {
@@ -331,7 +385,12 @@ const addMessage = () => {
         socket.emit('newMessage', mensaje)
     } else {
         document.getElementById("emailChat").classList.add('isInvalid');
+        document.getElementById("nombreChat").classList.add('isInvalid');
+        document.getElementById("apellidoChat").classList.add('isInvalid');
+        document.getElementById("edadChat").classList.add('isInvalid');
         document.getElementById("aliasChat").classList.add('isInvalid');
+        document.getElementById("chatText").classList.add('isInvalid');
+        document.getElementById("avatarChat").classList.add('isInvalid');
     }
     return false;
 }

@@ -22,14 +22,21 @@ class ControladorProductos {
     };
 
     getProductos = async (req: Request, res: Response) => {
-        const id: string = (req.params.id);
-        const resultado = await this.apiProductos.getProductos(id);
-        if (!resultado) {
-            res.status(404).json({ error: "este producto no esta cargado" });
-        } else {
-            return res.status(200).json(resultado);
+        try {
+            const id = req?.params.id;
+            const resultado = await this.apiProductos.getProductos(id);
+            if (!resultado) {
+                res.status(404).json({ error: "este producto no esta cargado" });
+            } else {
+                return res.status(200).json(resultado);
+            }
+        } catch (error) {
+            console.log(error);
         }
-    };
+    }
+
+
+
 
 
     postProducto = async (req: Request, res: Response) => {

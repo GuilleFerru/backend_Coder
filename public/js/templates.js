@@ -5,12 +5,30 @@ const logOutTemplate = Handlebars.compile(`
     </h4>
 `)
 
+
+const adminButtons = Handlebars.compile(`
+    {{#if isAdmin}}
+            
+        <div class="flex mt-5">
+            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/graphql'">GraphQL</button>
+        </div>
+        <div class="flex mt-3">
+            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/process/info'">Process Info</button>
+        </div>
+        <div class="d-flex align-items-center mt-3">
+            <button type="button" class=" highlight-button btn btn-medium button xs-margin-bottom-five" onclick="generateRandoms()">Randoms</button>
+            <input type="number" class="form-control"  id="randomQty" onchange="getQtyRandom()">
+        </div>
+    {{/if}}
+`);
+
 const filterProductoTemplate = Handlebars.compile(`
 
 <div class="container-fluid mt-100">
 <div class="row d-flex justify-content-center">
     <div class="col-md-12">
         <div class="card">
+
             <article class="filter-group">
                 <header class="card-header"> 
                     <a href="#" data-toggle="collapse" data-target="#collapse_aside1" data-abc="true" aria-expanded="false" class="collapsed" id="nombre" onclick="checkFilter(this)"> 
@@ -55,7 +73,6 @@ const filterProductoTemplate = Handlebars.compile(`
                         <h6 class="title">Precio</h6>
                     </a> 
                 </header>
-             
                 <div class="filter-content collapse" id="collapse_aside3">
                     <div class="card-body"> 
                         <div class="form-row">
@@ -71,7 +88,6 @@ const filterProductoTemplate = Handlebars.compile(`
                     <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="filterProductos()">Filtrar</a>
                     </div>
                 </div>
-           
             </article>
 
             <article class="filter-group">
@@ -101,25 +117,13 @@ const filterProductoTemplate = Handlebars.compile(`
                     </div>
                 </div>
             </article>
+
             <div  class="mt-2">
                 <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="limpiarFiltro()">Limpiar Filtros</a>
             </div>
         </div>
 
-        {{#if isAdmin}}
-        
-        <div class="flex mt-5">
-            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/graphql'">GraphQL</button>
-        </div>
 
-        <div class="flex mt-3">
-            <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/process/info'">Process Info</button>
-        </div>
-        <div class="d-flex align-items-center mt-3">
-        <button type="button" class=" highlight-button btn btn-medium button xs-margin-bottom-five" onclick="generateRandoms()">Randoms</button>
-        <input type="number" class="form-control"  id="randomQty" onchange="getQtyRandom()">
-        </div>
-        {{/if}}
     </div>
 </div>
 </div>
@@ -263,7 +267,8 @@ const formTemplate = Handlebars.compile(`
                     <button class="btn btn-primary" id="submit" onclick="addProduct()" > Enviar</button>
                 </form>
         </div>
-    </div>    
+    </div>  
+
 `)
 
 const tableTemplate = Handlebars.compile(`

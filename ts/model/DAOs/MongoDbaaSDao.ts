@@ -78,13 +78,16 @@ export class MongoDbaaSDao implements IDao {
         try {
             this.productos = [];
             if (filterBy === 'nombre') {
-                const filtroCapitalized = filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1);
-                const productosByName = await productoModel.find({ $or: [{ 'title': String(filtro[0]) }, { 'title': String(filtroCapitalized) }] })
+                const filtroCapitalized = new RegExp("^"+filtro[0].charAt(0).toUpperCase() + filtro[0].slice(1));
+                const filtroReg = new RegExp("^" + filtro[0]);
+                const productosByName = await productoModel.find({ $or: [{ 'title': filtroReg }, { 'title': filtroCapitalized}] })
+              
                 productosByName.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })
             } else if (filterBy === 'codigo') {
-                const productosByCode = await productoModel.find({ 'code': String(filtro[0]) })
+                const filtroReg = new RegExp("^" + filtro[0]);
+                const productosByCode = await productoModel.find({ 'code': filtroReg })
                 productosByCode.forEach((producto: string | any) => {
                     this.productos.push(producto);
                 })

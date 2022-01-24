@@ -7,9 +7,8 @@ import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 import { MensajeDTO } from './model/DTOs/MensajeDto';
-// import minimist from 'minimist';
+import minimist from 'minimist';
 const config = require('../config.js')
-
 
 
 // const minimistArgs = minimist(process.argv.slice(2),{

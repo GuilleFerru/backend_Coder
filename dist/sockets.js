@@ -77,7 +77,6 @@ var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
 var MensajeDto_1 = require("./model/DTOs/MensajeDto");
-// import minimist from 'minimist';
 var config = require('../config.js');
 // const minimistArgs = minimist(process.argv.slice(2),{
 //     default:{ 

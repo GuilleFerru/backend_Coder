@@ -11,6 +11,7 @@ module.exports = {
     NODE_TLS_REJECT: process.env.NODE_TLS_REJECT_UNAUTHORIZED || '0',
     HOST: process.env.HOST || '127.0.0.1',
     PORT: process.env.PORT || 8080,
+    HEROKU: process.env.HEROKU,
     PERSISTENCIA: process.env.PERSISTENCIA || 1,
     ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
@@ -29,4 +30,5 @@ module.exports = {
     FILE_PATH_CARRITO: process.env.FILE_PATH_CARRITO,
     FILE_PATH_ORDER: process.env.FILE_PATH_ORDER,
     SQL_HOST: process.env.SQL_HOST,
+
 }

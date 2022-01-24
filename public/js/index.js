@@ -1,7 +1,6 @@
 const { fromEvent } = rxjs;
 const socket = io();
 
-let port = '';
 
 const filtros = filterProductoTemplate()
 document.getElementById('filterProductos').innerHTML = filtros;
@@ -14,7 +13,7 @@ socket.on('products', (productos, isAdmin) => {
         inputInfo: inputInfo,
     })
 
-    const adminOptions = adminButtons({isAdmin})
+    const adminOptions = adminButtons({ isAdmin })
     document.getElementById('adminButtons').innerHTML = adminOptions;
 
     if (isAdmin) {
@@ -64,9 +63,7 @@ socket.on('carts', (cart) => {
     document.getElementById('modalCart').innerHTML = modalCart;
 });
 
-socket.on('port', (puerto) => {
-    port = puerto;
-});
+
 
 const getQtyRandom = () => {
     return document.getElementById('randomQty').value;
@@ -78,15 +75,20 @@ const generateRandoms = () => {
     location.href = `/process/randoms?cant=${cant}`
 }
 
-
-
 const getQtyMocks = () => {
     return document.getElementById('mocksQty').value;
 }
 
+
+
+
+const path = 'https://coderbackend.herokuapp.com';
+//const path = 'http://localhost:8080';
+
+
 const generateFakeProductos = () => {
     const cant = getQtyMocks();
-    fetch(`http://localhost:${port}/productos/vista-test/?cant=${cant}`, {
+    fetch(`${path}/productos/vista-test/?cant=${cant}`, {
         method: "GET",
     }).then(response => response.json()).then(fakeProductos => {
         if (fakeProductos.error) {
@@ -167,12 +169,12 @@ const generateOrder = (cart) => {
 }
 
 const saveCart = () => {
-    fetch(`http://localhost:${port}/carrito/listar/`, {
+    fetch(`${path}/carrito/listar/`, {
         method: "GET",
     }).then(response => response.json()).then(cart => {
         const order = generateOrder(cart);
         if (order.length > 1) {
-            fetch(`http://localhost:${port}/carrito/agregar/`, {
+            fetch(`${path}/carrito/agregar/`, {
                 method: "POST",
                 body: JSON.stringify(order),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -189,17 +191,17 @@ const saveCart = () => {
                             classes: 'secondaryB'
                         }
                     ],
-                    onClose	: function() {
+                    onClose: function () {
                         location.reload();
-                    }                   
+                    }
                 })
-            }).catch(error => {console.log(error) })
+            }).catch(error => { console.log(error) })
         }
     });
 }
 
 const deleteCart = (id) => {
-    const url = `http://localhost:${port}/carrito/borrar/${id}`
+    const url = `${path}/carrito/borrar/${id}`
     fetch(url, {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -208,7 +210,7 @@ const deleteCart = (id) => {
 
 
 const showCart = () => {
-    fetch(`http://localhost:${port}/carrito/listar/`, {
+    fetch(`${path}/carrito/listar/`, {
         method: "GET",
     }).then(response => response.json()).then(cart => {
         modalCartTemplate({})
@@ -222,7 +224,7 @@ const showCart = () => {
 }
 
 const addToCart = (id) => {
-    const url = `http://localhost:${port}/carrito/agregar/${id}`;
+    const url = `${path}/carrito/agregar/${id}`;
     fetch(url, {
         method: "POST",
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -253,7 +255,7 @@ const addToCart = (id) => {
 const addProduct = () => {
     const data = getInputValues();
     if (data) {
-        fetch(`http://localhost:${port}/productos/agregar`, {
+        fetch(`${path}/productos/agregar`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -268,7 +270,7 @@ const addProduct = () => {
 }
 
 const deleteProduct = (id) => {
-    const url = `http://localhost:${port}/productos/borrar/${id}`
+    const url = `${path}/productos/borrar/${id}`
     fetch(url, {
         method: "DELETE",
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -281,7 +283,7 @@ const updateProduct = (id) => {
     const data = getInputValues();
 
     if (data) {
-        const url = `http://localhost:${port}/productos/actualizar/${id}`
+        const url = `${path}/productos/actualizar/${id}`
         fetch(url, {
             method: "PUT",
             body: JSON.stringify(data),
@@ -299,7 +301,7 @@ const updateProduct = (id) => {
 }
 
 const passIdProductToModal = (id) => {
-    const url = `http://localhost:${port}/productos/listar/${id}`
+    const url = `${path}/productos/listar/${id}`
     fetch(url, {
         method: "GET",
     }).then(response => response.json()).then(product => {
@@ -339,7 +341,7 @@ const filterProductos = () => {
         const max = document.getElementById('maxStock').value;
         filter.push(min, max);
     };
-    
+
     socket.emit('filterProducto', filter, filterBy);
 
 }

@@ -7,17 +7,18 @@ import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
 import { newSession } from "./app";
 import { MensajeDTO } from './model/DTOs/MensajeDto';
-import minimist from 'minimist';
+// import minimist from 'minimist';
 const config = require('../config.js')
 
 
 
-const minimistArgs = minimist(process.argv.slice(2),{
-    default:{ 
-        port: 8080,
-    }
-});
-const port = minimistArgs.port ;
+// const minimistArgs = minimist(process.argv.slice(2),{
+//     default:{ 
+//         port: 8080,
+//     }
+// });
+// const port = minimistArgs.port ;
+// console.log(port)
 
 //normaliza el mensaje
 const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
@@ -74,7 +75,7 @@ export const sockets = async () => {
         socket.emit("messages", await getNormalizeMsj(mensajeRepository));
 
         //emito el puerto
-        socket.emit('port', port)
+        // socket.emit('port', port)
 
         //recibo el mensaje, lo guardo y busco la palabra admin en el mensaje para enviar un sms al adminsitrador
         socket.on("newMessage", async (mensaje: Mensaje) => {

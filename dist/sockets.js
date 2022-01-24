@@ -77,14 +77,15 @@ var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("./twilio/sms.js"));
 var app_2 = require("./app");
 var MensajeDto_1 = require("./model/DTOs/MensajeDto");
-var minimist_1 = __importDefault(require("minimist"));
+// import minimist from 'minimist';
 var config = require('../config.js');
-var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
-    default: {
-        port: 8080,
-    }
-});
-var port = minimistArgs.port;
+// const minimistArgs = minimist(process.argv.slice(2),{
+//     default:{ 
+//         port: 8080,
+//     }
+// });
+// const port = minimistArgs.port ;
+// console.log(port)
 //normaliza el mensaje
 var getNormalizeMsj = function (mensajeRepository) { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajeDTO, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
@@ -147,7 +148,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                 //envia el mensaje normalizado al cliente
                                 _b.apply(_a, _c.concat([_g.sent()]));
                                 //emito el puerto
-                                socket.emit('port', port);
+                                // socket.emit('port', port)
                                 //recibo el mensaje, lo guardo y busco la palabra admin en el mensaje para enviar un sms al adminsitrador
                                 socket.on("newMessage", function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
                                     var date, id, checkId, newAuthor, newMensaje, msj, error_2, _a, _b, _c;

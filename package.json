@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development&& nodemon ./dist/app.js --port 8080",
     "prod": "set NODE_ENV=production&& nodemon ./dist/app.js  --port 8080",
-    "start": "node ./dist/app.js 8080",
+    "start": "set NODE_ENV=production&& node ./dist/app.js  --port 8080",
     "ServerTStoJS5": "./node_modules/.bin/tsc",
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",

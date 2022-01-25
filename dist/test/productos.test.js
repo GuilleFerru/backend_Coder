@@ -41,14 +41,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var chai_1 = require("chai");
-var app_1 = require("../app");
+var server_1 = require("../server");
 describe("TEST API PRODUCTOS", function () {
     describe("GET", function () {
         it("deberia retornar un estado 200", function () { return __awaiter(void 0, void 0, void 0, function () {
             var response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, supertest_1.default)(app_1.app).get("/productos/listar")];
+                    case 0: return [4 /*yield*/, (0, supertest_1.default)(server_1.app).get("/productos/listar")];
                     case 1:
                         response = _a.sent();
                         (0, chai_1.expect)(response.status).to.eql(200);
@@ -80,7 +80,7 @@ describe("TEST API PRODUCTOS", function () {
                             price: 10,
                             stock: 100
                         };
-                        return [4 /*yield*/, (0, supertest_1.default)(app_1.app).post("/productos/agregar").send(producto)];
+                        return [4 /*yield*/, (0, supertest_1.default)(server_1.app).post("/productos/agregar").send(producto)];
                     case 1:
                         response = _a.sent();
                         (0, chai_1.expect)(response.status).to.eql(201);
@@ -104,14 +104,14 @@ describe("TEST API PRODUCTOS", function () {
                             price: 10,
                             stock: 100
                         };
-                        return [4 /*yield*/, (0, supertest_1.default)(app_1.app).get("/productos/listar")];
+                        return [4 /*yield*/, (0, supertest_1.default)(server_1.app).get("/productos/listar")];
                     case 1:
                         productos = _a.sent();
                         id = '';
                         if (!(productos.status === 200)) return [3 /*break*/, 3];
                         lastProduct = productos.body[productos.body.length - 1];
                         id = lastProduct._id;
-                        return [4 /*yield*/, (0, supertest_1.default)(app_1.app).put("/productos/actualizar/" + id).send(productoModifcado)];
+                        return [4 /*yield*/, (0, supertest_1.default)(server_1.app).put("/productos/actualizar/" + id).send(productoModifcado)];
                     case 2:
                         updatedProducto = _a.sent();
                         (0, chai_1.expect)(updatedProducto.status).to.eql(200);
@@ -127,14 +127,14 @@ describe("TEST API PRODUCTOS", function () {
             var productos, id, lastProduct, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, supertest_1.default)(app_1.app).get("/productos/listar")];
+                    case 0: return [4 /*yield*/, (0, supertest_1.default)(server_1.app).get("/productos/listar")];
                     case 1:
                         productos = _a.sent();
                         id = '';
                         if (!(productos.status === 200)) return [3 /*break*/, 3];
                         lastProduct = productos.body[productos.body.length - 1];
                         id = lastProduct._id;
-                        return [4 /*yield*/, (0, supertest_1.default)(app_1.app).delete("/productos/borrar/" + id)];
+                        return [4 /*yield*/, (0, supertest_1.default)(server_1.app).delete("/productos/borrar/" + id)];
                     case 2:
                         response = _a.sent();
                         (0, chai_1.expect)(response.status).to.eql(200);

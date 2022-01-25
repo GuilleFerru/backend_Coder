@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { newSession, io } from '../app';
-import { Producto } from "../model/DAOs/interfaces/IProducto";
+import { newSession, io } from '../server';
+
 
 const ApiProductos = require('../api/productos');
 

@@ -1,5 +1,5 @@
 import { buildSchema } from "graphql";
-import { dao } from "../app";
+import { dao } from "../server";
 
 const schema = buildSchema(`
 type Query {

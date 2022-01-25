@@ -66,8 +66,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = require("../app");
-var app_2 = require("../app");
+var server_1 = require("../server");
 var twilioWsp = __importStar(require("../twilio/wsp.js"));
 var twilioSms = __importStar(require("../twilio/sms.js"));
 var ethereal = __importStar(require("../email/nodemailerEthereal"));
@@ -81,7 +80,7 @@ var ApiCarrito = /** @class */ (function () {
             var carritoById, carrito;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, app_1.dao.getCarritoById(id)];
+                    case 0: return [4 /*yield*/, server_1.dao.getCarritoById(id)];
                     case 1:
                         carritoById = _a.sent();
                         if (!carritoById) return [3 /*break*/, 2];
@@ -92,7 +91,7 @@ var ApiCarrito = /** @class */ (function () {
                             return [2 /*return*/, false];
                         }
                         return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, app_1.dao.getCarrito()];
+                    case 2: return [4 /*yield*/, server_1.dao.getCarrito()];
                     case 3:
                         carrito = _a.sent();
                         if (carrito.length > 0) {
@@ -110,7 +109,7 @@ var ApiCarrito = /** @class */ (function () {
             var orderProcessed, orderProcessedId, orderProcessedDate, orderProcessedTotal, orderProcessedAdmin, orderProcessedClient, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, app_1.dao.insertOrder(orderToProcess)];
+                    case 0: return [4 /*yield*/, server_1.dao.insertOrder(orderToProcess)];
                     case 1:
                         orderProcessed = _a.sent();
                         orderProcessedId = orderProcessed[0]._id;
@@ -118,7 +117,7 @@ var ApiCarrito = /** @class */ (function () {
                         orderProcessedTotal = orderProcessed[0].orderTotal;
                         orderProcessedAdmin = orderProcessed[0].adminOrder;
                         orderProcessedClient = orderProcessed[0].clientOrder;
-                        nombreAndEmail = app_2.newSession.getNombre() + " - " + app_2.newSession.getEmail();
+                        nombreAndEmail = server_1.newSession.getNombre() + " - " + server_1.newSession.getEmail();
                         mensajeWsp = "---- " + orderProcessedDate + " Nuevo pedido de: " + nombreAndEmail + "  ---- N\u00FAmero de Orden: " + orderProcessedId + "  --- Pedido: " + JSON.stringify(orderProcessedAdmin, null, '\t') + "  ----  Precio Total $: " + orderProcessedTotal + "  ---";
                         mensajeSms = "---- " + orderProcessedDate + " N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: " + JSON.stringify(orderProcessedClient, null, '\t') + " ----  Precio Total $: " + orderProcessedTotal + "  ---";
                         mensajeMail = "---- " + orderProcessedDate + " N\u00FAmero de Orden: " + orderProcessedId + " ---- Orden solicitada: <br> " + JSON.stringify(orderProcessedAdmin, null, '<br>') + " <br> ----  Precio Total $: " + orderProcessedTotal + "  ---";
@@ -128,7 +127,7 @@ var ApiCarrito = /** @class */ (function () {
                         return [4 /*yield*/, twilioWsp.enviarWsp(mensajeWsp)];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, app_2.newSession.getPhone())];
+                        return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, server_1.newSession.getPhone())];
                     case 4:
                         _a.sent();
                         ethereal.enviarMail("Nuevo pedido de: " + nombreAndEmail, mensajeMail, function (err, _info) {
@@ -148,19 +147,19 @@ var ApiCarrito = /** @class */ (function () {
             var cartToBeDelete, _a, _b, _c;
             return __generator(this, function (_d) {
                 switch (_d.label) {
-                    case 0: return [4 /*yield*/, app_1.dao.getCarritoById(id)];
+                    case 0: return [4 /*yield*/, server_1.dao.getCarritoById(id)];
                     case 1:
                         cartToBeDelete = _d.sent();
                         if (!cartToBeDelete) return [3 /*break*/, 5];
-                        return [4 /*yield*/, app_1.dao.deleteCarrito(cartToBeDelete._id)];
+                        return [4 /*yield*/, server_1.dao.deleteCarrito(cartToBeDelete._id)];
                     case 2:
                         _d.sent();
                         return [4 /*yield*/, apiProductos.restoreStock(cartToBeDelete.producto, cartToBeDelete.quantity)];
                     case 3:
                         _d.sent();
-                        _b = (_a = app_2.io.sockets).emit;
+                        _b = (_a = server_1.io.sockets).emit;
                         _c = ["carts"];
-                        return [4 /*yield*/, app_1.dao.getCarrito()];
+                        return [4 /*yield*/, server_1.dao.getCarrito()];
                     case 4:
                         _b.apply(_a, _c.concat([_d.sent()]));
                         return [2 /*return*/, true];
@@ -172,13 +171,13 @@ var ApiCarrito = /** @class */ (function () {
             var productoById, stock, carrrito, cartToBeUpdate, producto, carritoWithProductoStockUpdated, producto, producto;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, app_1.dao.getProductoById(id)];
+                    case 0: return [4 /*yield*/, server_1.dao.getProductoById(id)];
                     case 1:
                         productoById = _a.sent();
                         if (!productoById) return [3 /*break*/, 15];
                         stock = productoById.stock;
                         if (!(stock > 0)) return [3 /*break*/, 14];
-                        return [4 /*yield*/, app_1.dao.getCarrito()];
+                        return [4 /*yield*/, server_1.dao.getCarrito()];
                     case 2:
                         carrrito = _a.sent();
                         if (!(carrrito.length > 0)) return [3 /*break*/, 10];
@@ -190,14 +189,14 @@ var ApiCarrito = /** @class */ (function () {
                     case 4:
                         producto = _a.sent();
                         carritoWithProductoStockUpdated = __assign(__assign({}, cartToBeUpdate), { producto: producto });
-                        return [4 /*yield*/, app_1.dao.updateQtyInCarrito(carritoWithProductoStockUpdated)];
+                        return [4 /*yield*/, server_1.dao.updateQtyInCarrito(carritoWithProductoStockUpdated)];
                     case 5:
                         _a.sent();
                         return [3 /*break*/, 9];
                     case 6: return [4 /*yield*/, apiProductos.updateStock(productoById)];
                     case 7:
                         producto = _a.sent();
-                        return [4 /*yield*/, app_1.dao.insertProductToCarrito(producto)];
+                        return [4 /*yield*/, server_1.dao.insertProductToCarrito(producto)];
                     case 8:
                         _a.sent();
                         _a.label = 9;
@@ -205,7 +204,7 @@ var ApiCarrito = /** @class */ (function () {
                     case 10: return [4 /*yield*/, apiProductos.updateStock(productoById)];
                     case 11:
                         producto = _a.sent();
-                        return [4 /*yield*/, app_1.dao.insertProductToCarrito(producto)];
+                        return [4 /*yield*/, server_1.dao.insertProductToCarrito(producto)];
                     case 12:
                         _a.sent();
                         _a.label = 13;

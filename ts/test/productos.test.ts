@@ -1,6 +1,6 @@
 import request from "supertest";
 import { expect } from "chai";
-import { app } from "../app";
+import { app } from "../server";
 
 
 describe("TEST API PRODUCTOS", () => {

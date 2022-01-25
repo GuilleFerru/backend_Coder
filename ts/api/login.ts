@@ -1,6 +1,6 @@
-import { dao } from "../app";
+import { dao,newSession } from "../server";
 import bcrypt from 'bcrypt';
-import { newSession } from '../app';
+
 
 const isValidPassword = (user: { password: any; }, password: any) => bcrypt.compareSync(password, user.password);
 

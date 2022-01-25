@@ -55,7 +55,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = require("../app");
+var server_1 = require("../server");
 var IProducto_1 = require("../model/DAOs/interfaces/IProducto");
 var faker = __importStar(require("faker"));
 var ApiProductos = /** @class */ (function () {
@@ -85,12 +85,12 @@ var ApiProductos = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!id) return [3 /*break*/, 2];
-                        return [4 /*yield*/, app_1.dao.getProductoById(id)];
+                        return [4 /*yield*/, server_1.dao.getProductoById(id)];
                     case 1:
                         productoById = _a.sent();
                         response = String(productoById === null || productoById === void 0 ? void 0 : productoById._id) === id ? productoById : false;
                         return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, app_1.dao.getProductos()];
+                    case 2: return [4 /*yield*/, server_1.dao.getProductos()];
                     case 3:
                         products = _a.sent();
                         response = products.length > 0 ? products : false;
@@ -108,7 +108,7 @@ var ApiProductos = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, app_1.dao.insertProducto(newProducto)];
+                        return [4 /*yield*/, server_1.dao.insertProducto(newProducto)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/, true];
@@ -128,7 +128,7 @@ var ApiProductos = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, app_1.dao.updateProducto(id, newProducto)];
+                        return [4 /*yield*/, server_1.dao.updateProducto(id, newProducto)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/, true];
@@ -146,11 +146,11 @@ var ApiProductos = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 4, , 5]);
-                        return [4 /*yield*/, app_1.dao.getProductoById(id)];
+                        return [4 /*yield*/, server_1.dao.getProductoById(id)];
                     case 1:
                         productToBeDelete = _a.sent();
                         if (!productToBeDelete) return [3 /*break*/, 3];
-                        return [4 /*yield*/, app_1.dao.deleteProducto(productToBeDelete._id)];
+                        return [4 /*yield*/, server_1.dao.deleteProducto(productToBeDelete._id)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/, true];
@@ -169,10 +169,10 @@ var ApiProductos = /** @class */ (function () {
                     case 0:
                         if (!((producto.stock - 1) >= 0)) return [3 /*break*/, 3];
                         producto.stock = producto.stock - 1;
-                        return [4 /*yield*/, app_1.dao.updateProducto(producto._id, producto)];
+                        return [4 /*yield*/, server_1.dao.updateProducto(producto._id, producto)];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, app_1.dao.getProductoById(producto._id)];
+                        return [4 /*yield*/, server_1.dao.getProductoById(producto._id)];
                     case 2:
                         productoUpdated = _a.sent();
                         return [2 /*return*/, productoUpdated];
@@ -186,10 +186,10 @@ var ApiProductos = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         producto.stock = producto.stock + qty;
-                        return [4 /*yield*/, app_1.dao.updateProducto(producto._id, producto)];
+                        return [4 /*yield*/, server_1.dao.updateProducto(producto._id, producto)];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, app_1.dao.getProductoById(producto._id)];
+                        return [4 /*yield*/, server_1.dao.getProductoById(producto._id)];
                     case 2:
                         productoUpdated = _a.sent();
                         return [2 /*return*/, productoUpdated];

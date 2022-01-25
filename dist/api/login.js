@@ -39,9 +39,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = require("../app");
+var server_1 = require("../server");
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var app_2 = require("../app");
 var isValidPassword = function (user, password) { return bcrypt_1.default.compareSync(password, user.password); };
 var ApiLogin = /** @class */ (function () {
     function ApiLogin() {
@@ -50,7 +49,7 @@ var ApiLogin = /** @class */ (function () {
             var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, app_1.dao.findUser(username)];
+                    case 0: return [4 /*yield*/, server_1.dao.findUser(username)];
                     case 1:
                         user = _a.sent();
                         if (!user) {
@@ -64,15 +63,15 @@ var ApiLogin = /** @class */ (function () {
             });
         }); };
         this.getLogin = function (user) {
-            app_2.newSession.setNombre(user.name + " " + user.lastname);
-            app_2.newSession.setEmail("" + user.username);
-            app_2.newSession.setPhone("" + user.phone);
-            app_2.newSession.setAvatar("" + user.avatar);
-            app_2.newSession.setIsAdmin(user.isAdmin);
+            server_1.newSession.setNombre(user.name + " " + user.lastname);
+            server_1.newSession.setEmail("" + user.username);
+            server_1.newSession.setPhone("" + user.phone);
+            server_1.newSession.setAvatar("" + user.avatar);
+            server_1.newSession.setIsAdmin(user.isAdmin);
             return {
-                nombre: app_2.newSession.getNombre(),
-                email: app_2.newSession.getEmail(),
-                avatar: app_2.newSession.getAvatar(),
+                nombre: server_1.newSession.getNombre(),
+                email: server_1.newSession.getEmail(),
+                avatar: server_1.newSession.getAvatar(),
             };
         };
         // isValidPassword(user: any, password: string): boolean {

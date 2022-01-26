@@ -30,7 +30,7 @@ var daoFactory_1 = require("./model/DAOs/daoFactory");
 var loggers_1 = require("./utils/loggers");
 var ISession_1 = require("./model/DAOs/interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
-var sockets_1 = require("./repositories/sockets");
+var sockets_1 = require("./sockets/sockets");
 var express_graphql_1 = require("express-graphql");
 // import minimist from 'minimist';
 // import cors from 'cors';

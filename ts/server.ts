@@ -6,7 +6,7 @@ import { DaoFactory } from "./model/DAOs/daoFactory";
 import { loggerInfo } from "./utils/loggers";
 import { Session } from "./model/DAOs/interfaces/ISession";
 import * as SocketIO from "socket.io";
-import { sockets } from "./repositories/sockets";
+import { sockets } from "./sockets/sockets";
 import { graphqlHTTP } from "express-graphql";
 // import minimist from 'minimist';
 // import cors from 'cors';

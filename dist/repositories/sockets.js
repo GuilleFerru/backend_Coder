@@ -63,14 +63,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
 var server_1 = require("../server");
 var mongodb_1 = require("mongodb");
-var MensajeRepository_1 = __importDefault(require("./MensajeRepository"));
+var MensajeRepository_1 = require("./MensajeRepository");
 var IMensaje_1 = require("../model/DAOs/interfaces/IMensaje");
 var loggers_1 = require("../utils/loggers");
 var normalizr = __importStar(require("normalizr"));
@@ -131,7 +128,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                 })];
             case 1:
                 connection = _a.sent();
-                mensajeRepository = new MensajeRepository_1.default(connection.db("ecommerce"), "mensajesnormalizrs");
+                mensajeRepository = new MensajeRepository_1.MensajeRepository(connection.db("ecommerce"), "mensajesnormalizrs");
                 loggers_1.loggerInfo.info("Conectado a la base de datos de mensajes");
                 server_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, _b, _c, _d, _e, _f;

@@ -1,6 +1,6 @@
 import { io, dao, newSession} from '../server';
 import {MongoClient} from "mongodb";
-import MensajeRepository from "./MensajeRepository";
+import {MensajeRepository} from "./MensajeRepository";
 import { Mensaje, Author } from "../model/DAOs/interfaces/IMensaje";
 import { loggerError,loggerInfo } from "../utils/loggers";
 import * as normalizr from 'normalizr';
@@ -20,7 +20,7 @@ import minimist from 'minimist';
 // console.log(port)
 
 //normaliza el mensaje
-const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
+const getNormalizeMsj = async (mensajeRepository: any) => {
     try {
         const mensajesOriginal: any = await mensajeRepository?.find();
         const mensajeDTO = MensajeDTO(mensajesOriginal);

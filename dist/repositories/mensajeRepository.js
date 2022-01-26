@@ -18,12 +18,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MensajeRepository = void 0;
 var BaseRepository_1 = __importDefault(require("./base/BaseRepository"));
 var MensajeRepository = /** @class */ (function (_super) {
     __extends(MensajeRepository, _super);
     function MensajeRepository() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    MensajeRepository.prototype.countOfMensaje = function () {
+        return this.collection.countDocuments({});
+    };
     return MensajeRepository;
 }(BaseRepository_1.default));
-exports.default = MensajeRepository;
+exports.MensajeRepository = MensajeRepository;

@@ -6,10 +6,10 @@ import { DaoFactory } from "./model/DAOs/daoFactory";
 import { loggerInfo } from "./utils/loggers";
 import { Session } from "./model/DAOs/interfaces/ISession";
 import * as SocketIO from "socket.io";
-import { sockets } from "./sockets";
+// import { sockets } from "./sockets";
 import { graphqlHTTP } from "express-graphql";
-import minimist from 'minimist';
-import cors from 'cors';
+// import minimist from 'minimist';
+// import cors from 'cors';
 
 // const minimistArgs = minimist(process.argv.slice(2), {
 //     default: {
@@ -87,7 +87,7 @@ const routerCarrito = new RouterCarrito();
 const RouterProcess = require('./router/process');
 const routerProcess = new RouterProcess();
 
-sockets();
+// sockets();
 
 const graphql = require('./utils/graphql');
 app.use("/graphql", graphqlHTTP({

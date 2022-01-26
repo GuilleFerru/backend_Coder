@@ -30,8 +30,10 @@ var daoFactory_1 = require("./model/DAOs/daoFactory");
 var loggers_1 = require("./utils/loggers");
 var ISession_1 = require("./model/DAOs/interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
-var sockets_1 = require("./sockets");
+// import { sockets } from "./sockets";
 var express_graphql_1 = require("express-graphql");
+// import minimist from 'minimist';
+// import cors from 'cors';
 // const minimistArgs = minimist(process.argv.slice(2), {
 //     default: {
 //         port: 8080,
@@ -82,7 +84,7 @@ var RouterCarrito = require('./router/carrito');
 var routerCarrito = new RouterCarrito();
 var RouterProcess = require('./router/process');
 var routerProcess = new RouterProcess();
-(0, sockets_1.sockets)();
+// sockets();
 var graphql = require('./utils/graphql');
 exports.app.use("/graphql", (0, express_graphql_1.graphqlHTTP)({
     schema: graphql.schema,

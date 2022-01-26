@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.io = exports.newSession = exports.dao = exports.server = exports.app = void 0;
+exports.io = exports.newSession = exports.dao = exports.OPCION = exports.server = exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var compression_1 = __importDefault(require("compression"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
@@ -32,15 +32,14 @@ var ISession_1 = require("./model/DAOs/interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
 var sockets_1 = require("./sockets");
 var express_graphql_1 = require("express-graphql");
-var minimist_1 = __importDefault(require("minimist"));
-var cors_1 = __importDefault(require("cors"));
-var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
-    default: {
-        port: 8080,
-    }
-});
-var port = minimistArgs.port;
-var config = require('../config.js');
+// const minimistArgs = minimist(process.argv.slice(2), {
+//     default: {
+//         port: 8080,
+//     }
+// });
+// const port = minimistArgs.port;
+var port = process.env.PORT || 8080;
+// const config = require('../config.js');
 exports.app = (0, express_1.default)();
 // #region Middlewares
 exports.app.use((0, compression_1.default)());
@@ -53,9 +52,9 @@ exports.app.engine("hbs", (0, express_handlebars_1.default)({
 exports.app.set("view engine", "hbs");
 exports.app.set("views", "./views");
 exports.app.use(express_1.default.static('public'));
-if (config.NODE_ENV === 'development') {
-    exports.app.use((0, cors_1.default)());
-}
+// if(config.NODE_ENV === 'development'){
+//     app.use(cors());
+// }
 // //#endregion
 exports.server = exports.app.listen(port, function () {
     loggers_1.loggerInfo.info("Servidor listo en el puerto " + port);
@@ -68,9 +67,10 @@ exports.server = exports.app.listen(port, function () {
 // MONGO = 5
 // MONGOAAS = 6;
 // FIREBASE = 7;
-var OPCION = +config.PERSISTENCIA;
+// const OPCION = + config.PERSISTENCIA;
+exports.OPCION = 6;
 var daoInstance = daoFactory_1.DaoFactory.getInstance();
-exports.dao = daoInstance.getDao(OPCION);
+exports.dao = daoInstance.getDao(exports.OPCION);
 // #endregion
 exports.newSession = new ISession_1.Session();
 exports.io = new SocketIO.Server(exports.server);

@@ -58,18 +58,19 @@ var firebase_admin_1 = __importDefault(require("firebase-admin"));
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var config = require('../../../config.js');
-if (config.PERSISTENCIA === '7') {
+var server_1 = require("../../server");
+// const config = require('../../../config.js');
+if (server_1.OPCION == 7) {
     firebase_admin_1.default.initializeApp({
-        credential: firebase_admin_1.default.credential.cert(config.FIREBASE_CREDENTIAL),
-        databaseURL: config.FIREBASE_URL,
+        credential: firebase_admin_1.default.credential.cert('./Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json'),
+        databaseURL: 'https://backend-coder.firebaseio.com',
     });
     loggers_1.loggerInfo.info("Base de datos Firebase conectada!");
 }
 var FirebaseDao = /** @class */ (function () {
     function FirebaseDao() {
         this.firestoreAdmin = firebase_admin_1.default.firestore();
-        this.MONGO_URL = config.MONGO_URL;
+        this.MONGO_URL = "mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();

@@ -7,17 +7,17 @@ import * as normalizr from 'normalizr';
 import * as twilio from './twilio/sms.js';
 import { MensajeDTO } from './model/DTOs/MensajeDto';
 import minimist from 'minimist';
-const config = require('../config.js')
+// const config = require('../config.js')
 
 
 
-const minimistArgs = minimist(process.argv.slice(2),{
-    default:{ 
-        port: 8080,
-    }
-});
-const port = minimistArgs.port ;
-console.log(port)
+// const minimistArgs = minimist(process.argv.slice(2),{
+//     default:{ 
+//         port: 8080,
+//     }
+// });
+// const port = minimistArgs.port ;
+// console.log(port)
 
 //normaliza el mensaje
 const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
@@ -57,7 +57,7 @@ const generateMensajeId = () => {
 
 export const sockets = async () => {
 
-    const connection: MongoClient | any = await MongoClient.connect(config.MONGO_URL,
+    const connection: MongoClient | any = await MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority',
         {
             useNewUrlParser: true, 
             useUnifiedTopology: true,
@@ -107,7 +107,7 @@ export const sockets = async () => {
             if (mensaje.text.includes('administrador')) {
                 try {
                     let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
-                    await twilio.enviarSMS(msj, config.TWILIO_PHONE_NUMBER);
+                    await twilio.enviarSMS(msj, '+5493571531154');
                 }
                 catch (error) {
                     loggerError.error('ERROR enviarWapp', error)

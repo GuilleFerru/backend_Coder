@@ -10,7 +10,7 @@ import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
 
-const config = require('../../../config.js');
+// const config = require('../../../config.js');
 
 export class MongoDbDao implements IDao {
 
@@ -18,7 +18,7 @@ export class MongoDbDao implements IDao {
     carrito: Cart[];
     order: Cart[];
     dbConnection: Promise<typeof mongoose>;
-    private MONGODB_URL = config.MONGO_URL_LOCAL || config.MONGO_URL;
+    private MONGO_URL ="mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
     constructor() {
         this.productos = new Array<Producto>();
@@ -31,7 +31,7 @@ export class MongoDbDao implements IDao {
     async conectar() {
         try {
             loggerInfo.info('Base de datos MongoDB conectada!')
-            return await mongoose.connect(this.MONGODB_URL);
+            return await mongoose.connect(this.MONGO_URL);
         }
         catch (err) {
             loggerError.error(`MongoDB: Error en conectar: ${err}`)

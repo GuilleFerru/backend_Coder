@@ -57,11 +57,11 @@ var IOrder_1 = require("./interfaces/IOrder");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-var config = require('../../../config.js');
+// const config = require('../../../config.js');
 var MySqlDao = /** @class */ (function () {
     function MySqlDao() {
         var _this = this;
-        this.MONGO_URL = config.MONGO_URL;
+        this.MONGO_URL = "mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
         this.optionsMariaDB = {
             client: "mysql",
             connection: {

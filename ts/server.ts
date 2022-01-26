@@ -11,14 +11,15 @@ import { graphqlHTTP } from "express-graphql";
 import minimist from 'minimist';
 import cors from 'cors';
 
-const minimistArgs = minimist(process.argv.slice(2), {
-    default: {
-        port: 8080,
-    }
-});
+// const minimistArgs = minimist(process.argv.slice(2), {
+//     default: {
+//         port: 8080,
+//     }
+// });
 
-const port = minimistArgs.port;
-const config = require('../config.js');
+// const port = minimistArgs.port;
+const port = process.env.PORT || 8080;
+// const config = require('../config.js');
 export const app = express();
 
 // #region Middlewares
@@ -40,9 +41,9 @@ app.set("views", "./views");
 app.use(express.static('public'));
 
 
-if(config.NODE_ENV === 'development'){
-    app.use(cors());
-}
+// if(config.NODE_ENV === 'development'){
+//     app.use(cors());
+// }
 
 // //#endregion
 
@@ -61,7 +62,8 @@ export const server = app.listen(port, () => {
 // MONGOAAS = 6;
 // FIREBASE = 7;
 
-const OPCION = + config.PERSISTENCIA;
+// const OPCION = + config.PERSISTENCIA;
+export let OPCION = 6;
 const daoInstance = DaoFactory.getInstance();
 export const dao: IDao = daoInstance.getDao(OPCION);
 

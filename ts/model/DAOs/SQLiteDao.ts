@@ -7,7 +7,7 @@ import { Order } from "./interfaces/IOrder";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForSQL, insertUpdateProductoDTOForSQL } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-const config = require('../../../config.js');
+// const config = require('../../../config.js');
 
 
 export class SQLiteDao implements IDao {
@@ -17,11 +17,11 @@ export class SQLiteDao implements IDao {
     countCarrito: number;
     countOrder: number;
     knex: any;
-    private MONGO_URL = config.MONGO_URL;
+    private MONGO_URL ="mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
     private optionsSQLite = {
         client: 'sqlite3',
         connection: {
-            filename: config.SQL_HOST
+            filename: './SQLiteDB/ecommerce.sqlite'
         },
         useNullAsDefault: true
     };

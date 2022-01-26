@@ -6,19 +6,21 @@ import { DaoFactory } from "./model/DAOs/daoFactory";
 import { loggerInfo } from "./utils/loggers";
 import { Session } from "./model/DAOs/interfaces/ISession";
 import * as SocketIO from "socket.io";
-import { sockets } from "./sockets/sockets";
+import { sockets } from "./Repositorie/sockets";
 import { graphqlHTTP } from "express-graphql";
-// import minimist from 'minimist';
-// import cors from 'cors';
+import minimist from 'minimist';
+import cors from 'cors';
+import { info } from "console";
 
-// const minimistArgs = minimist(process.argv.slice(2), {
-//     default: {
-//         port: 8080,
-//     }
-// });
 
-// const port = minimistArgs.port;
-const port = process.env.PORT || 8080;
+const minimistArgs = minimist(process.argv.slice(2), {
+    default: {
+        port:  process.env.PORT,
+    }
+});
+
+const port = minimistArgs.port;
+// const port = process.env.PORT || 8080;
 // const config = require('../config.js');
 export const app = express();
 
@@ -40,10 +42,12 @@ app.set("views", "./views");
 
 app.use(express.static('public'));
 
+const config = require('../config.js');
+if(config.NODE_ENV === 'development'){
+    loggerInfo.info(`Using development mode with cors`);
+    app.use(cors());
 
-// if(config.NODE_ENV === 'development'){
-//     app.use(cors());
-// }
+}
 
 // //#endregion
 

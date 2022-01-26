@@ -1,11 +1,11 @@
-import { io, dao, newSession} from './server';
+import { io, dao, newSession} from '../server';
 import {MongoClient} from "mongodb";
-import MensajeRepository from "./repositories/MensajeRepository";
-import { Mensaje, Author } from "./model/DAOs/interfaces/IMensaje";
-import { loggerError,loggerInfo } from "./utils/loggers";
+import MensajeRepository from "./MensajeRepository";
+import { Mensaje, Author } from "../model/DAOs/interfaces/IMensaje";
+import { loggerError,loggerInfo } from "../utils/loggers";
 import * as normalizr from 'normalizr';
-import * as twilio from './twilio/sms.js';
-import { MensajeDTO } from './model/DTOs/MensajeDto';
+import * as twilio from '../twilio/sms.js';
+import { MensajeDTO } from '../model/DTOs/MensajeDto';
 import minimist from 'minimist';
 // const config = require('../config.js')
 

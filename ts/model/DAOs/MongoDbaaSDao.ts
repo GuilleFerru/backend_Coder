@@ -9,7 +9,7 @@ import { ordenModel } from "../models/order";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForMongo, insertUpdateProductoDTOForMongo } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-// import config from '../../../config.mjs';
+const config = require('../../../config.js');
 
 export class MongoDbaaSDao implements IDao {
 
@@ -17,8 +17,8 @@ export class MongoDbaaSDao implements IDao {
     carrito: Cart[];
     order: Cart[];
     dbConnection: Promise<typeof mongoose>;
-    // private MONGO_URL = config.MONGO_URL;
-    private MONGO_URL ="mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
+    private MONGO_URL = config.MONGO_URL;
+        
 
     constructor() {
         this.productos = new Array<Producto>();

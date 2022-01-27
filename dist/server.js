@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.io = exports.newSession = exports.dao = exports.OPCION = exports.server = exports.app = void 0;
+exports.io = exports.newSession = exports.dao = exports.server = exports.app = void 0;
 var express_1 = __importDefault(require("express"));
 var compression_1 = __importDefault(require("compression"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
@@ -40,8 +40,6 @@ var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
     }
 });
 var port = minimistArgs.port;
-// const port = process.env.PORT || 8080;
-// const config = require('../config.js');
 exports.app = (0, express_1.default)();
 // #region Middlewares
 exports.app.use((0, compression_1.default)());
@@ -71,10 +69,9 @@ exports.server = exports.app.listen(port, function () {
 // MONGO = 5
 // MONGOAAS = 6;
 // FIREBASE = 7;
-// const OPCION = + config.PERSISTENCIA;
-exports.OPCION = 6;
+var OPCION = +config.PERSISTENCIA;
 var daoInstance = daoFactory_1.DaoFactory.getInstance();
-exports.dao = daoInstance.getDao(exports.OPCION);
+exports.dao = daoInstance.getDao(OPCION);
 // #endregion
 exports.newSession = new ISession_1.Session();
 exports.io = new SocketIO.Server(exports.server);

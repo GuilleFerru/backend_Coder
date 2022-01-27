@@ -7,14 +7,13 @@ import firebaseAdmin from "firebase-admin";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForFirebase, insertUpdateProductoDTOForFirebase } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-import {OPCION} from "../../server"
-// const config = require('../../../config.js');
+const config = require('../../../config.js');
 
 
-if (OPCION == 7) {
+if (config.PERSISTENCIA === '7') {
     firebaseAdmin.initializeApp({
-        credential: firebaseAdmin.credential.cert('./Firebase/backend-coder-firebase-adminsdk-lbpk1-51f5f41145.json'),
-        databaseURL: 'https://backend-coder.firebaseio.com',
+        credential: firebaseAdmin.credential.cert(config.FIREBASE_CREDENTIAL),
+        databaseURL: config.FIREBASE_URL,
     });
 
     loggerInfo.info("Base de datos Firebase conectada!");
@@ -28,7 +27,7 @@ export class FirebaseDao implements IDao {
     countOrder: number;
     firestoreAdmin = firebaseAdmin.firestore();
     dbConnection: any;
-    private MONGO_URL ="mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
+    private MONGO_URL = config.MONGO_URL;
 
     constructor() {
         this.productos = new Array<Producto>();
@@ -267,5 +266,5 @@ export class FirebaseDao implements IDao {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    
+
 }

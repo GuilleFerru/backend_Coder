@@ -10,8 +10,6 @@ import { sockets } from "./Repositorie/sockets";
 import { graphqlHTTP } from "express-graphql";
 import minimist from 'minimist';
 import cors from 'cors';
-import { info } from "console";
-
 
 const minimistArgs = minimist(process.argv.slice(2), {
     default: {
@@ -20,8 +18,6 @@ const minimistArgs = minimist(process.argv.slice(2), {
 });
 
 const port = minimistArgs.port;
-// const port = process.env.PORT || 8080;
-// const config = require('../config.js');
 export const app = express();
 
 // #region Middlewares
@@ -66,8 +62,7 @@ export const server = app.listen(port, () => {
 // MONGOAAS = 6;
 // FIREBASE = 7;
 
-// const OPCION = + config.PERSISTENCIA;
-export let OPCION = 6;
+const OPCION = + config.PERSISTENCIA;
 const daoInstance = DaoFactory.getInstance();
 export const dao: IDao = daoInstance.getDao(OPCION);
 

@@ -23,7 +23,7 @@ pass: admin
 user: user@app.com
 pass: user
 
-*Los usuarios son creados sin el privilegio de admin.
+*Los usuarios son creados con el privilegio de admin.
 
 Mock email
 ETHEREAL USER=kr4zsiupbsndpjgc@ethereal.email

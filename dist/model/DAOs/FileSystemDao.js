@@ -85,13 +85,16 @@ var usuarios_1 = require("../models/usuarios");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-// const config = require('../../../config.js');
+var config = require('../../../config.js');
 var FileSystemDao = /** @class */ (function () {
     function FileSystemDao() {
-        this.MONGO_URL = "mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
-        this.pathProducto = "./fileSystemDB/productos.txt";
-        this.pathCarrito = "./fileSystemDB/carrito.txt";
-        this.pathOrder = "./fileSystemDB/order.txt";
+        this.MONGO_URL = config.MONGO_URL;
+        // private pathProducto = "./fileSystemDB/productos.txt"
+        // private pathCarrito ="./fileSystemDB/carrito.txt"
+        // private pathOrder="./fileSystemDB/order.txt"
+        this.pathProducto = config.FILE_PATH_PRODUCTOS;
+        this.pathCarrito = config.FILE_PATH_CARRITO;
+        this.pathOrder = config.FILE_PATH_ORDER;
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
@@ -99,9 +102,6 @@ var FileSystemDao = /** @class */ (function () {
         this.countOrder = 1;
         this.conectar();
     }
-    // private pathProducto = config.FILE_PATH_PRODUCTOS;
-    // private pathCarrito = config.FILE_PATH_CARRITO;
-    // private pathOrder = config.FILE_PATH_ORDER;
     FileSystemDao.prototype.conectar = function () {
         return __awaiter(this, void 0, void 0, function () {
             var err_1;

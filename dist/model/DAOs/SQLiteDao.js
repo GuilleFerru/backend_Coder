@@ -57,15 +57,15 @@ var IOrder_1 = require("./interfaces/IOrder");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-// const config = require('../../../config.js');
+var config = require('../../../config.js');
 var SQLiteDao = /** @class */ (function () {
     function SQLiteDao() {
         var _this = this;
-        this.MONGO_URL = "mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
+        this.MONGO_URL = config.MONGO_URL;
         this.optionsSQLite = {
             client: 'sqlite3',
             connection: {
-                filename: './SQLiteDB/ecommerce.sqlite'
+                filename: config.SQL_HOST
             },
             useNullAsDefault: true
         };

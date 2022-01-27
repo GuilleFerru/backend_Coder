@@ -48,10 +48,10 @@ var order_1 = require("../models/order");
 var loggers_1 = require("../../utils/loggers");
 var ProductoDto_1 = require("../DTOs/ProductoDto");
 var OrdenDto_1 = require("../DTOs/OrdenDto");
-// const config = require('../../../config.js');
+var config = require('../../../config.js');
 var MongoDbDao = /** @class */ (function () {
     function MongoDbDao() {
-        this.MONGO_URL = "mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
+        this.MONGO_URL = config.MONGO_URL;
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();

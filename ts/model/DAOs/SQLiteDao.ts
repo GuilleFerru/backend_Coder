@@ -7,7 +7,7 @@ import { Order } from "./interfaces/IOrder";
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForSQL, insertUpdateProductoDTOForSQL } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-// const config = require('../../../config.js');
+const config = require('../../../config.js');
 
 
 export class SQLiteDao implements IDao {
@@ -17,11 +17,11 @@ export class SQLiteDao implements IDao {
     countCarrito: number;
     countOrder: number;
     knex: any;
-    private MONGO_URL ="mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
+    private MONGO_URL = config.MONGO_URL;
     private optionsSQLite = {
         client: 'sqlite3',
         connection: {
-            filename: './SQLiteDB/ecommerce.sqlite'
+            filename: config.SQL_HOST
         },
         useNullAsDefault: true
     };
@@ -51,9 +51,6 @@ export class SQLiteDao implements IDao {
 
     private dropTables = async () => {
         // const knex = require("knex")(optionsMariaDB);
-
-
-
         console.log('mensajes Table create');
         await this.knex.schema.dropTable("mensajes");
         await this.knex.schema.dropTable("author");
@@ -62,9 +59,6 @@ export class SQLiteDao implements IDao {
         await this.knex.schema.dropTable("carrito");
 
     }
-
-
-
 
 
     private createTableMensajes = async () => {

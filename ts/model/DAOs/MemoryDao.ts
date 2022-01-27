@@ -6,6 +6,7 @@ import { usuarioModel as User } from '../models/usuarios';
 import { loggerError, loggerInfo, loggerWarn } from "../../utils/loggers";
 import { productoDTOForMemory, insertUpdateProductoDTOForMemory } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
+const config = require('../../../config.js');
 
 export class MemoryDao implements IDao {
     productos: Array<Producto>;
@@ -14,7 +15,7 @@ export class MemoryDao implements IDao {
     countProducto: number;
     countCarrito: number;
     countOrder: number;
-    private MONGO_URL = 'mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority';
+    private MONGO_URL = config.MONGO_URL;
 
 
     constructor() {

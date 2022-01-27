@@ -43,7 +43,7 @@ exports.enviarSMS = void 0;
 var accountData_1 = require("./accountData");
 var twilio_1 = __importDefault(require("twilio"));
 var client = (0, twilio_1.default)(accountData_1.accountSid, accountData_1.authToken);
-// const config = require('../../config.js');
+var config = require('../../config.js');
 var enviarSMS = function (mensaje, phone) { return __awaiter(void 0, void 0, void 0, function () {
     var rta, error_1;
     return __generator(this, function (_a) {
@@ -52,8 +52,7 @@ var enviarSMS = function (mensaje, phone) { return __awaiter(void 0, void 0, voi
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
-                        // from: config.TWILIO_SMS_FROM,
-                        from: '+14692948136',
+                        from: config.TWILIO_SMS,
                         to: phone
                     })];
             case 1:

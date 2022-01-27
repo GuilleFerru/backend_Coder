@@ -7,7 +7,7 @@ import { usuarioModel as User } from '../models/usuarios';
 import { loggerError, loggerInfo } from "../../utils/loggers";
 import { productoDTOForFile, insertUpdateProductoDTOForFile } from "../DTOs/ProductoDto";
 import { orderFinalDTO, orderProductoAdminDTO, orderProductoClientDTO } from "../DTOs/OrdenDto";
-// const config = require('../../../config.js');
+const config = require('../../../config.js');
 
 export class FileSystemDao implements IDao {
     productos: Array<Producto>;
@@ -15,7 +15,7 @@ export class FileSystemDao implements IDao {
     order: Array<Cart>;
     countCarrito: number;
     countOrder: number;
-    private MONGO_URL ="mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority";
+    private MONGO_URL = config.MONGO_URL;
 
 
     constructor() {
@@ -27,13 +27,13 @@ export class FileSystemDao implements IDao {
         this.conectar();
     }
 
-    private pathProducto = "./fileSystemDB/productos.txt"
-    private pathCarrito ="./fileSystemDB/carrito.txt"
-    private pathOrder="./fileSystemDB/order.txt"
+    // private pathProducto = "./fileSystemDB/productos.txt"
+    // private pathCarrito ="./fileSystemDB/carrito.txt"
+    // private pathOrder="./fileSystemDB/order.txt"
 
-    // private pathProducto = config.FILE_PATH_PRODUCTOS;
-    // private pathCarrito = config.FILE_PATH_CARRITO;
-    // private pathOrder = config.FILE_PATH_ORDER;
+    private pathProducto = config.FILE_PATH_PRODUCTOS;
+    private pathCarrito = config.FILE_PATH_CARRITO;
+    private pathOrder = config.FILE_PATH_ORDER;
 
 
     async conectar() {

@@ -99,3 +99,13 @@
   envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
   messageId: '<6fbe04ae-0152-acef-851f-8db8e5fcfbfa@GUILLE_PC>'
 }
+[2022-01-26T22:47:40.543] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 815,
+  messageTime: 298,
+  messageSize: 878,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYfH5vBq9DBfCpS0kAAABEULc8LWV.IJv6ZWL27FHDwQ]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<9a320502-473d-f62b-e3a0-07d41e4dfbef@GUILLE_PC>'
+}

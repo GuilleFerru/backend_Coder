@@ -7,6 +7,7 @@ import { loggerError } from "../utils/loggers";
 import { Producto } from "../model/DAOs/interfaces/IProducto";
 const ApiProductos = require("../api/productos");
 const apiProductos = new ApiProductos();
+const config = require("../../config.js")
 
 class ApiCarrito {
 
@@ -44,7 +45,9 @@ class ApiCarrito {
         const mensajeMail = `---- ${orderProcessedDate} Número de Orden: ${orderProcessedId} ---- Orden solicitada: <br> ${JSON.stringify(orderProcessedAdmin, null, '<br>')} <br> ----  Precio Total $: ${orderProcessedTotal}  ---`;
 
         try {
-            await twilioWsp.enviarWsp(mensajeWsp);
+            const phone: string = newSession.getIsAdmin() ? newSession.getPhone() : config.TWILIO_PHONE;
+            
+            await twilioWsp.enviarWsp(mensajeWsp, phone);
             await twilioSms.enviarSMS(mensajeSms, newSession.getPhone());
             ethereal.enviarMail(`Nuevo pedido de: ${nombreAndEmail}`, mensajeMail, (err: any, _info: any) => {
                 if (err) loggerError.error(err)

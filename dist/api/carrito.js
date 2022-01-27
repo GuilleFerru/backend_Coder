@@ -73,6 +73,7 @@ var ethereal = __importStar(require("../email/nodemailerEthereal"));
 var loggers_1 = require("../utils/loggers");
 var ApiProductos = require("../api/productos");
 var apiProductos = new ApiProductos();
+var config = require("../../config.js");
 var ApiCarrito = /** @class */ (function () {
     function ApiCarrito() {
         var _this = this;
@@ -106,7 +107,7 @@ var ApiCarrito = /** @class */ (function () {
             });
         }); };
         this.postCarrito = function (orderToProcess) { return __awaiter(_this, void 0, void 0, function () {
-            var orderProcessed, orderProcessedId, orderProcessedDate, orderProcessedTotal, orderProcessedAdmin, orderProcessedClient, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, error_1;
+            var orderProcessed, orderProcessedId, orderProcessedDate, orderProcessedTotal, orderProcessedAdmin, orderProcessedClient, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, phone, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, server_1.dao.insertOrder(orderToProcess)];
@@ -124,7 +125,8 @@ var ApiCarrito = /** @class */ (function () {
                         _a.label = 2;
                     case 2:
                         _a.trys.push([2, 5, , 6]);
-                        return [4 /*yield*/, twilioWsp.enviarWsp(mensajeWsp)];
+                        phone = server_1.newSession.getIsAdmin() ? server_1.newSession.getPhone() : config.TWILIO_PHONE;
+                        return [4 /*yield*/, twilioWsp.enviarWsp(mensajeWsp, phone)];
                     case 3:
                         _a.sent();
                         return [4 /*yield*/, twilioSms.enviarSMS(mensajeSms, server_1.newSession.getPhone())];

@@ -73,14 +73,7 @@ var loggers_1 = require("../utils/loggers");
 var normalizr = __importStar(require("normalizr"));
 var twilio = __importStar(require("../twilio/sms.js"));
 var MensajeDto_1 = require("../model/DTOs/MensajeDto");
-// const config = require('../config.js')
-// const minimistArgs = minimist(process.argv.slice(2),{
-//     default:{ 
-//         port: 8080,
-//     }
-// });
-// const port = minimistArgs.port ;
-// console.log(port)
+var config = require('../../config.js');
 //normaliza el mensaje
 var getNormalizeMsj = function (mensajeRepository) { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajeDTO, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
@@ -122,7 +115,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
     var connection, mensajeRepository;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect('mongodb+srv://ecommerce:3JUOQTzjfNkDKtnh@cluster0.sl41s.mongodb.net/ecommerce?retryWrites=true&w=majority', {
+            case 0: return [4 /*yield*/, mongodb_1.MongoClient.connect(config.MONGO_URL, {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                 })];
@@ -168,7 +161,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                             case 3:
                                                 _d.trys.push([3, 5, , 6]);
                                                 msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
-                                                return [4 /*yield*/, twilio.enviarSMS(msj, '+5493571531154')];
+                                                return [4 /*yield*/, twilio.enviarSMS(msj, config.TWILIO_PHONE)];
                                             case 4:
                                                 _d.sent();
                                                 return [3 /*break*/, 6];

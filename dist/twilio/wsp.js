@@ -44,7 +44,7 @@ var accountData_1 = require("./accountData");
 //monalenachavo6969
 var twilio_1 = __importDefault(require("twilio"));
 var client = (0, twilio_1.default)(accountData_1.accountSid, accountData_1.authToken);
-// const config = require('../../config.js');
+var config = require('../../config.js');
 var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
@@ -53,10 +53,8 @@ var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, fu
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
-                        from: "whatsapp:+14155238886",
-                        to: "whatsapp:+5493571531154"
-                        // from:  `whatsapp:${config.TWILIO_WSP}`,
-                        // to: `whatsapp:${config.TWILIO_PHONE}` 
+                        from: "whatsapp:" + config.TWILIO_WSP,
+                        to: "whatsapp:" + config.TWILIO_PHONE
                     })];
             case 1:
                 _a.sent();

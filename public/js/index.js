@@ -83,7 +83,7 @@ const getQtyMocks = () => {
 
 
 const path = 'https://coderbackend.herokuapp.com';
-// const path = 'http://localhost:8080';
+//const path = 'http://localhost:8080';
 
 
 const generateFakeProductos = () => {

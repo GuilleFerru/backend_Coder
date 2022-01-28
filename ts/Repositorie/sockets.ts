@@ -98,7 +98,7 @@ export const sockets = async () => {
             if (mensaje.text.includes('administrador')) {
                 try {
                     let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
-                    await twilio.enviarSMS(msj, config.TWILIO_PHONE);
+                    await twilio.enviarSMS(msj, newSession.getPhone());
                 }
                 catch (error) {
                     loggerError.error('ERROR enviarWapp', error)

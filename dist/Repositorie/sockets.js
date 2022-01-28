@@ -161,7 +161,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                             case 3:
                                                 _d.trys.push([3, 5, , 6]);
                                                 msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
-                                                return [4 /*yield*/, twilio.enviarSMS(msj, config.TWILIO_PHONE)];
+                                                return [4 /*yield*/, twilio.enviarSMS(msj, server_1.newSession.getPhone())];
                                             case 4:
                                                 _d.sent();
                                                 return [3 /*break*/, 6];

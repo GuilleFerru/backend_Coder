@@ -29,6 +29,7 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var loggers_1 = require("../utils/loggers");
 var usuarios_1 = require("../model/models/usuarios");
 var ethereal = __importStar(require("../email/nodemailerEthereal"));
+var config = require('../../config.js');
 var signUpStrategyName = 'signup';
 var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
 passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
@@ -62,7 +63,7 @@ passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({
                 newUser.phone = req.body.phone;
                 newUser.avatar = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path.replace('public', '');
                 newUser.password = createHash(password);
-                newUser.isAdmin = false;
+                newUser.isAdmin = config.IS_ADMIN;
                 // save the user
                 newUser.save(function (err) {
                     if (err) {

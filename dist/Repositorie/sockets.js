@@ -63,28 +63,17 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sockets = void 0;
-var app_1 = require("./app");
+var server_1 = require("../server");
 var mongodb_1 = require("mongodb");
-var MensajeRepository_1 = __importDefault(require("./repositories/MensajeRepository"));
-var IMensaje_1 = require("./model/DAOs/interfaces/IMensaje");
-var loggers_1 = require("./utils/loggers");
+var MensajeRepository_1 = require("./MensajeRepository");
+var IMensaje_1 = require("../model/DAOs/interfaces/IMensaje");
+var loggers_1 = require("../utils/loggers");
 var normalizr = __importStar(require("normalizr"));
-var twilio = __importStar(require("./twilio/sms.js"));
-var app_2 = require("./app");
-var MensajeDto_1 = require("./model/DTOs/MensajeDto");
-var config = require('../config.js');
-// const minimistArgs = minimist(process.argv.slice(2),{
-//     default:{ 
-//         port: 8080,
-//     }
-// });
-// const port = minimistArgs.port ;
-// console.log(port)
+var twilio = __importStar(require("../twilio/sms.js"));
+var MensajeDto_1 = require("../model/DTOs/MensajeDto");
+var config = require('../../config.js');
 //normaliza el mensaje
 var getNormalizeMsj = function (mensajeRepository) { return __awaiter(void 0, void 0, void 0, function () {
     var mensajesOriginal, mensajeDTO, mensajesOriginalToString, mensajeParse, author, post, chat, normalizePost, error_1;
@@ -132,9 +121,9 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                 })];
             case 1:
                 connection = _a.sent();
-                mensajeRepository = new MensajeRepository_1.default(connection.db("ecommerce"), "mensajesnormalizrs");
+                mensajeRepository = new MensajeRepository_1.MensajeRepository(connection.db("ecommerce"), "mensajesnormalizrs");
                 loggers_1.loggerInfo.info("Conectado a la base de datos de mensajes");
-                app_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+                server_1.io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
                     var _a, _b, _c, _d, _e, _f;
                     return __generator(this, function (_g) {
                         switch (_g.label) {
@@ -172,7 +161,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                             case 3:
                                                 _d.trys.push([3, 5, , 6]);
                                                 msj = "El usuario " + mensaje.author.email + " te envio el siguiente mensaje: " + mensaje.text;
-                                                return [4 /*yield*/, twilio.enviarSMS(msj, config.TWILIO_PHONE_NUMBER)];
+                                                return [4 /*yield*/, twilio.enviarSMS(msj, server_1.newSession.getPhone())];
                                             case 4:
                                                 _d.sent();
                                                 return [3 /*break*/, 6];
@@ -181,7 +170,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                                 loggers_1.loggerError.error('ERROR enviarWapp', error_2);
                                                 return [3 /*break*/, 6];
                                             case 6:
-                                                _b = (_a = app_1.io.sockets).emit;
+                                                _b = (_a = server_1.io.sockets).emit;
                                                 _c = ["messages"];
                                                 return [4 /*yield*/, getNormalizeMsj(mensajeRepository)];
                                             case 7:
@@ -193,10 +182,10 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                 //devuelve todos los productos
                                 _e = (_d = socket).emit;
                                 _f = ["products"];
-                                return [4 /*yield*/, app_1.dao.getProductos()];
+                                return [4 /*yield*/, server_1.dao.getProductos()];
                             case 2:
                                 //devuelve todos los productos
-                                _e.apply(_d, _f.concat([_g.sent(), app_2.newSession.getIsAdmin()]));
+                                _e.apply(_d, _f.concat([_g.sent(), server_1.newSession.getIsAdmin()]));
                                 //recibe el string a buscar y el tipo de busqueda, devuelve un array con los productos que coinciden con la busqueda
                                 socket.on("filterProducto", function (filter, filterBy) { return __awaiter(void 0, void 0, void 0, function () {
                                     var _a, _b, _c;
@@ -205,9 +194,9 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                             case 0:
                                                 _b = (_a = socket).emit;
                                                 _c = ["products"];
-                                                return [4 /*yield*/, app_1.dao.filterProducto(filter, filterBy)];
+                                                return [4 /*yield*/, server_1.dao.filterProducto(filter, filterBy)];
                                             case 1:
-                                                _b.apply(_a, _c.concat([_d.sent(), app_2.newSession.getIsAdmin()]));
+                                                _b.apply(_a, _c.concat([_d.sent(), server_1.newSession.getIsAdmin()]));
                                                 return [2 /*return*/];
                                         }
                                     });
@@ -220,7 +209,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                             case 0:
                                                 _b = (_a = socket).emit;
                                                 _c = ["products"];
-                                                return [4 /*yield*/, app_1.dao.getProductos()];
+                                                return [4 /*yield*/, server_1.dao.getProductos()];
                                             case 1:
                                                 _b.apply(_a, _c.concat([_d.sent()]));
                                                 return [2 /*return*/];

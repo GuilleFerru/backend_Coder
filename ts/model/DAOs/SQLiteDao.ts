@@ -51,9 +51,6 @@ export class SQLiteDao implements IDao {
 
     private dropTables = async () => {
         // const knex = require("knex")(optionsMariaDB);
-
-
-
         console.log('mensajes Table create');
         await this.knex.schema.dropTable("mensajes");
         await this.knex.schema.dropTable("author");
@@ -62,9 +59,6 @@ export class SQLiteDao implements IDao {
         await this.knex.schema.dropTable("carrito");
 
     }
-
-
-
 
 
     private createTableMensajes = async () => {

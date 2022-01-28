@@ -45,7 +45,7 @@ var accountData_1 = require("./accountData");
 var twilio_1 = __importDefault(require("twilio"));
 var client = (0, twilio_1.default)(accountData_1.accountSid, accountData_1.authToken);
 var config = require('../../config.js');
-var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, function () {
+var enviarWsp = function (mensaje, phone) { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -54,7 +54,8 @@ var enviarWsp = function (mensaje) { return __awaiter(void 0, void 0, void 0, fu
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
                         from: "whatsapp:" + config.TWILIO_WSP,
-                        to: "whatsapp:" + config.TWILIO_PHONE
+                        to: "whatsapp:" + phone
+                        // to: `whatsapp:${config.TWILIO_PHONE}` 
                     })];
             case 1:
                 _a.sent();

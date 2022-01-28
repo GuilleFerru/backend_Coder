@@ -30,17 +30,16 @@ var daoFactory_1 = require("./model/DAOs/daoFactory");
 var loggers_1 = require("./utils/loggers");
 var ISession_1 = require("./model/DAOs/interfaces/ISession");
 var SocketIO = __importStar(require("socket.io"));
-var sockets_1 = require("./sockets");
+var sockets_1 = require("./Repositorie/sockets");
 var express_graphql_1 = require("express-graphql");
 var minimist_1 = __importDefault(require("minimist"));
 var cors_1 = __importDefault(require("cors"));
 var minimistArgs = (0, minimist_1.default)(process.argv.slice(2), {
     default: {
-        port: 8080,
+        port: process.env.PORT,
     }
 });
 var port = minimistArgs.port;
-var config = require('../config.js');
 exports.app = (0, express_1.default)();
 // #region Middlewares
 exports.app.use((0, compression_1.default)());
@@ -53,7 +52,9 @@ exports.app.engine("hbs", (0, express_handlebars_1.default)({
 exports.app.set("view engine", "hbs");
 exports.app.set("views", "./views");
 exports.app.use(express_1.default.static('public'));
+var config = require('../config.js');
 if (config.NODE_ENV === 'development') {
+    loggers_1.loggerInfo.info("Using development mode with cors");
     exports.app.use((0, cors_1.default)());
 }
 // //#endregion

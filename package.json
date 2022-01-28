@@ -2,18 +2,18 @@
   "name": "desafiosgithub",
   "version": "1.0.0",
   "description": "Carpeta para proximos desafios",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "set NODE_ENV=development&& nodemon ./dist/app.js --port 8080",
-    "prod": "set NODE_ENV=production&& nodemon ./dist/app.js  --port 8080",
-    "start": "set NODE_ENV=production&& node ./dist/app.js  --port 8080",
+    "dev": "set NODE_ENV=development&& nodemon ./dist/server.js --port 8080",
+    "prod": "set NODE_ENV=production&& nodemon ./dist/server.js  --port 8080",
+    "start": "set NODE_ENV=production&& pm2-runtime start ./dist/server.js --name=fork ",
     "ServerTStoJS5": "./node_modules/.bin/tsc",
     "ServerTStoJS5Watch": "./node_modules/.bin/tsc -w",
     "ServerES6toJS5": "./node_modules/.bin/babel server.es6.js -o ./fromES6/server.js",
     "ServerES6toJS5Watch": "./node_modules/.bin/babel -w",
-    "nodecluster": "nodemon ./dist/app.js CLUSTER",
-    "pm2fork": "pm2 start ./dist/app.js --name=fork --watch -- 8081",
-    "pm2cluster": "pm2 start ./dist/app.js --name=cluster --watch -i max -- 8082",
+    "nodecluster": "nodemon ./dist/server.js CLUSTER",
+    "pm2fork": "pm2 start ./dist/server.js --name=fork --watch -- 8081",
+    "pm2cluster": "pm2 start ./dist/server.js --name=cluster --watch -i max -- 8082",
     "runJS5fromES6": "nodemon ./fromES6/server.js",
     "test": "./node_modules/.bin/mocha ./dist/test/productos.test.js"
   },
@@ -46,9 +46,11 @@
     "multer": "^1.4.3",
     "mysql": "^2.18.1",
     "nodemailer": "^6.7.1",
+    "nodemon": "^2.0.15",
     "normalizr": "^3.6.1",
     "passport": "^0.5.0",
     "passport-local": "^1.0.0",
+    "pm2": "^5.1.2",
     "socket.io": "^4.2.0",
     "sqlite3": "^5.0.2",
     "supertest": "^6.1.6",
@@ -58,7 +60,8 @@
   },
   "engines": {
     "node": ">=14.0.0",
-    "npm": ">=6.0.0"
+    "npm": ">=6.0.0",
+    "pm2": ">=5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.15.4",

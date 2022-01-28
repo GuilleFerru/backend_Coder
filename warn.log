@@ -99,3 +99,33 @@
   envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
   messageId: '<6fbe04ae-0152-acef-851f-8db8e5fcfbfa@GUILLE_PC>'
 }
+[2022-01-26T22:47:40.543] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 815,
+  messageTime: 298,
+  messageSize: 878,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYfH5vBq9DBfCpS0kAAABEULc8LWV.IJv6ZWL27FHDwQ]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<9a320502-473d-f62b-e3a0-07d41e4dfbef@GUILLE_PC>'
+}
+[2022-01-27T18:37:09.849] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 817,
+  messageTime: 335,
+  messageSize: 868,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYfMQh58Bhxfq1kfNAAABGY-rekl3zYyHqumzjv2Fk5c]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<f22998ea-1335-badf-c13a-672d1f26ec36@GUILLE_PC>'
+}
+[2022-01-27T18:38:40.313] [WARN] warn - {
+  accepted: [ 'guillelf@gmail.com' ],
+  rejected: [],
+  envelopeTime: 855,
+  messageTime: 307,
+  messageSize: 878,
+  response: '250 Accepted [STATUS=new MSGID=YZvPNVRmZgO2J-EaYfMQ4UQ0ARfgxCZCAAABGpJax-75uNZgt15TX39yag0]',
+  envelope: { from: '', to: [ 'guillelf@gmail.com' ] },
+  messageId: '<b2a90913-840d-f03f-f76b-cd54ee53d8d6@GUILLE_PC>'
+}

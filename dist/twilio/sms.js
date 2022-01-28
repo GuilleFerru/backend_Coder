@@ -52,7 +52,7 @@ var enviarSMS = function (mensaje, phone) { return __awaiter(void 0, void 0, voi
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, client.messages.create({
                         body: mensaje,
-                        from: config.TWILIO_SMS_FROM,
+                        from: config.TWILIO_SMS,
                         to: phone
                     })];
             case 1:

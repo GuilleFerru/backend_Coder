@@ -13,6 +13,7 @@ module.exports = {
     PORT: process.env.PORT || 8080,
     HEROKU: process.env.HEROKU,
     PERSISTENCIA: process.env.PERSISTENCIA || 1,
+    IS_ADMIN: process.env.IS_ADMIN || true,
     ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
     AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
     TWILIO_SMS: process.env.TWILIO_SMS_FROM,

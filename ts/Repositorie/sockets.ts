@@ -1,26 +1,17 @@
-import { io, dao} from './app';
+import { io, dao, newSession} from '../server';
 import {MongoClient} from "mongodb";
-import MensajeRepository from "./repositories/MensajeRepository";
-import { Mensaje, Author } from "./model/DAOs/interfaces/IMensaje";
-import { loggerError,loggerInfo } from "./utils/loggers";
+import {MensajeRepository} from "./MensajeRepository";
+import { Mensaje, Author } from "../model/DAOs/interfaces/IMensaje";
+import { loggerError,loggerInfo } from "../utils/loggers";
 import * as normalizr from 'normalizr';
-import * as twilio from './twilio/sms.js';
-import { newSession } from "./app";
-import { MensajeDTO } from './model/DTOs/MensajeDto';
-import minimist from 'minimist';
-const config = require('../config.js')
+import * as twilio from '../twilio/sms.js';
+import { MensajeDTO } from '../model/DTOs/MensajeDto';
 
+const config = require('../../config.js')
 
-// const minimistArgs = minimist(process.argv.slice(2),{
-//     default:{ 
-//         port: 8080,
-//     }
-// });
-// const port = minimistArgs.port ;
-// console.log(port)
 
 //normaliza el mensaje
-const getNormalizeMsj = async (mensajeRepository: MensajeRepository | undefined) => {
+const getNormalizeMsj = async (mensajeRepository: any) => {
     try {
         const mensajesOriginal: any = await mensajeRepository?.find();
         const mensajeDTO = MensajeDTO(mensajesOriginal);
@@ -107,7 +98,7 @@ export const sockets = async () => {
             if (mensaje.text.includes('administrador')) {
                 try {
                     let msj = `El usuario ${mensaje.author.email} te envio el siguiente mensaje: ${mensaje.text}`;
-                    await twilio.enviarSMS(msj, config.TWILIO_PHONE_NUMBER);
+                    await twilio.enviarSMS(msj, newSession.getPhone());
                 }
                 catch (error) {
                     loggerError.error('ERROR enviarWapp', error)

@@ -1,4 +1,4 @@
-import { dao } from "../app";
+import { dao } from "../server";
 import { Producto } from "../model/DAOs/interfaces/IProducto";
 import * as faker from 'faker';
 

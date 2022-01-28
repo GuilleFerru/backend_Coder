@@ -6,19 +6,18 @@ import { DaoFactory } from "./model/DAOs/daoFactory";
 import { loggerInfo } from "./utils/loggers";
 import { Session } from "./model/DAOs/interfaces/ISession";
 import * as SocketIO from "socket.io";
-import { sockets } from "./sockets";
+import { sockets } from "./Repositorie/sockets";
 import { graphqlHTTP } from "express-graphql";
 import minimist from 'minimist';
 import cors from 'cors';
 
 const minimistArgs = minimist(process.argv.slice(2), {
     default: {
-        port: 8080,
+        port:  process.env.PORT,
     }
 });
 
 const port = minimistArgs.port;
-const config = require('../config.js');
 export const app = express();
 
 // #region Middlewares
@@ -39,9 +38,11 @@ app.set("views", "./views");
 
 app.use(express.static('public'));
 
-
+const config = require('../config.js');
 if(config.NODE_ENV === 'development'){
+    loggerInfo.info(`Using development mode with cors`);
     app.use(cors());
+
 }
 
 // //#endregion

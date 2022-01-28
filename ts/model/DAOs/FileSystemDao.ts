@@ -27,6 +27,9 @@ export class FileSystemDao implements IDao {
         this.conectar();
     }
 
+    // private pathProducto = "./fileSystemDB/productos.txt"
+    // private pathCarrito ="./fileSystemDB/carrito.txt"
+    // private pathOrder="./fileSystemDB/order.txt"
 
     private pathProducto = config.FILE_PATH_PRODUCTOS;
     private pathCarrito = config.FILE_PATH_CARRITO;

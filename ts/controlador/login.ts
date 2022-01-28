@@ -6,7 +6,7 @@ import MongoStore from "connect-mongo";
 import { Strategy as LocalStrategy } from 'passport-local';
 import { usuarioModel as User } from '../model/models/usuarios';
 import multer from "multer";
-import { app } from "../app";
+import { app } from "../server";
 
 
 const ApiLogin = require("../api/login");

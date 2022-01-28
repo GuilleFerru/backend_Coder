@@ -89,6 +89,9 @@ var config = require('../../../config.js');
 var FileSystemDao = /** @class */ (function () {
     function FileSystemDao() {
         this.MONGO_URL = config.MONGO_URL;
+        // private pathProducto = "./fileSystemDB/productos.txt"
+        // private pathCarrito ="./fileSystemDB/carrito.txt"
+        // private pathOrder="./fileSystemDB/order.txt"
         this.pathProducto = config.FILE_PATH_PRODUCTOS;
         this.pathCarrito = config.FILE_PATH_CARRITO;
         this.pathOrder = config.FILE_PATH_ORDER;

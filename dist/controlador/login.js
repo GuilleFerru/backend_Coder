@@ -46,7 +46,7 @@ var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var passport_local_1 = require("passport-local");
 var usuarios_1 = require("../model/models/usuarios");
 var multer_1 = __importDefault(require("multer"));
-var app_1 = require("../app");
+var server_1 = require("../server");
 var ApiLogin = require("../api/login");
 var loginStrategyName = 'login';
 passport_1.default.serializeUser(function (user, done) {
@@ -57,8 +57,8 @@ passport_1.default.deserializeUser(function (id, done) {
         done(err, user);
     });
 });
-app_1.app.use((0, cookie_parser_1.default)());
-app_1.app.use((0, express_session_1.default)({
+server_1.app.use((0, cookie_parser_1.default)());
+server_1.app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
         //En Atlas connect App: Make sure to change the node version to 2.2.12:
         mongoUrl: 'mongodb://ecommerce:3JUOQTzjfNkDKtnh@cluster0-shard-00-00.sl41s.mongodb.net:27017,cluster0-shard-00-01.sl41s.mongodb.net:27017,cluster0-shard-00-02.sl41s.mongodb.net:27017/ecommerce?ssl=true&replicaSet=atlas-o3g8d0-shard-0&authSource=admin&retryWrites=true&w=majority',
@@ -73,8 +73,8 @@ app_1.app.use((0, express_session_1.default)({
         maxAge: 1000 * 3600
     }
 }));
-app_1.app.use(passport_1.default.initialize());
-app_1.app.use(passport_1.default.session());
+server_1.app.use(passport_1.default.initialize());
+server_1.app.use(passport_1.default.session());
 var userSession;
 var ControladorLogin = /** @class */ (function () {
     function ControladorLogin() {

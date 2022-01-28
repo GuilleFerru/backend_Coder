@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = require("../app");
+var server_1 = require("../server");
 var ApiProductos = require('../api/productos');
 var ControladorProductos = /** @class */ (function () {
     function ControladorProductos() {
@@ -90,7 +90,7 @@ var ControladorProductos = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (!app_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
+                        if (!server_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
                         producto = req.body;
                         return [4 /*yield*/, this.apiProductos.postProducto(producto)];
                     case 1:
@@ -99,7 +99,7 @@ var ControladorProductos = /** @class */ (function () {
                         res.status(404).json({ error: "este producto no se pudo guardar" });
                         return [3 /*break*/, 4];
                     case 2:
-                        _b = (_a = app_1.io.sockets).emit;
+                        _b = (_a = server_1.io.sockets).emit;
                         _c = ["products"];
                         return [4 /*yield*/, this.apiProductos.getProductos()];
                     case 3:
@@ -122,7 +122,7 @@ var ControladorProductos = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (!app_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
+                        if (!server_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
                         id = (req.params.id);
                         producto = req.body;
                         return [4 /*yield*/, this.apiProductos.putProducto(id, producto)];
@@ -133,7 +133,7 @@ var ControladorProductos = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 2:
                         res.status(200).json(resultado);
-                        _b = (_a = app_1.io.sockets).emit;
+                        _b = (_a = server_1.io.sockets).emit;
                         _c = ["products"];
                         return [4 /*yield*/, this.apiProductos.getProductos()];
                     case 3:
@@ -155,7 +155,7 @@ var ControladorProductos = /** @class */ (function () {
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
-                        if (!app_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
+                        if (!server_1.newSession.getIsAdmin()) return [3 /*break*/, 5];
                         id = req.params.id;
                         return [4 /*yield*/, this.apiProductos.deleteProducto(id)];
                     case 1:
@@ -164,7 +164,7 @@ var ControladorProductos = /** @class */ (function () {
                         res.status(404).json({ error: "producto no existente, no se puede borrar" });
                         return [3 /*break*/, 4];
                     case 2:
-                        _b = (_a = app_1.io.sockets).emit;
+                        _b = (_a = server_1.io.sockets).emit;
                         _c = ["products"];
                         return [4 /*yield*/, this.apiProductos.getProductos()];
                     case 3:

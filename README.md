@@ -23,4 +23,11 @@ pass: admin
 user: user@app.com
 pass: user
 
-*Los usuarios son creados sin el privilegio de admin.
+*Los usuarios son creados con el privilegio de admin.
+
+Mock email
+ETHEREAL USER=kr4zsiupbsndpjgc@ethereal.email
+ETHEREAL PASS=VB9TCk2tnDp6pPAMV8
+
+TWILIO:
+Para recibir wsp se debe enviar el codigo join positive-size a +1 415 523 8886. Si el user logueado tiene permisos de admin le llegara el pedido a su celu, sino llegara a mi telefono. (se realizo de esta manera para que pueda ser probado con facilidad)

@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import { loggerError, loggerInfo, loggerWarn } from "../utils/loggers";
 import { usuarioModel as User } from '../model/models/usuarios';
 import * as ethereal from "../email/nodemailerEthereal"
-
+const config = require('../../config.js')
 
 const signUpStrategyName = 'signup';
 
@@ -40,7 +40,7 @@ passport.use(signUpStrategyName, new LocalStrategy({
                 newUser.phone = req.body.phone;
                 newUser.avatar = req.file?.path.replace('public', '');
                 newUser.password = createHash(password);
-                newUser.isAdmin = false;
+                newUser.isAdmin = config.IS_ADMIN;
                 // save the user
                 newUser.save(function (err: string) {
                     if (err) {

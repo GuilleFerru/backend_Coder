@@ -51,7 +51,7 @@ var OrdenDto_1 = require("../DTOs/OrdenDto");
 var config = require('../../../config.js');
 var MongoDbDao = /** @class */ (function () {
     function MongoDbDao() {
-        this.MONGODB_URL = config.MONGO_URL_LOCAL || config.MONGO_URL;
+        this.MONGO_URL = config.MONGO_URL;
         this.productos = new Array();
         this.carrito = new Array();
         this.order = new Array();
@@ -65,7 +65,7 @@ var MongoDbDao = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         loggers_1.loggerInfo.info('Base de datos MongoDB conectada!');
-                        return [4 /*yield*/, mongoose_1.default.connect(this.MONGODB_URL)];
+                        return [4 /*yield*/, mongoose_1.default.connect(this.MONGO_URL)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         err_1 = _a.sent();

@@ -7,8 +7,6 @@ exports.enviarMail = void 0;
 var nodemailer_1 = __importDefault(require("nodemailer"));
 var config = require('../../config.js');
 // Name	Donavon Sanford
-// Username	kr4zsiupbsndpjgc@ethereal.email (also works as a real inbound email address)
-// Password	VB9TCk2tnDp6pPAMV8
 var transporter = nodemailer_1.default.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
@@ -20,7 +18,7 @@ var transporter = nodemailer_1.default.createTransport({
 var enviarMail = function (asunto, mensaje, cb) {
     var mailOptions = {
         from: 'Servidor Ecommerce Coder Guille Ferrucci',
-        to: 'guillelf@gmail.com',
+        to: config.NODEMAILER_GMAIL_USER,
         subject: asunto,
         html: mensaje
     };

@@ -211,7 +211,7 @@ var sockets = function () { return __awaiter(void 0, void 0, void 0, function ()
                                                 _c = ["products"];
                                                 return [4 /*yield*/, server_1.dao.getProductos()];
                                             case 1:
-                                                _b.apply(_a, _c.concat([_d.sent()]));
+                                                _b.apply(_a, _c.concat([_d.sent(), server_1.newSession.getIsAdmin()]));
                                                 return [2 /*return*/];
                                         }
                                     });

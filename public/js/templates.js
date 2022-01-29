@@ -8,7 +8,7 @@ const logOutTemplate = Handlebars.compile(`
 
 const adminButtons = Handlebars.compile(`
     {{#if isAdmin}}
-            
+    <div class="container-fluid mt-50">
         <div class="flex mt-5">
             <button type="button" class="highlight-button btn btn-medium button xs-margin-bottom-five" onclick="location.href='/graphql'">GraphQL</button>
         </div>
@@ -19,6 +19,7 @@ const adminButtons = Handlebars.compile(`
             <button type="button" class=" highlight-button btn btn-medium button xs-margin-bottom-five" onclick="generateRandoms()">Randoms</button>
             <input type="number" class="form-control"  id="randomQty" onchange="getQtyRandom()">
         </div>
+    </div>
     {{/if}}
 `);
 
@@ -116,14 +117,11 @@ const filterProductoTemplate = Handlebars.compile(`
                         <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="filterProductos()">Filtrar</a>
                     </div>
                 </div>
-            </article>
-
-            <div  class="mt-2">
+                <div  class="mt-2">
                 <a href="#" class="highlight-button btn btn-medium button xs-margin-bottom-five" data-abc="true" onclick="limpiarFiltro()">Limpiar Filtros</a>
             </div>
+            </article>
         </div>
-
-
     </div>
 </div>
 </div>

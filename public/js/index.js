@@ -348,18 +348,19 @@ const filterProductos = () => {
 
 const limpiarFiltro = () => {
     var elements = document.getElementsByClassName('filter-content collapse show');
-    for (var i = 0; i < elements.length; i++) {
-        const newLocal = 'show';
-        elements[i].classList.remove(newLocal);
+    if (elements.length !== 0) {
+        for (var i = 0; i < elements.length; i++) {
+            const newLocal = 'show';
+            elements[i].classList.remove(newLocal);
+        }
+        document.getElementById('filterName').value = '';
+        document.getElementById('filterCode').value = '';
+        document.getElementById('minPrice').value = '';
+        document.getElementById('maxPrice').value = '';
+        document.getElementById('minStock').value = '';
+        document.getElementById('maxStock').value = '';
+        socket.emit('getAllProductos');
     }
-    document.getElementById('filterName').value = '';
-    document.getElementById('filterCode').value = '';
-    document.getElementById('minPrice').value = '';
-    document.getElementById('maxPrice').value = '';
-    document.getElementById('minStock').value = '';
-    document.getElementById('maxStock').value = '';
-
-    socket.emit('getAllProductos');
 }
 
 

@@ -118,7 +118,7 @@ export const sockets = async () => {
 
         //devuelve todos los productos solicitados por el cliente
         socket.on("getAllProductos", async () => {
-            socket.emit("products", await dao.getProductos());
+            socket.emit("products", await dao.getProductos(), newSession.getIsAdmin());
         });
 
     })

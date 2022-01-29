@@ -28,7 +28,7 @@ export const orderProductoClientDTO = (productoInCarrito: Cart) => ({
 
 export const orderFinalDTO = (id: string, adminOrder: any, clientOrder: any, price: number): any => ({
     _id: id,
-    fyh: new Date().toLocaleString(),
+    fyh: new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
     orderTotal: `${price} $`,
     adminOrder: adminOrder,
     clientOrder: clientOrder,

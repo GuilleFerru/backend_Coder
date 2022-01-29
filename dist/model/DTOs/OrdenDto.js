@@ -25,7 +25,7 @@ var orderProductoClientDTO = function (productoInCarrito) { return ({
 exports.orderProductoClientDTO = orderProductoClientDTO;
 var orderFinalDTO = function (id, adminOrder, clientOrder, price) { return ({
     _id: id,
-    fyh: new Date().toLocaleString(),
+    fyh: new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
     orderTotal: price + " $",
     adminOrder: adminOrder,
     clientOrder: clientOrder,

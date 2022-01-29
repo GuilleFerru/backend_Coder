@@ -1,4 +1,10 @@
-Consigna: Para culminar con el proyecto final, vamos a realizar las últimas reformas al desarrollo backend e-Commerce para que quede estructurado de acuerdo a los criterios y mecanismos que fuimos aprendiendo en este último trayecto del curso.
+# Tienda Online curso Backend CoderHouse 2021 
+
+### Este proyecto de Ecommerce se realizo como trabajo final de aprobación del curso de [Backend con Node JS](https://nodejs.org/es/) dictado desde Julio de 2021 hasta Febrero 2022.
+
+##Consigna: 
+
+Para culminar con el proyecto final, vamos a realizar las últimas reformas al desarrollo backend e-Commerce para que quede estructurado de acuerdo a los criterios y mecanismos que fuimos aprendiendo en este último trayecto del curso.
 
 En primer lugar la aplicación de servidor debe tener sus capas MVC bien definidas y en archivos separados. Debe existir la capa de ruteo, el controlador, la capa de lógica de negocio con los casos de uso y las validaciones y la capa de persistencia con los DAOs/DTOs o Repositories necesarios para soportar el o los sistemas de persistencia elegidos. En caso de ser más de uno, utilizar una factory para que podamos elegir el sistema de almacenamiento al inicio del servidor.
 

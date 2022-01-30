@@ -2,26 +2,15 @@
 
 ### Este proyecto de Ecommerce se realizo como trabajo final de aprobación del curso de [Backend con Node JS](https://nodejs.org/es/) dictado desde Julio de 2021 hasta Febrero 2022.
 
-##Consigna: 
+## Respuestas a las consignas del proyecto final: 
 
-Para culminar con el proyecto final, vamos a realizar las últimas reformas al desarrollo backend e-Commerce para que quede estructurado de acuerdo a los criterios y mecanismos que fuimos aprendiendo en este último trayecto del curso.
+1.El proyecto esta dividido en dos partes, la parte de backend, desarrollada con TypeScript se implemento en capas utilizando el patrón MVC (con las capas de ruteo, control y negocio), para la persistencia de datos se utilizo MongoDB As a Service implementando los patrones DAO y DTO, se puede utilizar otras bases de datos como MySQL, Firebase y FileSystem con solo modificar la variable de entorno, para esto se aplico el patrón Factory, ademas tiene un servicio de chat implementado con Sockets y el patrón Repository. La parte de Frontend se realizo en el mismo servidor exponiendo la carpeta public para tales efectos. Se utilizo Handlebars, Vanilla Javascript y Bootstrap.
 
-En primer lugar la aplicación de servidor debe tener sus capas MVC bien definidas y en archivos separados. Debe existir la capa de ruteo, el controlador, la capa de lógica de negocio con los casos de uso y las validaciones y la capa de persistencia con los DAOs/DTOs o Repositories necesarios para soportar el o los sistemas de persistencia elegidos. En caso de ser más de uno, utilizar una factory para que podamos elegir el sistema de almacenamiento al inicio del servidor.
+2.El codigo es escabable, si se desea agregar mas logica al servidor solo se debe programar sin modificar el codigo existente gracias a la separación por capas logradas utilizando el patrón MVC.
 
-El servidor debe disponer de configuraciones mediante variables de entorno, que permitan crear un ambiente para desarrollo y otro para producción, elegibles desde la variable de environment NODE_ENV al desplegar la aplicación. Como variables de configuración deberían estar el puerto de escucha del servidor, la persistencia elegida, el string de conexión a la base de datos (si hubiera varios sistemas de persistencia en base de datos considerar todos los casos y sus diferencias), API keys y todo lo que sea necesario que esté en un archivo protegido fuera del código del servidor. Pensar en utilizar bases de datos y servidores locales para la configuración de desarrollo.
+**Ver online**: [https://coderbackend.herokuapp.com/login](https://coderbackend.herokuapp.com/login)
 
-Se debe analizar que el hecho de incorporar un caso más de uso en la lógica del servidor, sea un proceso de agregar código y no de modificar el existente.
-
-Si agregamos un sistema más de persistencia, deberíamos agregar sólo el módulo nuevo y reformar la factory, mientras que resto del proyecto: router, controlador, lógica de negocio, validaciones y otros sistemas de persistencia no deberían sufrir modificaciones para soportar la nueva función.
-
-El código debe quedar bien tabulado, legible, ordenado y comentado ni por exceso ni por defecto.
-
-Las funciones o clases que se por sí solas expliquen su misión, no necesitan ser explicadas (salvo que amerite por complejidad).
-
-Para concluir, subir el desarrollo completo a Heroku o algún PASS de preferencia, seleccionando la configuración a producción de modo de utilizar los parámetros adecuados de funcionamiento y la persistencia en la nube a través de bases de datos como servicio (DBaaS).
-
-
-USUARIOS:
+Usuarios de la app
 
 user: admin@app.com
 pass: admin
@@ -36,4 +25,5 @@ ETHEREAL USER=kr4zsiupbsndpjgc@ethereal.email
 ETHEREAL PASS=VB9TCk2tnDp6pPAMV8
 
 TWILIO:
-Para recibir wsp se debe enviar el codigo join positive-size a +1 415 523 8886. Si el user logueado tiene permisos de admin le llegara el pedido a su celu, sino llegara a mi telefono. (se realizo de esta manera para que pueda ser probado con facilidad)
+Para recibir wsp se debe enviar el codigo join positive-size a +1 415 523 8886. Si el user logueado tiene permisos de admin le llegara el pedido a su celu, sino llegara a mi telefono. (se realizo de esta manera para que pueda ser probado con facilidad).
+

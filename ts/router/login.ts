@@ -7,6 +7,9 @@ import { usuarioModel as User } from '../model/models/usuarios';
 import * as ethereal from "../email/nodemailerEthereal"
 const config = require('../../config.js')
 
+
+// Se tuvo que dejar la parte de SignUP del codigo en el router ya que no se pudo separar y lograr que funcione.
+
 const signUpStrategyName = 'signup';
 
 const createHash = (password: any) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));

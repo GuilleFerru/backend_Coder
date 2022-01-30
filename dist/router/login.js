@@ -30,6 +30,7 @@ var loggers_1 = require("../utils/loggers");
 var usuarios_1 = require("../model/models/usuarios");
 var ethereal = __importStar(require("../email/nodemailerEthereal"));
 var config = require('../../config.js');
+// Se tuvo que dejar la parte de SignUP del codigo en el router ya que no se pudo separar y lograr que funcione.
 var signUpStrategyName = 'signup';
 var createHash = function (password) { return bcrypt_1.default.hashSync(password, bcrypt_1.default.genSaltSync(10)); };
 passport_1.default.use(signUpStrategyName, new passport_local_1.Strategy({

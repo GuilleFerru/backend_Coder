@@ -31,6 +31,8 @@ class ApiCarrito {
         }
     };
 
+    // Esta funcion es la que se encarga de guardar el carrito creado por el usuario, creando la orden de venta, desde el dao se devuelve un array con la
+    // orden creada tanto para el cliente como para el vendedor, luego se vacia el carrito y se envia un mensaje de confirmacion al cliente y al vendedor.
     postCarrito = async (orderToProcess: Cart[] | any) => {
         const orderProcessed: any = await dao.insertOrder(orderToProcess);
         const orderProcessedId = orderProcessed[0]._id;
@@ -60,7 +62,7 @@ class ApiCarrito {
 
     };
 
-
+// Borra un producto del carrito y restablece el stock del producto
     deleteCarrito = async (id: string) => {
         const cartToBeDelete = await dao.getCarritoById(id);
 
@@ -75,6 +77,9 @@ class ApiCarrito {
         }
     };
 
+    //Esta funcion guarda un producto en el carrito, si el producto existe y tiene stock busca un carrito creado y abierto en la db, si lo encuentra
+    // se fija de que no exista un producto similar al que se quiere agregar, si es el mismo producto actualiza el stock y luego agrega el producto en el carrito.
+    //Si el producto a agregar no coincide con los guardados lo agrega al carrito.
     postProductoInCarrito = async (id: string) => {
         const productoById: Producto | undefined = await dao.getProductoById(id);
 

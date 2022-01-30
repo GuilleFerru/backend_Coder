@@ -106,6 +106,8 @@ var ApiCarrito = /** @class */ (function () {
                 }
             });
         }); };
+        // Esta funcion es la que se encarga de guardar el carrito creado por el usuario, creando la orden de venta, desde el dao se devuelve un array con la
+        // orden creada tanto para el cliente como para el vendedor, luego se vacia el carrito y se envia un mensaje de confirmacion al cliente y al vendedor.
         this.postCarrito = function (orderToProcess) { return __awaiter(_this, void 0, void 0, function () {
             var orderProcessed, orderProcessedId, orderProcessedDate, orderProcessedTotal, orderProcessedAdmin, orderProcessedClient, nombreAndEmail, mensajeWsp, mensajeSms, mensajeMail, phone, error_1;
             return __generator(this, function (_a) {
@@ -145,6 +147,7 @@ var ApiCarrito = /** @class */ (function () {
                 }
             });
         }); };
+        // Borra un producto del carrito y restablece el stock del producto
         this.deleteCarrito = function (id) { return __awaiter(_this, void 0, void 0, function () {
             var cartToBeDelete, _a, _b, _c;
             return __generator(this, function (_d) {
@@ -169,6 +172,9 @@ var ApiCarrito = /** @class */ (function () {
                 }
             });
         }); };
+        //Esta funcion guarda un producto en el carrito, si el producto existe y tiene stock busca un carrito creado y abierto en la db, si lo encuentra
+        // se fija de que no exista un producto similar al que se quiere agregar, si es el mismo producto actualiza el stock y luego agrega el producto en el carrito.
+        //Si el producto a agregar no coincide con los guardados lo agrega al carrito.
         this.postProductoInCarrito = function (id) { return __awaiter(_this, void 0, void 0, function () {
             var productoById, stock, carrrito, cartToBeUpdate, producto, carritoWithProductoStockUpdated, producto, producto;
             return __generator(this, function (_a) {
